@@ -86,7 +86,7 @@ if ( ! function_exists( 'edd_repeater_callback' ) ) {
                                                 <h2 data-repeater-collapsable-default="<?php echo $args['collapsable_title']; ?>">
                                                     <span class="title">
 
-                                                        <?php if ( isset( $edd_option[$index] ) ) :
+                                                        <?php if ( isset( $edd_option[$index] ) && reset( $edd_option[$index] ) !== '' ) : 
 
                                                             // Surprisingly, this is the most efficient way to do this. http://stackoverflow.com/a/21219594
                                                             foreach ( $value as $key => $setting ) : ?>
@@ -97,7 +97,7 @@ if ( ! function_exists( 'edd_repeater_callback' ) ) {
 
                                                         else: ?>
 
-                                                            <?php echo $args['collapsable_title']; ?></h2>
+                                                            <?php echo $args['collapsable_title']; ?>
 
                                                         <?php endif; ?>
 

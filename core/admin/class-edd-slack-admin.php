@@ -71,8 +71,8 @@ class EDD_Slack_Admin {
                         'id'    => 'webhook',
                         'desc' => __( 'Slack Webhook URL', EDD_Slack::$plugin_id ),
                         'type'  => 'text',
+                        'placeholder' => edd_get_option( 'psp_slack_webhook' ),
                         'args'  => array(
-                            'placeholder' => edd_get_option( 'psp_slack_webhook' ),
                             'desc'        => '<p class="description">' .
                                              __( 'You can override the above Webhook URL here.', EDD_Slack::$plugin_id ) .
                                              '</p>',
@@ -81,23 +81,17 @@ class EDD_Slack_Admin {
                     'channel'         => array(
                         'type'  => 'text',
                         'desc' => __( 'Slack Channel', EDD_Slack::$plugin_id ),
-                        'args'  => array(
-                            'placeholder' => __( 'Webhook default', EDD_Slack::$plugin_id ),
-                        ),
+                        'placeholder' => __( 'Webhook default', EDD_Slack::$plugin_id ),
                     ),
                     'icon'            => array(
                         'type'  => 'text',
                         'desc' => __( 'Icon Emoji or Image URL', EDD_Slack::$plugin_id ),
-                        'args'  => array(
-                            'placeholder' => __( 'Webhook default', EDD_Slack::$plugin_id ),
-                        ),
+                        'placeholder' => __( 'Webhook default', EDD_Slack::$plugin_id ),
                     ),
                     'username'        => array(
                         'type'  => 'text',
                         'desc' => __( 'Username', EDD_Slack::$plugin_id ),
-                        'args'  => array(
-                            'placeholder' => get_bloginfo( 'name' ),
-                        ),
+                        'placeholder' => get_bloginfo( 'name' ),
                     ),
                     'message_pretext' => array(
                         'type'  => 'text',

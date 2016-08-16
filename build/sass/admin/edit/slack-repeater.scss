@@ -1,0 +1,30 @@
+.edd-slack-settings-repeater {
+
+    .edd-repeater-content {
+
+        td {
+
+            // One Field per row
+            display: block !important;
+
+            // Knock each <td> over to match the Collapsable Title
+            padding-left: 50px !important;
+
+            &:not(:last-of-type) {
+                margin-bottom: 0;
+                padding-bottom: 0;
+            }
+
+            input.regular-text {
+                width: 25em; // Default
+            }
+
+            label {
+                display: block; // Knock label to next line
+            }
+
+        }
+
+    }
+
+}

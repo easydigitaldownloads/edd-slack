@@ -58,36 +58,76 @@ class EDD_Slack_Admin {
 
         $edd_slack_settings = array(
             array(
-                'id'   => 'edd_slack_template_settings',
-                'name' => __( 'Field Template Groups', EDD_Slack::$plugin_id ),
+                'id'   => 'edd_slack_notification_settings',
+                'name' => __( 'Slack Notifications', EDD_Slack::$plugin_id ),
                 'type' => 'repeater',
                 'classes' => array( 'edd-slack-settings-repeater' ),
-                'add_item_text' => __( 'Add Field Template Group', EDD_Slack::$plugin_id ),
-                'delete_item_text' => __( 'Remove Field Template Group', EDD_Slack::$plugin_id ),
+                'add_item_text' => __( 'Add Notification', EDD_Slack::$plugin_id ),
+                'delete_item_text' => __( 'Remove Notification', EDD_Slack::$plugin_id ),
                 'collapsable' => true,
-                'collapsable_title' => __( 'New Field Template Group', EDD_Slack::$plugin_id ),
+                'collapsable_title' => __( 'New Slack Notification', EDD_Slack::$plugin_id ),
                 'fields' => array(
-                    'field_template_group_name' => array(
+                    'webhook'         => array(
+                        'id'    => 'webhook',
+                        'desc' => __( 'Slack Webhook URL', EDD_Slack::$plugin_id ),
                         'type'  => 'text',
-                        'desc' => __( 'Field Template Group Name', EDD_Slack::$plugin_id ),
-                    ),
-                    'test'    => array(
-                        'type'  => 'text',
-                        'desc' => __( 'Another Field', EDD_Slack::$plugin_id ),
-                    ),
-                    'fields' => array(
-                        'test' => true,
-                        'type' => 'repeater',
-                        'desc' => __( 'Fields', EDD_Slack::$plugin_id ),
-                        'add_item_text' => __( 'Add Field', EDD_Slack::$plugin_id ),
-                        'delete_item_text' => __( 'Remove Field', EDD_Slack::$plugin_id ),
-                        'collapsable' => false,
-                        'fields' => array(
-                            'field_name' => array( 
-                                'type'  => 'text',
-                                'desc' => __( 'Field Name', EDD_Slack::$plugin_id ),
-                            ),
+                        'args'  => array(
+                            'placeholder' => edd_get_option( 'psp_slack_webhook' ),
+                            'desc'        => '<p class="description">' .
+                                             __( 'You can override the above Webhook URL here.', EDD_Slack::$plugin_id ) .
+                                             '</p>',
                         ),
+                    ),
+                    'channel'         => array(
+                        'type'  => 'text',
+                        'desc' => __( 'Slack Channel', EDD_Slack::$plugin_id ),
+                        'args'  => array(
+                            'placeholder' => __( 'Webhook default', EDD_Slack::$plugin_id ),
+                        ),
+                    ),
+                    'icon'            => array(
+                        'type'  => 'text',
+                        'desc' => __( 'Icon Emoji or Image URL', EDD_Slack::$plugin_id ),
+                        'args'  => array(
+                            'placeholder' => __( 'Webhook default', EDD_Slack::$plugin_id ),
+                        ),
+                    ),
+                    'username'        => array(
+                        'type'  => 'text',
+                        'desc' => __( 'Username', EDD_Slack::$plugin_id ),
+                        'args'  => array(
+                            'placeholder' => get_bloginfo( 'name' ),
+                        ),
+                    ),
+                    'message_pretext' => array(
+                        'type'  => 'text',
+                        'desc' => __( 'Message Pre-text', EDD_Slack::$plugin_id ),
+                        'args'  => array(
+                            'desc' => '<p class="description">' . sprintf(
+                                    __( 'Possible available dynamic variables for Message, Title, and Pre-text : %s', EDD_Slack::$plugin_id ),
+                                    '<br/><code>' . implode( '</code><code>', array(
+                                        '%project_title%',
+                                        '%phase_title%',
+                                        '%task_title%',
+                                        '%comment_author%',
+                                        '%comment_content%',
+                                        '%comment_link%',
+                                    ) ) . '</code>'
+                                ) . '</p>',
+                        ),
+                    ),
+                    'color'           => array(
+                        'type'  => 'color',
+                        'desc' => __( 'Color (Shows next to Message Title and Message)', EDD_Slack::$plugin_id ),
+                        'std' => '#3299BB',
+                    ),
+                    'message_title'   => array(
+                        'type'  => 'text',
+                        'desc' => __( 'Message Title', EDD_Slack::$plugin_id ),
+                    ),
+                    'message_text'    => array(
+                        'type'  => 'text',
+                        'desc' => __( 'Message', EDD_Slack::$plugin_id ),
                     ),
                 ),
             ),

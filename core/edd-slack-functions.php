@@ -43,7 +43,7 @@ if ( ! function_exists( 'edd_repeater_callback' ) ) {
         ) );
         
         // We need to grab values this way to ensure Nested Repeaters work
-        if ( $args['std'] == '' ) {
+        if ( isset( $edd_options[ $args['id'] ] ) || $args['std'] == '' ) {
             $edd_option = $edd_options[ $args['id'] ];
         }
         else {
@@ -73,47 +73,51 @@ if ( ! function_exists( 'edd_repeater_callback' ) ) {
                                 <table class="repeater-header widefat" width="100%"l cellpadding="0" cellspacing="0" data-repeater-collapsable-handle>
                                     
                                     <tbody>
-
-                                        <?php if ( $args['sortable'] ) : ?>
-                                            <td class="edd-repeater-field-handle">
-                                                <span class="edd_draghandle" data-repeater-item-handle></span>
-                                            </td>
-                                        <?php endif; ?>
-
-                                        <td>
-                                            <h2 data-repeater-collapsable-default="<?php echo $args['collapsable_title']; ?>">
-                                                <span class="title">
-                                                    
-                                                    <?php if ( isset( $edd_option[$index] ) ) :
-
-                                                        // Surprisingly, this is the most efficient way to do this. http://stackoverflow.com/a/21219594
-                                                        foreach ( $value as $key => $setting ) : ?>
-                                                            <?php echo $setting; ?>
-                                                        <?php 
-                                                            break;
-                                                        endforeach; 
-
-                                                    else: ?>
-
-                                                        <?php echo $args['collapsable_title']; ?></h2>
-
-                                                    <?php endif; ?>
-                                                
-                                                </span>
-                                            
-                                                <?php if ( $args['collapsable'] ) : ?>
-                                                    <span class="edd-repeater-collapsable-handle-arrow">
-                                                        <span class="opened dashicons dashicons-arrow-up"></span>
-                                                        <span class="closed dashicons dashicons-arrow-down"></span>
-                                                    </span>
-                                                <?php endif; ?>
-                                            
-                                            </h2>
-                                        </td>
                                         
-                                        <td class="edd-repeater-controls">
-                                            <input data-repeater-delete type="button" class="button" value="<?php echo $args['delete_item_text']; ?>" />
-                                        </td>
+                                        <tr>
+
+                                            <?php if ( $args['sortable'] ) : ?>
+                                                <td class="edd-repeater-field-handle">
+                                                    <span class="edd_draghandle" data-repeater-item-handle></span>
+                                                </td>
+                                            <?php endif; ?>
+
+                                            <td>
+                                                <h2 data-repeater-collapsable-default="<?php echo $args['collapsable_title']; ?>">
+                                                    <span class="title">
+
+                                                        <?php if ( isset( $edd_option[$index] ) ) :
+
+                                                            // Surprisingly, this is the most efficient way to do this. http://stackoverflow.com/a/21219594
+                                                            foreach ( $value as $key => $setting ) : ?>
+                                                                <?php echo $setting; ?>
+                                                            <?php 
+                                                                break;
+                                                            endforeach; 
+
+                                                        else: ?>
+
+                                                            <?php echo $args['collapsable_title']; ?></h2>
+
+                                                        <?php endif; ?>
+
+                                                    </span>
+
+                                                    <?php if ( $args['collapsable'] ) : ?>
+                                                        <span class="edd-repeater-collapsable-handle-arrow">
+                                                            <span class="opened dashicons dashicons-arrow-up"></span>
+                                                            <span class="closed dashicons dashicons-arrow-down"></span>
+                                                        </span>
+                                                    <?php endif; ?>
+
+                                                </h2>
+                                            </td>
+
+                                            <td class="edd-repeater-controls">
+                                                <input data-repeater-delete type="button" class="button" value="<?php echo $args['delete_item_text']; ?>" />
+                                            </td>
+                            
+                                        </tr>
                                         
                                     </tbody>
 
@@ -126,7 +130,7 @@ if ( ! function_exists( 'edd_repeater_callback' ) ) {
 
                                     <tbody>
 
-                                        <tr class="edd_variable_prices_wrapper" data-key="<?php echo esc_attr( $index ); ?>">
+                                        <tr>
                                             
                                             <?php if ( $args['nested'] && $args['sortable'] ) : ?>
 
@@ -145,7 +149,7 @@ if ( ! function_exists( 'edd_repeater_callback' ) ) {
                                                         <?php
                                                             // EDD Generates the Name Attr based on ID, so this nasty workaround is necessary
                                                             $field['id'] = $field_id;
-                                                            $field['std'] = $value[ $field_id ];
+                                                            $field['std'] = ( isset( $value[ $field_id ] ) ) ? $value[ $field_id ] : $field['std'];
 
                                                             if ( $field['type'] == 'repeater' ) {
                                                                 $field['nested'] = true;

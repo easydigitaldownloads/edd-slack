@@ -1,11 +1,46 @@
 // Repeaters
 ( function ( $ ) {
 
+    // Initialize special fields if they exist
+    function init_edd_repeater_colorpickers() {
+
+        var regex = /value="(#(?:[0-9a-f]{3}){1,2})"/i;
+
+        // Only try to run if there are any Color Pickers within an EDD Repeater
+        if ( $( '.edd-repeater .edd-color-picker' ).length ) {
+
+            // Check Each Repeater
+            $( '.edd-repeater' ).each( function( repeaterIndex, repeater ) {
+
+                // Check only Open Repeater Rows
+                $( repeater ).find( '.edd-repeater-item.opened' ).each( function( rowIndex, row ) {
+
+                    // Hit each colorpicker individually to ensure its settings are properly used
+                    $( row ).find( '.edd-color-picker' ).each( function( index, colorPicker ) {
+
+                        console.log( $( colorPicker )[0] );
+                        // Value exists in HTML but is inaccessable via JavaScript. No idea why.
+                        var value = regex.exec( $( colorPicker )[0].outerHTML )[1];
+
+                        $( colorPicker ).val( value ).attr( 'value', value ).wpColorPicker();
+
+                    } );
+
+                } );
+
+            } );
+
+        }
+
+    }
+
     var $repeaters = $( '[data-edd-repeater]' );
 
     if ( ! $repeaters.length ) {
         return;
     }
+
+    init_edd_repeater_colorpickers();
 
     var edd_repeater_show = function() {
 
@@ -37,6 +72,8 @@
         } );
 
         $( this ).addClass( 'opened' ).removeClass( 'closed' ).stop().slideDown();
+
+        init_edd_repeater_colorpickers();
 
         $( repeater ).trigger( 'edd-repeater-add', [$( this )] );
 
@@ -83,11 +120,13 @@
 
         // Sortable
         if ( typeof $repeater.attr( 'data-repeater-sortable' ) !== 'undefined' ) {
+
             $repeater.find( '.edd-repeater-list' ).sortable( {
                 axis: 'y',
                 handle: '[data-repeater-item-handle]',
                 forcePlaceholderSize: true,
                 update: function ( e, ui ) {
+                    init_edd_repeater_colorpickers();
                 }
 
             } );

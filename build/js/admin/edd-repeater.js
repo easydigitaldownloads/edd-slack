@@ -159,7 +159,7 @@
 
         } );
 
-        $( document ).on( 'keyup change', '.edd-repeater .edd-repeater-content td:first-of-type *[name^="edd_settings"]', function() {
+        $( document ).on( 'keyup change', '.edd-repeater .edd-repeater-content td:first-of-type *[type!="hidden"]', function() {
             
             if ( $( this ).val() !== '' ) {
                 $( this ).closest( '.edd-repeater-item' ).find( '.repeater-header h2 span.title' ).html( $( this ).val() );

@@ -18,7 +18,6 @@
                     // Hit each colorpicker individually to ensure its settings are properly used
                     $( row ).find( '.edd-color-picker' ).each( function( index, colorPicker ) {
 
-                        console.log( $( colorPicker )[0] );
                         // Value exists in HTML but is inaccessable via JavaScript. No idea why.
                         var value = regex.exec( $( colorPicker )[0].outerHTML )[1];
 
@@ -161,7 +160,15 @@
         } );
 
         $( document ).on( 'keyup change', '.edd-repeater .edd-repeater-content td:first-of-type *[name^="edd_settings"]', function() {
-            $( this ).closest( '.edd-repeater-item' ).find( '.repeater-header h2 span.title' ).html( $( this ).val() );
+            
+            if ( $( this ).val() !== '' ) {
+                $( this ).closest( '.edd-repeater-item' ).find( '.repeater-header h2 span.title' ).html( $( this ).val() );
+            }
+            else {
+                var defaultValue = $( this ).closest( '.edd-repeater-item' ).find( '.repeater-header h2' ).data( 'repeater-collapsable-default' );
+                $( this ).closest( '.edd-repeater-item' ).find( '.repeater-header h2 span.title' ).html( defaultValue );
+            }
+            
         } );
 
     } );

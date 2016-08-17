@@ -13,7 +13,7 @@ defined( 'ABSPATH' ) || die();
 class EDD_Slack_Admin {
 
     /**
-	 * edd_slack_Admin constructor.
+	 * EDD_Slack_Admin constructor.
 	 *
 	 * @since 1.0.0
 	 */
@@ -27,6 +27,8 @@ class EDD_Slack_Admin {
 
         // Enqueue CSS/JS on our Admin Settings Tab
         add_action( 'edd_settings_tab_top_extensions_edd-slack-settings', array( $this, 'admin_settings_scripts' ) );
+        
+        add_action( 'edd_slack_post_id', array( $this, 'post_id_field' ) );
 
     }
     
@@ -58,75 +60,10 @@ class EDD_Slack_Admin {
 
         $edd_slack_settings = array(
             array(
-                'id'   => 'edd_slack_notification_settings',
                 'name' => __( 'Slack Notifications', EDD_Slack::$plugin_id ),
-                'type' => 'repeater',
-                'classes' => array( 'edd-slack-settings-repeater' ),
-                'add_item_text' => __( 'Add Notification', EDD_Slack::$plugin_id ),
-                'delete_item_text' => __( 'Remove Notification', EDD_Slack::$plugin_id ),
-                'sortable' => false,
-                'collapsable' => true,
-                'collapsable_title' => __( 'New Slack Notification', EDD_Slack::$plugin_id ),
-                'layout' => 'row',
-                'fields' => array(
-                    'webhook'         => array(
-                        'id'    => 'webhook',
-                        'desc' => __( 'Slack Webhook URL', EDD_Slack::$plugin_id ),
-                        'type'  => 'text',
-                        'placeholder' => edd_get_option( 'psp_slack_webhook' ),
-                        'args'  => array(
-                            'desc'        => '<p class="description">' .
-                                             __( 'You can override the above Webhook URL here.', EDD_Slack::$plugin_id ) .
-                                             '</p>',
-                        ),
-                    ),
-                    'channel'         => array(
-                        'type'  => 'text',
-                        'desc' => __( 'Slack Channel', EDD_Slack::$plugin_id ),
-                        'placeholder' => __( 'Webhook default', EDD_Slack::$plugin_id ),
-                    ),
-                    'icon'            => array(
-                        'type'  => 'text',
-                        'desc' => __( 'Icon Emoji or Image URL', EDD_Slack::$plugin_id ),
-                        'placeholder' => __( 'Webhook default', EDD_Slack::$plugin_id ),
-                    ),
-                    'username'        => array(
-                        'type'  => 'text',
-                        'desc' => __( 'Username', EDD_Slack::$plugin_id ),
-                        'placeholder' => get_bloginfo( 'name' ),
-                    ),
-                    'message_pretext' => array(
-                        'type'  => 'text',
-                        'desc' => __( 'Message Pre-text (Shows directly below Username and above the Title/Message)', EDD_Slack::$plugin_id ),
-                        'args'  => array(
-                            'desc' => '<p class="description">' . sprintf(
-                                    __( 'Possible available dynamic variables for Message, Title, and Pre-text : %s', EDD_Slack::$plugin_id ),
-                                    '<br/><code>' . implode( '</code><code>', array(
-                                        '%project_title%',
-                                        '%phase_title%',
-                                        '%task_title%',
-                                        '%comment_author%',
-                                        '%comment_content%',
-                                        '%comment_link%',
-                                    ) ) . '</code>'
-                                ) . '</p>',
-                        ),
-                    ),
-                    'color'           => array(
-                        'type'  => 'color',
-                        'desc' => __( 'Color (Shows next to Message Title and Message)', EDD_Slack::$plugin_id ),
-                        'std' => '#3299BB',
-                    ),
-                    'message_title'   => array(
-                        'type'  => 'text',
-                        'desc' => __( 'Message Title', EDD_Slack::$plugin_id ),
-                    ),
-                    'message_text'    => array(
-                        'type'  => 'text',
-                        'desc' => __( 'Message', EDD_Slack::$plugin_id ),
-                    ),
-                ),
-            ),
+                'type' => 'hook',
+                'id' => 'slack_notifications_hook',
+            )
         );
 
         // If EDD is at version 2.5 or later...

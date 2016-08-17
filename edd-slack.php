@@ -35,6 +35,12 @@ if ( ! class_exists( 'EDD_Slack' ) ) {
         private $admin;
         
         /**
+         * @var         EDD_Slack $notifications EDD Slack Notifications System
+         * @since       1.0.0
+         */
+        private $notifications;
+        
+        /**
          * @var         Plugin ID used for Localization, script names, etc.
          * @since       1.0.0
          */
@@ -161,6 +167,9 @@ if ( ! class_exists( 'EDD_Slack' ) ) {
                 $this->admin = new EDD_Slack_Admin();
                 
             }
+            
+            require_once EDD_Slack_DIR . '/core/notifications/class-edd-slack-notifications.php';
+            $this->notifications = new EDD_Slack_Notifications();
             
         }
         

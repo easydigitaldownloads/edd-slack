@@ -41,6 +41,7 @@ if ( ! function_exists( 'edd_repeater_callback' ) ) {
             'collapsable_title' => __( 'New Row', EDD_Slack::$plugin_id ),
             'nested' => false,
             'layout' => 'table',
+            'input_name' => false,
         ) );
         
         // We need to grab values this way to ensure Nested Repeaters work
@@ -69,6 +70,8 @@ if ( ! function_exists( 'edd_repeater_callback' ) ) {
             $args['classes'][] = 'edd-repeater-layout-row';
         }
         
+        $name = $args['input_name'] !== false ? $args['input_name'] : 'edd_settings[' . esc_attr( $args['id'] ) . ']';
+        
         ?>
 
         <?php if ( $args['nested'] ) : ?>
@@ -79,14 +82,14 @@ if ( ! function_exists( 'edd_repeater_callback' ) ) {
 
         <div<?php echo ( ! $args['nested'] ) ? ' data-edd-repeater' : ''; ?><?php echo ( $args['sortable'] ) ? ' data-repeater-sortable' : ''; ?><?php echo ( $args['collapsable'] ) ? ' data-repeater-collapsable' : ''; ?> class="edd-repeater edd_meta_table_wrap<?php echo ( isset( $args['classes'] ) ) ? ' ' . implode( ' ', $args['classes'] ) : ''; ?>">
             
-            <div data-repeater-list="<?php echo ( ! $args['nested'] ) ? 'edd_settings[' . $args['id'] . ']' : $args['id']; ?>" class="edd-repeater-list">
+            <div data-repeater-list="<?php echo ( ! $args['nested'] ) ? $name : $args['id']; ?>" class="edd-repeater-list">
 
                     <?php for ( $index = 0; $index < $field_count; $index++ ) : $value = $edd_option[$index]; ?>
                 
                         <div data-repeater-item<?php echo ( ! isset( $edd_option[$index] ) && ! $args['nested'] ) ? ' data-repeater-dummy style="display: none;"' : ''; ?> class="edd-repeater-item<?php echo ( $args['collapsable'] ) ? ' closed' : ''; ?>">
                             
                             <?php if ( ! $args['nested'] ) : ?>
-                                <table class="repeater-header widefat" width="100%"l cellpadding="0" cellspacing="0"<?php echo ( $args['collapsable'] ) ? ' data-repeater-collapsable-handle' : '';?>>
+                                <table class="repeater-header widefat" width="100%" cellpadding="0" cellspacing="0"<?php echo ( $args['collapsable'] ) ? ' data-repeater-collapsable-handle' : '';?>>
                                     
                                     <tbody>
                                         
@@ -158,26 +161,34 @@ if ( ! function_exists( 'edd_repeater_callback' ) ) {
 
                                             <?php foreach ( $args['fields'] as $field_id => $field ) : 
 
-                                                if ( is_callable( "edd_{$field['type']}_callback" ) ) : ?>
+                                                if ( is_callable( "edd_{$field['type']}_callback" ) ) : 
+        
+                                                    // EDD Generates the Name Attr based on ID, so this nasty workaround is necessary
+                                                    $field['id'] = $field_id;
+                                                    $field['std'] = ( isset( $value[ $field_id ] ) ) ? $value[ $field_id ] : $field['std'];
+                                            
+                                                    if ( $field['type'] !== 'hook' ) : ?>
 
-                                                    <td<?php echo ( $field['type'] == 'repeater' ) ? ' class="repeater-container"' : ''; ?>>
+                                                        <td<?php echo ( $field['type'] == 'repeater' ) ? ' class="repeater-container"' : ''; ?>>
 
-                                                        <?php
-                                                            // EDD Generates the Name Attr based on ID, so this nasty workaround is necessary
-                                                            $field['id'] = $field_id;
-                                                            $field['std'] = ( isset( $value[ $field_id ] ) ) ? $value[ $field_id ] : $field['std'];
+                                                            <?php
+                                                                if ( $field['type'] == 'repeater' ) {
+                                                                    $field['nested'] = true;
+                                                                    $field['classes'][] = 'nested-repeater';
+                                                                }
 
-                                                            if ( $field['type'] == 'repeater' ) {
-                                                                $field['nested'] = true;
-                                                                $field['classes'][] = 'nested-repeater';
-                                                            }
+                                                                call_user_func( "edd_{$field['type']}_callback", $field ); 
+                                                            ?>
 
-                                                            call_user_func( "edd_{$field['type']}_callback", $field ); 
-                                                        ?>
+                                                        </td>
+                                            
+                                                    <?php else : 
+        
+                                                        call_user_func( "edd_{$field['type']}_callback", $field ); 
+        
+                                                    endif;
 
-                                                    </td>
-
-                                                <?php endif;
+                                                endif;
 
                                             endforeach;
 

@@ -1,7 +1,9 @@
 .edd-repeater {
 
-    th {
-        padding-left: 0.92308em;
+    table.widefat {
+        background: transparent;
+        border: 0;
+        box-shadow: none;
     }
 
     .edd-repeater-field-handle {
@@ -30,26 +32,12 @@
         vertical-align: top;
     }
 
-}
-
-.edd-repeater {
-
-    table.widefat {
-        background: transparent;
-        border: 0;
-        box-shadow: none;
-    }
-
-}
-
-div[data-edd-repeater] {
-
     .edd-repeater-list {
         border: 2px solid #e5e5e5;
         box-shadow: 0 1px 1px rgba(0,0,0,0.06);
     }
 
-    div[data-repeater-item] {
+    .edd-repeater-item {
 
         .repeater-header {
 
@@ -88,13 +76,13 @@ div[data-edd-repeater] {
             }
 
         }
-        
+
         &:first-of-type {
             .repeater-header {
                 border-top-style: none;
             }
         }
-        
+
         &:last-of-type {
             &.closed {
                 .repeater-header {
@@ -138,6 +126,36 @@ div[data-edd-repeater] {
                 overflow: hidden;
                 float: left;
 
+                // <td> holding Nested Repeater
+                // This gets shoved onto its own row for readability reasons
+                & > .repeater-container {
+
+                    .edd-repeater-item {
+
+                        display: block;
+
+                    }
+
+                }
+
+            }
+
+        }
+
+    }
+
+}
+
+// Special Styling only needed to shift things around for Sortable Repeaters
+// It helps to line thing up in a visually appealing way
+.edd-repeater.edd-repeater-sortable {
+
+    .edd-repeater-item {
+
+        & > .edd-repeater-content {
+
+            & > table > tbody > tr {
+
                 & > td {
 
                     &:first-of-type {
@@ -150,23 +168,24 @@ div[data-edd-repeater] {
                         clear: both;
                     }
 
-                    &.repeater-container, &.repeater-collapsable {
+                    // <td> holding Nested Repeater
+                    &.repeater-container {
 
                         padding-left: 10px; // Default
                         display: block;
                         float: left;
 
-                    }
-
-                    &.repeater-container {
-                        
                         margin-left: 40px;
                         margin-right: 40px;
-                        
+
                         .edd-repeater-item {
-                            display: block;
+
+                            td {
+                                padding-left: 10px; // Default
+                            }
+
                         }
-                        
+
                     }
 
                     &.repeater-collapsable {
@@ -187,10 +206,83 @@ div[data-edd-repeater] {
 
 }
 
-.nested-repeater {
+.edd-repeater.edd-repeater-layout-row {
 
-    td {
-        padding-left: 10px !important;
+    .edd-repeater-item {
+
+        & > .edd-repeater-content {
+
+            & > table > tbody > tr > td {
+
+                // One Field per row
+                display: block;
+
+                &:not(:last-of-type) {
+                    margin-bottom: 0;
+                    padding-bottom: 0;
+                }
+
+                input.regular-text {
+                    width: 25em; // Default
+                }
+
+                label {
+                    display: block; // Knock label to next line
+                }
+
+            }
+
+            & > table > tbody > tr {
+
+                & > td {
+
+                    // <td> holding Nested Repeater
+                    &.repeater-container {
+                        
+                        display: table;
+
+                        table > tbody > tr {
+
+                            display: table-row;
+                            width: auto;
+
+                            td {
+                                // Reset defaults
+                                padding-left: 10px;
+                                padding-bottom: 15px;
+                                margin-bottom: 9px;
+                                display: table-cell;
+                            }
+
+                        }
+
+                    }
+
+                }
+
+            }
+
+        }
+
+    }
+
+    &.edd-repeater-sortable {
+
+        .edd-repeater-item {
+
+            & > .edd-repeater-content {
+
+                td {
+
+                    // Knock each <td> over to match the Collapsable Title
+                    padding-left: 50px;
+
+                }
+
+            }
+
+        }
+
     }
 
 }

@@ -64,8 +64,10 @@ class EDD_Slack_Admin {
                 'classes' => array( 'edd-slack-settings-repeater' ),
                 'add_item_text' => __( 'Add Notification', EDD_Slack::$plugin_id ),
                 'delete_item_text' => __( 'Remove Notification', EDD_Slack::$plugin_id ),
+                'sortable' => false,
                 'collapsable' => true,
                 'collapsable_title' => __( 'New Slack Notification', EDD_Slack::$plugin_id ),
+                'layout' => 'row',
                 'fields' => array(
                     'webhook'         => array(
                         'id'    => 'webhook',
@@ -95,7 +97,7 @@ class EDD_Slack_Admin {
                     ),
                     'message_pretext' => array(
                         'type'  => 'text',
-                        'desc' => __( 'Message Pre-text', EDD_Slack::$plugin_id ),
+                        'desc' => __( 'Message Pre-text (Shows directly below Username and above the Title/Message)', EDD_Slack::$plugin_id ),
                         'args'  => array(
                             'desc' => '<p class="description">' . sprintf(
                                     __( 'Possible available dynamic variables for Message, Title, and Pre-text : %s', EDD_Slack::$plugin_id ),

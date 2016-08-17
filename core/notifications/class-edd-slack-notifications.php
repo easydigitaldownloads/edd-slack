@@ -90,8 +90,7 @@ class EDD_Slack_Notifications {
 
                 $value = array(
                     'admin_title'  => get_the_title( $feed ),
-                    'slack_post_id'      => $feed->ID,
-                    //'notification' => get_post_meta( $feed->ID, "psp_{$notification_ID}_feed_notification", true ),
+                    'slack_post_id'      => $feed->ID, // edd_repeater_callback() expects the first field to be something visible
                 );
 
                 foreach ( $notification_args['fields'] as $field_ID => $field ) {
@@ -116,12 +115,12 @@ class EDD_Slack_Notifications {
             'std' => $values,
             'input_name' => 'edd_slack_feeds',
             'fields' => array(
+                'slack_post_id'      => array(
+                    'type'  => 'hook',
+                ),
                 'admin_title'         => array(
                     'desc' => __( 'Identifier for this Notification', EDD_Slack::$plugin_id ),
                     'type'  => 'text',
-                ),
-                'slack_post_id'      => array( // Second field so that the Collapsable Title Labeling still works
-                    'type'  => 'hook',
                 ),
             ),
         );
@@ -244,7 +243,7 @@ class EDD_Slack_Notifications {
 
             $notification_args['fields']['notification'] = true;
 
-            foreach ( $feeds as &$feed ) {
+            foreach ( $feeds as $feed ) {
 
                 $post_args = array(
                     'ID'          => (int) $feed['slack_post_id'] > 0 ? (int) $feed['slack_post_id'] : 0,
@@ -267,9 +266,6 @@ class EDD_Slack_Notifications {
                 }
 
                 $post_ID = wp_insert_post( $post_args );
-                
-                // Ensure we're saved
-                $feed['slack_post_id'] = $post_ID;
 
                 if ( $post_ID !== 0 && ! is_wp_error( $post_ID ) ) {
                     foreach ( $notification_meta as $field_name => $field_value ) {

@@ -22,8 +22,11 @@ class EDD_Slack_Notifications {
         // Create our EDD Slack Notification Feed CPT to store Data in
         add_action( 'init', array( $this, 'register_slack_notifications_cpt' ) );
 
-        // On Form Submission, Create/Update/Delete Notification Feeds
+        // On Form Submission, Create/Update Notification Feeds
         add_action( 'init', array( $this, 'handle_created_updated_feeds' ) );
+        
+        // On Form Submission, Delete Notification Fields
+        add_action( 'init', array( $this, 'handle_deleted_feeds' ) );
         
         // Include our Notification Feed Repeater using saved Post Data
         add_action( 'edd_slack_notifications_hook', array( $this, 'notification_repeater' ) );
@@ -33,6 +36,13 @@ class EDD_Slack_Notifications {
 
     }
 
+    /**
+     * Register Hidden CPT to hold the different Notification Feeds
+     * 
+     * @access      public
+     * @since       1.0.0
+     * @return      void
+     */
     public function register_slack_notifications_cpt() {
 
         $labels = array(
@@ -130,7 +140,7 @@ class EDD_Slack_Notifications {
 		echo edd_repeater_callback( $repeater_args );
         
         ?>
-        <input type="hidden" name="psp_notification_deleted_feeds"/>
+        <input type="hidden" name="edd_slack_notification_deleted_feeds"/>
         <?php
         
     }
@@ -222,6 +232,13 @@ class EDD_Slack_Notifications {
         
     }
 
+    /**
+     * Update Post Data based on Repeater Values
+     * 
+     * @access      public
+     * @since       1.0.0
+     * @return      void
+     */
     public function handle_created_updated_feeds() {
 
         // Handle creating and updating feed post types
@@ -277,6 +294,29 @@ class EDD_Slack_Notifications {
 
         } 
 
+    }
+    
+    /**
+     * Handle Deleted Feeds from the Repeater
+     * 
+     * @access      public
+     * @since       1.0.0
+     * @return      void
+     */
+    public function handle_deleted_feeds() {
+
+        $feeds = $_POST['edd_slack_notification_deleted_feeds'];
+
+        if ( empty( $feeds ) ) {
+            return;
+        }
+
+        $feeds = explode( ',', $feeds );
+
+        foreach ( $feeds as $feed_post_ID ) {
+            wp_delete_post( $feed_post_ID, true );
+        }
+        
     }
 
 }

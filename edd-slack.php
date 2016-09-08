@@ -26,19 +26,37 @@ if ( ! class_exists( 'EDD_Slack' ) ) {
          * @var         EDD_Slack $plugin_data Holds Plugin Header Info
          * @since       1.0.0
          */
-        private $plugin_data;
+        public $plugin_data;
         
         /**
          * @var         EDD_Slack $admin Admin Settings
          * @since       1.0.0
          */
-        private $admin;
+        public $admin;
         
         /**
-         * @var         EDD_Slack $notifications EDD Slack Notifications System
+         * @var         EDD_Slack $slack_api EDD Slack API calls
          * @since       1.0.0
          */
-        private $notifications;
+        public $slack_api;
+                
+        /**
+         * @var         EDD_Slack $notification_handler Notifications System
+         * @since       1.0.0
+         */
+        public $notification_handler;
+        
+        /**
+         * @var         EDD_Slack Integrates into our Notification System. Serves as an example on how to utilize it.
+         * @since       1.0.0
+         */
+        public $notification_integration;
+        
+        /**
+         * @var         EDD_Slack $notification_triggers Notification Triggers. Serves as an example on how to Trigger Notifications
+         * @since       1.0.0
+         */
+        public $notification_triggers;
         
         /**
          * @var         Plugin ID used for Localization, script names, etc.
@@ -168,8 +186,88 @@ if ( ! class_exists( 'EDD_Slack' ) ) {
                 
             }
             
-            require_once EDD_Slack_DIR . '/core/notifications/class-edd-slack-notifications.php';
-            $this->notifications = new EDD_Slack_Notifications();
+            require_once EDD_Slack_DIR . '/core/notifications/class-edd-slack-api.php';
+            $this->slack_api = new EDD_Slack_API();
+            
+            require_once EDD_Slack_DIR . '/core/notifications/class-edd-slack-notification-handler.php';
+            $this->notification_handler = new EDD_Slack_Notification_Handler();
+            
+            require_once EDD_Slack_DIR . '/core/notifications/class-edd-slack-notification-integration.php';
+            $this->notification_integration = new EDD_Slack_Notification_Integration();
+            
+            require_once EDD_Slack_DIR . '/core/notifications/class-edd-slack-notification-triggers.php';
+            $this->notification_triggers = new EDD_Slack_Notification_Triggers();
+            
+        }
+        
+        /**
+         * Grab EDD Slack Notification Repeater Fields
+         * 
+         * @param       boolean $query Whether to run through Database Queries or not
+         *              
+         * @access      public
+         * @since       1.0.0
+         * @return      array   EDD Settings API Array
+         */
+        public function get_notification_fields( $query = true ) {
+        
+            return apply_filters( 'edd_slack_notification_fields', array(
+                'webhook'         => array(
+                    'desc' => __( 'Slack Webhook URL', EDD_Slack::$plugin_id ),
+                    'type'  => 'text',
+                    'placeholder' => edd_get_option( 'edd_slack_webhook' ),
+                    'args'  => array(
+                        'desc'        => '<p class="description">' .
+                        __( 'You can override the above Webhook URL here.', EDD_Slack::$plugin_id ) .
+                        '</p>',
+                    ),
+                ),
+                'channel'         => array(
+                    'type'  => 'text',
+                    'desc' => __( 'Slack Channel', EDD_Slack::$plugin_id ),
+                    'placeholder' => __( 'Webhook default', EDD_Slack::$plugin_id ),
+                ),
+                'icon'            => array(
+                    'type'  => 'text',
+                    'desc' => __( 'Icon Emoji or Image URL', EDD_Slack::$plugin_id ),
+                    'placeholder' => __( 'Webhook default', EDD_Slack::$plugin_id ),
+                ),
+                'username'        => array(
+                    'type'  => 'text',
+                    'desc' => __( 'Username', EDD_Slack::$plugin_id ),
+                    'placeholder' => get_bloginfo( 'name' ),
+                ),
+                'message_pretext' => array(
+                    'type'  => 'text',
+                    'desc' => __( 'Message Pre-text (Shows directly below Username and above the Title/Message)', EDD_Slack::$plugin_id ),
+                    'args'  => array(
+                    'desc' => '<p class="description">' . sprintf(
+                            __( 'Possible available dynamic variables for Message, Title, and Pre-text : %s', EDD_Slack::$plugin_id ),
+                            '<br/><code>' . implode( '</code><code>', array(
+                                '%project_title%',
+                                '%phase_title%',
+                                '%task_title%',
+                                '%comment_author%',
+                                '%comment_content%',
+                                '%comment_link%',
+                            ) ) . '</code>'
+                        ) . '</p>',
+                    ),
+                ),
+                'color'           => array(
+                    'type'  => 'color',
+                    'desc' => __( 'Color (Shows next to Message Title and Message)', EDD_Slack::$plugin_id ),
+                    'std' => '#3299BB',
+                ),
+                'message_title'   => array(
+                    'type'  => 'text',
+                    'desc' => __( 'Message Title', EDD_Slack::$plugin_id ),
+                ),
+                'message_text'    => array(
+                    'type'  => 'text',
+                    'desc' => __( 'Message', EDD_Slack::$plugin_id ),
+                ),
+            ) );
             
         }
         

@@ -60,10 +60,29 @@ class EDD_Slack_Admin {
 
         $edd_slack_settings = array(
             array(
-                'name' => __( 'Slack Notifications', EDD_Slack::$plugin_id ),
-                'type' => 'hook',
-                'id' => 'slack_notifications_hook',
-            )
+                'type' => 'text',
+                'name' => _x( 'Default Webhook URL', 'Default Webhook URL Label', EDD_Slack::$plugin_id ),
+                'id' => 'slack_webhook_default',
+            ),
+            array(
+                'type' => 'text',
+                'name' => _x( 'Timestamp Format', 'Timestamp Format Label', EDD_Slack::$plugin_id ),
+                'id' => 'slack_timestamp_format',
+                'std' => 'm/d/Y @ g:i A',
+                'desc' => _x( '<a href="//php.net/manual/en/function.date.php" target="_blank">Click Here</a> for Format Options. This applies to all %timestamp% Replacements', 'Timestamp Format Help Text', EDD_Slack::$plugin_id ),
+            ),
+            array(
+                'type' => 'repeater',
+                'id' => 'slack_notifications',
+                'name' => _x( 'Slack Notifications', 'Slack Notifications Repeater Label', EDD_Slack::$plugin_id ),
+                'sortable' => false,
+                'collapsable' => true,
+                'layout' => 'row',
+                'add_item_text' => _x( 'Add Slack Notification', 'Add Slack Notification Button', EDD_Slack::$plugin_id ),
+                'delete_item_text' => _x( 'Delete Slack Notification', 'Delete Slack Notification Button', EDD_Slack::$plugin_id ),
+                'collapsable_title' => _x( 'New Slack Notification', 'New Slack Notification Header', EDD_Slack::$plugin_id ),
+                'fields' => EDDSLACK()->get_notification_fields(),
+            ),
         );
 
         // If EDD is at version 2.5 or later...

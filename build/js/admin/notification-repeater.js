@@ -4,7 +4,7 @@
     var delete_edd_slack_feed = function( e, $item ) {
 
         var post_ID = $item.find( 'input[name$="[slack_post_id]"]' ).val(),
-            $delete_feeds = $( 'input[type="hidden"][name="edd_slack_notification_deleted_feeds"]' ),
+            $delete_feeds = $( 'input[type="hidden"][name^="edd_slack_deleted_"]' ),
             deleted = $delete_feeds.val();
 
         if ( ! post_ID ) {

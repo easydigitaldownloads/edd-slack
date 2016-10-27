@@ -219,7 +219,7 @@ if ( ! class_exists( 'EDD_Slack' ) ) {
         public function get_notification_fields( $query = true ) {
         
             return apply_filters( 'edd_slack_notification_fields', array(
-                'post_id' => array(
+                'slack_post_id' => array(
                     'type' => 'hook',
                 ),
                 'admin_title' => array(

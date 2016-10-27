@@ -95,7 +95,7 @@ if ( ! function_exists( 'edd_rbm_repeater_callback' ) ) {
                                                 <h2 data-repeater-collapsable-default="<?php echo $args['collapsable_title']; ?>">
                                                     <span class="title">
 
-                                                        <?php if ( isset( $edd_option[$index] ) && reset( $edd_option[$index] ) !== '' ) : 
+                                                        <?php if ( isset( $args['std'][$index] ) && reset( $args['std'][$index] ) !== '' ) : 
 
                                                             // Surprisingly, this is the most efficient way to do this. http://stackoverflow.com/a/21219594
                                                             foreach ( $value as $key => $setting ) : ?>
@@ -155,7 +155,7 @@ if ( ! function_exists( 'edd_rbm_repeater_callback' ) ) {
         
                                                     // EDD Generates the Name Attr based on ID, so this nasty workaround is necessary
                                                     $field['id'] = $field_id;
-                                                    $field['std'] = ( isset( $value[ $field_id ] ) ) ? $value[ $field_id ] : ( isset( $field['std'] ) ) ? $field['std'] : '';
+                                                    $field['std'] = ( isset( $value[ $field_id ] ) ) ? $value[ $field_id ] : ( ( isset( $field['std'] ) ) ? $field['std'] : '' );
                                             
                                                     if ( $field['type'] !== 'hook' ) : ?>
 

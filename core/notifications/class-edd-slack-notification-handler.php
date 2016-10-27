@@ -60,8 +60,8 @@ class EDD_Slack_Notification_Handler {
             }
             
             // Deleting feed post types
-            if ( isset( $_POST["edd_slack_deleted_feeds"] ) ) {
-                $this->delete_feeds();
+            if ( isset( $_POST["edd_slack_deleted_{$notification_id}_feeds"] ) ) {
+                $this->delete_feeds( $notification_id );
             }
             
         }
@@ -182,13 +182,15 @@ class EDD_Slack_Notification_Handler {
     /**
      * Delete Feed Posts via ID using a hidden text input with the name "edd_slack_deleted_feeds".
      * 
+     * @param       string $notification_id   ID Used for Notification Hooks
+     * 
      * @access      private
      * @since       1.0.0
      * @return      void
      */
-    private function delete_feeds() {
+    private function delete_feeds( $notification_id ) {
 
-        $feeds = $_POST['edd_slack_deleted_feeds'];
+        $feeds = $_POST["edd_slack_deleted_{$notification_id}_feeds"];
 
         if ( empty( $feeds ) ) {
             return;

@@ -22,11 +22,9 @@ function EDDSLACK() {
 	return EDD_Slack::instance();
 }
 
-if ( ! function_exists( 'edd_repeater_callback' ) ) {
+if ( ! function_exists( 'edd_rbm_repeater_callback' ) ) {
     
-    function edd_repeater_callback( $args ) {
-        
-        global $edd_options;
+    function edd_rbm_repeater_callback( $args ) {
 
         $args = wp_parse_args( $args, array(
             'id' => '',
@@ -44,16 +42,8 @@ if ( ! function_exists( 'edd_repeater_callback' ) ) {
             'input_name' => false,
         ) );
         
-        // We need to grab values this way to ensure Nested Repeaters work
-        if ( isset( $edd_options[ $args['id'] ] ) || $args['std'] == '' ) {
-            $edd_option = $edd_options[ $args['id'] ];
-        }
-        else {
-            $edd_option = $args['std'];
-        }
-        
         // Ensure Dummy Field is created
-        $field_count = ( count( $edd_option ) >= 1 ) ? count( $edd_option ) : 1;
+        $field_count = ( count( $args['std'] ) >= 1 ) ? count( $args['std'] ) : 1;
         
         if ( $args['sortable'] ) {
             $args['classes'][] = 'edd-repeater-sortable';
@@ -84,9 +74,9 @@ if ( ! function_exists( 'edd_repeater_callback' ) ) {
             
             <div data-repeater-list="<?php echo ( ! $args['nested'] ) ? $name : $args['id']; ?>" class="edd-repeater-list">
 
-                    <?php for ( $index = 0; $index < $field_count; $index++ ) : $value = $edd_option[$index]; ?>
+                    <?php for ( $index = 0; $index < $field_count; $index++ ) : $value = ( isset( $args['std'][$index] ) ) ? $args['std'][$index] : array(); ?>
                 
-                        <div data-repeater-item<?php echo ( ! isset( $edd_option[$index] ) && ! $args['nested'] ) ? ' data-repeater-dummy style="display: none;"' : ''; ?> class="edd-repeater-item<?php echo ( $args['collapsable'] ) ? ' closed' : ''; ?>">
+                        <div data-repeater-item<?php echo ( ! isset( $args['std'][$index] ) && ! $args['nested'] ) ? ' data-repeater-dummy style="display: none;"' : ''; ?> class="edd-repeater-item<?php echo ( $args['collapsable'] ) ? ' closed' : ''; ?>">
                             
                             <?php if ( ! $args['nested'] ) : ?>
                                 <table class="repeater-header widefat" width="100%" cellpadding="0" cellspacing="0"<?php echo ( $args['collapsable'] ) ? ' data-repeater-collapsable-handle' : '';?>>
@@ -165,14 +155,14 @@ if ( ! function_exists( 'edd_repeater_callback' ) ) {
         
                                                     // EDD Generates the Name Attr based on ID, so this nasty workaround is necessary
                                                     $field['id'] = $field_id;
-                                                    $field['std'] = ( isset( $value[ $field_id ] ) ) ? $value[ $field_id ] : $field['std'];
+                                                    $field['std'] = ( isset( $value[ $field_id ] ) ) ? $value[ $field_id ] : ( isset( $field['std'] ) ) ? $field['std'] : '';
                                             
                                                     if ( $field['type'] !== 'hook' ) : ?>
 
                                                         <td<?php echo ( $field['type'] == 'repeater' ) ? ' class="repeater-container"' : ''; ?>>
 
                                                             <?php
-                                                                if ( $field['type'] == 'repeater' ) {
+                                                                if ( $field['type'] == 'rbm_repeater' ) {
                                                                     $field['nested'] = true;
                                                                     $field['classes'][] = 'nested-repeater';
                                                                 }

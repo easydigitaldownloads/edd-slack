@@ -57,6 +57,49 @@ class EDD_Slack_Admin {
     * @return      array The modified EDD settings array
     */
     public function settings( $settings ) {
+        
+        // Initialize repeater
+        $repeater_values = array();
+        $fields = EDDSLACK()->get_notification_fields();
+        
+        $feeds = get_posts( array(
+            'post_type'   => 'edd-slack-rbm-feed',
+            'numberposts' => -1,
+            'order'       => 'ASC',
+        ) );
+        
+        if ( ! empty( $feeds ) && ! is_wp_error( $feeds ) ) {
+            
+            foreach ( $feeds as $feed ) {
+                
+                $value = array(
+                    'admin_title'  => get_the_title( $feed->ID ), // The first element in this Array is used for the Collapsable Title
+                    'post_id'      => $feed->ID,
+                );
+                
+                // Conditionally Hide certain fields
+                $trigger = get_post_meta( $feed->ID, 'edd_slack_rbm_feed_trigger', true );
+                $trigger = ( $trigger ) ? $trigger : 0;
+                
+                foreach ( $fields as $field_id => $field ) {
+                    
+                    if ( $field_id == 'post_id' || $field_id == 'admin_title' ) continue; // We don't need to do anything special with these
+                    
+                    $value[ $field_id ] = get_post_meta( $feed->ID, "edd_slack_rbm_feed_$field_id", true );
+                    
+                    if ( $field_id = 'replacement_hints' ) {
+                        
+                        $value[ $field_id ] = $trigger;
+                        
+                    }
+                    
+                }
+                
+                $repeater_values[] = $value;
+                
+            }
+            
+        }
 
         $edd_slack_settings = array(
             array(
@@ -72,16 +115,18 @@ class EDD_Slack_Admin {
                 'desc' => _x( '<a href="//php.net/manual/en/function.date.php" target="_blank">Click Here</a> for Format Options. This applies to all %timestamp% Replacements', 'Timestamp Format Help Text', EDD_Slack::$plugin_id ),
             ),
             array(
-                'type' => 'repeater',
+                'type' => 'rbm_repeater',
                 'id' => 'slack_notifications',
+                'input_name' => 'edd_slack_rbm_feeds',
                 'name' => _x( 'Slack Notifications', 'Slack Notifications Repeater Label', EDD_Slack::$plugin_id ),
+                'std' => $repeater_values,
                 'sortable' => false,
                 'collapsable' => true,
                 'layout' => 'row',
                 'add_item_text' => _x( 'Add Slack Notification', 'Add Slack Notification Button', EDD_Slack::$plugin_id ),
                 'delete_item_text' => _x( 'Delete Slack Notification', 'Delete Slack Notification Button', EDD_Slack::$plugin_id ),
                 'collapsable_title' => _x( 'New Slack Notification', 'New Slack Notification Header', EDD_Slack::$plugin_id ),
-                'fields' => EDDSLACK()->get_notification_fields(),
+                'fields' => $fields,
             ),
         );
 

@@ -9,6 +9,9 @@ Author: Real Big Plugins
 Author URI: http://realbigplugins.com
 Contributors: d4mation
 */
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 
 // Exit if accessed directly
 if ( ! defined( 'ABSPATH' ) ) exit;
@@ -212,34 +215,20 @@ if ( ! class_exists( 'EDD_Slack' ) ) {
         public function get_notification_fields( $query = true ) {
         
             return apply_filters( 'edd_slack_notification_fields', array(
-                'webhook'         => array(
-                    'desc' => __( 'Slack Webhook URL', EDD_Slack::$plugin_id ),
-                    'type'  => 'text',
-                    'placeholder' => edd_get_option( 'edd_slack_webhook' ),
-                    'args'  => array(
-                        'desc'        => '<p class="description">' .
-                        __( 'You can override the above Webhook URL here.', EDD_Slack::$plugin_id ) .
-                        '</p>',
-                    ),
+                'post_id' => array(
+                    'type' => 'hook',
                 ),
-                'channel'         => array(
-                    'type'  => 'text',
-                    'desc' => __( 'Slack Channel', EDD_Slack::$plugin_id ),
-                    'placeholder' => __( 'Webhook default', EDD_Slack::$plugin_id ),
-                ),
-                'icon'            => array(
-                    'type'  => 'text',
-                    'desc' => __( 'Icon Emoji or Image URL', EDD_Slack::$plugin_id ),
-                    'placeholder' => __( 'Webhook default', EDD_Slack::$plugin_id ),
-                ),
-                'username'        => array(
-                    'type'  => 'text',
-                    'desc' => __( 'Username', EDD_Slack::$plugin_id ),
-                    'placeholder' => get_bloginfo( 'name' ),
+                'admin_title' => array(
+                    'desc' => __( 'Indentifier for this Notification', EDD_Slack::$plugin_id ),
+                    'type' => 'text',
+                    'readonly' => false,
+                    'placeholder' => __( 'New Slack Notification', EDD_Slack::$plugin_id ),
                 ),
                 'message_pretext' => array(
                     'type'  => 'text',
                     'desc' => __( 'Message Pre-text (Shows directly below Username and above the Title/Message)', EDD_Slack::$plugin_id ),
+                    'readonly' => false,
+                    'placeholder' => '',
                     'args'  => array(
                     'desc' => '<p class="description">' . sprintf(
                             __( 'Possible available dynamic variables for Message, Title, and Pre-text : %s', EDD_Slack::$plugin_id ),
@@ -254,18 +243,49 @@ if ( ! class_exists( 'EDD_Slack' ) ) {
                         ) . '</p>',
                     ),
                 ),
+                'message_title'   => array(
+                    'type'  => 'text',
+                    'desc' => __( 'Message Title', EDD_Slack::$plugin_id ),
+                    'readonly' => false,
+                    'placeholder' => '',
+                ),
+                'message_text'    => array(
+                    'type'  => 'textarea',
+                    'desc' => __( 'Message', EDD_Slack::$plugin_id ),
+                ),
+                'webhook'         => array(
+                    'type'  => 'text',
+                    'desc' => __( 'Slack Webhook URL', EDD_Slack::$plugin_id ),
+                    'readonly' => false,
+                    'placeholder' => edd_get_option( 'edd_slack_webhook' ),
+                    'args'  => array(
+                        'desc'        => '<p class="description">' .
+                        __( 'You can override the above Webhook URL here.', EDD_Slack::$plugin_id ) .
+                        '</p>',
+                    ),
+                ),
+                'channel'         => array(
+                    'type'  => 'text',
+                    'desc' => __( 'Slack Channel', EDD_Slack::$plugin_id ),
+                    'readonly' => false,
+                    'placeholder' => __( 'Webhook default', EDD_Slack::$plugin_id ),
+                ),
+                'username'        => array(
+                    'type'  => 'text',
+                    'desc' => __( 'Username', EDD_Slack::$plugin_id ),
+                    'readonly' => false,
+                    'placeholder' => get_bloginfo( 'name' ),
+                ),
+                'icon'            => array(
+                    'type'  => 'text',
+                    'desc' => __( 'Icon Emoji or Image URL', EDD_Slack::$plugin_id ),
+                    'readonly' => false,
+                    'placeholder' => __( 'Webhook default', EDD_Slack::$plugin_id ),
+                ),
                 'color'           => array(
                     'type'  => 'color',
                     'desc' => __( 'Color (Shows next to Message Title and Message)', EDD_Slack::$plugin_id ),
                     'std' => '#3299BB',
-                ),
-                'message_title'   => array(
-                    'type'  => 'text',
-                    'desc' => __( 'Message Title', EDD_Slack::$plugin_id ),
-                ),
-                'message_text'    => array(
-                    'type'  => 'text',
-                    'desc' => __( 'Message', EDD_Slack::$plugin_id ),
                 ),
             ) );
             

@@ -101,7 +101,7 @@ class EDD_Slack_Notification_Handler {
             'labels'             => $labels,
             'public'             => false,
             'publicly_queryable' => true,
-            'show_ui'            => false,
+            'show_ui'            => true,
         );
         
         register_post_type( "edd-slack-{$notification_id}-feed", $args );

@@ -45,8 +45,8 @@ class EDD_Slack_Notification_Integration {
     public function init_global_notifications( $notifications ) {
         
         $notifications['rbm'] = array(
-            'name' => _x( 'EDD Slack', 'Notification Feed CPT', EDD_Slack::$plugin_id ),
-            'default_feed_title' => _x( 'New Slack Notification', 'Default Post Title for CPT', EDD_Slack::$plugin_id ),
+            'name' => _x( 'EDD Slack', 'Notification Feed CPT', EDD_Slack_ID ),
+            'default_feed_title' => _x( 'New Slack Notification', 'Default Post Title for CPT', EDD_Slack_ID ),
             'fields' => EDDSLACK()->get_notification_fields( false ),
         );
         

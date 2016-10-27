@@ -127,7 +127,7 @@ class EDD_Slack_Notification_Handler {
         }
         
         $notification_args = wp_parse_args( $notification_args, array(
-            'default_feed_title' => _x( 'New Slack Notification', 'New Slack Notification Header', EDD_Slack::$plugin_id ),
+            'default_feed_title' => _x( 'New Slack Notification', 'New Slack Notification Header', EDD_Slack_ID ),
             'fields'             => array(),
         ) );
         

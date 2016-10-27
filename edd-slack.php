@@ -60,12 +60,6 @@ if ( ! class_exists( 'EDD_Slack' ) ) {
          * @since       1.0.0
          */
         public $notification_triggers;
-        
-        /**
-         * @var         Plugin ID used for Localization, script names, etc.
-         * @since       1.0.0
-         */
-        public static $plugin_id = 'edd-slack';
 
         /**
          * Get active instance
@@ -118,6 +112,11 @@ if ( ! class_exists( 'EDD_Slack' ) ) {
             
             // Only call this once, accessible always
             $this->plugin_data = get_plugin_data( __FILE__ );
+            
+            if ( ! defined( 'EDD_Slack_ID' ) ) {
+                // Plugin Text Domain
+                define( 'EDD_Slack_ID', $this->plugin_data['TextDomain'] );
+            }
 
             if ( ! defined( 'EDD_Slack_VER' ) ) {
                 // Plugin version
@@ -132,6 +131,11 @@ if ( ! class_exists( 'EDD_Slack' ) ) {
             if ( ! defined( 'EDD_Slack_URL' ) ) {
                 // Plugin URL
                 define( 'EDD_Slack_URL', plugin_dir_url( __FILE__ ) );
+            }
+            
+            if ( ! defined( 'EDD_Slack_FILE' ) ) {
+                // Plugin File
+                define( 'EDD_Slack_FILE', __FILE__ );
             }
 
         }
@@ -150,25 +154,25 @@ if ( ! class_exists( 'EDD_Slack' ) ) {
             $lang_dir = apply_filters( 'edd_slack_languages_directory', $lang_dir );
 
             // Traditional WordPress plugin locale filter
-            $locale = apply_filters( 'plugin_locale', get_locale(), EDD_Slack::$plugin_id );
-            $mofile = sprintf( '%1$s-%2$s.mo', EDD_Slack::$plugin_id, $locale );
+            $locale = apply_filters( 'plugin_locale', get_locale(), EDD_Slack_ID );
+            $mofile = sprintf( '%1$s-%2$s.mo', EDD_Slack_ID, $locale );
 
             // Setup paths to current locale file
             $mofile_local   = $lang_dir . $mofile;
-            $mofile_global  = WP_LANG_DIR . '/' . EDD_Slack::$plugin_id . '/' . $mofile;
+            $mofile_global  = WP_LANG_DIR . '/' . EDD_Slack_ID . '/' . $mofile;
 
             if ( file_exists( $mofile_global ) ) {
                 // Look in global /wp-content/languages/edd-slack/ folder
                 // This way translations can be overridden via the Theme/Child Theme
-                load_textdomain( EDD_Slack::$plugin_id, $mofile_global );
+                load_textdomain( EDD_Slack_ID, $mofile_global );
             }
             else if ( file_exists( $mofile_local ) ) {
                 // Look in local /wp-content/plugins/edd-slack/languages/ folder
-                load_textdomain( EDD_Slack::$plugin_id, $mofile_local );
+                load_textdomain( EDD_Slack_ID, $mofile_local );
             }
             else {
                 // Load the default language files
-                load_plugin_textdomain( EDD_Slack::$plugin_id, false, $lang_dir );
+                load_plugin_textdomain( EDD_Slack_ID, false, $lang_dir );
             }
 
         }
@@ -219,19 +223,19 @@ if ( ! class_exists( 'EDD_Slack' ) ) {
                     'type' => 'hook',
                 ),
                 'admin_title' => array(
-                    'desc' => __( 'Indentifier for this Notification', EDD_Slack::$plugin_id ),
+                    'desc' => __( 'Indentifier for this Notification', EDD_Slack_ID ),
                     'type' => 'text',
                     'readonly' => false,
-                    'placeholder' => __( 'New Slack Notification', EDD_Slack::$plugin_id ),
+                    'placeholder' => __( 'New Slack Notification', EDD_Slack_ID ),
                 ),
                 'message_pretext' => array(
                     'type'  => 'text',
-                    'desc' => __( 'Message Pre-text (Shows directly below Username and above the Title/Message)', EDD_Slack::$plugin_id ),
+                    'desc' => __( 'Message Pre-text (Shows directly below Username and above the Title/Message)', EDD_Slack_ID ),
                     'readonly' => false,
                     'placeholder' => '',
                     'args'  => array(
                     'desc' => '<p class="description">' . sprintf(
-                            __( 'Possible available dynamic variables for Message, Title, and Pre-text : %s', EDD_Slack::$plugin_id ),
+                            __( 'Possible available dynamic variables for Message, Title, and Pre-text : %s', EDD_Slack_ID ),
                             '<br/><code>' . implode( '</code><code>', array(
                                 '%project_title%',
                                 '%phase_title%',
@@ -245,46 +249,46 @@ if ( ! class_exists( 'EDD_Slack' ) ) {
                 ),
                 'message_title'   => array(
                     'type'  => 'text',
-                    'desc' => __( 'Message Title', EDD_Slack::$plugin_id ),
+                    'desc' => __( 'Message Title', EDD_Slack_ID ),
                     'readonly' => false,
                     'placeholder' => '',
                 ),
                 'message_text'    => array(
                     'type'  => 'textarea',
-                    'desc' => __( 'Message', EDD_Slack::$plugin_id ),
+                    'desc' => __( 'Message', EDD_Slack_ID ),
                 ),
                 'webhook'         => array(
                     'type'  => 'text',
-                    'desc' => __( 'Slack Webhook URL', EDD_Slack::$plugin_id ),
+                    'desc' => __( 'Slack Webhook URL', EDD_Slack_ID ),
                     'readonly' => false,
                     'placeholder' => edd_get_option( 'edd_slack_webhook' ),
                     'args'  => array(
                         'desc'        => '<p class="description">' .
-                        __( 'You can override the above Webhook URL here.', EDD_Slack::$plugin_id ) .
+                        __( 'You can override the above Webhook URL here.', EDD_Slack_ID ) .
                         '</p>',
                     ),
                 ),
                 'channel'         => array(
                     'type'  => 'text',
-                    'desc' => __( 'Slack Channel', EDD_Slack::$plugin_id ),
+                    'desc' => __( 'Slack Channel', EDD_Slack_ID ),
                     'readonly' => false,
-                    'placeholder' => __( 'Webhook default', EDD_Slack::$plugin_id ),
+                    'placeholder' => __( 'Webhook default', EDD_Slack_ID ),
                 ),
                 'username'        => array(
                     'type'  => 'text',
-                    'desc' => __( 'Username', EDD_Slack::$plugin_id ),
+                    'desc' => __( 'Username', EDD_Slack_ID ),
                     'readonly' => false,
                     'placeholder' => get_bloginfo( 'name' ),
                 ),
                 'icon'            => array(
                     'type'  => 'text',
-                    'desc' => __( 'Icon Emoji or Image URL', EDD_Slack::$plugin_id ),
+                    'desc' => __( 'Icon Emoji or Image URL', EDD_Slack_ID ),
                     'readonly' => false,
-                    'placeholder' => __( 'Webhook default', EDD_Slack::$plugin_id ),
+                    'placeholder' => __( 'Webhook default', EDD_Slack_ID ),
                 ),
                 'color'           => array(
                     'type'  => 'color',
-                    'desc' => __( 'Color (Shows next to Message Title and Message)', EDD_Slack::$plugin_id ),
+                    'desc' => __( 'Color (Shows next to Message Title and Message)', EDD_Slack_ID ),
                     'std' => '#3299BB',
                 ),
             ) );
@@ -301,14 +305,14 @@ if ( ! class_exists( 'EDD_Slack' ) ) {
         public function register_scripts() {
             
             wp_register_style(
-                EDD_Slack::$plugin_id . '-admin',
+                EDD_Slack_ID . '-admin',
                 EDD_Slack_URL . '/admin.css',
                 null,
                 defined( 'WP_DEBUG' ) && WP_DEBUG ? time() : EDD_Slack_VER
             );
             
             wp_register_script(
-                EDD_Slack::$plugin_id . '-admin',
+                EDD_Slack_ID . '-admin',
                 EDD_Slack_URL . '/admin.js',
                 array( 'jquery' ),
                 defined( 'WP_DEBUG' ) && WP_DEBUG ? time() : EDD_Slack_VER,

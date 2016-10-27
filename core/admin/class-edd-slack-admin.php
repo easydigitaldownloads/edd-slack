@@ -42,7 +42,7 @@ class EDD_Slack_Admin {
     */
     public function settings_section( $sections ) {
 
-        $sections['edd-slack-settings'] = __( 'Slack', EDD_Slack::$plugin_id );
+        $sections['edd-slack-settings'] = __( 'Slack', EDD_Slack_ID );
 
         return $sections;
 
@@ -104,28 +104,28 @@ class EDD_Slack_Admin {
         $edd_slack_settings = array(
             array(
                 'type' => 'text',
-                'name' => _x( 'Default Webhook URL', 'Default Webhook URL Label', EDD_Slack::$plugin_id ),
+                'name' => _x( 'Default Webhook URL', 'Default Webhook URL Label', EDD_Slack_ID ),
                 'id' => 'slack_webhook_default',
             ),
             array(
                 'type' => 'text',
-                'name' => _x( 'Timestamp Format', 'Timestamp Format Label', EDD_Slack::$plugin_id ),
+                'name' => _x( 'Timestamp Format', 'Timestamp Format Label', EDD_Slack_ID ),
                 'id' => 'slack_timestamp_format',
                 'std' => 'm/d/Y @ g:i A',
-                'desc' => _x( '<a href="//php.net/manual/en/function.date.php" target="_blank">Click Here</a> for Format Options. This applies to all %timestamp% Replacements', 'Timestamp Format Help Text', EDD_Slack::$plugin_id ),
+                'desc' => _x( '<a href="//php.net/manual/en/function.date.php" target="_blank">Click Here</a> for Format Options. This applies to all %timestamp% Replacements', 'Timestamp Format Help Text', EDD_Slack_ID ),
             ),
             array(
                 'type' => 'rbm_repeater',
                 'id' => 'slack_notifications',
                 'input_name' => 'edd_slack_rbm_feeds',
-                'name' => _x( 'Slack Notifications', 'Slack Notifications Repeater Label', EDD_Slack::$plugin_id ),
+                'name' => _x( 'Slack Notifications', 'Slack Notifications Repeater Label', EDD_Slack_ID ),
                 'std' => $repeater_values,
                 'sortable' => false,
                 'collapsable' => true,
                 'layout' => 'row',
-                'add_item_text' => _x( 'Add Slack Notification', 'Add Slack Notification Button', EDD_Slack::$plugin_id ),
-                'delete_item_text' => _x( 'Delete Slack Notification', 'Delete Slack Notification Button', EDD_Slack::$plugin_id ),
-                'collapsable_title' => _x( 'New Slack Notification', 'New Slack Notification Header', EDD_Slack::$plugin_id ),
+                'add_item_text' => _x( 'Add Slack Notification', 'Add Slack Notification Button', EDD_Slack_ID ),
+                'delete_item_text' => _x( 'Delete Slack Notification', 'Delete Slack Notification Button', EDD_Slack_ID ),
+                'collapsable_title' => _x( 'New Slack Notification', 'New Slack Notification Header', EDD_Slack_ID ),
                 'fields' => $fields,
             ),
         );
@@ -149,8 +149,8 @@ class EDD_Slack_Admin {
      */
     public function admin_settings_scripts() {
 
-        wp_enqueue_style( EDD_Slack::$plugin_id . '-admin' );
-        wp_enqueue_script( EDD_Slack::$plugin_id . '-admin' );
+        wp_enqueue_style( EDD_Slack_ID . '-admin' );
+        wp_enqueue_script( EDD_Slack_ID . '-admin' );
 
     }
 

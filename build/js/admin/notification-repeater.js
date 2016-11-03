@@ -10,7 +10,7 @@
         }
         
         var row = $( element ).closest( '.edd-repeater-item' );
-
+        
         if ( option_class == 0 ) {
             
             $( row ).find( '.edd-slack-conditional' ).closest( 'td' ).addClass( 'hidden' );
@@ -56,7 +56,7 @@
         }
         
         if ( $repeaters.length ) {
-            $repeaters.on( 'edd-slack-repeater-add', edd_slack_conditional_fields );
+            $repeaters.on( 'edd-repeater-add', edd_slack_conditional_fields );
             $repeaters.on( 'edd-repeater-remove', delete_edd_slack_feed );
         }
         

@@ -134,7 +134,7 @@ class EDD_Slack_Notification_Handler {
         foreach ( $feeds as $feed ) {
             
             $post_args = array(
-                'ID'          => (int) $feed['post_id'] > 0 ? (int) $feed['post_id'] : 0,
+                'ID'          => (int) $feed['slack_post_id'] > 0 ? (int) $feed['slack_post_id'] : 0,
                 'post_type'   => "edd-slack-{$notification_id}-feed",
                 'post_title'  => '',
                 'post_status' => 'publish',
@@ -167,7 +167,7 @@ class EDD_Slack_Notification_Handler {
 
                 foreach ( $notification_meta as $field_name => $field_value ) {
                     
-                    if ( $field_name == 'post_id' || $field_name == 'admin_title' ) continue;
+                    if ( $field_name == 'slack_post_id' || $field_name == 'admin_title' ) continue;
                     
                     update_post_meta( $post_id, $field_name, $field_value );
                     

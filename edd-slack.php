@@ -253,7 +253,7 @@ if ( ! class_exists( 'EDD_Slack' ) ) {
                     'desc' => __( 'Slack Trigger', EDD_Slack_ID ),
                     'type' => 'select',
                     'chosen' => true,
-                    'class' => 'edd-slack-trigger',
+                    'field_class' => 'edd-slack-trigger',
                     'options' => array( 
                         0 => _x( '-- Select a Slack Trigger --', 'Slack Trigger Default Label', EDD_Slack_ID ),
                      ) + $this->get_slack_triggers(),
@@ -263,7 +263,7 @@ if ( ! class_exists( 'EDD_Slack' ) ) {
                     'desc' => edd_get_label_singular(),
                     'type' => 'select',
                     'chosen' => true,
-                    'class' => array(
+                    'field_class' => array(
                         'edd-slack-download',
                         'edd-slack-conditional',
                         'edd_complete_purchase',

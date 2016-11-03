@@ -69,13 +69,13 @@ class EDD_Slack_Notification_Integration {
      */
     public function create_notification( $post, $fields, $trigger, $notification_id, $args ) {
 
-        $defaults = get_option( 'edd_slack' );
+        $defaults = edd_get_option( 'slack_webhook_default' );
         
         // This allows the chance to possibly alter $args if needed
         do_action_ref_array( 'edd_slack_before_replacements', array( $post, $fields, $trigger, $notification_id, &$args ) );
         
 		$fields = wp_parse_args( array_filter( $fields ), array(
-			'webhook_url'     => ( $defaults['webhook_default'] ) ? $defaults['webhook_default'] : '',
+			'webhook_url'     => ( $webhook = edd_get_option( 'slack_webhook_default') ) ? $webhook : '',
 			'channel'         => '',
 			'message_text'    => '',
 			'message_title'   => $post->post_title,
@@ -125,7 +125,17 @@ class EDD_Slack_Notification_Integration {
         
             $args = wp_parse_args( $args, array(
                 'user_id' => null,
+                'cart' => array(),
             ) );
+            
+            if ( $trigger == 'edd_complete_purchase' ) {
+                
+                // Cart doesn't match our Notification, bail
+                if ( $fields['download'] !== 'all' && ! array_key_exists( $fields['download'], $args['cart'] ) ) {
+                    return false;
+                }
+                
+            }
             
         }
         

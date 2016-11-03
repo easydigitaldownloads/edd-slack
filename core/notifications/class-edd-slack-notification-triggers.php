@@ -41,7 +41,8 @@ class EDD_Slack_Notification_Triggers {
         $cart_items = edd_get_payment_meta_cart_details( $payment_id );
         
         do_action( 'edd_slack_notify', 'edd_complete_purchase', array(
-            
+            'user_id' => $payment_meta['user_info']['id'],
+            'cart' => wp_list_pluck( $cart_items, 'quantity', 'id' ),
         ) );
         
     }

@@ -155,7 +155,7 @@ if ( ! function_exists( 'edd_rbm_repeater_callback' ) ) {
         
                                                     // EDD Generates the Name Attr based on ID, so this nasty workaround is necessary
                                                     $field['id'] = $field_id;
-                                                    $field['std'] = ( isset( $value[ $field_id ] ) ) ? $value[ $field_id ] : ( ( isset( $field['std'] ) ) ? $field['std'] : '' );
+                                                    $field['std'] = ( isset( $value[ $field_id ] ) ) ? $value[ $field_id ] : $field['std'];
                                             
                                                     if ( $field['type'] !== 'hook' ) : ?>
 

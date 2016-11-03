@@ -217,16 +217,62 @@ if ( ! class_exists( 'EDD_Slack' ) ) {
          * @return      array   EDD Settings API Array
          */
         public function get_notification_fields( $query = true ) {
+            
+            $downloads_array = array();
+            
+            // Only run through all these queries when we need them
+            if ( $query ) {
+                
+                $base_args = array(
+                    'posts_per_page' => -1,
+                    'orderby' => 'title',
+                    'order' => 'ASC',
+                );
+                
+                $downloads = get_posts( array(
+                    'post_type' => 'download',
+                ) + $base_args );
+                
+                $downloads_array = wp_list_pluck( $downloads, 'post_title', 'ID' );
+                
+            }
         
             return apply_filters( 'edd_slack_notification_fields', array(
                 'slack_post_id' => array(
                     'type' => 'hook',
+                    'std' => '',
                 ),
                 'admin_title' => array(
                     'desc' => __( 'Indentifier for this Notification', EDD_Slack_ID ),
                     'type' => 'text',
                     'readonly' => false,
                     'placeholder' => __( 'New Slack Notification', EDD_Slack_ID ),
+                    'std' => '',
+                ),
+                'trigger' => array(
+                    'desc' => __( 'Slack Trigger', EDD_Slack_ID ),
+                    'type' => 'select',
+                    'chosen' => true,
+                    'class' => 'edd-slack-trigger',
+                    'options' => array( 
+                        0 => _x( '-- Select a Slack Trigger --', 'Slack Trigger Default Label', EDD_Slack_ID ),
+                     ) + $this->get_slack_triggers(),
+                    'std' => 0,
+                ),
+                'download' => array(
+                    'desc' => edd_get_label_singular(),
+                    'type' => 'select',
+                    'chosen' => true,
+                    'class' => array(
+                        'edd-slack-download',
+                        'edd-slack-conditional',
+                        'edd_complete_purchase',
+                    ),
+                    'options' => array(
+                        0 => sprintf( _x( '-- Select %s --', 'Select Field Default', EDD_Slack_ID ), edd_get_label_singular() ),
+                        'all' => sprintf( _x( 'All %s', 'All items in a Select Field', EDD_Slack_ID ), edd_get_label_plural() ),
+                    ) + $downloads_array,
+                    'std' => 0,
                 ),
                 'message_pretext' => array(
                     'type'  => 'text',
@@ -246,16 +292,19 @@ if ( ! class_exists( 'EDD_Slack' ) ) {
                             ) ) . '</code>'
                         ) . '</p>',
                     ),
+                    'std' => '',
                 ),
                 'message_title'   => array(
                     'type'  => 'text',
                     'desc' => __( 'Message Title', EDD_Slack_ID ),
                     'readonly' => false,
                     'placeholder' => '',
+                    'std' => '',
                 ),
                 'message_text'    => array(
                     'type'  => 'textarea',
                     'desc' => __( 'Message', EDD_Slack_ID ),
+                    'std' => '',
                 ),
                 'webhook'         => array(
                     'type'  => 'text',
@@ -267,30 +316,49 @@ if ( ! class_exists( 'EDD_Slack' ) ) {
                         __( 'You can override the above Webhook URL here.', EDD_Slack_ID ) .
                         '</p>',
                     ),
+                    'std' => '',
                 ),
                 'channel'         => array(
                     'type'  => 'text',
                     'desc' => __( 'Slack Channel', EDD_Slack_ID ),
                     'readonly' => false,
                     'placeholder' => __( 'Webhook default', EDD_Slack_ID ),
+                    'std' => '',
                 ),
                 'username'        => array(
                     'type'  => 'text',
                     'desc' => __( 'Username', EDD_Slack_ID ),
                     'readonly' => false,
                     'placeholder' => get_bloginfo( 'name' ),
+                    'std' => '',
                 ),
                 'icon'            => array(
                     'type'  => 'text',
                     'desc' => __( 'Icon Emoji or Image URL', EDD_Slack_ID ),
                     'readonly' => false,
                     'placeholder' => __( 'Webhook default', EDD_Slack_ID ),
+                    'std' => '',
                 ),
                 'color'           => array(
                     'type'  => 'color',
                     'desc' => __( 'Color (Shows next to Message Title and Message)', EDD_Slack_ID ),
                     'std' => '#3299BB',
                 ),
+            ) );
+            
+        }
+        
+        /**
+         * Returns a List of EDD Slack Triggers and their EDD Actions
+         * 
+         * @access      public
+         * @since       1.0.0
+         * @return      array EDD Slack Triggers
+         */
+        public function get_slack_triggers() {
+            
+            return apply_filters( 'edd_slack_triggers', array(
+                'edd_complete_purchase' => _x( 'Purchase Complete', 'Purchase Complete Trigger Label', EDD_Slack_ID ),
             ) );
             
         }

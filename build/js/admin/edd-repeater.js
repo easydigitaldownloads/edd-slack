@@ -32,6 +32,27 @@
         }
 
     }
+    
+    function init_edd_repeater_chosen() {
+        
+        // Only try to run if there are any Chosen Fields within an EDD Repeater
+        if ( $( '.edd-repeater .edd-chosen' ).length ) {
+            
+            $( '.edd-repeater' ).each( function( repeaterIndex, repeater ) {
+                
+                // Check only Open Repeater Rows
+                $( repeater ).find( '.edd-repeater-item.opened' ).each( function( rowIndex, row ) {
+
+                    // Init Chosen Fields as a Glob per-row
+                    $( row ).find( '.edd-chosen' ).chosen();
+
+                } );
+                
+            } );
+            
+        }
+        
+    }
 
     var $repeaters = $( '[data-edd-repeater]' );
 
@@ -40,11 +61,21 @@
     }
 
     init_edd_repeater_colorpickers();
+    init_edd_repeater_chosen();
 
     var edd_repeater_show = function() {
 
         // Hide current title for new item and show default title
         $( this ).find( '.repeater-header h2 span.title' ).html( $( this ).find( '.repeater-header h2' ).data( 'repeater-collapsable-default' ) );
+        
+        // For some reason Select Fields don't show correctly despite the HTML being correct
+        $( this ).find( 'select' ).each( function( index, select ) {
+            
+            var selected = $( select ).find( 'option[selected]' ).val();
+            
+            $( select ).val( selected );
+            
+        } );
 
         // Nested Repeaters always inherit the number of Rows from the previous Repeater, so this will fix that.
         var repeater = $( this ).closest( '[data-edd-repeater]' ),
@@ -73,6 +104,7 @@
         $( this ).addClass( 'opened' ).removeClass( 'closed' ).stop().slideDown();
 
         init_edd_repeater_colorpickers();
+        init_edd_repeater_chosen();
 
         $( repeater ).trigger( 'edd-repeater-add', [$( this )] );
 
@@ -148,6 +180,7 @@
                 $content.stop().slideDown();
                 $repeater_field.addClass( 'opened' );
                 $repeater_field.removeClass( 'closed' );
+                init_edd_repeater_chosen();
 
             }
             else {

@@ -16,8 +16,12 @@
 
     }
 
-    input.regular-text {
+    input.regular-text, textarea, select.edd-chosen {
         width: 100%;
+    }
+    
+    div.chosen-container {
+        width: 100% !important;   
     }
 
     span.handle {
@@ -29,7 +33,13 @@
     }
 
     td {
+        
         vertical-align: top;
+        
+        &.hidden {
+            display: none !important;
+        }
+        
     }
 
     .edd-repeater-list {
@@ -222,8 +232,12 @@
                     padding-bottom: 0;
                 }
 
-                input.regular-text {
+                input.regular-text, textarea, select.edd-chosen {
                     width: 25em; // Default
+                }
+                
+                div.chosen-container {
+                    width: 25em !important;   
                 }
 
                 label {

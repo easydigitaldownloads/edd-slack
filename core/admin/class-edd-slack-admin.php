@@ -165,7 +165,7 @@ class EDD_Slack_Admin {
     public function post_id_field( $args ) {
         
         // Post ID of 0 on wp_insert_post() auto-generates an available Post ID
-        if ( empty( $args['std'] ) ) $args['std'] = 0;
+        if ( ! isset( $args['std'] ) ) $args['std'] = 0;
         ?>
 
         <input type="hidden" name="<?php echo $args['id']; ?>" value="<?php echo (string) $args['std']; ?>" />

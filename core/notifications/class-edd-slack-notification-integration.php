@@ -76,11 +76,10 @@ class EDD_Slack_Notification_Integration {
         
         /**
          * Allows Notification Sending to properly Bail
-         * Pass '__return_true' to bail
          *
          * @since 1.0.0
          */
-        if ( apply_filters( 'edd_slack_cancel_notification', false ) ) return false;
+        if ( $args['bail'] ) return false;
         
 		$fields = wp_parse_args( array_filter( $fields ), array(
 			'webhook_url'     => ( $webhook = edd_get_option( 'slack_webhook_default') ) ? $webhook : '',
@@ -135,6 +134,7 @@ class EDD_Slack_Notification_Integration {
                 'user_id' => null,
                 'cart' => array(),
                 'discount_code' => 'all',
+                'bail' => false,
             ) );
             
             if ( $trigger == 'edd_complete_purchase' ||
@@ -142,7 +142,8 @@ class EDD_Slack_Notification_Integration {
                 
                 // Cart doesn't match our Notification, bail
                 if ( $fields['download'] !== 'all' && ! array_key_exists( $fields['download'], $args['cart'] ) ) {
-                    add_filter( 'edd_slack_cancel_notification', '__return_true' );
+                    $args['bail'] = true;
+                    return false;
                 }
                 
             }
@@ -151,7 +152,8 @@ class EDD_Slack_Notification_Integration {
                 
                 // Discount Code doesn't match our Notification, bail
                 if ( $fields['discount_code'] !== 'all' && $fields['discount_code'] !== $args['discount_code'] ) {
-                    add_filter( 'edd_slack_cancel_notification', '__return_true' );
+                    $args['bail'] = true;
+                    return false;
                 }
                 
             }

@@ -219,6 +219,7 @@ if ( ! class_exists( 'EDD_Slack' ) ) {
         public function get_notification_fields( $query = true ) {
             
             $downloads_array = array();
+            $discount_codes_array = array();
             
             // Only run through all these queries when we need them
             if ( $query ) {
@@ -234,6 +235,19 @@ if ( ! class_exists( 'EDD_Slack' ) ) {
                 ) + $base_args );
                 
                 $downloads_array = wp_list_pluck( $downloads, 'post_title', 'ID' );
+                
+                $discount_codes = get_posts( array(
+                    'post_type' => 'edd_discount',
+                    'post_status'    => array( 'active', 'inactive', 'expired' ),
+                ) + $base_args );
+                
+                foreach ( $discount_codes as $discount_code ) {
+                    
+                    // Post Meta is the Key, so wp_list_pluck() won't work here
+                    $code = get_post_meta( $discount_code->ID, '_edd_discount_code', true );
+                    $discount_codes_array[ $code ] = $discount_code->post_title . ' - ' . $code;
+                    
+                }
                 
             }
         
@@ -268,11 +282,27 @@ if ( ! class_exists( 'EDD_Slack' ) ) {
                         'edd-slack-download',
                         'edd-slack-conditional',
                         'edd_complete_purchase',
+                        'edd_discount_code_applied',
                     ),
                     'options' => array(
                         0 => sprintf( _x( '-- Select %s --', 'Select Field Default', EDD_Slack_ID ), edd_get_label_singular() ),
                         'all' => sprintf( _x( 'All %s', 'All items in a Select Field', EDD_Slack_ID ), edd_get_label_plural() ),
                     ) + $downloads_array,
+                    'std' => 0,
+                ),
+                'discount_code' => array(
+                    'desc' => _x( 'Discount Code', 'Discount Code Field Label', EDD_Slack_ID ),
+                    'type' => 'select',
+                    'chosen' => true,
+                    'field_class' => array(
+                        'edd-slack-download',
+                        'edd-slack-conditional',
+                        'edd_discount_code_applied',
+                    ),
+                    'options' => array(
+                        0 => _x( '-- Select Discount Code --', 'Discount Code Field Default', EDD_Slack_ID  ),
+                        'all' => _x( 'All Discount Codes', 'All Discount Codes Text', EDD_Slack_ID ),
+                    ) + $discount_codes_array,
                     'std' => 0,
                 ),
                 'message_pretext' => array(
@@ -368,6 +398,7 @@ if ( ! class_exists( 'EDD_Slack' ) ) {
             
             return apply_filters( 'edd_slack_triggers', array(
                 'edd_complete_purchase' => _x( 'Purchase Complete', 'Purchase Complete Trigger Label', EDD_Slack_ID ),
+                'edd_discount_code_applied' => _x( 'Discount Code Applied', 'Discount Code Applied Trigger Label', EDD_Slack_ID ),
             ) );
             
         }

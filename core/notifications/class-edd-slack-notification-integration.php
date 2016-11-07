@@ -74,6 +74,14 @@ class EDD_Slack_Notification_Integration {
         // This allows the chance to possibly alter $args if needed
         do_action_ref_array( 'edd_slack_before_replacements', array( $post, $fields, $trigger, $notification_id, &$args ) );
         
+        /**
+         * Allows Notification Sending to properly Bail
+         * Pass '__return_true' to bail
+         *
+         * @since 1.0.0
+         */
+        if ( apply_filters( 'edd_slack_cancel_notification', false ) ) return false;
+        
 		$fields = wp_parse_args( array_filter( $fields ), array(
 			'webhook_url'     => ( $webhook = edd_get_option( 'slack_webhook_default') ) ? $webhook : '',
 			'channel'         => '',
@@ -126,13 +134,24 @@ class EDD_Slack_Notification_Integration {
             $args = wp_parse_args( $args, array(
                 'user_id' => null,
                 'cart' => array(),
+                'discount_code' => 'all',
             ) );
             
-            if ( $trigger == 'edd_complete_purchase' ) {
+            if ( $trigger == 'edd_complete_purchase' ||
+               $trigger == 'edd_discount_code_applied' ) {
                 
                 // Cart doesn't match our Notification, bail
                 if ( $fields['download'] !== 'all' && ! array_key_exists( $fields['download'], $args['cart'] ) ) {
-                    return false;
+                    add_filter( 'edd_slack_cancel_notification', '__return_true' );
+                }
+                
+            }
+            
+            if ( $trigger == 'edd_discount_code_applied' ) {
+                
+                // Discount Code doesn't match our Notification, bail
+                if ( $fields['discount_code'] !== 'all' && $fields['discount_code'] !== $args['discount_code'] ) {
+                    add_filter( 'edd_slack_cancel_notification', '__return_true' );
                 }
                 
             }
@@ -158,6 +177,11 @@ class EDD_Slack_Notification_Integration {
         if ( $notification_id == 'rbm' ) {
 
             switch ( $trigger ) {
+
+                case 'edd_complete_purchase':
+                case 'edd_discount_code_applied': 
+                    $replacements['%discount_code%'] = $args['discount_code'];
+                    break;
                     
                 default:
                     break;

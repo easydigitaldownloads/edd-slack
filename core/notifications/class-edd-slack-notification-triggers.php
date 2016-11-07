@@ -40,10 +40,25 @@ class EDD_Slack_Notification_Triggers {
         // Cart details
         $cart_items = edd_get_payment_meta_cart_details( $payment_id );
         
-        do_action( 'edd_slack_notify', 'edd_complete_purchase', array(
+        // This shouldn't happen, but may as well ensure it is there.
+        $payment_meta['user_info']['discount'] = ( isset( $payment_meta['user_info']['discount'] ) ) ? $payment_meta['user_info']['discount'] : 'none';
+        
+        // Passing the same data no matter what, so here we go
+        $purchase_args = array(
             'user_id' => $payment_meta['user_info']['id'],
+            'discount_code' => $payment_meta['user_info']['discount'],
             'cart' => wp_list_pluck( $cart_items, 'quantity', 'id' ),
-        ) );
+        );
+        
+        // If a Discount Code is Used
+        if ( $payment_meta['user_info']['discount'] !== 'none' ) {
+            
+            do_action( 'edd_slack_notify', 'edd_discount_code_applied', $purchase_args );
+            
+        }
+        
+        // Completed Purchase always fires
+        do_action( 'edd_slack_notify', 'edd_complete_purchase', $purchase_args );
         
     }
 

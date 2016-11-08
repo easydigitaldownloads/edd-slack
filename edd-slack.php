@@ -205,6 +205,10 @@ if ( ! class_exists( 'EDD_Slack' ) ) {
             require_once EDD_Slack_DIR . '/core/notifications/class-edd-slack-notification-triggers.php';
             $this->notification_triggers = new EDD_Slack_Notification_Triggers();
             
+            if ( class_exists( 'EDD_Reviews' ) ) {
+                require_once EDD_Slack_DIR . '/core/integrations/edd-reviews/class-edd-slack-reviews.php';
+            }
+            
         }
         
         /**
@@ -396,10 +400,14 @@ if ( ! class_exists( 'EDD_Slack' ) ) {
          */
         public function get_slack_triggers() {
             
-            return apply_filters( 'edd_slack_triggers', array(
+            $triggers = apply_filters( 'edd_slack_triggers', array(
                 'edd_complete_purchase' => _x( 'Purchase Complete', 'Purchase Complete Trigger Label', EDD_Slack_ID ),
                 'edd_discount_code_applied' => _x( 'Discount Code Applied', 'Discount Code Applied Trigger Label', EDD_Slack_ID ),
             ) );
+            
+            asort( $triggers );
+            
+            return $triggers;
             
         }
         

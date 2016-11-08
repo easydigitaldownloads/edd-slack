@@ -31,6 +31,9 @@ class EDD_Slack_Admin {
         // Callback for the hidden Post ID output
         add_action( 'edd_slack_post_id', array( $this, 'post_id_field' ) );
         
+        // Add New Comment Trigger if appropriate
+        add_filter( 'edd_slack_triggers', array( $this, 'maybe_add_comment_post_trigger' ) );
+        
         // Callback for the hidden "Fields to Delete" field output
         add_action( 'edd_slack_deleted_feeds', array( $this, 'deleted_feeds' ) );
 
@@ -171,6 +174,35 @@ class EDD_Slack_Admin {
         <input type="hidden" name="<?php echo $args['id']; ?>" value="<?php echo (string) $args['std']; ?>" />
 
     <?php
+    }
+        
+    /**
+     * By Default EDD does not support Comments, but if they have been enabled show a Trigger
+     * 
+     * @param       array $triggers EDD Slack Triggers
+     *                                        
+     * @access      public
+     * @since       1.0.0
+     * @return      array Modified EDD Slack Triggers
+     */
+    public function maybe_add_comment_post_trigger( $triggers ) {
+
+        if ( post_type_supports( 'download', 'comments' ) ) {
+
+            $triggers['comment_post'] = sprintf( _x( 'New Comment on %s', 'New Comment on Download Trigger', EDD_Slack_ID ), edd_get_label_singular() );
+
+        }
+
+        return $triggers;
+
+    }
+    
+    public function maybe_add_comment_post_conditional_fields( $repeater_fields ) {
+        
+        $repeater_fields['download']['field_class'][] = 'comment_post';
+        
+        return $repeater_fields;
+        
     }
     
     /**

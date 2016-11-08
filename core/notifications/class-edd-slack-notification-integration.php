@@ -134,6 +134,7 @@ class EDD_Slack_Notification_Integration {
                 'user_id' => null,
                 'cart' => array(),
                 'discount_code' => 'all',
+                'comment_id' => 0,
                 'bail' => false,
             ) );
             

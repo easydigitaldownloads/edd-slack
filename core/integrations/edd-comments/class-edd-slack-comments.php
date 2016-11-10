@@ -14,10 +14,10 @@ defined( 'ABSPATH' ) || die();
 class EDD_Slack_Comments {
     
     /**
-	 * EDD_Slack_Comments constructor.
-	 *
-	 * @since 1.0.0
-	 */
+     * EDD_Slack_Comments constructor.
+     *
+     * @since 1.0.0
+     */
     function __construct() {
         
         // Add New Comment Trigger

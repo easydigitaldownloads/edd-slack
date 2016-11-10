@@ -23,6 +23,16 @@
     div.chosen-container {
         width: 100% !important;   
     }
+    
+    input[type="checkbox"] {
+        
+        float: left;
+        
+        & + label {
+            margin-top: -1px;
+        }
+        
+    }
 
     span.handle {
 

@@ -13,13 +13,15 @@
         
         if ( option_class == 0 ) {
             
-            var trigger = $( row ).find( '.edd-slack-trigger' );
-            
-            $( trigger ).val( 0 );
-            
-            if ( $( trigger ).hasClass( 'edd-chosen' ) ) {
-                $( trigger ).trigger( 'chosen:updated' );
-            }
+            $( row ).find( 'select' ).each( function( index, select ) {
+                
+                $( select ).val( 0 );
+                
+                if ( $( select ).hasClass( 'edd-chosen' ) ) {
+                    $( select ).trigger( 'chosen:updated' );
+                }
+                
+            } );
             
             $( row ).find( '.edd-slack-conditional' ).closest( 'td' ).addClass( 'hidden' );
             

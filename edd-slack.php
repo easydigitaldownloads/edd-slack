@@ -337,6 +337,10 @@ if ( ! class_exists( 'EDD_Slack' ) ) {
                     'std' => '',
                     'field_class' => '',
                 ),
+                'replacement_hints' => array(
+                    'type' => 'hook',
+                    'std' => '',
+                ),
                 'message_title'   => array(
                     'type'  => 'text',
                     'desc' => __( 'Message Title', EDD_Slack_ID ),

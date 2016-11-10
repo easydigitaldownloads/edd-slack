@@ -24,12 +24,17 @@
             } );
             
             $( row ).find( '.edd-slack-conditional' ).closest( 'td' ).addClass( 'hidden' );
+            $( row ).find( '.edd-slack-replacement-instruction' ).closest( 'td' ).addClass( 'hidden' );
             
         }
         else {
 
             $( row ).find( '.edd-slack-conditional.' + option_class ).closest( 'td.hidden' ).removeClass( 'hidden' );
             $( row ).find( '.edd-slack-conditional' ).not( '.' + option_class ).closest( 'td' ).addClass( 'hidden' );
+            
+            // Also do this for the Replacement Hints
+            $( row ).find( '.edd-slack-replacement-instruction.' + option_class ).removeClass( 'hidden' );
+            $( row ).find( '.edd-slack-replacement-instruction' ).not( '.' + option_class ).addClass( 'hidden' );
             
         }
 

@@ -31,6 +31,9 @@ class EDD_Slack_Admin {
         // Callback for the hidden Post ID output
         add_action( 'edd_slack_post_id', array( $this, 'post_id_field' ) );
         
+        // Callback for the Replacement Hints
+        add_action( 'edd_replacement_hints', array( $this, 'replacement_hints_field' ) );
+        
         // Callback for the hidden "Fields to Delete" field output
         add_action( 'edd_slack_deleted_feeds', array( $this, 'deleted_feeds' ) );
 
@@ -171,6 +174,85 @@ class EDD_Slack_Admin {
         <input type="hidden" name="<?php echo $args['id']; ?>" value="<?php echo (string) $args['std']; ?>" />
 
     <?php
+    }
+    
+    /**
+     * Create the Replacements Field based on the returned Array
+     * 
+     * @param       array  $args Field Args
+     *                          
+     * @access      public
+     * @since       1.0.0
+     * @return      void
+     */
+    public function replacement_hints_field( $args ) {
+        
+        $args = wp_parse_args( $args, array(
+            'std' => false,
+        ) );
+        
+        $hints = $this->get_replacement_hints();
+        $selected = $args['std'];
+        
+        foreach ( $hints as $class => $hint ) : ?>
+
+            <td class="edd-slack-replacement-instruction <?php echo $class; ?><?php echo ( $class !== $selected ) ? ' hidden' : ''; ?>">
+                <div class="header-text">
+                    <?php echo _x( 'Here are the available text replacements to use in the Message Pre-Text, Message Title, and Message Fields for the Slack Trigger selected:', 'Text Replacements Label', EDD_Slack_ID ); ?>
+
+                </div>
+
+                <?php foreach ( $hint as $replacement => $label ) : ?>
+
+                    <div class="replacement-wrapper">
+                        <span class="replacement"><?php echo $replacement; ?></span> : <span class="label"><?php echo $label; ?></span>
+                    </div>
+
+                <?php endforeach; ?>
+                
+            </td>
+
+        <?php endforeach;
+        
+    }
+    
+    /**
+     * Filterable Array holding all the Text Replacement Hints for all the Triggers
+     * 
+     * @access      private
+     * @since       1.0.0
+     * @return      array   Array of Text Replacement Hints for each Trigger
+     */
+    private function get_replacement_hints() {
+        
+        /**
+         * Add extra Replacement Hints directly to the User Group
+         *
+         * @since 1.0.0
+         */
+        $user_hints = apply_filters( 'edd_slack_user_replacement_hints', array(
+            '%username%' => _x( 'Display the user\'s username.', '%username% Hint Text', EDD_Slack_ID ),
+            '%email%' => _x( 'Display the user\'s email.', '%email% Hint Text', EDD_Slack_ID ),
+            '%name%' => _x( 'Display the user\'s display name.', '%name% Hint Text', EDD_Slack_ID ),
+        ) );
+        
+        $payment_hints = apply_filters( 'edd_slack_payment_replacement_hints', array(
+        ) );
+
+        /**
+         * Allows additional Triggers to be added to the Replacement Hints
+         *
+         * @since 1.0.0
+         */
+        $replacement_hints = apply_filters( 'edd_slack_text_replacement_hints', 
+                                           array(
+                                           ),
+                                           $user_hints,
+                                           $payment_hints
+                                          );
+
+        return $replacement_hints;
+        
     }
     
     /**

@@ -35,6 +35,9 @@ class EDD_Slack_Comments {
         // Add our own Replacement Strings
         add_filter( 'edd_slack_notifications_replacements', array( $this, 'custom_replacement_strings' ), 10, 4 );
         
+        // Add our own Hints for the Replacement Strings
+        add_filter( 'edd_slack_text_replacement_hints', array( $this, 'custom_replacement_hints' ), 10, 3 );
+        
     }
     
     /**
@@ -204,6 +207,29 @@ class EDD_Slack_Comments {
         }
         
         return $replacements;
+        
+    }
+    
+    /**
+     * Add Replacement String Hints for our Custom Trigger
+     * 
+     * @param       array $hints         The main Hints Array
+     * @param       array $user_hints    General Hints for a User. These apply to likely any possible Trigger
+     * @param       array $payment_hints Payment-Specific Hints
+     *                                                    
+     * @access      public
+     * @since       1.0.0
+     * @return      array The main Hints Array
+     */
+    public function custom_replacement_hints( $hints, $user_hints, $payment_hints ) {
+        
+        $comment_hints = array(
+            '%comment_content%' => _x( 'The Comment Itself', '%comment_content% Hint Text', EDD_Slack_ID ),
+        );
+        
+        $hints['comment_post'] = array_merge( $user_hints, $comment_hints );
+        
+        return $hints;
         
     }
     

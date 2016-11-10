@@ -165,7 +165,7 @@ class EDD_Slack_Comments {
                     return false;
                 }
                 
-                // If we're only going to check for Top Level Comments
+                // If we're only going to check for Top Level Comments, bail on Replies
                 if ( (int) $fields['comments_top_level_only'] == 1 && $args['comment_parent'] !== 0 ) {
                     $args['bail'] = true;
                     return false;
@@ -224,7 +224,7 @@ class EDD_Slack_Comments {
     public function custom_replacement_hints( $hints, $user_hints, $payment_hints ) {
         
         $comment_hints = array(
-            '%comment_content%' => _x( 'The Comment Itself', '%comment_content% Hint Text', EDD_Slack_ID ),
+            '%comment_content%' => _x( 'The Comment itself', '%comment_content% Hint Text', EDD_Slack_ID ),
         );
         
         $hints['comment_post'] = array_merge( $user_hints, $comment_hints );

@@ -57,7 +57,7 @@ class EDD_Slack_Reviews {
     /**
      * Conditionally Showing Fields within the Notification Repeater works by adding the Trigger as a HTML Class Name
      * 
-     * @param       array $fields Notification Repeater Fields
+     * @param       array $repeater_fields Notification Repeater Fields
      *                                                  
      * @access      public
      * @since       1.0.0

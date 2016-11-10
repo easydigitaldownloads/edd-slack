@@ -436,7 +436,28 @@ if ( ! class_exists( 'EDD_Slack' ) ) {
             );
             
         }
-
+        
+        /**
+         * Utility Function to insert one Array into another at a specified Index. Useful for the Notification Repeater Field's Filter
+         * 
+         * @param       array   &$array       Array being modified. This passes by reference.
+         * @param       integer $index        Insertion Index. Even if it is an associative array, give a numeric index. Determine it by doing a foreach() until you hit your desired placement and then break out of the loop.
+         * @param       array   $insert_array Array being Inserted at the Index
+         *                                                                
+         * @access      public
+         * @since       1.0.0
+         * @return      void
+         */
+        public function array_insert( &$array, $index, $insert_array ) { 
+            
+            // First half before the cut-off for the splice
+            $first_array = array_splice( $array, 0, $index ); 
+            
+            // Merge this with the inserted array and the last half of the splice
+            $array = array_merge( $first_array, $insert_array, $array );
+            
+        }
+        
     }
 
 } // End Class Exists Check

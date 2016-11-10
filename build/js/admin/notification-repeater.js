@@ -13,6 +13,14 @@
         
         if ( option_class == 0 ) {
             
+            var trigger = $( row ).find( '.edd-slack-trigger' );
+            
+            $( trigger ).val( 0 );
+            
+            if ( $( trigger ).hasClass( 'edd-chosen' ) ) {
+                $( trigger ).trigger( 'chosen:updated' );
+            }
+            
             $( row ).find( '.edd-slack-conditional' ).closest( 'td' ).addClass( 'hidden' );
             
         }
@@ -57,6 +65,7 @@
         
         if ( $repeaters.length ) {
             $repeaters.on( 'edd-repeater-add', edd_slack_conditional_fields );
+            $repeaters.on( 'repeater-show', edd_slack_conditional_fields );
             $repeaters.on( 'edd-repeater-remove', delete_edd_slack_feed );
         }
         

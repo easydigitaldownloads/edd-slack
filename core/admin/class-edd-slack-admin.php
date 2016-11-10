@@ -34,6 +34,9 @@ class EDD_Slack_Admin {
         // Add New Comment Trigger if appropriate
         add_filter( 'edd_slack_triggers', array( $this, 'maybe_add_comment_post_trigger' ) );
         
+        // Add new Conditional Fields for the Comment Trigger if appropriate
+        add_filter( 'edd_slack_notification_fields', array( $this, 'maybe_add_comment_post_extra_fields' ) );
+        
         // Callback for the hidden "Fields to Delete" field output
         add_action( 'edd_slack_deleted_feeds', array( $this, 'deleted_feeds' ) );
 
@@ -197,9 +200,47 @@ class EDD_Slack_Admin {
 
     }
     
-    public function maybe_add_comment_post_conditional_fields( $repeater_fields ) {
+    /**
+     * Conditionally Showing Fields within the Notification Repeater works by adding the Trigger as a HTML Class Name
+     * 
+     * @param       array $repeater_fields Notification Repeater Fields
+     *                                                  
+     * @access      public
+     * @since       1.0.0
+     * @return      array Notification Repeater Fields
+     */
+    public function maybe_add_comment_post_extra_fields( $repeater_fields ) {
         
+        // Make the Download Field Conditionally shown for the Comment Trigger
         $repeater_fields['download']['field_class'][] = 'comment_post';
+        
+        $index = 0;
+        foreach ( $repeater_fields as $key => $value ) {
+            
+            // Find the Numeric Index of the Download Select Field
+            if ( $key == 'download' ) {
+                break;
+            }
+            
+            $index++;
+            
+        }
+        
+        // Create a new Repeater Field for a Checkbox to toggle Top Level only Notifications for Comments
+        $top_level_only = array(
+            'comments_top_level_only' => array(
+                'type' => 'checkbox',
+                'desc' => _x( 'Only Trigger on New, Top-Level Comments', 'Top Level Comments Checkbox Label', EDD_Slack_ID ),
+                'field_class' => array(
+                    'edd-slack-comments-top-level-only',
+                    'edd-slack-conditional',
+                    'comment_post',
+                ),
+                'std' => 1,
+            ),
+        );
+        
+        EDDSLACK()->array_insert( $repeater_fields, $index + 1, $top_level_only );
         
         return $repeater_fields;
         

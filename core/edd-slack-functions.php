@@ -156,6 +156,18 @@ if ( ! function_exists( 'edd_rbm_repeater_callback' ) ) {
                                                     // EDD Generates the Name Attr based on ID, so this nasty workaround is necessary
                                                     $field['id'] = $field_id;
                                                     $field['std'] = ( isset( $value[ $field_id ] ) ) ? $value[ $field_id ] : $field['std'];
+        
+                                                    if ( $field['type'] == 'checkbox' ) : 
+        
+                                                        if ( isset( $field['std'] ) && is_array( $field['std'] ) ) {
+                                                            $field['std'] = $field['std'][0];
+                                                        }
+        
+                                                        if ( isset( $field['std'] ) && $field['std'] ) {
+                                                            $field['field_class'][] = 'default-checked';
+                                                        }
+        
+                                                    endif;
                                             
                                                     if ( $field['type'] !== 'hook' ) : ?>
 

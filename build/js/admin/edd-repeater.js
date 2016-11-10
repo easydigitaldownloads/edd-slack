@@ -76,6 +76,12 @@
             $( select ).val( selected );
             
         } );
+        
+        $( this ).find( 'input[type="checkbox"].default-checked' ).each( function( index, checkbox ) {
+            
+            $( checkbox ).prop( 'checked', true );
+            
+        } );
 
         // Nested Repeaters always inherit the number of Rows from the previous Repeater, so this will fix that.
         var repeater = $( this ).closest( '[data-edd-repeater]' ),

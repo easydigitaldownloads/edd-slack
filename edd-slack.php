@@ -205,6 +205,13 @@ if ( ! class_exists( 'EDD_Slack' ) ) {
             require_once EDD_Slack_DIR . '/core/notifications/class-edd-slack-notification-triggers.php';
             $this->notification_triggers = new EDD_Slack_Notification_Triggers();
             
+            // Include Bundled Integrations with this Plugin
+            // These also serve as an example of how to tie-in to this Plugin and utilize its functionality
+            
+            if ( post_type_supports( 'download', 'comments' ) ) {
+                require_once EDD_Slack_DIR . '/core/integrations/edd-comments/class-edd-slack-comments.php';
+            }
+            
             if ( class_exists( 'EDD_Reviews' ) ) {
                 require_once EDD_Slack_DIR . '/core/integrations/edd-reviews/class-edd-slack-reviews.php';
             }

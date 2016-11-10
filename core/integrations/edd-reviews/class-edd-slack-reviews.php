@@ -32,9 +32,6 @@ class EDD_Slack_Reviews {
         // Inject some Checks before we do Replacements or send the Notification
         add_action( 'edd_slack_before_replacements', array( $this, 'before_notification_replacements' ), 10, 5 );
         
-        // Add our own Replacement Strings
-        //add_filter( 'edd_slack_notifications_replacements', array( $this, 'custom_replacement_strings' ), 10, 4 );
-        
     }
     
     /**
@@ -163,4 +160,4 @@ class EDD_Slack_Reviews {
     
 }
 
-new EDD_Slack_Reviews();
+$integrate = new EDD_Slack_Reviews();

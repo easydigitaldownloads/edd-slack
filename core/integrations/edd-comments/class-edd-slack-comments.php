@@ -159,7 +159,7 @@ class EDD_Slack_Comments {
             
             if ( $trigger == 'comment_post' ) {
                 
-                // Reviewed Download doesn't match our Notification, bail
+                // Download commented on doesn't match our Notification, bail
                 if ( $fields['download'] !== 'all' && (int) $fields['download'] !== $args['comment_post_id'] ) {
                     $args['bail'] = true;
                     return false;

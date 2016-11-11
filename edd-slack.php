@@ -9,9 +9,6 @@ Author: Real Big Plugins
 Author URI: http://realbigplugins.com
 Contributors: d4mation
 */
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
 
 // Exit if accessed directly
 if ( ! defined( 'ABSPATH' ) ) exit;
@@ -408,6 +405,7 @@ if ( ! class_exists( 'EDD_Slack' ) ) {
             
             $triggers = apply_filters( 'edd_slack_triggers', array(
                 'edd_complete_purchase' => _x( 'Purchase Complete', 'Purchase Complete Trigger Label', EDD_Slack_ID ),
+                'edd_failed_purchase' => _x( 'Purchase Failed', 'Purchase Failed Trigger Label', EDD_Slack_ID ),
                 'edd_discount_code_applied' => _x( 'Discount Code Applied', 'Discount Code Applied Trigger Label', EDD_Slack_ID ),
             ) );
             

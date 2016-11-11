@@ -183,7 +183,18 @@ class EDD_Slack_Notification_Integration {
 
                 case 'edd_complete_purchase':
                 case 'edd_discount_code_applied': 
+                case 'edd_failed_purchase':
+                    
                     $replacements['%discount_code%'] = $args['discount_code'];
+                    $replacements['%ip_address%'] = $args['ip_address'];
+                    
+                    // If this customer did not create an Account
+                    if ( $args['user_id'] == 0 ) {
+                        $replacements['%email%'] = $args['email'];
+                        $replacements['%name%'] = $args['name'];
+                        $replacements['%username%'] = _x( 'This Customer does not have an account', 'No Username Replacement Text', THEME_ID );
+                    }
+                    
                     break;
                     
                 default:

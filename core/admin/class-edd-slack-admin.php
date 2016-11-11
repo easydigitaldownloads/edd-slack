@@ -243,6 +243,7 @@ class EDD_Slack_Admin {
          */
         $payment_hints = apply_filters( 'edd_slack_payment_replacement_hints', array(
             '%discount_code%' => _x( 'Show the Discount Code entered', '%discount_code% Hint Text', EDD_Slack_ID ),
+            '%ip_address%' => _x( 'Show the IP Address of the Customer', '%ip_address% Hint Text', EDD_Slack_ID ),
         ) );
 
         /**
@@ -254,6 +255,7 @@ class EDD_Slack_Admin {
                                            array(
                                                'edd_complete_purchase' => array_merge( $user_hints, $payment_hints ),
                                                'edd_discount_code_applied' => array_merge( $user_hints, $payment_hints ),
+                                               'edd_failed_purchase' => array_merge( $user_hints, $payment_hints ),
                                            ),
                                            $user_hints,
                                            $payment_hints

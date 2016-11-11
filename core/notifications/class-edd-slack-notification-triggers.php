@@ -19,8 +19,11 @@ class EDD_Slack_Notification_Triggers {
 	 */
     function __construct() {
 
-        // Fires Purchase Completed-related triggers
+        // Fires Successful Purchase Completed-related triggers
         add_action( 'edd_complete_purchase', array( $this, 'edd_complete_purchase' ) );
+        
+        // Fires when a Purchase Failed for whatever reason
+        add_action( 'edd_update_payment_status', array( $this, 'edd_failed_purchase' ), 10, 3 );
 
     }
     
@@ -60,6 +63,39 @@ class EDD_Slack_Notification_Triggers {
         
         // Completed Purchase always fires
         do_action( 'edd_slack_notify', 'edd_complete_purchase', $purchase_args );
+        
+    }
+    
+    /**
+     * Fire a Notification on Purchase Failure
+     * 
+     * @param       integer $payment_id Post ID of the Payment
+     * @param       string  $status     New Post Status
+     * @param       string  $old_status Old Post Status
+     *                                           
+     * @access      public
+     * @since       1.0.0
+     * @return      void
+     */
+    public function edd_failed_purchase( $payment_id, $status, $old_status ) {
+            
+        if ( $status == 'failed' ) {
+
+            $customer_id = get_post_meta( $payment_id, '_edd_payment_customer_id', true );
+            $customer_id = $customer_id[0];
+            $customer = new EDD_Customer( $customer_id );
+
+            // Some stuff is in a big serialized array and some stuff isn't
+            $payment_meta = get_post_meta( $payment_id, '_edd_payment_meta', true );
+
+            do_action( 'edd_slack_notify', 'edd_failed_purchase', array(
+                'user_id' => $customer->user_id, // If the User isn't a proper WP User, this will be 0
+                'name' => $payment_meta['user_info']['first_name'] . ' ' . $payment_meta['user_info']['last_name'],
+                'email' => $payment_meta['user_info']['email'],
+                'ip_address' => get_post_meta( $payment_id, '_edd_payment_user_ip', true ),
+            ) );
+
+        }
         
     }
 

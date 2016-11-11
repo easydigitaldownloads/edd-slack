@@ -208,10 +208,18 @@ if ( ! class_exists( 'EDD_Slack' ) ) {
             // Include Bundled Integrations with this Plugin
             // These also serve as an example of how to tie-in to this Plugin and utilize its functionality
             
+            // If Comments are Enabled for Downloads
             if ( post_type_supports( 'download', 'comments' ) ) {
                 require_once EDD_Slack_DIR . '/core/integrations/edd-comments/class-edd-slack-comments.php';
             }
             
+            // If the Registration Form is being shown on the Checkout Page
+            $show_register_form = edd_get_option( 'show_register_form', 'none' );
+            if ( $show_register_form !== 'none' && $show_register_form !== 'login' ) {
+                require_once EDD_Slack_DIR . '/core/integrations/edd-registration/class-edd-slack-registration.php';
+            }
+            
+            // If EDD Reviews is Active
             if ( class_exists( 'EDD_Reviews' ) ) {
                 require_once EDD_Slack_DIR . '/core/integrations/edd-reviews/class-edd-slack-reviews.php';
             }
@@ -316,30 +324,17 @@ if ( ! class_exists( 'EDD_Slack' ) ) {
                     ) + $discount_codes_array,
                     'std' => 0,
                 ),
+                'replacement_hints' => array(
+                    'type' => 'hook',
+                    'std' => '',
+                ),
                 'message_pretext' => array(
                     'type'  => 'text',
                     'desc' => __( 'Message Pre-text (Shows directly below Username and above the Title/Message)', EDD_Slack_ID ),
                     'readonly' => false,
                     'placeholder' => '',
-                    'args'  => array(
-                    'desc' => '<p class="description">' . sprintf(
-                            __( 'Possible available dynamic variables for Message, Title, and Pre-text : %s', EDD_Slack_ID ),
-                            '<br/><code>' . implode( '</code><code>', array(
-                                '%project_title%',
-                                '%phase_title%',
-                                '%task_title%',
-                                '%comment_author%',
-                                '%comment_content%',
-                                '%comment_link%',
-                            ) ) . '</code>'
-                        ) . '</p>',
-                    ),
                     'std' => '',
                     'field_class' => '',
-                ),
-                'replacement_hints' => array(
-                    'type' => 'hook',
-                    'std' => '',
                 ),
                 'message_title'   => array(
                     'type'  => 'text',

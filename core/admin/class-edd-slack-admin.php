@@ -236,7 +236,13 @@ class EDD_Slack_Admin {
             '%name%' => _x( 'Display the user\'s display name.', '%name% Hint Text', EDD_Slack_ID ),
         ) );
         
+        /**
+         * Add extra Replacement Hints directly to the Payment Triggers
+         *
+         * @since 1.0.0
+         */
         $payment_hints = apply_filters( 'edd_slack_payment_replacement_hints', array(
+            '%discount_code%' => _x( 'Show the Discount Code entered', '%discount_code% Hint Text', EDD_Slack_ID ),
         ) );
 
         /**
@@ -246,6 +252,8 @@ class EDD_Slack_Admin {
          */
         $replacement_hints = apply_filters( 'edd_slack_text_replacement_hints', 
                                            array(
+                                               'edd_complete_purchase' => array_merge( $user_hints, $payment_hints ),
+                                               'edd_discount_code_applied' => array_merge( $user_hints, $payment_hints ),
                                            ),
                                            $user_hints,
                                            $payment_hints

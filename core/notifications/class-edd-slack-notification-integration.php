@@ -231,9 +231,9 @@ class EDD_Slack_Notification_Integration {
 			'icon_url'    => strpos( $fields['icon'], 'http' ) !== false ? $fields['icon'] : '',
 			'attachments' => array(
 				array(
-					'text'    => $fields['message_text'],
-					'title'   => $fields['message_title'],
-					'pretext' => $fields['message_pretext'],
+					'text'    => html_entity_decode( $fields['message_text'] ),
+					'title'   => html_entity_decode( $fields['message_title'] ),
+					'pretext' => html_entity_decode( $fields['message_pretext'] ),
 					'color'   => $fields['color'],
 				),
 			),

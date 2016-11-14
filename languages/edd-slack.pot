@@ -1,0 +1,258 @@
+# Copyright (C) 2016 EDD_Slack
+# This file is distributed under the same license as the EDD_Slack package.
+msgid ""
+msgstr ""
+"Project-Id-Version: EDD_Slack\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: 2016-MO-DA HO:MI+ZONE\n"
+"X-Poedit-Basepath: ..\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;esc_attr__;esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;_n_noop:1,2;_nx_noop:3c,1,2;__ngettext_noop:1,2\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPathExcluded-0: *.js\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: core/admin/class-edd-slack-admin.php:52
+msgid "Slack"
+msgstr ""
+
+#: core/admin/class-edd-slack-admin.php:114
+msgctxt "Default Webhook URL Label"
+msgid "Default Webhook URL"
+msgstr ""
+
+#: core/admin/class-edd-slack-admin.php:117
+msgctxt "Webhook Default Help Text"
+msgid "Enter the slack Webhook URL for the team you wish to broadcast to. The channel chosen in the webhook can be overridden for each notification type below. You can set up the Webhook URL %shere%s."
+msgstr ""
+
+#: core/admin/class-edd-slack-admin.php:124
+msgctxt "Timestamp Format Label"
+msgid "Timestamp Format"
+msgstr ""
+
+#: core/admin/class-edd-slack-admin.php:127
+msgctxt "Timestamp Format Help Text"
+msgid "<a href=\"//php.net/manual/en/function.date.php\" target=\"_blank\">Click Here</a> for Format Options. This applies to all %timestamp% Replacements"
+msgstr ""
+
+#: core/admin/class-edd-slack-admin.php:133
+msgctxt "Slack Notifications Repeater Label"
+msgid "Slack Notifications"
+msgstr ""
+
+#: core/admin/class-edd-slack-admin.php:138
+msgctxt "Add Slack Notification Button"
+msgid "Add Slack Notification"
+msgstr ""
+
+#: core/admin/class-edd-slack-admin.php:139
+msgctxt "Delete Slack Notification Button"
+msgid "Delete Slack Notification"
+msgstr ""
+
+#: core/admin/class-edd-slack-admin.php:140, core/notifications/class-edd-slack-notification-handler.php:130
+msgctxt "New Slack Notification Header"
+msgid "New Slack Notification"
+msgstr ""
+
+#: core/admin/class-edd-slack-admin.php:201
+msgctxt "Text Replacements Label"
+msgid "Here are the available text replacements to use in the Message Pre-Text, Message Title, and Message Fields for the Slack Trigger selected:"
+msgstr ""
+
+#: core/admin/class-edd-slack-admin.php:234
+msgctxt "%username% Hint Text"
+msgid "Display the user's username"
+msgstr ""
+
+#: core/admin/class-edd-slack-admin.php:235
+msgctxt "%email% Hint Text"
+msgid "Display the user's email"
+msgstr ""
+
+#: core/admin/class-edd-slack-admin.php:236
+msgctxt "%name% Hint Text"
+msgid "Display the user's display name"
+msgstr ""
+
+#: core/admin/class-edd-slack-admin.php:245
+msgctxt "%cart% Hint Text"
+msgid "Show the contents of the Cart"
+msgstr ""
+
+#: core/admin/class-edd-slack-admin.php:246
+msgctxt "%subtotal% Hint Text"
+msgid "Show the Subtotal"
+msgstr ""
+
+#: core/admin/class-edd-slack-admin.php:247
+msgctxt "%total% Hint Text"
+msgid "Show the Total"
+msgstr ""
+
+#: core/admin/class-edd-slack-admin.php:248
+msgctxt "%discount_code% Hint Text"
+msgid "Show the Discount Code entered"
+msgstr ""
+
+#: core/admin/class-edd-slack-admin.php:249
+msgctxt "%ip_address% Hint Text"
+msgid "Show the IP Address of the Customer"
+msgstr ""
+
+#: core/edd-slack-functions.php:35
+msgid "Add Row"
+msgstr ""
+
+#: core/edd-slack-functions.php:36
+msgid "Delete Row"
+msgstr ""
+
+#: core/edd-slack-functions.php:39
+msgid "New Row"
+msgstr ""
+
+#: core/integrations/edd-comments/class-edd-slack-comments.php:54
+msgctxt "New Comment on Download Trigger"
+msgid "New Comment on %s"
+msgstr ""
+
+#: core/integrations/edd-comments/class-edd-slack-comments.php:90
+msgctxt "Top Level Comments Checkbox Label"
+msgid "Only Trigger on New, Top-Level Comments"
+msgstr ""
+
+#: core/integrations/edd-comments/class-edd-slack-comments.php:227
+msgctxt "%comment_content% Hint Text"
+msgid "The Comment itself"
+msgstr ""
+
+#: core/integrations/edd-registration/class-edd-slack-registration.php:44
+msgctxt "New User Registration Trigger Label"
+msgid "New User Registration via EDD"
+msgstr ""
+
+#: core/integrations/edd-reviews/class-edd-slack-reviews.php:48
+msgctxt "New Review on Download Trigger"
+msgid "New Review on %s"
+msgstr ""
+
+#: core/notifications/class-edd-slack-notification-integration.php:48
+msgctxt "Notification Feed CPT"
+msgid "EDD Slack"
+msgstr ""
+
+#: core/notifications/class-edd-slack-notification-integration.php:49
+msgctxt "Default Post Title for CPT"
+msgid "New Slack Notification"
+msgstr ""
+
+#: core/notifications/class-edd-slack-notification-integration.php:220
+msgctxt "Empty Cart Replacement Text"
+msgid "There was nothing in the Cart"
+msgstr ""
+
+#: core/notifications/class-edd-slack-notification-integration.php:227
+msgctxt "No Username Replacement Text"
+msgid "This Customer does not have an account"
+msgstr ""
+
+#: edd-slack.php:276
+msgid "Indentifier for this Notification"
+msgstr ""
+
+#: edd-slack.php:279
+msgid "New Slack Notification"
+msgstr ""
+
+#: edd-slack.php:284
+msgid "Slack Trigger"
+msgstr ""
+
+#: edd-slack.php:289
+msgctxt "Slack Trigger Default Label"
+msgid "-- Select a Slack Trigger --"
+msgstr ""
+
+#: edd-slack.php:304
+msgctxt "Select Field Default"
+msgid "-- Select %s --"
+msgstr ""
+
+#: edd-slack.php:305
+msgctxt "All items in a Select Field"
+msgid "All %s"
+msgstr ""
+
+#: edd-slack.php:310
+msgctxt "Discount Code Field Label"
+msgid "Discount Code"
+msgstr ""
+
+#: edd-slack.php:319
+msgctxt "Discount Code Field Default"
+msgid "-- Select Discount Code --"
+msgstr ""
+
+#: edd-slack.php:320
+msgctxt "All Discount Codes Text"
+msgid "All Discount Codes"
+msgstr ""
+
+#: edd-slack.php:330
+msgid "Message Pre-text (Shows directly below Username and above the Title/Message)"
+msgstr ""
+
+#: edd-slack.php:338
+msgid "Message Title"
+msgstr ""
+
+#: edd-slack.php:346
+msgid "Message"
+msgstr ""
+
+#: edd-slack.php:352
+msgid "Slack Webhook URL"
+msgstr ""
+
+#: edd-slack.php:357
+msgid "You can override the above Webhook URL here."
+msgstr ""
+
+#: edd-slack.php:365
+msgid "Slack Channel"
+msgstr ""
+
+#: edd-slack.php:367, edd-slack.php:383
+msgid "Webhook default"
+msgstr ""
+
+#: edd-slack.php:373
+msgid "Username"
+msgstr ""
+
+#: edd-slack.php:381
+msgid "Icon Emoji or Image URL"
+msgstr ""
+
+#: edd-slack.php:389
+msgid "Color (Shows next to Message Title and Message)"
+msgstr ""
+
+#: edd-slack.php:407
+msgctxt "Purchase Complete Trigger Label"
+msgid "Purchase Complete"
+msgstr ""
+
+#: edd-slack.php:408
+msgctxt "Purchase Failed Trigger Label"
+msgid "Purchase Failed"
+msgstr ""
+
+#: edd-slack.php:409
+msgctxt "Discount Code Applied Trigger Label"
+msgid "Discount Code Applied"
+msgstr ""

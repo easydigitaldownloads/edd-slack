@@ -54,3 +54,23 @@ watch:
       - "build/sass/**/*.scss"
       - "!build/sass/admin/**/*.scss"
     admin: "build/sass/admin/**/*.scss"
+
+release:
+  type: 'plugin'
+  languagesDir: './languages/'
+  files:
+    - "./**/*.*"
+    - "!./**/*.map"
+    - "!./build/**/*.*"
+    - "!./**/.git/**"
+    - "!./**/.gitignore"
+    - "!./**/.gitmodules"
+    - "!./**/gulpfile.js"
+    - "!./**/gruntfile.js"
+    - "!./gulp/**/*.*"
+    - "!./**/package.json"
+    - "!./**/bower.json"
+    - "!./node_modules/**/*.*"
+    - "!./**/bower_components/**/*.*"
+    - "!./README.md"
+    - "!./*.zip"

@@ -256,9 +256,10 @@ class EDD_Slack_Admin {
          */
         $replacement_hints = apply_filters( 'edd_slack_text_replacement_hints', 
                                            array(
-                                               'edd_complete_purchase' => array_merge( $user_hints, $payment_hints ),
-                                               'edd_discount_code_applied' => array_merge( $user_hints, $payment_hints ),
-                                               'edd_failed_purchase' => array_merge( $user_hints, $payment_hints ),
+                                                'edd_complete_purchase' => array_merge( $user_hints, $payment_hints ),
+                                                'edd_discount_code_applied' => array_merge( $user_hints, $payment_hints ),
+                                                'edd_failed_purchase' => array_merge( $user_hints, $payment_hints ),
+                                                'edd_insert_user' => $user_hints,
                                            ),
                                            $user_hints,
                                            $payment_hints

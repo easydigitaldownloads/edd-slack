@@ -210,12 +210,6 @@ if ( ! class_exists( 'EDD_Slack' ) ) {
                 require_once EDD_Slack_DIR . '/core/integrations/edd-comments/class-edd-slack-comments.php';
             }
             
-            // If the Registration Form is being shown on the Checkout Page
-            $show_register_form = edd_get_option( 'show_register_form', 'none' );
-            if ( $show_register_form !== 'none' && $show_register_form !== 'login' ) {
-                require_once EDD_Slack_DIR . '/core/integrations/edd-registration/class-edd-slack-registration.php';
-            }
-            
             // If EDD Reviews is Active
             if ( class_exists( 'EDD_Reviews' ) ) {
                 require_once EDD_Slack_DIR . '/core/integrations/edd-reviews/class-edd-slack-reviews.php';
@@ -407,6 +401,7 @@ if ( ! class_exists( 'EDD_Slack' ) ) {
                 'edd_complete_purchase' => _x( 'Purchase Complete', 'Purchase Complete Trigger Label', EDD_Slack_ID ),
                 'edd_failed_purchase' => _x( 'Purchase Failed', 'Purchase Failed Trigger Label', EDD_Slack_ID ),
                 'edd_discount_code_applied' => _x( 'Discount Code Applied', 'Discount Code Applied Trigger Label', EDD_Slack_ID ),
+                'edd_insert_user' => _x( 'New User Registration via EDD', 'New User Registration Trigger Label', EDD_Slack_ID ),
             ) );
             
             asort( $triggers );

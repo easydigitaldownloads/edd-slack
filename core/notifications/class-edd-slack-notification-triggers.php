@@ -24,6 +24,9 @@ class EDD_Slack_Notification_Triggers {
         
         // Fires when a Purchase Failed for whatever reason
         add_action( 'edd_update_payment_status', array( $this, 'edd_failed_purchase' ), 10, 3 );
+        
+        // Fires when a User Register's via EDD's Registration Form
+        add_action( 'edd_insert_user', array( $this, 'edd_insert_user' ), 10, 2 );
 
     }
     
@@ -105,6 +108,24 @@ class EDD_Slack_Notification_Triggers {
             ) );
 
         }
+        
+    }
+    
+    /**
+     * Sends a Slack Notification when a New User is registered via EDD
+     * 
+     * @param       integer $user_id   The User ID
+     * @param       array   $user_data User Data (Not User Meta)
+     *                                                     
+     * @access      public
+     * @since       1.0.0
+     * @return      void
+     */
+    public function edd_insert_user( $user_id, $user_data ) {
+        
+        do_action( 'edd_slack_notify', 'edd_insert_user', array(
+            'user_id' => $user_id,
+        ) );
         
     }
 

@@ -231,9 +231,9 @@ class EDD_Slack_Admin {
          * @since 1.0.0
          */
         $user_hints = apply_filters( 'edd_slack_user_replacement_hints', array(
-            '%username%' => _x( 'Display the user\'s username.', '%username% Hint Text', EDD_Slack_ID ),
-            '%email%' => _x( 'Display the user\'s email.', '%email% Hint Text', EDD_Slack_ID ),
-            '%name%' => _x( 'Display the user\'s display name.', '%name% Hint Text', EDD_Slack_ID ),
+            '%username%' => _x( 'Display the user\'s username', '%username% Hint Text', EDD_Slack_ID ),
+            '%email%' => _x( 'Display the user\'s email', '%email% Hint Text', EDD_Slack_ID ),
+            '%name%' => _x( 'Display the user\'s display name', '%name% Hint Text', EDD_Slack_ID ),
         ) );
         
         /**
@@ -242,6 +242,7 @@ class EDD_Slack_Admin {
          * @since 1.0.0
          */
         $payment_hints = apply_filters( 'edd_slack_payment_replacement_hints', array(
+            '%cart%' => _x( 'Show the contents of the Cart', '%cart% Hint Text', EDD_Slack_ID ),
             '%discount_code%' => _x( 'Show the Discount Code entered', '%discount_code% Hint Text', EDD_Slack_ID ),
             '%ip_address%' => _x( 'Show the IP Address of the Customer', '%ip_address% Hint Text', EDD_Slack_ID ),
         ) );

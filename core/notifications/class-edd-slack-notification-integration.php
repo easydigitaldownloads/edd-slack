@@ -188,11 +188,41 @@ class EDD_Slack_Notification_Integration {
                     $replacements['%discount_code%'] = $args['discount_code'];
                     $replacements['%ip_address%'] = $args['ip_address'];
                     
+                    $replacements['%cart%'] = '';
+                    foreach ( $args['cart'] as $post_id => $item_number ) {
+                        
+                        // If it is not a variable download
+                        if ( $item_number['options']['price_id'] == 0 ) {
+                            
+                            $replacements['%cart%'] .= "&bull; " . get_the_title( $post_id ) . "\n";
+                            $replacements['%cart%'] .= "\t&bull; " . edd_currency_filter( edd_get_download_price( $post_id ) ) . "\n";
+                            
+                        }
+                        else {
+                            
+                            // Get data for all Variants
+                            $variable_prices = edd_get_variable_prices( $post_id );
+                            
+                            // Grab the Variant actually purchased
+                            $purchased_variant = $variable_prices[ $item_number['options']['price_id'] ];
+                            
+                            $replacements['%cart%'] .= "&bull; " . get_the_title( $post_id ) . "\n";
+                            $replacements['%cart%'] .= "\t&bull; " . $purchased_variant['name'] . " - " . edd_currency_filter( $purchased_variant['amount'] ) . "\n";
+                            
+                        }
+                        
+                    }
+                    
+                    // This shouldn't happen, but I guess you never know
+                    if ( empty( $replacements['%cart%'] ) ) {
+                        $replacements['%cart%'] = _x( 'There was nothing in the Cart', 'Empty Cart Replacement Text', EDD_Slack_ID );
+                    }
+                    
                     // If this customer did not create an Account
                     if ( $args['user_id'] == 0 ) {
                         $replacements['%email%'] = $args['email'];
                         $replacements['%name%'] = $args['name'];
-                        $replacements['%username%'] = _x( 'This Customer does not have an account', 'No Username Replacement Text', THEME_ID );
+                        $replacements['%username%'] = _x( 'This Customer does not have an account', 'No Username Replacement Text', EDD_Slack_ID );
                     }
                     
                     break;

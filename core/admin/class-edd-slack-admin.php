@@ -243,6 +243,8 @@ class EDD_Slack_Admin {
          */
         $payment_hints = apply_filters( 'edd_slack_payment_replacement_hints', array(
             '%cart%' => _x( 'Show the contents of the Cart', '%cart% Hint Text', EDD_Slack_ID ),
+            '%subtotal%' => _x( 'Show the Subtotal', '%subtotal% Hint Text', EDD_Slack_ID ),
+            '%total%' => _x( 'Show the Total', '%total% Hint Text', EDD_Slack_ID ),
             '%discount_code%' => _x( 'Show the Discount Code entered', '%discount_code% Hint Text', EDD_Slack_ID ),
             '%ip_address%' => _x( 'Show the IP Address of the Customer', '%ip_address% Hint Text', EDD_Slack_ID ),
         ) );

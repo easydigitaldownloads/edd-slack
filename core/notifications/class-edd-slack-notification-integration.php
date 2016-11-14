@@ -187,6 +187,8 @@ class EDD_Slack_Notification_Integration {
                     
                     $replacements['%discount_code%'] = $args['discount_code'];
                     $replacements['%ip_address%'] = $args['ip_address'];
+                    $replacements['%subtotal%'] = edd_currency_filter( number_format( $args['subtotal'], 2 ) );
+                    $replacements['%total%'] = edd_currency_filter( number_format( $args['total'], 2 ) );
                     
                     $replacements['%cart%'] = '';
                     foreach ( $args['cart'] as $post_id => $item_number ) {

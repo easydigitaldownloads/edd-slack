@@ -130,11 +130,6 @@ msgctxt "%comment_content% Hint Text"
 msgid "The Comment itself"
 msgstr ""
 
-#: core/integrations/edd-registration/class-edd-slack-registration.php:44
-msgctxt "New User Registration Trigger Label"
-msgid "New User Registration via EDD"
-msgstr ""
-
 #: core/integrations/edd-reviews/class-edd-slack-reviews.php:48
 msgctxt "New Review on Download Trigger"
 msgid "New Review on %s"
@@ -160,99 +155,104 @@ msgctxt "No Username Replacement Text"
 msgid "This Customer does not have an account"
 msgstr ""
 
-#: edd-slack.php:276
+#: edd-slack.php:270
 msgid "Indentifier for this Notification"
 msgstr ""
 
-#: edd-slack.php:279
+#: edd-slack.php:273
 msgid "New Slack Notification"
 msgstr ""
 
-#: edd-slack.php:284
+#: edd-slack.php:278
 msgid "Slack Trigger"
 msgstr ""
 
-#: edd-slack.php:289
+#: edd-slack.php:283
 msgctxt "Slack Trigger Default Label"
 msgid "-- Select a Slack Trigger --"
 msgstr ""
 
-#: edd-slack.php:304
+#: edd-slack.php:298
 msgctxt "Select Field Default"
 msgid "-- Select %s --"
 msgstr ""
 
-#: edd-slack.php:305
+#: edd-slack.php:299
 msgctxt "All items in a Select Field"
 msgid "All %s"
 msgstr ""
 
-#: edd-slack.php:310
+#: edd-slack.php:304
 msgctxt "Discount Code Field Label"
 msgid "Discount Code"
 msgstr ""
 
-#: edd-slack.php:319
+#: edd-slack.php:313
 msgctxt "Discount Code Field Default"
 msgid "-- Select Discount Code --"
 msgstr ""
 
-#: edd-slack.php:320
+#: edd-slack.php:314
 msgctxt "All Discount Codes Text"
 msgid "All Discount Codes"
 msgstr ""
 
-#: edd-slack.php:330
+#: edd-slack.php:324
 msgid "Message Pre-text (Shows directly below Username and above the Title/Message)"
 msgstr ""
 
-#: edd-slack.php:338
+#: edd-slack.php:332
 msgid "Message Title"
 msgstr ""
 
-#: edd-slack.php:346
+#: edd-slack.php:340
 msgid "Message"
 msgstr ""
 
-#: edd-slack.php:352
+#: edd-slack.php:346
 msgid "Slack Webhook URL"
 msgstr ""
 
-#: edd-slack.php:357
+#: edd-slack.php:351
 msgid "You can override the above Webhook URL here."
 msgstr ""
 
-#: edd-slack.php:365
+#: edd-slack.php:359
 msgid "Slack Channel"
 msgstr ""
 
-#: edd-slack.php:367, edd-slack.php:383
+#: edd-slack.php:361, edd-slack.php:377
 msgid "Webhook default"
 msgstr ""
 
-#: edd-slack.php:373
+#: edd-slack.php:367
 msgid "Username"
 msgstr ""
 
-#: edd-slack.php:381
+#: edd-slack.php:375
 msgid "Icon Emoji or Image URL"
 msgstr ""
 
-#: edd-slack.php:389
+#: edd-slack.php:383
 msgid "Color (Shows next to Message Title and Message)"
 msgstr ""
 
-#: edd-slack.php:407
+#: edd-slack.php:401
 msgctxt "Purchase Complete Trigger Label"
 msgid "Purchase Complete"
 msgstr ""
 
-#: edd-slack.php:408
+#: edd-slack.php:402
 msgctxt "Purchase Failed Trigger Label"
 msgid "Purchase Failed"
 msgstr ""
 
-#: edd-slack.php:409
+#: edd-slack.php:403
 msgctxt "Discount Code Applied Trigger Label"
 msgid "Discount Code Applied"
+msgstr ""
+
+#: edd-slack.php:404
+msgctxt "New User Registration Trigger Label"
+msgid "New User Registration via EDD"
 msgstr ""

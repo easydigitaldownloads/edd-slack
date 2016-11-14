@@ -3,7 +3,7 @@
 Plugin Name: Easy Digital Downloads - Slack
 Plugin URL: http://easydigitaldownloads.com/downloads/slack
 Description: Easily create custom attributes or meta for your Downloads
-Version: 1.0.0
+Version: 0.1.0
 Text Domain: edd-slack
 Author: Real Big Plugins
 Author URI: http://realbigplugins.com

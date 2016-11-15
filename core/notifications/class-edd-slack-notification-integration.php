@@ -185,6 +185,11 @@ class EDD_Slack_Notification_Integration {
                 case 'edd_discount_code_applied': 
                 case 'edd_failed_purchase':
                     
+                    // Display a nicer message in the event of no Discount Code being used
+                    if ( $args['discount_code'] == 'none' ) {
+                        $args['discount_code'] = _x( 'No Discount Code Applied', 'No Discount Code Applied Text', EDD_Slack_ID );
+                    }
+                    
                     $replacements['%discount_code%'] = $args['discount_code'];
                     $replacements['%ip_address%'] = $args['ip_address'];
                     $replacements['%subtotal%'] = edd_currency_filter( number_format( $args['subtotal'], 2 ) );

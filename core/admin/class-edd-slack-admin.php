@@ -247,6 +247,7 @@ class EDD_Slack_Admin {
             '%total%' => _x( 'Show the Total', '%total% Hint Text', EDD_Slack_ID ),
             '%discount_code%' => _x( 'Show the Discount Code entered', '%discount_code% Hint Text', EDD_Slack_ID ),
             '%ip_address%' => _x( 'Show the IP Address of the Customer', '%ip_address% Hint Text', EDD_Slack_ID ),
+            '%payment_link%' => _x( 'Show a link to the Payment Details page for this Payment', '%payment_link% Hint Text', EDD_Slack_ID ),
         ) );
 
         /**

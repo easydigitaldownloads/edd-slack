@@ -53,6 +53,7 @@ class EDD_Slack_Notification_Triggers {
         // Passing the same data no matter what, so here we go
         $purchase_args = array(
             'user_id' => $payment_meta['user_info']['id'],
+            'payment_id' => $payment_id,
             'discount_code' => $payment_meta['user_info']['discount'],
             'cart' => wp_list_pluck( $cart_items, 'item_number', 'id' ),
             'subtotal' => edd_get_payment_subtotal( $payment_id ),
@@ -98,6 +99,7 @@ class EDD_Slack_Notification_Triggers {
 
             do_action( 'edd_slack_notify', 'edd_failed_purchase', array(
                 'user_id' => $customer->user_id, // If the User isn't a proper WP User, this will be 0
+                'payment_id' => $payment_id,
                 'name' => $payment_meta['user_info']['first_name'] . ' ' . $payment_meta['user_info']['last_name'],
                 'email' => $payment_meta['user_info']['email'],
                 'discount_code' => $payment_meta['user_info']['discount'],

@@ -190,6 +190,8 @@ class EDD_Slack_Notification_Integration {
                     $replacements['%subtotal%'] = edd_currency_filter( number_format( $args['subtotal'], 2 ) );
                     $replacements['%total%'] = edd_currency_filter( number_format( $args['total'], 2 ) );
                     
+                    $replacements['%payment_link%'] = '<' . urlencode_deep( add_query_arg( 'id', $args['payment_id'], admin_url( 'edit.php?post_type=download&page=edd-payment-history&view=view-order-details' ) ) ) . '|' . _x( 'View Payment Details', 'View Payment Details Link', EDD_Slack_ID ) . '>'; // No function to get this?
+                    
                     $replacements['%cart%'] = '';
                     foreach ( $args['cart'] as $post_id => $item_number ) {
                         

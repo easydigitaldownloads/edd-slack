@@ -172,7 +172,7 @@
 
         // Collapsable
         if ( typeof $repeater.attr( 'data-repeater-collapsable' ) !== 'undefined' ) {
-            $repeater.find( '.edd-repeater-content' ).first().hide();
+            $repeater.find( '.edd-repeater-content' ).hide();
         }
 
         $( document ).on( 'click touchend', '.edd-repeater[data-repeater-collapsable] [data-repeater-collapsable-handle]', function () {

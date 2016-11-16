@@ -102,10 +102,21 @@ class EDD_Slack_Software_Licensing {
      */
     public function edd_sl_store_license( $license_id, $download_id, $payment_id, $type ) {
         
+        // We need the Payment Meta to get accurate Customer Data
+        $payment_meta = get_post_meta( $payment_id, '_edd_payment_meta', true );
+        
+        // This is the EDD Customer ID. This is not necessarily the same as the WP User ID
+        $customer_id = get_post_meta( $payment_id, '_edd_payment_customer_id', true );
+        $customer = new EDD_Customer( $customer_id );
+        
         do_action( 'edd_slack_notify', 'edd_sl_store_license', array(
-            'license_id' => $license_id,
+            'user_id' => $customer->user_id, // If the User isn't a proper WP User, this will be 0
+            'name' => $payment_meta['user_info']['first_name'] . ' ' . $payment_meta['user_info']['last_name'],
+            'email' => $payment_meta['user_info']['email'],
+            'license_key' => edd_software_licensing()->get_license_key( $license_id ),
             'download_id' => $download_id,
-            'payment_id' => $payment_id,
+            'expiration' => get_post_meta( $license_id, '_edd_sl_expiration', true ),
+            'license_limit' => edd_software_licensing()->license_limit( $license_id ),
         ) );
         
     }
@@ -215,8 +226,9 @@ class EDD_Slack_Software_Licensing {
                 'bail' => false,
             ) );
             
-            if ( $trigger == 'edd_sl_activate_license' ||
-               $trigger == 'edd_sl_deactivate_license' ) {
+            if ( $trigger == 'edd_sl_store_license' ||
+                $trigger == 'edd_sl_activate_license' ||
+                $trigger == 'edd_sl_deactivate_license' ) {
                 
                 // Download commented on doesn't match our Notification, bail
                 if ( $fields['download'] !== 'all' && (int) $fields['download'] !== $args['download_id'] ) {
@@ -248,6 +260,7 @@ class EDD_Slack_Software_Licensing {
 
             switch ( $trigger ) {
 
+                case 'edd_sl_store_license':
                 case 'edd_sl_activate_license':
                 case 'edd_sl_deactivate_license':
                     
@@ -261,8 +274,11 @@ class EDD_Slack_Software_Licensing {
                     $replacements['%download%'] = get_the_title( $args['download_id'] );
                     $replacements['%license_key%'] = $args['license_key'];
                     $replacements['%expiration%'] = date_i18n( get_option( 'date_format' ), $args['expiration'] );
-                    $replacements['%site_count%'] = $args['site_count'];
                     $replacements['%license_limit%'] = $args['license_limit'];
+                    
+                    if ( $trigger !== 'edd_sl_store_license' ) {
+                        $replacements['%site_count%'] = $args['site_count']; // There shouldn't be any activated sites for a new license
+                    }
                     
                     break;
                     
@@ -298,8 +314,11 @@ class EDD_Slack_Software_Licensing {
             '%license_limit%' => _x( 'The number of sites the License can be active on', '%license_limit% Hint Text', EDD_Slack_ID ),
         );
         
+        $hints['edd_sl_store_license'] = array_merge( $user_hints, $licensing_hints );
         $hints['edd_sl_activate_license'] = array_merge( $user_hints, $licensing_hints );
         $hints['edd_sl_deactivate_license'] = array_merge( $user_hints, $licensing_hints );
+        
+        unset( $hints['edd_sl_store_license']['%site_count%'] ); // This one doesn't make sense in this context
         
         return $hints;
         

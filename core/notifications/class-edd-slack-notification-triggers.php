@@ -88,7 +88,6 @@ class EDD_Slack_Notification_Triggers {
         if ( $status == 'failed' ) {
 
             $customer_id = get_post_meta( $payment_id, '_edd_payment_customer_id', true );
-            $customer_id = $customer_id[0];
             $customer = new EDD_Customer( $customer_id );
 
             // Some stuff is in a big serialized array and some stuff isn't

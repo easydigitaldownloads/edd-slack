@@ -276,7 +276,7 @@ class EDD_Slack_Software_Licensing {
                     $replacements['%expiration%'] = date_i18n( get_option( 'date_format' ), $args['expiration'] );
                     $replacements['%license_limit%'] = $args['license_limit'];
                     
-                    if ( $trigger == 'edd_sl_store_license' ||
+                    if ( $trigger == 'edd_sl_activate_license' ||
                        $trigger == 'edd_sl_deactivate_license' ) {
                         $replacements['%site_count%'] = $args['site_count']; // This doesn't make sense for the other Triggers
                     }

@@ -272,13 +272,6 @@ class EDD_Slack_Software_Licensing {
                     // In an effort to not repeat this code for multiple triggers that only have minor differences, 
                     // We're going to have some interior conditionals for the small differences.
                     
-                    // If this customer did not create an Account
-                    if ( $args['user_id'] == 0 ) {
-                        $replacements['%email%'] = $args['email'];
-                        $replacements['%name%'] = $args['name'];
-                        $replacements['%username%'] = _x( 'This Customer does not have an account', 'No Username Replacement Text', EDD_Slack_ID );
-                    }
-                    
                     $replacements['%license_key%'] = $args['license_key'];
                     $replacements['%expiration%'] = date_i18n( get_option( 'date_format' ), $args['expiration'] );
                     $replacements['%license_limit%'] = $args['license_limit'];

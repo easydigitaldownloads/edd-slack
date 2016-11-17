@@ -176,6 +176,13 @@ class EDD_Slack_Notification_Integration {
      * @return      array  Replaced Strings within each Field
      */
     public function custom_replacement_strings( $replacements, $trigger, $notification_id, $args ) {
+        
+        // If this customer did not create an Account
+        if ( $args['user_id'] == 0 ) {
+            $replacements['%email%'] = $args['email'];
+            $replacements['%name%'] = $args['name'];
+            $replacements['%username%'] = _x( 'This Customer does not have an account', 'No Username Replacement Text', EDD_Slack_ID );
+        }
 
         if ( $notification_id == 'rbm' ) {
 
@@ -225,13 +232,6 @@ class EDD_Slack_Notification_Integration {
                     // This shouldn't happen, but I guess you never know
                     if ( empty( $replacements['%cart%'] ) ) {
                         $replacements['%cart%'] = _x( 'There was nothing in the Cart', 'Empty Cart Replacement Text', EDD_Slack_ID );
-                    }
-                    
-                    // If this customer did not create an Account
-                    if ( $args['user_id'] == 0 ) {
-                        $replacements['%email%'] = $args['email'];
-                        $replacements['%name%'] = $args['name'];
-                        $replacements['%username%'] = _x( 'This Customer does not have an account', 'No Username Replacement Text', EDD_Slack_ID );
                     }
                     
                     break;

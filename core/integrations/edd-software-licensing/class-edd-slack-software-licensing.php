@@ -184,20 +184,24 @@ class EDD_Slack_Software_Licensing {
      */
     public function edd_sl_license_upgraded( $license_id, $args ) {
         
-        /*
-        $args = array(
-            'payment_id'       => $payment_id,
-            'old_payment_id'   => $old_payment_id,
-            'download_id'      => $download_id,
-            'old_download_id'  => $old_download_id,
-            'old_price_id'     => $old_price_id,
-            'upgrade_id'       => $upgrade_id,
-            'upgrade_price_id' => false
-        );
-        */
+        // We need the Payment ID and Payment Meta to get accurate Customer Data
+        $payment_meta = get_post_meta( $args['payment_id'], '_edd_payment_meta', true );
+        
+        // This is the EDD Customer ID. This is not necessarily the same as the WP User ID
+        $customer_id = get_post_meta( $args['payment_id'], '_edd_payment_customer_id', true );
+        $customer = new EDD_Customer( $customer_id );
         
         do_action( 'edd_slack_notify', 'edd_sl_license_upgraded', array(
-            'license_id' => $license_id,
+            'user_id' => $customer->user_id, // If the User isn't a proper WP User, this will be 0
+            'name' => $payment_meta['user_info']['first_name'] . ' ' . $payment_meta['user_info']['last_name'],
+            'email' => $payment_meta['user_info']['email'],
+            'license_key' => edd_software_licensing()->get_license_key( $license_id ),
+            'download_id' => $args['download_id'],
+            'upgrade_price_id' => $args['upgrade_price_id'], // Variable Download ID for the Upgrade
+            'old_download_id' => $args['old_download_id'],
+            'old_price_id' => $args['old_price_id'], // Variable Download ID for the original Download
+            'expiration' => get_post_meta( $license_id, '_edd_sl_expiration', true ),
+            'license_limit' => edd_software_licensing()->license_limit( $license_id ),
         ) );
         
     }
@@ -263,6 +267,10 @@ class EDD_Slack_Software_Licensing {
                 case 'edd_sl_store_license':
                 case 'edd_sl_activate_license':
                 case 'edd_sl_deactivate_license':
+                case 'edd_sl_license_upgraded':
+                    
+                    // In an effort to not repeat this code for multiple triggers that only have minor differences, 
+                    // We're going to have some interior conditionals for the small differences.
                     
                     // If this customer did not create an Account
                     if ( $args['user_id'] == 0 ) {
@@ -271,13 +279,30 @@ class EDD_Slack_Software_Licensing {
                         $replacements['%username%'] = _x( 'This Customer does not have an account', 'No Username Replacement Text', EDD_Slack_ID );
                     }
                     
-                    $replacements['%download%'] = get_the_title( $args['download_id'] );
                     $replacements['%license_key%'] = $args['license_key'];
                     $replacements['%expiration%'] = date_i18n( get_option( 'date_format' ), $args['expiration'] );
                     $replacements['%license_limit%'] = $args['license_limit'];
                     
-                    if ( $trigger !== 'edd_sl_store_license' ) {
-                        $replacements['%site_count%'] = $args['site_count']; // There shouldn't be any activated sites for a new license
+                    if ( $trigger == 'edd_sl_store_license' ||
+                       $trigger == 'edd_sl_deactivate_license' ) {
+                        $replacements['%site_count%'] = $args['site_count']; // This doesn't make sense for the other Triggers
+                    }
+                    
+                    if ( $trigger !== 'edd_sl_license_upgraded' ) {
+                        $replacements['%download%'] = get_the_title( $args['download_id'] );
+                    }
+                    else {
+                        
+                        $replacements['%old_download%'] = get_the_title( $args['old_download_id'] );
+                        if ( edd_has_variable_prices( $args['old_download_id'] ) && false !== $args['old_price_id'] ) {
+                            $replacements['%old_download%'] .= ' - ' . edd_get_price_option_name( $args['old_download_id'], $args['old_price_id'] );
+                        }
+
+                        $replacements['%new_download%'] = get_the_title( $args['download_id'] );
+                        if ( edd_has_variable_prices( $args['download_id'] ) ) {
+                            $replacements['%new_download%'] .= ' - ' . edd_get_price_option_name( $args['download_id'], $args['upgrade_price_id'] );
+                        }
+                        
                     }
                     
                     break;
@@ -310,15 +335,23 @@ class EDD_Slack_Software_Licensing {
             '%license_key%' => _x( 'The License Key', '%license_key% Hint Text', EDD_Slack_ID ),
             '%download%' => sprintf( _x( 'The %s the License Key is for', '%download% Hint Text', EDD_Slack_ID ), edd_get_label_singular() ),
             '%expiration%' => _x( 'The date when the License expires', '%expiration% Hint Text', EDD_Slack_ID ),
-            '%site_count%' => _x( 'The number of sites the License is active on', '%site_count% Hint Text', EDD_Slack_ID ),
             '%license_limit%' => _x( 'The number of sites the License can be active on', '%license_limit% Hint Text', EDD_Slack_ID ),
         );
         
         $hints['edd_sl_store_license'] = array_merge( $user_hints, $licensing_hints );
         $hints['edd_sl_activate_license'] = array_merge( $user_hints, $licensing_hints );
         $hints['edd_sl_deactivate_license'] = array_merge( $user_hints, $licensing_hints );
+        $hints['edd_sl_license_upgraded'] = array_merge( $user_hints, $licensing_hints );
+        
+        // Similarly here, we're going to have some interior conditionals for the small differences to avoid repeating ourselves
         
         unset( $hints['edd_sl_store_license']['%site_count%'] ); // This one doesn't make sense in this context
+        unset( $hints['edd_sl_license_upgraded']['%site_count%'] ); // This one doesn't make sense in this context
+        
+        unset( $hints['edd_sl_license_upgraded']['%download%'] );
+        
+        $hints['edd_sl_license_upgraded']['%old_download%'] = sprintf( _x( 'The %s being upgraded from', '%old_download% Hint Text', EDD_Slack_ID ), edd_get_label_singular() );
+        $hints['edd_sl_license_upgraded']['%new_download%'] = sprintf( _x( 'The %s being upgraded to', '%new_download% Hint Text', EDD_Slack_ID ), edd_get_label_singular() );
         
         return $hints;
         

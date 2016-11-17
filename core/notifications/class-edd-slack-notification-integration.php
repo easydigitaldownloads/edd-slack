@@ -216,14 +216,8 @@ class EDD_Slack_Notification_Integration {
                         }
                         else {
                             
-                            // Get data for all Variants
-                            $variable_prices = edd_get_variable_prices( $post_id );
-                            
-                            // Grab the Variant actually purchased
-                            $purchased_variant = $variable_prices[ $item_number['options']['price_id'] ];
-                            
                             $replacements['%cart%'] .= "&bull; " . get_the_title( $post_id ) . "\n";
-                            $replacements['%cart%'] .= "\t&bull; " . $purchased_variant['name'] . " - " . edd_currency_filter( $purchased_variant['amount'] ) . "\n";
+                            $replacements['%cart%'] .= "\t&bull; " . edd_get_price_option_name( $post_id, $item_number['options']['price_id'] ) . " - " . edd_currency_filter( edd_get_price_option_amount( $post_id, $item_number['options']['price_id'] ) ) . "\n";
                             
                         }
                         

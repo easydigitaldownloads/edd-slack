@@ -103,6 +103,11 @@ msgctxt "%ip_address% Hint Text"
 msgid "Show the IP Address of the Customer"
 msgstr ""
 
+#: core/admin/class-edd-slack-admin.php:250
+msgctxt "%payment_link% Hint Text"
+msgid "Show a link to the Payment Details page for this Payment"
+msgstr ""
+
 #: core/edd-slack-functions.php:35
 msgid "Add Row"
 msgstr ""
@@ -135,6 +140,56 @@ msgctxt "New Review on Download Trigger"
 msgid "New Review on %s"
 msgstr ""
 
+#: core/integrations/edd-software-licensing/class-edd-slack-software-licensing.php:62
+msgctxt "New License Key Generated Trigger"
+msgid "New License Key Generated"
+msgstr ""
+
+#: core/integrations/edd-software-licensing/class-edd-slack-software-licensing.php:63
+msgctxt "License Key Activated Trigger"
+msgid "License Key Activated"
+msgstr ""
+
+#: core/integrations/edd-software-licensing/class-edd-slack-software-licensing.php:64
+msgctxt "License Key Deactivated Trigger"
+msgid "License Key Deactivated"
+msgstr ""
+
+#: core/integrations/edd-software-licensing/class-edd-slack-software-licensing.php:65
+msgctxt "License Upgraded Trigger"
+msgid "License Upgraded"
+msgstr ""
+
+#: core/integrations/edd-software-licensing/class-edd-slack-software-licensing.php:328
+msgctxt "%license_key% Hint Text"
+msgid "The License Key"
+msgstr ""
+
+#: core/integrations/edd-software-licensing/class-edd-slack-software-licensing.php:329
+msgctxt "%download% Hint Text"
+msgid "The %s the License Key is for"
+msgstr ""
+
+#: core/integrations/edd-software-licensing/class-edd-slack-software-licensing.php:330
+msgctxt "%expiration% Hint Text"
+msgid "The date when the License expires"
+msgstr ""
+
+#: core/integrations/edd-software-licensing/class-edd-slack-software-licensing.php:331
+msgctxt "%license_limit% Hint Text"
+msgid "The number of sites the License can be active on"
+msgstr ""
+
+#: core/integrations/edd-software-licensing/class-edd-slack-software-licensing.php:346
+msgctxt "%old_download% Hint Text"
+msgid "The %s being upgraded from"
+msgstr ""
+
+#: core/integrations/edd-software-licensing/class-edd-slack-software-licensing.php:347
+msgctxt "%new_download% Hint Text"
+msgid "The %s being upgraded to"
+msgstr ""
+
 #: core/notifications/class-edd-slack-notification-integration.php:48
 msgctxt "Notification Feed CPT"
 msgid "EDD Slack"
@@ -145,114 +200,124 @@ msgctxt "Default Post Title for CPT"
 msgid "New Slack Notification"
 msgstr ""
 
-#: core/notifications/class-edd-slack-notification-integration.php:220
-msgctxt "Empty Cart Replacement Text"
-msgid "There was nothing in the Cart"
-msgstr ""
-
-#: core/notifications/class-edd-slack-notification-integration.php:227
+#: core/notifications/class-edd-slack-notification-integration.php:184
 msgctxt "No Username Replacement Text"
 msgid "This Customer does not have an account"
 msgstr ""
 
-#: edd-slack.php:270
+#: core/notifications/class-edd-slack-notification-integration.php:197
+msgctxt "No Discount Code Applied Text"
+msgid "No Discount Code Applied"
+msgstr ""
+
+#: core/notifications/class-edd-slack-notification-integration.php:205
+msgctxt "View Payment Details Link"
+msgid "View Payment Details"
+msgstr ""
+
+#: core/notifications/class-edd-slack-notification-integration.php:228
+msgctxt "Empty Cart Replacement Text"
+msgid "There was nothing in the Cart"
+msgstr ""
+
+#: edd-slack.php:275
 msgid "Indentifier for this Notification"
 msgstr ""
 
-#: edd-slack.php:273
+#: edd-slack.php:278
 msgid "New Slack Notification"
 msgstr ""
 
-#: edd-slack.php:278
+#: edd-slack.php:283
 msgid "Slack Trigger"
 msgstr ""
 
-#: edd-slack.php:283
+#: edd-slack.php:288
 msgctxt "Slack Trigger Default Label"
 msgid "-- Select a Slack Trigger --"
 msgstr ""
 
-#: edd-slack.php:298
+#: edd-slack.php:303
 msgctxt "Select Field Default"
 msgid "-- Select %s --"
 msgstr ""
 
-#: edd-slack.php:299
+#: edd-slack.php:304
 msgctxt "All items in a Select Field"
 msgid "All %s"
 msgstr ""
 
-#: edd-slack.php:304
+#: edd-slack.php:309
 msgctxt "Discount Code Field Label"
 msgid "Discount Code"
 msgstr ""
 
-#: edd-slack.php:313
+#: edd-slack.php:318
 msgctxt "Discount Code Field Default"
 msgid "-- Select Discount Code --"
 msgstr ""
 
-#: edd-slack.php:314
+#: edd-slack.php:319
 msgctxt "All Discount Codes Text"
 msgid "All Discount Codes"
 msgstr ""
 
-#: edd-slack.php:324
+#: edd-slack.php:329
 msgid "Message Pre-text (Shows directly below Username and above the Title/Message)"
 msgstr ""
 
-#: edd-slack.php:332
+#: edd-slack.php:337
 msgid "Message Title"
 msgstr ""
 
-#: edd-slack.php:340
+#: edd-slack.php:345
 msgid "Message"
 msgstr ""
 
-#: edd-slack.php:346
+#: edd-slack.php:351
 msgid "Slack Webhook URL"
 msgstr ""
 
-#: edd-slack.php:351
+#: edd-slack.php:356
 msgid "You can override the above Webhook URL here."
 msgstr ""
 
-#: edd-slack.php:359
+#: edd-slack.php:364
 msgid "Slack Channel"
 msgstr ""
 
-#: edd-slack.php:361, edd-slack.php:377
+#: edd-slack.php:366, edd-slack.php:382
 msgid "Webhook default"
 msgstr ""
 
-#: edd-slack.php:367
+#: edd-slack.php:372
 msgid "Username"
 msgstr ""
 
-#: edd-slack.php:375
+#: edd-slack.php:380
 msgid "Icon Emoji or Image URL"
 msgstr ""
 
-#: edd-slack.php:383
+#: edd-slack.php:388
 msgid "Color (Shows next to Message Title and Message)"
 msgstr ""
 
-#: edd-slack.php:401
+#: edd-slack.php:406
 msgctxt "Purchase Complete Trigger Label"
 msgid "Purchase Complete"
 msgstr ""
 
-#: edd-slack.php:402
+#: edd-slack.php:407
 msgctxt "Purchase Failed Trigger Label"
 msgid "Purchase Failed"
 msgstr ""
 
-#: edd-slack.php:403
+#: edd-slack.php:408
 msgctxt "Discount Code Applied Trigger Label"
 msgid "Discount Code Applied"
 msgstr ""
 
-#: edd-slack.php:404
+#: edd-slack.php:409
 msgctxt "New User Registration Trigger Label"
 msgid "New User Registration via EDD"
 msgstr ""

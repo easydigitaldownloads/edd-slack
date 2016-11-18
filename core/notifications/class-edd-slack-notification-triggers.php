@@ -99,8 +99,8 @@ class EDD_Slack_Notification_Triggers {
             do_action( 'edd_slack_notify', 'edd_failed_purchase', array(
                 'user_id' => $customer->user_id, // If the User isn't a proper WP User, this will be 0
                 'payment_id' => $payment_id,
-                'name' => $payment_meta['user_info']['first_name'] . ' ' . $payment_meta['user_info']['last_name'],
-                'email' => $payment_meta['user_info']['email'],
+                'name' => $customer->name,
+                'email' => $customer->email,
                 'discount_code' => $payment_meta['user_info']['discount'],
                 'ip_address' => get_post_meta( $payment_id, '_edd_payment_user_ip', true ),
                 'cart' => wp_list_pluck( $cart_items, 'item_number', 'id' ),

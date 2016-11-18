@@ -220,6 +220,11 @@ if ( ! class_exists( 'EDD_Slack' ) ) {
                 require_once EDD_Slack_DIR . '/core/integrations/edd-software-licensing/class-edd-slack-software-licensing.php';
             }
             
+            // If EDD FES is Active
+            if ( class_exists( 'EDD_Front_End_Submissions' ) ) {
+                require_once EDD_Slack_DIR . '/core/integrations/edd-frontend-submissions/class-edd-slack-frontend-submissions.php';
+            }
+            
         }
         
         /**

@@ -25,9 +25,8 @@ class EDD_Slack_Frontend_Submissions {
         // Inject some Checks before we do Replacements or send the Notification
         add_action( 'edd_slack_before_replacements', array( $this, 'before_notification_replacements' ), 10, 5 );
         
-        // The Vendor Registration Trigger hooks into an admin-ajax.php function so it is hooks in statically outside of the Class
-        
-        
+        // New Vendor Application
+        add_action( 'edd_post_insert_vendor', array( $this, 'edd_fes_vendor_registered' ), 10, 2 );
         
         // Add our own Replacement Strings
         add_filter( 'edd_slack_notifications_replacements', array( $this, 'custom_replacement_strings' ), 10, 4 );
@@ -48,61 +47,34 @@ class EDD_Slack_Frontend_Submissions {
      */
     public function add_triggers( $triggers ) {
 
-        $triggers['fes_admin_submit_registration_form'] = _x( 'New Vendor Application', 'New Vendor Application Trigger', EDD_Slack_ID );
+        $triggers['edd_fes_vendor_registered'] = _x( 'New Vendor Application', 'New Vendor Application Trigger', EDD_Slack_ID );
 
         return $triggers;
 
     }
     
     /**
-     * Fires whenever a Vendor submits a Registration Form
+     * Fires when a new Vendor Registers
      * 
-     * @param       integer $id     User id of the user currently being edited.
-     * @param       array   $values Values to save
-     * @param       array   $args   Args for the save function. Deprecated.
-     *                                                          
+     * @param       integer $insert_id $wpdb Insert ID
+     * @param       array   $args      $wpdb Column Key/Value Pairs
+     *                                                        
      * @access      public
      * @since       1.0.0
      * @return      void
      */
-    public static function fes_admin_submit_registration_form( $id = 0, $values = array(), $args = array() ) {
-
-        $user_id = ! empty( $values ) && isset( $values['user_id'] ) ? absint( $values['user_id'] ) : ( isset( $_REQUEST['user_id'] )   ? absint( $_REQUEST['user_id'] ) : get_current_user_id() );
+    public function edd_fes_vendor_registered( $insert_id, $args ) {
         
-        $username = '';
-        $name = '';
-        $email = '';
-        
-        // Fallbacks in case $user_id == 0, the Vendor is a new User
-        if ( $user_id == 0 ) {
+        // If we are auto-approving Vendors
+        if ( (bool) EDD_FES()->helper->get_option( 'fes-auto-approve-vendors', false ) ) {
             
-            // This should never, ever be blank
-            $username = $_REQUEST['user_login'];
-            
-            // First try a prefered Display Name, if it doesn't exist, create one
-            if ( isset( $_REQUEST['display_name'] ) && ! empty( $_REQUEST['display_name'] ) ) {
-                $name = $_REQUEST['display_name'];
-            }
-            else {
-                $name = $_REQUEST['first_name'] . ' ' . $_REQUEST['last_name'];
-            }
-            
-            // If $name is blank, just use their Username
-            if ( trim( $name ) == '' ) {
-                $name = $_REQUEST['user_login'];
-            }
-            
-            if ( isset( $_REQUEST['user_email'] ) && ! empty( $_REQUEST['user_email'] ) ) {
-                $email = $_REQUEST['user_email'];
-            }
+        }
+        else {
             
         }
         
-        do_action( 'edd_slack_notify', 'fes_admin_submit_registration_form', array(
-            'user_id' => $user_id, // If the User isn't a proper WP User, this will be 0
-            'username' => $username,
-            'name' => $name,
-            'email' => $email,
+        do_action( 'edd_slack_notify', 'edd_fes_vendor_registered', array(
+            'user_id' => $args['user_id'],
         ) );
         
     }
@@ -152,17 +124,6 @@ class EDD_Slack_Frontend_Submissions {
         if ( $notification_id == 'rbm' ) {
 
             switch ( $trigger ) {
-
-                case 'fes_admin_submit_registration_form':
-                    
-                    // In the case of Vendors, a User Account is actually created
-                    if ( $args['user_id'] == 0 ) {
-                        
-                        $replacements['%username%'] = $args['username'];
-                        
-                    }
-                    
-                    break;
                     
                 default:
                     break;
@@ -188,7 +149,7 @@ class EDD_Slack_Frontend_Submissions {
      */
     public function custom_replacement_hints( $hints, $user_hints, $payment_hints ) {
         
-        $hints['fes_admin_submit_registration_form'] = $user_hints;
+        $hints['edd_fes_vendor_registered'] = $user_hints;
         
         return $hints;
         
@@ -197,8 +158,3 @@ class EDD_Slack_Frontend_Submissions {
 }
 
 $integrate = new EDD_Slack_Frontend_Submissions();
-
-// New Vendor Application
-// Since this uses WP AJAX, we need to use a Static Function with a High Priority to run before theirs
-add_action( 'wp_ajax_fes_submit_registration_form', array( 'EDD_Slack_Frontend_Submissions', 'fes_admin_submit_registration_form' ), 1, 3 );
-add_action( 'wp_ajax_nopriv_fes_submit_registration_form', array( 'EDD_Slack_Frontend_Submissions', 'fes_admin_submit_registration_form' ), 1, 3 );

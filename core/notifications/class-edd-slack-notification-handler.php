@@ -306,6 +306,7 @@ class EDD_Slack_Notification_Handler {
         $replacements = wp_parse_args( $replacements, array(
             '%username%' => '',
             '%name%' => '',
+            '%email%' => '',
         ) );
         
         if ( isset( $args['user_id'] ) ) {

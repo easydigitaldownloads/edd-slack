@@ -28,6 +28,9 @@ class EDD_Slack_Frontend_Submissions {
         // New Vendor Application
         add_action( 'edd_post_insert_vendor', array( $this, 'edd_fes_vendor_registered' ), 10, 2 );
         
+        // New Vendor Product
+        add_action( 'fes_save_submission_form_values_after_save', array( $this, 'edd_fes_new_vendor_product' ), 10, 3 );
+        
         // Add our own Replacement Strings
         add_filter( 'edd_slack_notifications_replacements', array( $this, 'custom_replacement_strings' ), 10, 4 );
         
@@ -48,6 +51,11 @@ class EDD_Slack_Frontend_Submissions {
     public function add_triggers( $triggers ) {
 
         $triggers['edd_fes_vendor_registered'] = _x( 'New Vendor Application', 'New Vendor Application Trigger', EDD_Slack_ID );
+        
+        // By default, Vendors cannot create their own Products
+        if ( (bool) EDD_FES()->helper->get_option( 'fes-allow-vendors-to-create-products', false ) ) {
+            $triggers['edd_fes_new_vendor_product'] = _x( 'New Vendor Product', 'New Vendor Product Trigger', EDD_Slack_ID );
+        }
 
         return $triggers;
 
@@ -75,6 +83,39 @@ class EDD_Slack_Frontend_Submissions {
         
         do_action( 'edd_slack_notify', 'edd_fes_vendor_registered', array(
             'user_id' => $args['user_id'],
+        ) );
+        
+    }
+    
+    /**
+     * Triggers on a New Vendor Product
+     * 
+     * @param       object  $form        EDD FES Form Object that was submitted
+     * @param       integer $user_id     User ID Submitting the Form
+     * @param       integer $download_id The newly created Vendor Product
+     *                                                            
+     * @access      public
+     * @since       1.0.0
+     * @return      void
+     */
+    public function edd_fes_new_vendor_product( $form, $user_id, $download_id ) {
+        
+        $is_vendor = EDD_FES()->vendors->user_is_status( 'approved', $user_id );
+        
+        if ( ! $is_vendor ) return false;
+          
+        // If we're auto-approving Vendor Products
+        if ( (bool) EDD_FES()->helper->get_option( 'fes-auto-approve-submissions', false ) && get_post_status( $download_id ) == 'publish' ) {
+
+        }
+        else if ( get_post_status( $download_id ) == 'pending' ) {
+
+        }
+
+        do_action( 'edd_slack_notify', 'edd_fes_new_vendor_product', array(
+            'user_id' => $user_id,
+            'download_id' => $download_id,
+            'form_values' => $form->get_form_values(), // This gives us direct access to the values from the Form Submission
         ) );
         
     }
@@ -125,6 +166,15 @@ class EDD_Slack_Frontend_Submissions {
 
             switch ( $trigger ) {
                     
+                case 'edd_fes_new_vendor_product':
+                    
+                    $replacements['%download_link%'] = '<' . urlencode_deep( get_edit_post_link( $args['download_id'], '' ) ) . '|' . sprintf( _x( "View this Vendor's %s", "View this Vendor's Download Link", EDD_Slack_ID ) . '>', edd_get_label_singular() );
+                    
+                    // Grab all Post Meta from the Form's Fields
+                    foreach ( $args['form_values'] as $key => $value ) {
+                        $replacements[ '%' . $key . '%' ] = $value;
+                    }
+                    
                 default:
                     break;
 
@@ -151,7 +201,50 @@ class EDD_Slack_Frontend_Submissions {
         
         $hints['edd_fes_vendor_registered'] = $user_hints;
         
+        $vendor_product_hints = array(
+            '%download_link%' => sprintf( _x( 'Show a link to the Admin Edit screen for this %s', '%download_link% Hint Text', EDD_Slack_ID ), edd_get_label_singular() ),
+        );
+        
+        $vendor_product_fields = $this->get_fields_help_text( 'submission' );
+        
+        foreach ( $vendor_product_fields as $key => $help_text ) {
+            
+            if ( empty( $help_text ) ) {
+                $help_text = _x( 'No Hint Text Provided for this Form Field', 'No Hint Text Notice', EDD_Slack_ID );
+            }
+            
+            $vendor_product_hints[ '%' . $key . '%' ] = $help_text;
+            
+        }
+        
+        $hints['edd_fes_new_vendor_product'] = array_merge( $user_hints, $vendor_product_hints );
+        
         return $hints;
+        
+    }
+    
+    /**
+     * Grab all the Fields within an FES Form and make them something that EDD Slack can more easily consume
+     * 
+     * @param       string $name Form Name
+     *                                
+     * @access      private
+     * @since       1.0.0
+     * @return      array  Field Keys and Hints
+     */
+    private function get_fields_help_text( $name ) {
+        
+        $form = new FES_Form( $name, 'name' );
+        $field_objects = $form->get_fields();
+
+        $fields = array();
+        foreach ( $field_objects as $key => $field ) {
+
+            $fields[ $key ] = $field->help;
+
+        }
+
+        return $fields;
         
     }
     

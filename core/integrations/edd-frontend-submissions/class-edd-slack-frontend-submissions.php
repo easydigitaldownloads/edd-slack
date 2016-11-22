@@ -31,6 +31,9 @@ class EDD_Slack_Frontend_Submissions {
         // New Vendor Product
         add_action( 'fes_save_submission_form_values_after_save', array( $this, 'edd_fes_new_vendor_product' ), 10, 3 );
         
+        // New Vendor Contact Form
+        add_action( 'fes_save_vendor-contact_form_values_after_save', array( $this, 'edd_fes_vendor_contact' ), 10, 3 );
+        
         // Add our own Replacement Strings
         add_filter( 'edd_slack_notifications_replacements', array( $this, 'custom_replacement_strings' ), 10, 4 );
         
@@ -56,6 +59,8 @@ class EDD_Slack_Frontend_Submissions {
         if ( (bool) EDD_FES()->helper->get_option( 'fes-allow-vendors-to-create-products', false ) ) {
             $triggers['edd_fes_new_vendor_product'] = _x( 'New Vendor Product', 'New Vendor Product Trigger', EDD_Slack_ID );
         }
+        
+        $triggers['edd_fes_vendor_contact'] = _x( 'New Vendor Contact Form Submitted', 'New Vendor Contact Form Submitted Trigger', EDD_Slack_ID );
 
         return $triggers;
 
@@ -121,6 +126,32 @@ class EDD_Slack_Frontend_Submissions {
     }
     
     /**
+     * Triggers on a New Vendor Product
+     * 
+     * @param       object  $form        EDD FES Form Object that was submitted
+     * @param       integer $user_id     User ID Submitting the Form
+     * @param       integer $save_id     The ID of the submitted Form
+     *                                                            
+     * @access      public
+     * @since       1.0.0
+     * @return      void
+     */
+    public function edd_fes_vendor_contact( $form, $user_id, $save_id ) {
+        
+        // We need to grab these from $_POST
+        $form_values = array();
+        foreach ( $form->get_form_values() as $key => $value ) {
+            $form_values[ $key ] = ( isset( $_POST[ $key ] ) ) ? $_POST[ $key ] : '';
+        }
+
+        do_action( 'edd_slack_notify', 'edd_fes_vendor_contact', array(
+            'user_id' => $user_id,
+            'form_values' => $form_values, // This gives us direct access to the values from the Form Submission
+        ) );
+        
+    }
+    
+    /**
      * Inject some checks on whether or not to bail on the Notification
      * 
      * @param       object  $post            WP_Post Object for our Saved Notification Data
@@ -170,10 +201,16 @@ class EDD_Slack_Frontend_Submissions {
                     
                     $replacements['%download_link%'] = '<' . urlencode_deep( get_edit_post_link( $args['download_id'], '' ) ) . '|' . sprintf( _x( "View this Vendor's %s", "View this Vendor's Download Link", EDD_Slack_ID ) . '>', edd_get_label_singular() );
                     
+                    // Intentionally not break-ing to include the next Case
+                    
+                case 'edd_fes_vendor_contact':
+                    
                     // Grab all Post Meta from the Form's Fields
                     foreach ( $args['form_values'] as $key => $value ) {
                         $replacements[ '%' . $key . '%' ] = $value;
                     }
+                    
+                    break;
                     
                 default:
                     break;
@@ -218,6 +255,23 @@ class EDD_Slack_Frontend_Submissions {
         }
         
         $hints['edd_fes_new_vendor_product'] = array_merge( $user_hints, $vendor_product_hints );
+        
+        $vendor_contact_fields = $this->get_fields_help_text( 'vendor-contact' );
+        
+        $vendor_contact_hints = array();
+        foreach ( $vendor_contact_fields as $key => $help_text ) {
+            
+            if ( empty( $help_text ) ) {
+                $help_text = _x( 'No Hint Text Provided for this Form Field', 'No Hint Text Notice', EDD_Slack_ID );
+            }
+            
+            $vendor_contact_hints[ '%' . $key . '%' ] = $help_text;
+            
+        }
+        
+        $hints['edd_fes_vendor_contact'] = $vendor_contact_hints;
+        
+        unset( $hints['vendor_contact_hints']['%recaptcha%'] );
         
         return $hints;
         

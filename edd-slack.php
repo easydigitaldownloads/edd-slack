@@ -225,6 +225,11 @@ if ( ! class_exists( 'EDD_Slack' ) ) {
                 require_once EDD_Slack_DIR . '/core/integrations/edd-frontend-submissions/class-edd-slack-frontend-submissions.php';
             }
             
+            // If EDD Commissions is Active
+            if ( defined( 'EDD_COMMISSIONS_VERSION' ) ) {
+                require_once EDD_Slack_DIR . '/core/integrations/edd-commissions/class-edd-slack-commissions.php';
+            }
+            
         }
         
         /**

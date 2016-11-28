@@ -230,6 +230,10 @@ if ( ! class_exists( 'EDD_Slack' ) ) {
                 require_once EDD_Slack_DIR . '/core/integrations/edd-commissions/class-edd-slack-commissions.php';
             }
             
+            if ( class_exists( 'EDD_Purchase_Limit' ) ) {
+                require_once EDD_Slack_DIR . '/core/integrations/edd-purchase-limit/class-edd-slack-purchase-limit.php';
+            }
+            
         }
         
         /**

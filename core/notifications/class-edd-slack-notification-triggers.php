@@ -41,6 +41,9 @@ class EDD_Slack_Notification_Triggers {
      */
     public function edd_complete_purchase( $payment_id ) {
         
+        $customer_id = get_post_meta( $payment_id, '_edd_payment_customer_id', true );
+        $customer = new EDD_Customer( $customer_id );
+        
         // Basic payment meta
         $payment_meta = edd_get_payment_meta( $payment_id );
         
@@ -52,7 +55,9 @@ class EDD_Slack_Notification_Triggers {
         
         // Passing the same data no matter what, so here we go
         $purchase_args = array(
-            'user_id' => $payment_meta['user_info']['id'],
+            'user_id' => $customer->user_id, // If the User isn't a proper WP User, this will be 0
+            'name' => $customer->name,
+            'email' => $customer->email,
             'payment_id' => $payment_id,
             'discount_code' => $payment_meta['user_info']['discount'],
             'cart' => wp_list_pluck( $cart_items, 'item_number', 'id' ),

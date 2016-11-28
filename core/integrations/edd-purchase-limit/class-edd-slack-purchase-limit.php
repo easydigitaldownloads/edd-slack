@@ -1,19 +1,19 @@
 <?php
 /**
- * EDD Commissions Integration
+ * EDD Purchase Limit Integration
  *
  * @since 1.0.0
  *
  * @package EDD_Slack
- * @subpackage EDD_Slack/core/integrations/edd-commissions
+ * @subpackage EDD_Slack/core/integrations/edd-purchase-limit
  */
 
 defined( 'ABSPATH' ) || die();
 
-class EDD_Slack_Commissions {
+class EDD_Slack_Purchase_Limit {
     
     /**
-     * EDD_Slack_Commissions constructor.
+     * EDD_Slack_Purchase_Limit constructor.
      *
      * @since 1.0.0
      */
@@ -25,11 +25,10 @@ class EDD_Slack_Commissions {
         // Add new Conditional Fields
         add_filter( 'edd_slack_notification_fields', array( $this, 'add_extra_fields' ) );
         
+        add_action( 'edd_complete_purchase', array( $this, 'edd_purchase_limit' ) );
+        
         // Inject some Checks before we do Replacements or send the Notification
         add_action( 'edd_slack_before_replacements', array( $this, 'before_notification_replacements' ), 10, 5 );
-        
-        // New Commission
-        add_action( 'eddc_insert_commission', array( $this, 'eddc_insert_commission' ), 10, 6 );
         
         // Add our own Replacement Strings
         add_filter( 'edd_slack_notifications_replacements', array( $this, 'custom_replacement_strings' ), 10, 4 );
@@ -50,7 +49,7 @@ class EDD_Slack_Commissions {
      */
     public function add_triggers( $triggers ) {
 
-        $triggers['eddc_insert_commission'] = _x( 'New Commission', 'New Commision Trigger', EDD_Slack_ID );
+        $triggers['edd_purchase_limit'] = _x( 'Purchase Limit Reached', 'Purchase Limit Reached Trigger', EDD_Slack_ID );
 
         return $triggers;
 
@@ -68,34 +67,76 @@ class EDD_Slack_Commissions {
     public function add_extra_fields( $repeater_fields ) {
         
         // Make the Download Field Conditionally shown for our Triggers
-        $repeater_fields['download']['field_class'][] = 'eddc_insert_commission';
+        $repeater_fields['download']['field_class'][] = 'edd_purchase_limit';
         
         return $repeater_fields;
         
     }
     
     /**
-     * Fires on a new Commission being made
+     * Fires on Payment Completion, checking for Purchase Limits being reached
      * 
-     * @param       integer $recipient         Recipient User ID
-     * @param       float   $commission_amount Commission Amount
-     * @param       float   $rate              Commission Rate
-     * @param       integer $download_id       Download Post ID
-     * @param       integer $commission_id     Commission Post ID
-     * @param       integer $payment_id        Payment Post ID
-     *                                                      
+     * @param       integer $payment_id Payment ID
+     *                                          
      * @access      public
      * @since       1.0.0
      * @return      void
      */
-    public function eddc_insert_commission( $recipient, $commission_amount, $rate, $download_id, $commission_id, $payment_id ) {
+    public function edd_purchase_limit( $payment_id ) {
         
-        do_action( 'edd_slack_notify', 'eddc_insert_commission', array(
-            'user_id' => $recipient,
-            'download_id' => $download_id,
-            'commission_amount' => $commission_amount,
-            'commission_rate' => $rate,
-        ) );
+        $customer_id = get_post_meta( $payment_id, '_edd_payment_customer_id', true );
+        $customer = new EDD_Customer( $customer_id );
+        
+        $scope = edd_get_option( 'edd_purchase_limit_scope' ) ? edd_get_option( 'edd_purchase_limit_scope' ) : 'site-wide';
+        
+        // Basic payment meta
+        $payment_meta = edd_get_payment_meta( $payment_id );
+        
+        // Cart details
+        $cart_items = edd_get_payment_meta_cart_details( $payment_id );
+        
+        foreach ( $cart_items as $item ) {
+            
+            // Gives us access to the public methods for the EDD_Download class
+            $download = new EDD_Download( $item['id'] );
+            
+            if ( $scope == 'site-wide' ) {
+            
+                // Total Purchases for this Item including the just now processed one
+                $purchases = edd_pl_get_file_purchases( $item['id'], $item['item_number']['options']['price_id'] );
+                
+            }
+            else {
+                
+                // Only check the purchases for the current User
+                if ( is_user_logged_in() ) {
+                    // Doesn't properly take into account Price ID.
+                    // https://github.com/easydigitaldownloads/EDD-Purchase-Limit/issues/28
+                    $purchases = edd_pl_get_user_purchase_count( get_current_user_id(), $item['id'], $item['item_number']['options']['price_id'] );
+                }
+                else {
+                    $purchases = 0; // Failsafe
+                }
+                
+            }
+            
+            $purchase_limit = edd_pl_get_file_purchase_limit( $item['id'], $download->get_type(), $item['item_number']['options']['price_id'] );
+            
+            // If the Purchase Limit for the Item within the Cart has been met
+            if ( $purchases == $purchase_limit ) {
+            
+                do_action( 'edd_slack_notify', 'edd_purchase_limit', array(
+                    'user_id' => $customer->user_id, // If the User isn't a proper WP User, this will be 0
+                    'name' => $customer->name,
+                    'email' => $customer->email,
+                    'download_id' => $item['id'],
+                    'price_id' => $item['item_number']['options']['price_id'],
+                    'purchase_limit' => $purchase_limit,
+                ) );
+                
+            }
+            
+        }
         
     }
     
@@ -123,7 +164,7 @@ class EDD_Slack_Commissions {
                 'bail' => false,
             ) );
             
-            if ( $trigger == 'eddc_insert_commission' ) {
+            if ( $trigger == 'edd_purchase_limit' ) {
 
                 // Download doesn't match our Notification, bail
                 if ( $fields['download'] !== 'all' && (int) $fields['download'] !== $args['download_id'] ) {
@@ -155,19 +196,14 @@ class EDD_Slack_Commissions {
 
             switch ( $trigger ) {
                     
-                case 'eddc_insert_commission':
+                case 'edd_purchase_limit':
                     
                     $replacements['%download%'] = get_the_title( $args['download_id'] );
-                    $replacements['%commission_amount%'] = edd_currency_filter( number_format( $args['commission_amount'], 2 ) );
+                    if ( edd_has_variable_prices( $args['download_id'] ) && false !== $args['price_id'] ) {
+                        $replacements['%download%'] .= ' - ' . edd_get_price_option_name( $args['download_id'], $args['price_id'] );
+                    }
                     
-                    if ( eddc_get_commission_type( $args['download_id'] ) == 'percentage' ) {
-                        
-                        $replacements['%commission_rate%'] = $args['commission_rate'] . '%';
-                        
-                    }
-                    else {
-                        $replacements['%commission_rate%'] = edd_currency_filter( number_format( $args['commission_rate'], 2 ) );
-                    }
+                    $replacements['%purchase_limit%'] = $args['purchase_limit'];
                     
                     break;
                     
@@ -195,13 +231,12 @@ class EDD_Slack_Commissions {
      */
     public function custom_replacement_hints( $hints, $user_hints, $payment_hints ) {
         
-        $commission_hints = array(
-            '%download%' => sprintf( _x( 'The %s that the Commission is for', '%download% Hint Text', EDD_Slack_ID ), edd_get_label_singular() ),
-            '%commission_amount%' => _x( 'The amount of Commission awarded for the sale', '%commission_amount% Hint Text', EDD_Slack_ID ),
-            '%commission_rate%' => _x( 'Either the Flat Rate or Percentage that the Commission is calculated based on', '%commission_rate% Hint Text', EDD_Slack_ID ),
+        $purchase_limit_hints = array(
+            '%download%' => sprintf( _x( 'The %s that has reached its Purchase Limit', '%download% Hint Text', EDD_Slack_ID ), edd_get_label_singular() ),
+            '%purchase_limit%' => sprintf( _x( 'The Purchase Limit for the %s', '%purchase_limit% Hint Text', EDD_Slack_ID ), edd_get_label_singular() ),
         );
         
-        $hints['eddc_insert_commission'] = array_merge( $user_hints, $commission_hints );
+        $hints['edd_purchase_limit'] = array_merge( $user_hints, $purchase_limit_hints );
         
         return $hints;
         
@@ -209,4 +244,4 @@ class EDD_Slack_Commissions {
     
 }
 
-$integrate = new EDD_Slack_Commissions();
+$integrate = new EDD_Slack_Purchase_Limit();

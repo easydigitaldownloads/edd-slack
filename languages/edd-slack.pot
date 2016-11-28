@@ -135,6 +135,26 @@ msgctxt "%comment_content% Hint Text"
 msgid "The Comment itself"
 msgstr ""
 
+#: core/integrations/edd-commissions/class-edd-slack-commissions.php:53
+msgctxt "New Commision Trigger"
+msgid "New Commission"
+msgstr ""
+
+#: core/integrations/edd-commissions/class-edd-slack-commissions.php:199
+msgctxt "%download% Hint Text"
+msgid "The %s that the Commission is for"
+msgstr ""
+
+#: core/integrations/edd-commissions/class-edd-slack-commissions.php:200
+msgctxt "%commission_amount% Hint Text"
+msgid "The amount of Commission awarded for the sale"
+msgstr ""
+
+#: core/integrations/edd-commissions/class-edd-slack-commissions.php:201
+msgctxt "%commission_rate% Hint Text"
+msgid "Either the Flat Rate or Percentage that the Commission is calculated based on"
+msgstr ""
+
 #: core/integrations/edd-frontend-submissions/class-edd-slack-frontend-submissions.php:56
 msgctxt "New Vendor Application Trigger"
 msgid "New Vendor Application"
@@ -163,6 +183,21 @@ msgstr ""
 #: core/integrations/edd-frontend-submissions/class-edd-slack-frontend-submissions.php:250, core/integrations/edd-frontend-submissions/class-edd-slack-frontend-submissions.php:265
 msgctxt "No Hint Text Notice"
 msgid "No Hint Text Provided for this Form Field"
+msgstr ""
+
+#: core/integrations/edd-purchase-limit/class-edd-slack-purchase-limit.php:52
+msgctxt "Purchase Limit Reached Trigger"
+msgid "Purchase Limit Reached"
+msgstr ""
+
+#: core/integrations/edd-purchase-limit/class-edd-slack-purchase-limit.php:235
+msgctxt "%download% Hint Text"
+msgid "The %s that has reached its Purchase Limit"
+msgstr ""
+
+#: core/integrations/edd-purchase-limit/class-edd-slack-purchase-limit.php:236
+msgctxt "%purchase_limit% Hint Text"
+msgid "The Purchase Limit for the %s"
 msgstr ""
 
 #: core/integrations/edd-reviews/class-edd-slack-reviews.php:48
@@ -250,104 +285,104 @@ msgctxt "Empty Cart Replacement Text"
 msgid "There was nothing in the Cart"
 msgstr ""
 
-#: edd-slack.php:280
+#: edd-slack.php:289
 msgid "Indentifier for this Notification"
 msgstr ""
 
-#: edd-slack.php:283
+#: edd-slack.php:292
 msgid "New Slack Notification"
 msgstr ""
 
-#: edd-slack.php:288
+#: edd-slack.php:297
 msgid "Slack Trigger"
 msgstr ""
 
-#: edd-slack.php:293
+#: edd-slack.php:302
 msgctxt "Slack Trigger Default Label"
 msgid "-- Select a Slack Trigger --"
 msgstr ""
 
-#: edd-slack.php:308
+#: edd-slack.php:317
 msgctxt "Select Field Default"
 msgid "-- Select %s --"
 msgstr ""
 
-#: edd-slack.php:309
+#: edd-slack.php:318
 msgctxt "All items in a Select Field"
 msgid "All %s"
 msgstr ""
 
-#: edd-slack.php:314
+#: edd-slack.php:323
 msgctxt "Discount Code Field Label"
 msgid "Discount Code"
 msgstr ""
 
-#: edd-slack.php:323
+#: edd-slack.php:332
 msgctxt "Discount Code Field Default"
 msgid "-- Select Discount Code --"
 msgstr ""
 
-#: edd-slack.php:324
+#: edd-slack.php:333
 msgctxt "All Discount Codes Text"
 msgid "All Discount Codes"
 msgstr ""
 
-#: edd-slack.php:334
+#: edd-slack.php:343
 msgid "Message Pre-text (Shows directly below Username and above the Title/Message)"
 msgstr ""
 
-#: edd-slack.php:342
+#: edd-slack.php:351
 msgid "Message Title"
 msgstr ""
 
-#: edd-slack.php:350
+#: edd-slack.php:359
 msgid "Message"
 msgstr ""
 
-#: edd-slack.php:356
+#: edd-slack.php:365
 msgid "Slack Webhook URL"
 msgstr ""
 
-#: edd-slack.php:361
+#: edd-slack.php:370
 msgid "You can override the above Webhook URL here."
 msgstr ""
 
-#: edd-slack.php:369
+#: edd-slack.php:378
 msgid "Slack Channel"
 msgstr ""
 
-#: edd-slack.php:371, edd-slack.php:387
+#: edd-slack.php:380, edd-slack.php:396
 msgid "Webhook default"
 msgstr ""
 
-#: edd-slack.php:377
+#: edd-slack.php:386
 msgid "Username"
 msgstr ""
 
-#: edd-slack.php:385
+#: edd-slack.php:394
 msgid "Icon Emoji or Image URL"
 msgstr ""
 
-#: edd-slack.php:393
+#: edd-slack.php:402
 msgid "Color (Shows next to Message Title and Message)"
 msgstr ""
 
-#: edd-slack.php:411
+#: edd-slack.php:420
 msgctxt "Purchase Complete Trigger Label"
 msgid "Purchase Complete"
 msgstr ""
 
-#: edd-slack.php:412
+#: edd-slack.php:421
 msgctxt "Purchase Failed Trigger Label"
 msgid "Purchase Failed"
 msgstr ""
 
-#: edd-slack.php:413
+#: edd-slack.php:422
 msgctxt "Discount Code Applied Trigger Label"
 msgid "Discount Code Applied"
 msgstr ""
 
-#: edd-slack.php:414
+#: edd-slack.php:423
 msgctxt "New User Registration Trigger Label"
 msgid "New User Registration via EDD"
 msgstr ""

@@ -1,6 +1,6 @@
 {
     "name": "EDD_Slack",
-    "version": "0.3.0",
+    "version": "0.4.0",
     "main": "gulpfile.js",
     "dependencies": {},
     "devDependencies": {

@@ -47,7 +47,7 @@ if ( ! class_exists( 'EDD_Slack' ) ) {
         public $notification_handler;
         
         /**
-         * @var         EDD_Slack Integrates into our Notification System. Serves as an example on how to utilize it.
+         * @var         EDD_Slack $notification_integration Integrates into our Notification System. Serves as an example on how to utilize it.
          * @since       1.0.0
          */
         public $notification_integration;
@@ -57,6 +57,12 @@ if ( ! class_exists( 'EDD_Slack' ) ) {
          * @since       1.0.0
          */
         public $notification_triggers;
+        
+        /**
+         * @var         EDD_Slack $rest_api holds our WP REST API endpoint which routes to the necessary functions for the callback_id
+         * @since       1.0.0
+         */
+        public $rest_api;
 
         /**
          * Get active instance
@@ -190,7 +196,7 @@ if ( ! class_exists( 'EDD_Slack' ) ) {
                 
             }
             
-            require_once EDD_Slack_DIR . '/core/notifications/class-edd-slack-api.php';
+            require_once EDD_Slack_DIR . '/core/slack/class-edd-slack-api.php';
             $this->slack_api = new EDD_Slack_API();
             
             require_once EDD_Slack_DIR . '/core/notifications/class-edd-slack-notification-handler.php';
@@ -199,8 +205,11 @@ if ( ! class_exists( 'EDD_Slack' ) ) {
             require_once EDD_Slack_DIR . '/core/notifications/class-edd-slack-notification-integration.php';
             $this->notification_integration = new EDD_Slack_Notification_Integration();
             
-            require_once EDD_Slack_DIR . '/core/notifications/class-edd-slack-notification-triggers.php';
+            require_once EDD_Slack_DIR . '/core/slack/class-edd-slack-notification-triggers.php';
             $this->notification_triggers = new EDD_Slack_Notification_Triggers();
+            
+            require_once EDD_Slack_DIR . '/core/slack/class-edd-slack-rest.php';
+            $this->rest_api = new EDD_Slack_REST();
             
             // Include Bundled Integrations with this Plugin
             // These also serve as an example of how to tie-in to this Plugin and utilize its functionality

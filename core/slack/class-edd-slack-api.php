@@ -5,7 +5,7 @@
  * @since 1.0.0
  *
  * @package EDD_Slack
- * @subpackage EDD_Slack/core
+ * @subpackage EDD_Slack/core/slack
  */
 
 defined( 'ABSPATH' ) || die();

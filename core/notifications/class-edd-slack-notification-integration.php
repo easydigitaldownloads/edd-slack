@@ -268,6 +268,21 @@ class EDD_Slack_Notification_Integration {
 					'title'   => html_entity_decode( $fields['message_title'] ),
 					'pretext' => html_entity_decode( $fields['message_pretext'] ),
 					'color'   => $fields['color'],
+                    'callback_id' => 'test_callback',
+                    "actions" => array(
+                        array(
+                            "name" => "chess",
+                            "text" => "Chess",
+                            "type" => "button",
+                            "value" => "chess"
+                        ),
+                        array(
+                            "name" => "maze",
+                            "text" => "Falken's Maze",
+                            "type" => "button",
+                            "value" => "maze"
+                        )
+                    ),
 				),
 			),
 		);

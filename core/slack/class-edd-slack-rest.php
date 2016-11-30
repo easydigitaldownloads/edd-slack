@@ -56,6 +56,8 @@ class EDD_Slack_REST {
             ) );
         }
         
+        file_put_contents( $json, './test.json' );
+        
         $json = json_decode( $json );
         
         return json_encode( array(

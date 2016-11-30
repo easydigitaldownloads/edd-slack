@@ -35,6 +35,12 @@ if ( ! class_exists( 'EDD_Slack' ) ) {
         public $admin;
         
         /**
+         * @var         EDD_Slack $oauth_settings SSL-only OAUTH Settings
+         * @since       1.0.0
+         */
+        public $oauth_settings;
+        
+        /**
          * @var         EDD_Slack $slack_api EDD Slack API calls
          * @since       1.0.0
          */
@@ -193,6 +199,13 @@ if ( ! class_exists( 'EDD_Slack' ) ) {
                 
                 require_once EDD_Slack_DIR . '/core/admin/class-edd-slack-admin.php';
                 $this->admin = new EDD_Slack_Admin();
+                
+                if ( is_ssl() ) {
+                    
+                    require_once EDD_Slack_DIR . '/core/ssl-only/class-edd-slack-app-oauth-settings.php';
+                    $this->oauth_settings = new EDD_Slack_OAUTH_Settings();
+                    
+                }
                 
             }
             

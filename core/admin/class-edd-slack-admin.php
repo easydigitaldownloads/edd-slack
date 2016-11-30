@@ -108,7 +108,7 @@ class EDD_Slack_Admin {
             
         }
 
-        $edd_slack_settings = array(
+        $edd_slack_settings = apply_filters( 'edd_slack_settings', array(
             array(
                 'type' => 'text',
                 'name' => _x( 'Default Webhook URL', 'Default Webhook URL Label', EDD_Slack_ID ),
@@ -144,7 +144,7 @@ class EDD_Slack_Admin {
                 'type' => 'hook',
                 'id' => 'slack_deleted_feeds'
             ),
-        );
+        ) );
 
         // If EDD is at version 2.5 or later...
         if ( version_compare( EDD_VERSION, 2.5, '>=' ) ) {

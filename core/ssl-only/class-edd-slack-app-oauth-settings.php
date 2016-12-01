@@ -72,15 +72,27 @@ class EDD_Slack_OAUTH_Settings {
         $client_id = edd_get_option( 'slack_app_client_id' );
         $client_secret = edd_get_option( 'slack_app_client_secret' );
         
-        $oauth_token = edd_get_option( 'slack_app_oauth_token' );
+        /**
+         * In case Scope needs to be changed by 3rd Party Integrations
+         *
+         * @since 1.0.0
+         */
+        $scope = apply_filters( 'edd_slack_app_scope', array(
+            'chat:write:user',
+            'commands',
+        ) );
+        
+        $scope = implode( ',', $scope );
         
         $redirect_uri = urlencode_deep( admin_url( 'edit.php?post_type=download&page=edd-settings&tab=extensions&section=edd-slack-settings' ) );
+        
+        $oauth_token = edd_get_option( 'slack_app_oauth_token' );
         
         if ( $client_id && $client_secret ) : 
 
             if ( ! $oauth_token ) : ?>
             
-                <a href="//slack.com/oauth/authorize?client_id=<?php echo $client_id; ?>&scope=chat:write:user,commands&redirect_uri=<?php echo $redirect_uri; ?>" target="_self" class="button button-primary">
+                <a href="//slack.com/oauth/authorize?client_id=<?php echo $client_id; ?>&scope=<?php echo $scope; ?>&redirect_uri=<?php echo $redirect_uri; ?>" target="_self" class="button button-primary">
                     <?php echo _x( 'Link Slack App', 'OAUTH Register Buton Label', EDD_Slack_ID ); ?>
                 </a>
 
@@ -104,7 +116,24 @@ class EDD_Slack_OAUTH_Settings {
         
         if ( isset( $_GET['code'] ) ) {
             
-            $oauth_token = edd_update_option( 'slack_app_oauth_token', $_GET['code'] );
+            $client_id = edd_get_option( 'slack_app_client_id' );
+            $client_secret = edd_get_option( 'slack_app_client_secret' );
+        
+            $redirect_uri = urlencode_deep( admin_url( 'edit.php?post_type=download&page=edd-settings&tab=extensions&section=edd-slack-settings' ) );
+            
+            $oauth_request = wp_remote_post( 
+                'https://slack.com/api/oauth.access?client_id=' . $client_id . '&client_secret=' . $client_secret . '&code=' . $_GET['code'] . '&redirect_uri=' . $redirect_uri, 
+                array(
+                )
+            );
+            
+            $oauth_request = json_decode( $oauth_request['body'] );
+            
+            if ( $oauth_request->ok == 'true' ) {
+                
+                $oauth_token = edd_update_option( 'slack_app_oauth_token', $oauth_request->access_token );
+                
+            }
             
         }
         

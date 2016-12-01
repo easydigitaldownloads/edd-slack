@@ -320,10 +320,10 @@ class EDD_Slack_Notification_Handler {
         }
         
         /**
-        * Allows additional replacements to be made.
-        *
-        * @since 1.0.0
-        */
+         * Allows additional replacements to be made.
+         *
+         * @since 1.0.0
+         */
         $replacements = apply_filters( 'edd_slack_notifications_replacements', $replacements, $trigger, $notification_id, $args );
         
         foreach ( $strings as $i => $string ) {

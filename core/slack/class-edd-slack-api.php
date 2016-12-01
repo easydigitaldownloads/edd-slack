@@ -7,7 +7,9 @@
  * @package EDD_Slack
  * @subpackage EDD_Slack/core/slack
  */
-
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 defined( 'ABSPATH' ) || die();
 
 class EDD_Slack_API {
@@ -30,47 +32,7 @@ class EDD_Slack_API {
      * @var         EDD_Slack_API $api_endpoint Slack's Web API Endpoint. This is only used for Slack App Integration
      * @since       1.0.0
      */
-    public $api_endpoint = 'https://slack.com/api/';
-    
-    /**
-     * [[Description]]
-     * @param [[Type]] $client_id    [[Description]]
-     * @param [[Type]] $redirect_url [[Description]]
-     */
-    public function request_oauth_code( $client_id, $redirect_url ) {
-        
-        //chat:write:user
-        //commands
-        
-        $authorize = wp_remote_get(
-            'https://slack.com/oauth/authorize?client_id=' . $client_id . '&scope=chat:write:user,commands',
-            array(
-                'timeout' => 10,
-            )
-        );
-        
-    }
-    
-    /**
-     * [[Description]]
-     * @param [[Type]] $client_id     [[Description]]
-     * @param [[Type]] $client_secret [[Description]]
-     * @param [[Type]] $redirect_url  [[Description]]
-     */
-    public function store_oauth_token( $client_id, $client_secret, $redirect_url ) {
-        
-        $code = $_GET['code'];
-        
-        $token = $this->get( 
-            'oauth.access?client_id=' . $client_id . '&client_secret=' . $client_secret . '&code=' . $code . '&redirect_uri=' . $redirect_url,
-            array(
-                'timeout' => 10,
-            )
-        );
-        
-        file_put_contents( $token, './token.txt' );
-        
-    }
+    public $api_endpoint = 'https://slack.com/api';
 
     /**
 	 * Push an "incoming webhook" to Slack.
@@ -190,8 +152,8 @@ class EDD_Slack_API {
         ) );
 
         $url = $this->api_endpoint . '/' . $method;
-
-        $args['headers']['Authorization'] = 'apikey ' . $this->api_key;
+        
+        $args['headers']['Content-Type'] = 'application/json';
 
         $response = wp_remote_request( $url, $args );
         return json_decode( $response['body'] );

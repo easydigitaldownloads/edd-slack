@@ -13,6 +13,18 @@ error_reporting(E_ALL);
 defined( 'ABSPATH' ) || die();
 
 class EDD_Slack_API {
+    
+    /**
+     * @var         EDD_Slack_API $oauth_token Authenticates requests for the Slack App Integration
+     * @since       1.0.0
+     */
+    private $oauth_token = '';
+    
+    /**
+     * @var         EDD_Slack_API $api_endpoint Slack's Web API Endpoint. This is only used for Slack App Integration
+     * @since       1.0.0
+     */
+    public $api_endpoint = 'https://slack.com/api';
 
     /**
 	 * EDD_Slack_API constructor.
@@ -20,19 +32,10 @@ class EDD_Slack_API {
 	 * @since 1.0.0
 	 */
     function __construct() {
+        
+        $this->oauth_token = ( edd_get_option( 'slack_app_oauth_token' ) ) ? edd_get_option( 'slack_app_oauth_token' ) : '';
+        
     }
-    
-    /**
-     * @var         EDD_Slack_API $oath_key Authenticates requests for the Slack App Integration
-     * @since       1.0.0
-     */
-    private $oath_key = '';
-    
-    /**
-     * @var         EDD_Slack_API $api_endpoint Slack's Web API Endpoint. This is only used for Slack App Integration
-     * @since       1.0.0
-     */
-    public $api_endpoint = 'https://slack.com/api';
 
     /**
 	 * Push an "incoming webhook" to Slack.
@@ -71,7 +74,7 @@ class EDD_Slack_API {
      * @return      array|false Assoc array of API response, decoded from JSON
      */
     public function delete( $method, $args = array(), $timeout = 10 ) {
-        return $this->make_request( 'delete', $method, $args, $timeout );
+        return $this->make_request( 'DELETE', $method, $args, $timeout );
     }
     
     /**
@@ -83,7 +86,7 @@ class EDD_Slack_API {
      * @return  array|false Assoc array of API response, decoded from JSON
      */
     public function get( $method, $args = array(), $timeout = 10 ) {
-        return $this->make_request( 'get', $method, $args, $timeout );
+        return $this->make_request( 'GET', $method, $args, $timeout );
     }
     
     /**
@@ -98,7 +101,7 @@ class EDD_Slack_API {
      * @return      array|false Assoc array of API response, decoded from JSON
      */
     public function patch( $method, $args = array(), $timeout = 10 ) {
-        return $this->make_request( 'patch', $method, $args, $timeout );
+        return $this->make_request( 'PATCH', $method, $args, $timeout );
     }
     
     /**
@@ -113,7 +116,7 @@ class EDD_Slack_API {
      * @return      array|false Assoc array of API response, decoded from JSON
      */
     public function post( $method, $args = array(), $timeout = 10 ) {
-        return $this->make_request( 'post', $method, $args, $timeout );
+        return $this->make_request( 'POST', $method, $args, $timeout );
     }
     
     /**
@@ -128,7 +131,7 @@ class EDD_Slack_API {
      * @return      array|false Assoc array of API response, decoded from JSON
      */
     public function put( $method, $args = array(), $timeout = 10 ) {
-        return $this->make_request( 'put', $method, $args, $timeout );
+        return $this->make_request( 'PUT', $method, $args, $timeout );
     }
     
     /**
@@ -152,12 +155,27 @@ class EDD_Slack_API {
         ) );
 
         $url = $this->api_endpoint . '/' . $method;
-        
-        $args['headers']['Content-Type'] = 'application/json';
+        $url = add_query_arg( 'token', $this->oauth_token, $url );
 
         $response = wp_remote_request( $url, $args );
         return json_decode( $response['body'] );
 
+    }
+    
+    /**
+     * Set the OAUTH Token for the Object
+     * 
+     * @param string $oauth_token Slack API OAUTH Token
+     *                                            
+     * @access      public
+     * @since       1.0.0
+     * @return      void
+     */
+    public function set_oauth_token( $oauth_token ) {
+        
+        edd_update_option( 'slack_app_oauth_token', $oauth_token );
+        $this->oauth_token = $oauth_token;
+        
     }
 
 }

@@ -7,9 +7,7 @@
  * @package EDD_Slack
  * @subpackage EDD_Slack/core/slack
  */
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
+
 defined( 'ABSPATH' ) || die();
 
 class EDD_Slack_API {
@@ -33,6 +31,7 @@ class EDD_Slack_API {
 	 */
     function __construct() {
         
+        // Default to an empty string
         $this->oauth_token = ( edd_get_option( 'slack_app_oauth_token' ) ) ? edd_get_option( 'slack_app_oauth_token' ) : '';
         
     }
@@ -155,7 +154,11 @@ class EDD_Slack_API {
         ) );
 
         $url = $this->api_endpoint . '/' . $method;
-        $url = add_query_arg( 'token', $this->oauth_token, $url );
+        
+        // This same function is used for granting OAUTH access
+        if ( $this->oauth_token !== '' ) {
+            $url = add_query_arg( 'token', $this->oauth_token, $url );
+        }
 
         $response = wp_remote_request( $url, $args );
         return json_decode( $response['body'] );
@@ -175,6 +178,24 @@ class EDD_Slack_API {
         
         edd_update_option( 'slack_app_oauth_token', $oauth_token );
         $this->oauth_token = $oauth_token;
+        
+    }
+    
+    /**
+     * Revoke the OAUTH Token for the Object
+     * 
+     * @access      public
+     * @since       1.0.0
+     * @return      void
+     */
+    public function revoke_oauth_token() {
+        
+        $oauth_revoke = EDDSLACK()->slack_api->post(
+            'auth.revoke'
+        );
+        
+        edd_delete_option( 'slack_app_oauth_token' );
+        $this->oauth_token = '';
         
     }
 

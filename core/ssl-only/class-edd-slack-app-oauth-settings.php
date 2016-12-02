@@ -28,6 +28,12 @@ class EDD_Slack_OAUTH_Settings {
         // Grab the OAUTH Key as part of the handshake process
         add_action( 'edd_settings_tab_top_extensions_edd-slack-settings', array( $this, 'store_oauth_token' ) );
         
+        // Delete the OAUTH Key
+        add_action( 'admin_init', array( $this, 'delete_oauth_token' ) );
+        
+        // Remove weird duplicate notices
+        add_action( 'admin_notices', array( $this, 'remove_duplicate_notices' ) );
+        
     }
     
     /**
@@ -119,7 +125,7 @@ class EDD_Slack_OAUTH_Settings {
 
             <?php else : ?>
 
-                <?php var_dump( $oauth_token ); ?>
+                <input type="submit" name="edd_slack_app_deauth" class="button" value="<?php echo _x( 'Unlink Slack App', 'OAUTH Deregister Button Label', EDD_Slack_ID ); ?>"/>
 
             <?php endif; ?>
             
@@ -142,6 +148,19 @@ class EDD_Slack_OAUTH_Settings {
      */
     public function store_oauth_token() {
         
+        echo ( function_exists( 'edd_delete_option' ) ) ? 'exists' : 'does not exist';
+        $test = edd_delete_option( 'slack_app_oauth_token' );
+        var_dump( $test );
+        edd_update_option( 'slack_app_oauth_token', '' );
+        
+        $options = get_option( 'edd_settings' );
+        unset( $options['slack_app_oauth_token'] );
+        $options = update_option( 'edd_settings', $options );
+        
+        var_dump( get_option( 'edd_settings') );
+        
+        var_dump( edd_get_option( 'slack_app_oauth_token' ) );
+        
         // If we need to get an OAUTH Token
         if ( isset( $_GET['code'] ) && ! edd_get_option( 'slack_app_oauth_token' ) ) {
             
@@ -150,8 +169,18 @@ class EDD_Slack_OAUTH_Settings {
         
             $redirect_uri = urlencode_deep( admin_url( 'edit.php?post_type=download&page=edd-settings&tab=extensions&section=edd-slack-settings' ) );
             
+            $oauth_access_url = add_query_arg(
+                array(
+                    'client_id' => $client_id,
+                    'client_secret' => $client_secret,
+                    'code' => $_GET['code'],
+                    'redirect_uri' => $redirect_uri,
+                ),
+                'oauth.access'
+            );
+            
             $oauth_request = EDDSLACK()->slack_api->post( 
-                'oauth.access?client_id=' . $client_id . '&client_secret=' . $client_secret . '&code=' . $_GET['code'] . '&redirect_uri=' . $redirect_uri
+                $oauth_access_url
             );
             
             if ( $oauth_request->ok == 'true' ) {
@@ -159,9 +188,62 @@ class EDD_Slack_OAUTH_Settings {
                 $oauth_token = $oauth_request->access_token;
                 EDDSLACK()->slack_api->set_oauth_token( $oauth_token );
                 
+                add_settings_error(
+                    'edd-notices',
+                    'edd_slack_app_auth',
+                    _x( 'Slack App Linked Successfully.', 'EDD Slack App Auth Successful', EDD_Slack_ID ),
+                    'updated'
+                );
+                
             }
             
         }
+        
+    }
+    
+    /**
+     * Revoke the OAUTH Token
+     * 
+     * @access      public
+     * @since       1.0.0
+     * @return      void
+     */
+    public function delete_oauth_token() {
+        
+        // If we're deauth-ing
+        if ( isset( $_POST['edd_slack_app_deauth'] ) ) {
+            
+            EDDSLACK()->slack_api->revoke_oauth_token();
+            
+            add_settings_error(
+                'edd-notices',
+                'edd_slack_app_deauth',
+                _x( 'Slack App Unlinked Successfully.', 'EDD Slack App Deauth Successful', EDD_Slack_ID ),
+                'updated'
+            );
+            
+        }
+        
+    }
+    
+    /**
+     * Remove weird duplicate notices that happen on deauth
+     * 
+     * @access      public
+     * @since       1.0.0
+     * @return      void
+     */
+    public function remove_duplicate_notices() {
+        
+        global $wp_settings_errors;
+        
+        echo 'test';
+        
+        //if ( isset( $_POST['edd_slack_app_deauth'] ) ) {
+        
+            //array_unique( $wp_settings_errors );
+            
+        //}
         
     }
     

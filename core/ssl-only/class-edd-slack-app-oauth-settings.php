@@ -40,6 +40,57 @@ class EDD_Slack_OAUTH_Settings {
         // Display Admin Notices
         add_action( 'admin_init', array( $this, 'display_admin_notices' ) );
         
+        //add_action( 'admin_init', array( $this, 'test' ) );
+        
+    }
+    
+    public function test() {
+        
+        $message_url = add_query_arg(
+            array(
+                'as_user' => 'false',
+                'channel'     => urlencode_deep( '#slack-testing' ),
+                'username'    => urlencode_deep( 'Web API' ),
+                'icon_emoji'  => urlencode_deep( ':spaaaaace:' ),
+                'icon_url'    => '',
+                'attachments' => urlencode_deep( json_encode( array(
+                    array(
+                        'text'    => 'text',
+                        'title'   => 'title',
+                        'pretext' => 'pretext',
+                        'callback_id' => 'test_callback',
+                        "actions" => array(
+                            array(
+                                "name" => "chess",
+                                "text" => "Chess",
+                                "type" => "button",
+                                "value" => "chess"
+                            ),
+                            array(
+                                "name" => "maze",
+                                "text" => "Falken's Maze",
+                                "type" => "button",
+                                "value" => "maze"
+                            )
+                        ),
+                    ),
+                ) ) ),
+            ),
+            'chat.postMessage'
+        );
+        
+        if ( is_user_logged_in() ) {
+        
+        var_dump( $message_url );
+        
+        $test = EDDSLACK()->slack_api->post(
+            $message_url
+        );
+        
+        var_dump( $test );
+            
+        }
+        
     }
     
     /**
@@ -80,6 +131,16 @@ class EDD_Slack_OAUTH_Settings {
                 )
             ),
             array(
+                'type' => 'text',
+                'name' => _x( 'Verification Token', 'Verification Token Label', EDD_Slack_ID ),
+                'id' => 'slack_app_verification_token',
+                'desc' => sprintf(
+                    _x( 'Enter the Verification Token found after %screating your Slack App%s.', 'Verification Token Help Text', EDD_Slack_ID ),
+                    '<a href="//api.slack.com/apps" target="_blank">',
+                    '</a>'
+                )
+            ),
+            array(
                 'type' => 'hook',
                 'id' => 'slack_oauth_register',
             )
@@ -111,7 +172,7 @@ class EDD_Slack_OAUTH_Settings {
          * @since 1.0.0
          */
         $scope = apply_filters( 'edd_slack_app_scope', array(
-            'chat:write:user',
+            'chat:write:bot',
             'commands',
         ) );
         

@@ -41,30 +41,57 @@ class EDD_Slack_REST {
 
     /**
      * Callback for our REST Endpoint
+     * This routes the functionality based on the passed callback_id
      * 
      * @param       object $request WP_REST_Request Object
      * @return      string JSON
      */
     public function route_action( $request ) {
 
-        $json = file_get_contents( 'php://input' );
+        $request_body = $request->get_body_params();
 
-        if ( empty( $json ) ) {
-            return json_encode( array(
-                'success' => false,
-                'message' => _x( 'No data payload', 'No JSON Uploaded Error', EDD_Slack_ID ),
-            ) );
+        // If no Payload was sent, bail
+        if ( empty( $request_body['payload'] ) ) {
+            return _x( 'No data payload', 'No Payload Error', EDD_Slack_ID );
         }
         
-        file_put_contents( $json, './test.json' );
+        // Decode the Payload JSON
+        $payload = json_decode( $request_body['payload'] );
         
-        $json = json_decode( $json );
+        // If the Verification Code doesn't match, bail
+        $verification_token = $payload->token;
+        if ( $verification_token !== edd_get_option( 'slack_app_verification_token' ) ) {
+            return _x( 'Bad Verification Token', 'Missing/Incorrect Verification Token Error', EDD_Slack_ID );
+        }
         
-        return json_encode( array(
-            'success' => true,
-            'message' => __( 'Success!', EDD_Slack_ID ),
-        ) );
+        $callback_id = $payload->callback_id;
+        
+        // Construct the callback function
+        $callback_function = 'edd_slack_rest_'. $callback_id;
+        $callback_function = ( is_callable( $callback_function ) ) ? $callback_function : 'edd_slack_rest_missing';
+        
+        // All Callback Functions should Payload
+        echo call_user_func( $callback_function, $payload );
+        
+        // We don't need to print anything outside what our callbacks provide
+        die();
 
     }
 
+}
+
+if ( ! function_exists( 'edd_slack_rest_missing' ) ) {
+    
+    /**
+     * EDD Slack Rest Missing Callback Function Fallback
+     * 
+     * @param  object $payload POST'd data from the Slack Client
+     * @return string Text
+     */
+    function edd_slack_rest_missing( $payload ) {
+        
+        return sprintf( _x( 'The Callback Function `edd_slack_rest_%s()` is missing!', 'Callback Function Missing Error', EDD_Slack_ID ), $payload->callback_id );
+        
+    }
+    
 }

@@ -11,6 +11,12 @@
 defined( 'ABSPATH' ) || die();
 
 class EDD_Slack_OAUTH_Settings {
+    
+    /**
+     * @var         EDD_Slack_OAUTH_Settings $admin_notices Allows Admin Notices to be ran when possible despite our Hook
+     * @since       1.0.0
+     */
+    private $admin_notices = array();
 
     /**
 	 * EDD_Slack_OAUTH_Settings constructor.
@@ -26,13 +32,13 @@ class EDD_Slack_OAUTH_Settings {
         add_action( 'edd_slack_oauth_register', array( $this, 'add_oauth_registration_button' ) );
         
         // Grab the OAUTH Key as part of the handshake process
-        add_action( 'edd_settings_tab_top_extensions_edd-slack-settings', array( $this, 'store_oauth_token' ) );
+        add_action( 'admin_init', array( $this, 'store_oauth_token' ) );
         
         // Delete the OAUTH Key
-        add_action( 'admin_init', array( $this, 'delete_oauth_token' ) );
+        add_action( 'init', array( $this, 'delete_oauth_token' ) );
         
-        // Remove weird duplicate notices
-        add_action( 'admin_notices', array( $this, 'remove_duplicate_notices' ) );
+        // Display Admin Notices
+        add_action( 'admin_init', array( $this, 'display_admin_notices' ) );
         
     }
     
@@ -148,21 +154,9 @@ class EDD_Slack_OAUTH_Settings {
      */
     public function store_oauth_token() {
         
-        echo ( function_exists( 'edd_delete_option' ) ) ? 'exists' : 'does not exist';
-        $test = edd_delete_option( 'slack_app_oauth_token' );
-        var_dump( $test );
-        edd_update_option( 'slack_app_oauth_token', '' );
-        
-        $options = get_option( 'edd_settings' );
-        unset( $options['slack_app_oauth_token'] );
-        $options = update_option( 'edd_settings', $options );
-        
-        var_dump( get_option( 'edd_settings') );
-        
-        var_dump( edd_get_option( 'slack_app_oauth_token' ) );
-        
         // If we need to get an OAUTH Token
-        if ( isset( $_GET['code'] ) && ! edd_get_option( 'slack_app_oauth_token' ) ) {
+        // $_GET['section'] is set properly by our redirect_uri
+        if ( isset( $_GET['code'] ) && isset( $_GET['section'] ) && $_GET['section'] == 'edd-slack-settings' && ! edd_get_option( 'slack_app_oauth_token' ) ) {
             
             $client_id = edd_get_option( 'slack_app_client_id' );
             $client_secret = edd_get_option( 'slack_app_client_secret' );
@@ -188,7 +182,7 @@ class EDD_Slack_OAUTH_Settings {
                 $oauth_token = $oauth_request->access_token;
                 EDDSLACK()->slack_api->set_oauth_token( $oauth_token );
                 
-                add_settings_error(
+                $this->admin_notices[] = array(
                     'edd-notices',
                     'edd_slack_app_auth',
                     _x( 'Slack App Linked Successfully.', 'EDD Slack App Auth Successful', EDD_Slack_ID ),
@@ -210,40 +204,46 @@ class EDD_Slack_OAUTH_Settings {
      */
     public function delete_oauth_token() {
         
-        // If we're deauth-ing
-        if ( isset( $_POST['edd_slack_app_deauth'] ) ) {
-            
-            EDDSLACK()->slack_api->revoke_oauth_token();
-            
-            add_settings_error(
-                'edd-notices',
-                'edd_slack_app_deauth',
-                _x( 'Slack App Unlinked Successfully.', 'EDD Slack App Deauth Successful', EDD_Slack_ID ),
-                'updated'
-            );
+        // For some reason we can't hook into admin_init within a production environment. Yeah, I have no idea either
+        // It only effects DELETING things from wp_options. Storing works just fine.
+        if ( is_admin() ) {
+        
+            // If we're deauth-ing
+            if ( isset( $_POST['edd_slack_app_deauth'] ) ) {
+
+                EDDSLACK()->slack_api->revoke_oauth_token();
+
+                $this->admin_notices[] = array(
+                    'edd-notices',
+                    'edd_slack_app_deauth',
+                    _x( 'Slack App Unlinked Successfully.', 'EDD Slack App Deauth Successful', EDD_Slack_ID ),
+                    'updated'
+                );
+
+            }
             
         }
         
     }
     
     /**
-     * Remove weird duplicate notices that happen on deauth
+     * Sometimes we need to add Admin Notices when add_settings_error() isn't accessable yet
      * 
      * @access      public
      * @since       1.0.0
      * @return      void
      */
-    public function remove_duplicate_notices() {
-        
-        global $wp_settings_errors;
-        
-        echo 'test';
-        
-        //if ( isset( $_POST['edd_slack_app_deauth'] ) ) {
-        
-            //array_unique( $wp_settings_errors );
+    public function display_admin_notices() {
             
-        //}
+        foreach( $this->admin_notices as $admin_notice ) {
+            
+            // Pass array as Function Parameters
+            call_user_func_array( 'add_settings_error', $admin_notice );
+            
+        }
+        
+        // Clear out Notices
+        $this->admin_notices = array();
         
     }
     

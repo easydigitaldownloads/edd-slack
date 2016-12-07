@@ -244,7 +244,14 @@ if ( ! class_exists( 'EDD_Slack' ) ) {
             
             // If EDD FES is Active
             if ( class_exists( 'EDD_Front_End_Submissions' ) ) {
+                
                 require_once EDD_Slack_DIR . '/core/integrations/edd-frontend-submissions/class-edd-slack-frontend-submissions.php';
+                
+                // If we've got a linked Slack App
+                if ( is_ssl() && edd_get_option( 'slack_app_oauth_token' ) ) {
+                    require_once EDD_Slack_DIR . '/core/ssl-only/integrations/edd-frontend-submissions/class-edd-slack-app-frontend-submissions.php';
+                }
+                
             }
             
             // If EDD Commissions is Active

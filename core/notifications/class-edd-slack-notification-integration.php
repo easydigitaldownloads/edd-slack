@@ -109,7 +109,7 @@ class EDD_Slack_Notification_Integration {
         
         do_action( 'edd_slack_after_replacements', $post, $fields, $trigger, $notification_id, $args );
 
-		$this->push_notification( $fields );
+		$this->push_notification( $fields, $trigger, $notification_id );
         
 	}
     
@@ -244,13 +244,15 @@ class EDD_Slack_Notification_Integration {
     /**
      * Sends the Data to Slack
      * 
-     * @param       array $fields Fully Transformed Notification Fields
+     * @param       array  $fields Fully Transformed Notification Fields
+     * @param       string $trigger         Notification Trigger
+     * @param       string $notification_id ID used for Notification Hooks
      *                                                     
      * @access      public
      * @since       1.0.0
      * @return      void
      */
-    public function push_notification( $fields ) {
+    public function push_notification( $fields, $trigger, $notification_id ) {
         
         // Allow Users to possibly be targeted
         if ( $fields['channel'] !== '' && strpos( $fields['channel'], '#' ) !== 0 && strpos( $fields['channel'], '@' ) !== 0 ) {
@@ -272,7 +274,56 @@ class EDD_Slack_Notification_Integration {
 			),
 		);
         
-		EDDSLACK()->slack_api->push_incoming_webhook( $fields['webhook_url'], $args );
+        /**
+         * Allow the Notification Args to be overriden. Useful for Slack App Integration
+         *
+         * @since 1.0.0
+         */
+        $args = apply_filters( 'edd_slack_notification_args', $args, $trigger, $notification_id );
+        
+        /**
+         * Allow the Webhook URL to be overriden. Useful for Slack App Integration
+         *
+         * @since 1.0.0
+         */
+        $webhook_url = apply_filters( 'edd_slack_notification_webhook', $fields['webhook_url'], $trigger, $notification_id );
+        
+        // If we're using a regular Webhook
+        if ( strpos( $webhook_url, 'hooks.slack.com' ) ) {
+        
+		  EDDSLACK()->slack_api->push_incoming_webhook( $webhook_url, $args );
+            
+        }
+        else { // Send it via Slack's Web API
+                
+            $default_channel = edd_get_option( 'slack_app_channel_default' );
+            $default_channel = ( empty( $default_channel ) ) ? '#general' : $default_channel; // Since it can be saved as an empty value
+
+            $default_icon = edd_get_option( 'slack_app_icon_default' );
+
+            // Remove keys with empty strings as their value
+            $args = array_diff( $args, array( '' ) );
+
+            $args = wp_parse_args( $args, array(
+                'channel' => $default_channel,
+                'icon_emoji' => strpos( $default_icon, 'http' ) === false ? $default_icon : '',
+                'icon_url' => strpos( $default_icon, 'http' ) !== false ? $default_icon : '',
+                'as_user' => 'false', // Posts as a "Bot" which allows customization of the Username and Icon
+                'callback_id' => $trigger, // Constructs the Routing function for the WP REST API
+            ) );
+            
+            // Construct the URL using the $args from the Notification that have been filtered
+            $message_url = add_query_arg( 
+                EDDSLACK()->slack_api->encode_arguments( $args ),
+                $webhook_url
+            );
+            
+            // Doing it this way also automagically includes our OAUTH Token
+            $message = EDDSLACK()->slack_api->post(
+                $message_url
+            );
+            
+        }
         
     }
     

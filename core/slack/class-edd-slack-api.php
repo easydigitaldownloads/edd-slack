@@ -166,6 +166,36 @@ class EDD_Slack_API {
     }
     
     /**
+     * Encode $args for being passed as GET parameters for the Slack Web API
+     * 
+     * @param       array $args Notification Arguments
+     *                                       
+     * @access      public
+     * @since       1.0.0
+     * @return      array Transformed Notification Arguments
+     */
+    public function encode_arguments( $args ) {
+        
+        foreach ( $args as $key => $value ) {
+            
+            if ( empty( $value ) ) {
+                unset( $args[ $key ] );
+                continue;
+            }
+            
+            if ( is_array( $value ) ) {
+                $value = json_encode( $value );
+            }
+            
+            $args[ $key ] = urlencode_deep( $value );
+            
+        }
+        
+        return $args;
+        
+    }
+    
+    /**
      * Set the OAUTH Token for the Object
      * 
      * @param string $oauth_token Slack API OAUTH Token

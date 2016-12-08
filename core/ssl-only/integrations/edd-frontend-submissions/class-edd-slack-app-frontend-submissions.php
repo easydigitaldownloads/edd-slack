@@ -209,9 +209,9 @@ if ( ! function_exists( 'edd_slack_rest_edd_fes_new_vendor_product' ) ) {
         
         if ( strtolower( $action ) == 'approve' ) {
             
-            $update = wp_insert_post( array(
+            $publish = wp_update_post( array(
                 'ID' => $value->download_id,
-                'status' => 'publish',
+                'post_status' => 'publish',
             ) );
             
             $message = sprintf( _x( "%s has Approved %s's Product Submission titled \"%s\"", 'Vendor Product Approved Response Text', EDD_Slack_ID ), $payload->user->name, $vendor->name, get_the_title( $value->download_id ) );
@@ -219,7 +219,12 @@ if ( ! function_exists( 'edd_slack_rest_edd_fes_new_vendor_product' ) ) {
         }
         else if ( strtolower( $action ) == 'deny' ) {
             
-            $message = sprintf( _x( "%s has Denied %s's Product Submission titled \"%s\"", 'Vendor Product Approved Response Text', EDD_Slack_ID ), $payload->user->name, $vendor->name, get_the_title( $value->download_id ) );
+            $trash = wp_update_post( array(
+                'ID' => $value->download_id,
+                'post_status' => 'trash',
+            ) );
+            
+            $message = sprintf( _x( "%s has Denied %s's Product Submission titled \"%s\"", 'Vendor Product Denied Response Text', EDD_Slack_ID ), $payload->user->name, $vendor->name, get_the_title( $value->download_id ) );
             
         }
         

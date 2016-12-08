@@ -300,8 +300,6 @@ class EDD_Slack_Notification_Integration {
         if ( strpos( $fields['webhook_url'], 'hooks.slack.com' ) ) {
         
             $message = EDDSLACK()->slack_api->push_incoming_webhook( $fields['webhook_url'], $notification_args );
-            var_dump( $message );
-            die();
             
         }
         else { // Send it via Slack's Web API

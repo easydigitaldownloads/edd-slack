@@ -33,13 +33,13 @@ class EDD_Slack_REST {
 
         register_rest_route( 'edd-slack/v1', '/slack-app/submit', array(
             'methods' => 'POST',
-            'callback' => array( $this, 'route_action' ),
+            'callback' => array( $this, 'route_interactive_button' ),
         ) );
 
     }
 
     /**
-     * Callback for our REST Endpoint
+     * Callback for our Interactive Button REST Endpoint
      * This routes the functionality based on the passed callback_id
      * 
      * @param       object $request WP_REST_Request Object
@@ -48,7 +48,7 @@ class EDD_Slack_REST {
      * @since       1.0.0
      * @return      string JSON
      */
-    public function route_action( $request ) {
+    public function route_interactive_button( $request ) {
 
         $request_body = $request->get_body_params();
 
@@ -87,14 +87,14 @@ if ( ! function_exists( 'edd_slack_rest_missing' ) ) {
     /**
      * EDD Slack Rest Missing Callback Function Fallback
      * 
-     * @param string $value        Name and Value from the Interactive Button. This should be json_decode()'d
-     * @param string $response_url Webhook to send the Response Message to
-     * @param object $payload      POST'd data from the Slack Client
+     * @param       object $button       name and value from the Interactive Button. value should be json_decode()'d
+     * @param       string $response_url Webhook to send the Response Message to
+     * @param       object $payload      POST'd data from the Slack Client
      *                                                        
      * @since       1.0.0
      * @return      void
      */
-    function edd_slack_rest_missing( $value, $response_url, $payload ) {
+    function edd_slack_rest_missing( $button, $response_url, $payload ) {
         
         // Response URLs are Incoming Webhooks
         $response_message = EDDSLACK()->slack_api->push_incoming_webhook(

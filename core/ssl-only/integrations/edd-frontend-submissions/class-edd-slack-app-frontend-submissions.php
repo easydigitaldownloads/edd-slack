@@ -105,3 +105,65 @@ class EDD_Slack_App_Frontend_Submissions {
 }
 
 $integrate = new EDD_Slack_App_Frontend_Submissions();
+
+if ( ! function_exists( 'edd_slack_rest_edd_fes_vendor_registered' ) ) {
+    
+    /**
+     * EDD Slack Rest Vendor Registered Endpoint
+     * 
+     * @param       object $button       name and value from the Interactive Button. value should be json_decode()'d
+     * @param       string $response_url Webhook to send the Response Message to
+     * @param       object $payload      POST'd data from the Slack Client
+     *                                                        
+     * @since       1.0.0
+     * @return      void
+     */
+    function edd_slack_rest_edd_fes_vendor_registered( $button, $response_url, $payload ) {
+        
+        $action = $button->name;
+        $value = json_decode( $button->value );
+        
+        // Set depending on the Action
+        $message = '';
+        
+        // Grab Vendor Object by User ID
+        $vendor = new FES_Vendor( $value->user_id, true );
+        
+        if ( strtolower( $action ) == 'approve' ) {
+            
+            $vendor->change_status( 'approved', false, false );
+            
+            $message = sprintf( _x( "%s has Approved %s's Request to be a Vendor", 'Vendor Approved Response Text', EDD_Slack_ID ), $payload->user->name, $vendor->name );
+            
+        }
+        else if ( strtolower( $action ) == 'deny' ) {
+            
+            // EDD FES doesn't normally let you Decline Vendors outside of the Admin, but that won't stop us
+            $user = new WP_User( $vendor->user_id );
+
+            if ( ! ( user_can( $vendor->user_id, 'subscriber' ) ) ) {
+                $user->add_role( 'subscriber' ); // in case pending_vendor is the only role they have. Puts a hose onto a world that might otherwise be on fire.
+            }
+
+            if ( user_can( $vendor->user_id, 'pending_vendor' ) ) {
+                $user->remove_role( 'pending_vendor' );
+            }
+            
+            $vendor_db = new FES_DB_Vendors();
+            $vendor_db->delete( $vendor->id ); // delete vendor row
+            
+            $message = sprintf( _x( "%s has Denied %s's Request to be a Vendor", 'Vendor Denied Response Text', EDD_Slack_ID ), $payload->user->name, $vendor->name );
+            
+        }
+        
+        // Response URLs are Incoming Webhooks
+        $response_message = EDDSLACK()->slack_api->push_incoming_webhook(
+            $response_url,
+            array(
+                'text' => $message,
+            )
+        );
+        
+    }
+    
+}

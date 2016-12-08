@@ -119,11 +119,16 @@ class EDD_Slack_Comments {
         
         $comment_post = get_post( $commentdata['comment_post_ID'] );
         
-        if ( get_post_type( $comment_post ) == 'download' && $comment_approved == 1 ) {
+        if ( get_post_type( $comment_post ) == 'download' && $comment_approved !== 'spam' ) {
+            
+            $comment = get_comment ( $comment_id );
             
             do_action( 'edd_slack_notify', 'comment_post', array(
                 'user_id' => $commentdata['user_ID'],
+                'name' => $comment->comment_author,
+                'email' => $comment->comment_author_email,
                 'comment_id' => $comment_id,
+                'comment_approved' => $comment_approved,
                 'comment_post_id' => $commentdata['comment_post_ID'],
                 'comment_content' => $commentdata['comment_content'],
                 'comment_parent' => $commentdata['comment_parent'],
@@ -197,6 +202,12 @@ class EDD_Slack_Comments {
             switch ( $trigger ) {
 
                 case 'comment_post':
+                    
+                    if ( $args['user_id'] == 0 ) {
+                        $replacements['%username%'] = _x( 'This Commenter does not have an account', 'No Username Replacement Text', EDD_Slack_ID );
+                    }
+                    
+                    $replacements['%download%'] = get_the_title( $args['comment_post_id'] );
                     $replacements['%comment_content%'] = $args['comment_content'];
                     break;
                     
@@ -225,6 +236,7 @@ class EDD_Slack_Comments {
     public function custom_replacement_hints( $hints, $user_hints, $payment_hints ) {
         
         $comment_hints = array(
+            '%download%' => sprintf( _x( 'The %s the Comment was made on', '%download% Hint Text', EDD_Slack_ID ), edd_get_label_singular() ),
             '%comment_content%' => _x( 'The Comment itself', '%comment_content% Hint Text', EDD_Slack_ID ),
         );
         

@@ -12,10 +12,9 @@ defined( 'ABSPATH' ) || die();
 
 class EDD_Slack_REST {
 
-
     /**
      * EDD_Slack_REST constructor.
-     * @since 0.1.0
+     * @since 1.0.0
      */
     function __construct() {
 
@@ -26,8 +25,8 @@ class EDD_Slack_REST {
     /**
      * Creates a WP REST API route that Listens for the Slack App's Response to the User's Action within their Slack Client
      * 
-     * @since       0.1.0
      * @access      public
+     * @since       1.0.0
      * @return      void
      */
     public function create_routes() {
@@ -44,6 +43,9 @@ class EDD_Slack_REST {
      * This routes the functionality based on the passed callback_id
      * 
      * @param       object $request WP_REST_Request Object
+     *                                              
+     * @access      public
+     * @since       1.0.0
      * @return      string JSON
      */
     public function route_action( $request ) {
@@ -70,8 +72,8 @@ class EDD_Slack_REST {
         $callback_function = 'edd_slack_rest_'. $callback_id;
         $callback_function = ( is_callable( $callback_function ) ) ? $callback_function : 'edd_slack_rest_missing';
         
-        // All Callback Functions should Payload
-        echo call_user_func( $callback_function, $payload );
+        // Route to a Callback Function and include all the Data we need
+        call_user_func( $callback_function, $payload->actions[0], $payload->response_url, $payload );
         
         // We don't need to print anything outside what our callbacks provide
         die();
@@ -85,12 +87,22 @@ if ( ! function_exists( 'edd_slack_rest_missing' ) ) {
     /**
      * EDD Slack Rest Missing Callback Function Fallback
      * 
-     * @param  object $payload POST'd data from the Slack Client
-     * @return string Text
+     * @param string $value        Name and Value from the Interactive Button. This should be json_decode()'d
+     * @param string $response_url Webhook to send the Response Message to
+     * @param object $payload      POST'd data from the Slack Client
+     *                                                        
+     * @since       1.0.0
+     * @return      void
      */
-    function edd_slack_rest_missing( $payload ) {
+    function edd_slack_rest_missing( $value, $response_url, $payload ) {
         
-        return sprintf( _x( 'The Callback Function `edd_slack_rest_%s()` is missing!', 'Callback Function Missing Error', EDD_Slack_ID ), $payload->callback_id );
+        // Response URLs are Incoming Webhooks
+        $response_message = EDDSLACK()->slack_api->push_incoming_webhook(
+            $response_url,
+            array(
+                'text' => sprintf( _x( 'The Callback Function `edd_slack_rest_%s()` is missing!', 'Callback Function Missing Error', EDD_Slack_ID ), $payload->callback_id ),
+            )
+        );
         
     }
     

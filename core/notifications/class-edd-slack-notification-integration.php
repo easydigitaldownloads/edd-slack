@@ -109,7 +109,7 @@ class EDD_Slack_Notification_Integration {
         
         do_action( 'edd_slack_after_replacements', $post, $fields, $trigger, $notification_id, $args );
 
-		$this->push_notification( $fields, $trigger, $notification_id );
+		$this->push_notification( $fields, $trigger, $notification_id, $args );
         
 	}
     
@@ -244,22 +244,23 @@ class EDD_Slack_Notification_Integration {
     /**
      * Sends the Data to Slack
      * 
-     * @param       array  $fields Fully Transformed Notification Fields
+     * @param       array  $fields          Fully Transformed Notification Fields
      * @param       string $trigger         Notification Trigger
      * @param       string $notification_id ID used for Notification Hooks
+     * @param       array  $args            $args Array passed from the original Trigger of the process
      *                                                     
      * @access      public
      * @since       1.0.0
      * @return      void
      */
-    public function push_notification( $fields, $trigger, $notification_id ) {
+    public function push_notification( $fields, $trigger, $notification_id, $args ) {
         
         // Allow Users to possibly be targeted
         if ( $fields['channel'] !== '' && strpos( $fields['channel'], '#' ) !== 0 && strpos( $fields['channel'], '@' ) !== 0 ) {
             $fields['channel'] = '#' . $fields['channel'];
         }
         
-        $args = array(
+        $notification_args = array(
 			'channel'     => $fields['channel'] ? $fields['channel'] : '',
 			'username'    => $fields['username'],
 			'icon_emoji'  => strpos( $fields['icon'], 'http' ) === false ? $fields['icon'] : '',
@@ -279,14 +280,14 @@ class EDD_Slack_Notification_Integration {
          *
          * @since 1.0.0
          */
-        $args = apply_filters( 'edd_slack_notification_args', $args, $trigger, $notification_id );
+        $notification_args = apply_filters( 'edd_slack_notification_args', $notification_args, $trigger, $notification_id, $args );
         
         /**
          * Allow the Webhook URL to be overriden. Useful for Slack App Integration
          *
          * @since 1.0.0
          */
-        $webhook_url = apply_filters( 'edd_slack_notification_webhook', $fields['webhook_url'], $trigger, $notification_id );
+        $webhook_url = apply_filters( 'edd_slack_notification_webhook', $fields['webhook_url'], $trigger, $notification_id, $args );
         
         // If we're using a regular Webhook
         if ( strpos( $webhook_url, 'hooks.slack.com' ) ) {
@@ -302,19 +303,25 @@ class EDD_Slack_Notification_Integration {
             $default_icon = edd_get_option( 'slack_app_icon_default' );
 
             // Remove keys with empty strings as their value
-            $args = array_diff( $args, array( '' ) );
+            $notification_args = array_filter( $notification_args );
 
-            $args = wp_parse_args( $args, array(
+            $notification_args = wp_parse_args( $notification_args, array(
                 'channel' => $default_channel,
                 'icon_emoji' => strpos( $default_icon, 'http' ) === false ? $default_icon : '',
                 'icon_url' => strpos( $default_icon, 'http' ) !== false ? $default_icon : '',
                 'as_user' => 'false', // Posts as a "Bot" which allows customization of the Username and Icon
+                'text' => '', // We are defining Text as an Attachment, but the API requires SOMETHING here
+            ) );
+            
+            // You can't use wp_parse_args() to target nested Array Indices apparently
+            $notification_args['attachments'][0] = wp_parse_args( $notification_args['attachments'][0], array(
                 'callback_id' => $trigger, // Constructs the Routing function for the WP REST API
+                'fallback' => $notification_args['attachments'][0]['pretext'],
             ) );
             
             // Construct the URL using the $args from the Notification that have been filtered
             $message_url = add_query_arg( 
-                EDDSLACK()->slack_api->encode_arguments( $args ),
+                EDDSLACK()->slack_api->encode_arguments( $notification_args ),
                 $webhook_url
             );
             

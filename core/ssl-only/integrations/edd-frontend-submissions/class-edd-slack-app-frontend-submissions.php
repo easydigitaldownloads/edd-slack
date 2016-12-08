@@ -114,6 +114,24 @@ class EDD_Slack_App_Frontend_Submissions {
             )
         );
         
+        if ( $trigger == 'edd_fes_vendor_registered' ) {
+        
+            $notification_args['attachments'][0]['actions'][1]['confirm'] = array(
+                'title' => _x( 'Are you sure?', 'Confirmation Title Text', EDD_Slack_ID ),
+                'text' => _x( 'They will need to re-apply to be a Vendor if this was a mistake', 'EDD FES Vendor Denial Confirmation Explaination Text', EDD_Slack_ID ),
+                'ok_text' => _x( 'Yes, I understand the risks', 'Confirmation "Yes" Button', EDD_Slack_ID ),
+                'dismiss_text' => _x( 'No, I changed my mind', 'Confirmation "No" Button', EDD_Slack_ID ),
+            );
+            
+        }
+        
+        /**
+         * Allow the Notification Args for the Slack App Integration to be overriden
+         *
+         * @since 1.0.0
+         */
+        $notification_args = apply_filters( 'edd_slack_app_' . $trigger . '_notification_args', $notification_args, $notification_id, $args );
+        
         return $notification_args;
         
     }

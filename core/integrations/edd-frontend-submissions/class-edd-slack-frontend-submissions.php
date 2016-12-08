@@ -35,7 +35,7 @@ class EDD_Slack_Frontend_Submissions {
         add_action( 'fes_save_vendor-contact_form_values_after_save', array( $this, 'edd_fes_vendor_contact' ), 10, 3 );
         
         // Add our own Replacement Strings
-        add_filter( 'edd_slack_notifications_replacements', array( $this, 'custom_replacement_strings' ), 10, 4 );
+        add_filter( 'edd_slack_notifications_replacements', array( $this, 'custom_replacement_strings' ), 10, 5 );
         
         // Add our own Hints for the Replacement Strings
         add_filter( 'edd_slack_text_replacement_hints', array( $this, 'custom_replacement_hints' ), 10, 3 );
@@ -78,14 +78,6 @@ class EDD_Slack_Frontend_Submissions {
      */
     public function edd_fes_vendor_registered( $insert_id, $args ) {
         
-        // If we are auto-approving Vendors
-        if ( (bool) EDD_FES()->helper->get_option( 'fes-auto-approve-vendors', false ) ) {
-            
-        }
-        else {
-            
-        }
-        
         do_action( 'edd_slack_notify', 'edd_fes_vendor_registered', array(
             'user_id' => $args['user_id'],
         ) );
@@ -108,14 +100,6 @@ class EDD_Slack_Frontend_Submissions {
         $is_vendor = EDD_FES()->vendors->user_is_status( 'approved', $user_id );
         
         if ( ! $is_vendor ) return false;
-          
-        // If we're auto-approving Vendor Products
-        if ( (bool) EDD_FES()->helper->get_option( 'fes-auto-approve-submissions', false ) && get_post_status( $download_id ) == 'publish' ) {
-
-        }
-        else if ( get_post_status( $download_id ) == 'pending' ) {
-
-        }
 
         do_action( 'edd_slack_notify', 'edd_fes_new_vendor_product', array(
             'user_id' => $user_id,
@@ -183,6 +167,7 @@ class EDD_Slack_Frontend_Submissions {
      * Based on our Notification ID and Trigger, use some extra Replacement Strings
      * 
      * @param       array  $replacements    Notification Fields to check for replacements in
+     * @param       array  $fields          Fields used to create the Post Meta
      * @param       string $trigger         Notification Trigger
      * @param       string $notification_id ID used for Notification Hooks
      * @param       array  $args            $args Array passed from the original Trigger of the process
@@ -191,7 +176,7 @@ class EDD_Slack_Frontend_Submissions {
      * @since       1.0.0
      * @return      array  Replaced Strings within each Field
      */
-    public function custom_replacement_strings( $replacements, $trigger, $notification_id, $args ) {
+    public function custom_replacement_strings( $replacements, $fields, $trigger, $notification_id, $args ) {
 
         if ( $notification_id == 'rbm' ) {
 
@@ -199,7 +184,14 @@ class EDD_Slack_Frontend_Submissions {
                     
                 case 'edd_fes_new_vendor_product':
                     
-                    $replacements['%download_link%'] = '<' . urlencode_deep( get_edit_post_link( $args['download_id'], '' ) ) . '|' . sprintf( _x( "View this Vendor's %s", "View this Vendor's Download Link", EDD_Slack_ID ) . '>', edd_get_label_singular() );
+                    $download_link = get_edit_post_link( $args['download_id'], '' );
+                    
+                    // If we're using a regular Webhook
+                    if ( strpos( $fields['webhook_url'], 'hooks.slack.com' ) ) {
+                        $download_link = urlencode_deep( $download_link );
+                    }
+                    
+                    $replacements['%download_link%'] = '<' . $download_link . '|' . sprintf( _x( "View this Vendor's %s", "View this Vendor's Download Link", EDD_Slack_ID ) . '>', edd_get_label_singular() );
                     
                     // Intentionally not break-ing to include the next Case
                     

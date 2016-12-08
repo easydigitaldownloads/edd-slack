@@ -43,16 +43,24 @@ class EDD_Slack_App_Frontend_Submissions {
         
         if ( $notification_id !== 'rbm' ) return $webhook_url;
         
-        if ( $trigger == 'edd_fes_vendor_registered' ) {
+        // If our Trigger doesn't an applicable FES Trigger, bail
+        if ( $trigger !== 'edd_fes_vendor_registered' && 
+            $trigger !== 'edd_fes_new_vendor_product' ) return $webhook_url;
         
-            // If we are NOT auto-approving Vendors
-            if ( ! (bool) EDD_FES()->helper->get_option( 'fes-auto-approve-vendors', false ) ) {
-                return 'chat.postMessage';
-            }
-            
-        }
+        // If we are auto-approving Vendors, bail
+        if ( $trigger == 'edd_fes_vendor_registered' && 
+            (bool) EDD_FES()->helper->get_option( 'fes-auto-approve-vendors', false ) ) return $webhook_url;
         
-        return $webhook_url;
+        // If we are auto-approving new Product Submissions, bail
+        if ( $trigger == 'edd_fes_new_vendor_product' && 
+           (bool) EDD_FES()->helper->get_option( 'fes-auto-approve-submissions', false ) ) return $webhook_url;
+        
+        // If the product isn't pending, bail
+        if ( $trigger == 'edd_fes_new_vendor_product' && 
+           isset( $args['download_id'] ) && 
+           get_post_status( $args['download_id'] ) !== 'pending' ) return $webhook_url;
+
+        return 'chat.postMessage';
         
     }
     
@@ -72,31 +80,39 @@ class EDD_Slack_App_Frontend_Submissions {
         
         if ( $notification_id !== 'rbm' ) return $notification_args;
         
-        if ( $trigger == 'edd_fes_vendor_registered' ) {
+        // If our Trigger doesn't an applicable FES Trigger, bail
+        if ( $trigger !== 'edd_fes_vendor_registered' && 
+            $trigger !== 'edd_fes_new_vendor_product' ) return $notification_args;
         
-            // If we are NOT auto-approving Vendors
-            if ( ! (bool) EDD_FES()->helper->get_option( 'fes-auto-approve-vendors', false ) ) {
-                
-                $notification_args['attachments'][0]['actions'] = array(
-                    array(
-                        'name' => 'approve',
-                        'text' => _x( 'Approve', 'Approve FES Vendor Interactive Button Text', EDD_Slack_ID ),
-                        'type' => 'button',
-                        'style' => 'primary',
-                        'value' => json_encode( $args ),
-                    ),
-                    array(
-                        'name' => 'deny',
-                        'text' => _x( 'Deny', 'Deny FES Vendor Interactive Button Text', EDD_Slack_ID ),
-                        'type' => 'button',
-                        'style' => 'default',
-                        'value' => json_encode( $args ),
-                    )
-                );
-                
-            }
-            
-        }
+        // If we are auto-approving Vendors, bail
+        if ( $trigger == 'edd_fes_vendor_registered' && 
+            (bool) EDD_FES()->helper->get_option( 'fes-auto-approve-vendors', false ) ) return $notification_args;
+        
+        // If we are auto-approving new Product Submissions, bail
+        if ( $trigger == 'edd_fes_new_vendor_product' && 
+           (bool) EDD_FES()->helper->get_option( 'fes-auto-approve-submissions', false ) ) return $notification_args;
+        
+        // If the product isn't pending, bail
+        if ( $trigger == 'edd_fes_new_vendor_product' && 
+           isset( $args['download_id'] ) && 
+           get_post_status( $args['download_id'] ) !== 'pending' ) return $notification_args;
+        
+        $notification_args['attachments'][0]['actions'] = array(
+            array(
+                'name' => 'approve',
+                'text' => _x( 'Approve', 'Approve Button Text', EDD_Slack_ID ),
+                'type' => 'button',
+                'style' => 'primary',
+                'value' => json_encode( $args ),
+            ),
+            array(
+                'name' => 'deny',
+                'text' => _x( 'Deny', 'Deny Button Text', EDD_Slack_ID ),
+                'type' => 'button',
+                'style' => 'default',
+                'value' => json_encode( $args ),
+            )
+        );
         
         return $notification_args;
         
@@ -153,6 +169,57 @@ if ( ! function_exists( 'edd_slack_rest_edd_fes_vendor_registered' ) ) {
             $vendor_db->delete( $vendor->id ); // delete vendor row
             
             $message = sprintf( _x( "%s has Denied %s's Request to be a Vendor", 'Vendor Denied Response Text', EDD_Slack_ID ), $payload->user->name, $vendor->name );
+            
+        }
+        
+        // Response URLs are Incoming Webhooks
+        $response_message = EDDSLACK()->slack_api->push_incoming_webhook(
+            $response_url,
+            array(
+                'text' => $message,
+            )
+        );
+        
+    }
+    
+}
+
+if ( ! function_exists( 'edd_slack_rest_edd_fes_new_vendor_product' ) ) {
+    
+    /**
+     * EDD Slack Rest Vendor Registered Endpoint
+     * 
+     * @param       object $button       name and value from the Interactive Button. value should be json_decode()'d
+     * @param       string $response_url Webhook to send the Response Message to
+     * @param       object $payload      POST'd data from the Slack Client
+     *                                                        
+     * @since       1.0.0
+     * @return      void
+     */
+    function edd_slack_rest_edd_fes_new_vendor_product( $button, $response_url, $payload ) {
+        
+        $action = $button->name;
+        $value = json_decode( $button->value );
+        
+        // Set depending on the Action
+        $message = '';
+        
+        // Grab Vendor Object by User ID
+        $vendor = new FES_Vendor( $value->user_id, true );
+        
+        if ( strtolower( $action ) == 'approve' ) {
+            
+            $update = wp_insert_post( array(
+                'ID' => $value->download_id,
+                'status' => 'publish',
+            ) );
+            
+            $message = sprintf( _x( "%s has Approved %s's Product Submission titled \"%s\"", 'Vendor Product Approved Response Text', EDD_Slack_ID ), $payload->user->name, $vendor->name, get_the_title( $value->download_id ) );
+            
+        }
+        else if ( strtolower( $action ) == 'deny' ) {
+            
+            $message = sprintf( _x( "%s has Denied %s's Product Submission titled \"%s\"", 'Vendor Product Approved Response Text', EDD_Slack_ID ), $payload->user->name, $vendor->name, get_the_title( $value->download_id ) );
             
         }
         

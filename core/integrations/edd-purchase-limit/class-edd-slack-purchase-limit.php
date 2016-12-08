@@ -31,7 +31,7 @@ class EDD_Slack_Purchase_Limit {
         add_action( 'edd_slack_before_replacements', array( $this, 'before_notification_replacements' ), 10, 5 );
         
         // Add our own Replacement Strings
-        add_filter( 'edd_slack_notifications_replacements', array( $this, 'custom_replacement_strings' ), 10, 4 );
+        add_filter( 'edd_slack_notifications_replacements', array( $this, 'custom_replacement_strings' ), 10, 5 );
         
         // Add our own Hints for the Replacement Strings
         add_filter( 'edd_slack_text_replacement_hints', array( $this, 'custom_replacement_hints' ), 10, 3 );
@@ -182,6 +182,7 @@ class EDD_Slack_Purchase_Limit {
      * Based on our Notification ID and Trigger, use some extra Replacement Strings
      * 
      * @param       array  $replacements    Notification Fields to check for replacements in
+     * @param       array  $fields          Fields used to create the Post Meta
      * @param       string $trigger         Notification Trigger
      * @param       string $notification_id ID used for Notification Hooks
      * @param       array  $args            $args Array passed from the original Trigger of the process
@@ -190,7 +191,7 @@ class EDD_Slack_Purchase_Limit {
      * @since       1.0.0
      * @return      array  Replaced Strings within each Field
      */
-    public function custom_replacement_strings( $replacements, $trigger, $notification_id, $args ) {
+    public function custom_replacement_strings( $replacements, $fields, $trigger, $notification_id, $args ) {
 
         if ( $notification_id == 'rbm' ) {
 

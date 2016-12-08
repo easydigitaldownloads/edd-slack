@@ -29,7 +29,7 @@ class EDD_Slack_Notification_Integration {
         add_action( 'edd_slack_before_replacements', array( $this, 'before_notification_replacements' ), 10, 5 );
         
         // Add our own Replacement Strings
-        add_filter( 'edd_slack_notifications_replacements', array( $this, 'custom_replacement_strings' ), 10, 4 );
+        add_filter( 'edd_slack_notifications_replacements', array( $this, 'custom_replacement_strings' ), 10, 5 );
         
     }
     
@@ -68,8 +68,24 @@ class EDD_Slack_Notification_Integration {
      * @return      void
      */
     public function create_notification( $post, $fields, $trigger, $notification_id, $args ) {
-
-        $defaults = edd_get_option( 'slack_webhook_default' );
+        
+        $fields = wp_parse_args( array_filter( $fields ), array(
+			'webhook_url'     => ( $webhook = edd_get_option( 'slack_webhook_default') ) ? $webhook : '',
+			'channel'         => '',
+			'message_text'    => '',
+			'message_title'   => $post->post_title,
+			'message_pretext' => '',
+			'color'           => '',
+			'username'        => get_bloginfo( 'name' ),
+			'icon'            => function_exists( 'has_site_icon' ) && has_site_icon() ? get_site_icon_url( 270 ) : '',
+		) );
+        
+        /**
+         * Allow the Webhook URL to be overriden. Useful for Slack App Integration
+         *
+         * @since 1.0.0
+         */
+        $fields['webhook_url'] = apply_filters( 'edd_slack_notification_webhook', $fields['webhook_url'], $trigger, $notification_id, $args );
         
         // This allows the chance to possibly alter $args if needed
         do_action_ref_array( 'edd_slack_before_replacements', array( $post, $fields, $trigger, $notification_id, &$args ) );
@@ -80,17 +96,6 @@ class EDD_Slack_Notification_Integration {
          * @since 1.0.0
          */
         if ( $args['bail'] ) return false;
-        
-		$fields = wp_parse_args( array_filter( $fields ), array(
-			'webhook_url'     => ( $webhook = edd_get_option( 'slack_webhook_default') ) ? $webhook : '',
-			'channel'         => '',
-			'message_text'    => '',
-			'message_title'   => $post->post_title,
-			'message_pretext' => '',
-			'color'           => '',
-			'username'        => get_bloginfo( 'name' ),
-			'icon'            => function_exists( 'has_site_icon' ) && has_site_icon() ? get_site_icon_url( 270 ) : '',
-		) );
 
 		$replacements = EDDSLACK()->notification_handler->notifications_replacements(
 			array(
@@ -98,6 +103,7 @@ class EDD_Slack_Notification_Integration {
 				'message_title'   => $fields['message_title'],
 				'message_pretext' => $fields['message_pretext'],
 			),
+            $fields,
 			$trigger,
             $notification_id,
 			$args
@@ -167,6 +173,7 @@ class EDD_Slack_Notification_Integration {
      * Based on our Notification ID and Trigger, use some extra Replacement Strings
      * 
      * @param       array  $replacements    Notification Fields to check for replacements in
+     * @param       array  $fields          Fields used to create the Post Meta
      * @param       string $trigger         Notification Trigger
      * @param       string $notification_id ID used for Notification Hooks
      * @param       array  $args            $args Array passed from the original Trigger of the process
@@ -175,7 +182,7 @@ class EDD_Slack_Notification_Integration {
      * @since       1.0.0
      * @return      array  Replaced Strings within each Field
      */
-    public function custom_replacement_strings( $replacements, $trigger, $notification_id, $args ) {
+    public function custom_replacement_strings( $replacements, $fields, $trigger, $notification_id, $args ) {
         
         // If this customer did not create an Account
         if ( $args['user_id'] == 0 ) {
@@ -202,7 +209,14 @@ class EDD_Slack_Notification_Integration {
                     $replacements['%subtotal%'] = edd_currency_filter( number_format( $args['subtotal'], 2 ) );
                     $replacements['%total%'] = edd_currency_filter( number_format( $args['total'], 2 ) );
                     
-                    $replacements['%payment_link%'] = '<' . urlencode_deep( add_query_arg( 'id', $args['payment_id'], admin_url( 'edit.php?post_type=download&page=edd-payment-history&view=view-order-details' ) ) ) . '|' . _x( 'View Payment Details', 'View Payment Details Link', EDD_Slack_ID ) . '>'; // No function to get this?
+                    $payment_link = add_query_arg( 'id', $args['payment_id'], admin_url( 'edit.php?post_type=download&page=edd-payment-history&view=view-order-details' ) );
+                    
+                    // If we're using a regular Webhook
+                    if ( strpos( $fields['webhook_url'], 'hooks.slack.com' ) ) {
+                        $payment_link = urlencode_deep( add_query_arg( 'id', $args['payment_id'], admin_url( 'edit.php?post_type=download&page=edd-payment-history&view=view-order-details' ) ) );
+                    }
+                    
+                    $replacements['%payment_link%'] = '<' . $payment_link . '|' . _x( 'View Payment Details', 'View Payment Details Link', EDD_Slack_ID ) . '>'; // No function to get this?
                     
                     $replacements['%cart%'] = '';
                     foreach ( $args['cart'] as $post_id => $item_number ) {
@@ -282,17 +296,12 @@ class EDD_Slack_Notification_Integration {
          */
         $notification_args = apply_filters( 'edd_slack_notification_args', $notification_args, $trigger, $notification_id, $args );
         
-        /**
-         * Allow the Webhook URL to be overriden. Useful for Slack App Integration
-         *
-         * @since 1.0.0
-         */
-        $webhook_url = apply_filters( 'edd_slack_notification_webhook', $fields['webhook_url'], $trigger, $notification_id, $args );
-        
         // If we're using a regular Webhook
-        if ( strpos( $webhook_url, 'hooks.slack.com' ) ) {
+        if ( strpos( $fields['webhook_url'], 'hooks.slack.com' ) ) {
         
-		  EDDSLACK()->slack_api->push_incoming_webhook( $webhook_url, $args );
+            $message = EDDSLACK()->slack_api->push_incoming_webhook( $fields['webhook_url'], $notification_args );
+            var_dump( $message );
+            die();
             
         }
         else { // Send it via Slack's Web API
@@ -322,7 +331,7 @@ class EDD_Slack_Notification_Integration {
             // Construct the URL using the $args from the Notification that have been filtered
             $message_url = add_query_arg( 
                 EDDSLACK()->slack_api->encode_arguments( $notification_args ),
-                $webhook_url
+                $fields['webhook_url']
             );
             
             // Doing it this way also automagically includes our OAUTH Token

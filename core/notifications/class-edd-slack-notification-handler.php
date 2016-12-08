@@ -301,7 +301,7 @@ class EDD_Slack_Notification_Handler {
      * @since       1.0.0
      * @return      array  Replaced Strings within each Field
      */
-    public function notifications_replacements( $strings, $trigger, $notification_id, $args, $replacements = array() ) {
+    public function notifications_replacements( $strings, $fields, $trigger, $notification_id, $args, $replacements = array() ) {
         
         $replacements = wp_parse_args( $replacements, array(
             '%username%' => '',
@@ -324,7 +324,7 @@ class EDD_Slack_Notification_Handler {
          *
          * @since 1.0.0
          */
-        $replacements = apply_filters( 'edd_slack_notifications_replacements', $replacements, $trigger, $notification_id, $args );
+        $replacements = apply_filters( 'edd_slack_notifications_replacements', $replacements, $fields, $trigger, $notification_id, $args );
         
         foreach ( $strings as $i => $string ) {
             $strings[ $i ] = str_replace( array_keys( $replacements ), array_values( $replacements ), $string );

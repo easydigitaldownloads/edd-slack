@@ -130,7 +130,17 @@ msgctxt "Top Level Comments Checkbox Label"
 msgid "Only Trigger on New, Top-Level Comments"
 msgstr ""
 
-#: core/integrations/edd-comments/class-edd-slack-comments.php:227
+#: core/integrations/edd-comments/class-edd-slack-comments.php:207
+msgctxt "No Username Replacement Text"
+msgid "This Commenter does not have an account"
+msgstr ""
+
+#: core/integrations/edd-comments/class-edd-slack-comments.php:239
+msgctxt "%download% Hint Text"
+msgid "The %s the Comment was made on"
+msgstr ""
+
+#: core/integrations/edd-comments/class-edd-slack-comments.php:240
 msgctxt "%comment_content% Hint Text"
 msgid "The Comment itself"
 msgstr ""
@@ -140,47 +150,52 @@ msgctxt "New Commision Trigger"
 msgid "New Commission"
 msgstr ""
 
-#: core/integrations/edd-commissions/class-edd-slack-commissions.php:199
+#: core/integrations/edd-commissions/class-edd-slack-commissions.php:200
 msgctxt "%download% Hint Text"
 msgid "The %s that the Commission is for"
 msgstr ""
 
-#: core/integrations/edd-commissions/class-edd-slack-commissions.php:200
+#: core/integrations/edd-commissions/class-edd-slack-commissions.php:201
 msgctxt "%commission_amount% Hint Text"
 msgid "The amount of Commission awarded for the sale"
 msgstr ""
 
-#: core/integrations/edd-commissions/class-edd-slack-commissions.php:201
+#: core/integrations/edd-commissions/class-edd-slack-commissions.php:202
 msgctxt "%commission_rate% Hint Text"
 msgid "Either the Flat Rate or Percentage that the Commission is calculated based on"
 msgstr ""
 
-#: core/integrations/edd-frontend-submissions/class-edd-slack-frontend-submissions.php:56
+#: core/integrations/edd-frontend-submissions/class-edd-slack-frontend-submissions.php:59
 msgctxt "New Vendor Application Trigger"
 msgid "New Vendor Application"
 msgstr ""
 
-#: core/integrations/edd-frontend-submissions/class-edd-slack-frontend-submissions.php:60
+#: core/integrations/edd-frontend-submissions/class-edd-slack-frontend-submissions.php:63
 msgctxt "New Vendor Product Trigger"
 msgid "New Vendor Product"
 msgstr ""
 
-#: core/integrations/edd-frontend-submissions/class-edd-slack-frontend-submissions.php:63
+#: core/integrations/edd-frontend-submissions/class-edd-slack-frontend-submissions.php:68
+msgctxt "Vendor Product Edited Trigger"
+msgid "Vendor Product Edited"
+msgstr ""
+
+#: core/integrations/edd-frontend-submissions/class-edd-slack-frontend-submissions.php:71
 msgctxt "New Vendor Contact Form Submitted Trigger"
 msgid "New Vendor Contact Form Submitted"
 msgstr ""
 
-#: core/integrations/edd-frontend-submissions/class-edd-slack-frontend-submissions.php:202
+#: core/integrations/edd-frontend-submissions/class-edd-slack-frontend-submissions.php:238
 msgctxt "View this Vendor's Download Link"
 msgid "View this Vendor's %s"
 msgstr ""
 
-#: core/integrations/edd-frontend-submissions/class-edd-slack-frontend-submissions.php:242
+#: core/integrations/edd-frontend-submissions/class-edd-slack-frontend-submissions.php:278
 msgctxt "%download_link% Hint Text"
 msgid "Show a link to the Admin Edit screen for this %s"
 msgstr ""
 
-#: core/integrations/edd-frontend-submissions/class-edd-slack-frontend-submissions.php:250, core/integrations/edd-frontend-submissions/class-edd-slack-frontend-submissions.php:265
+#: core/integrations/edd-frontend-submissions/class-edd-slack-frontend-submissions.php:286, core/integrations/edd-frontend-submissions/class-edd-slack-frontend-submissions.php:302
 msgctxt "No Hint Text Notice"
 msgid "No Hint Text Provided for this Form Field"
 msgstr ""
@@ -190,12 +205,12 @@ msgctxt "Purchase Limit Reached Trigger"
 msgid "Purchase Limit Reached"
 msgstr ""
 
-#: core/integrations/edd-purchase-limit/class-edd-slack-purchase-limit.php:235
+#: core/integrations/edd-purchase-limit/class-edd-slack-purchase-limit.php:236
 msgctxt "%download% Hint Text"
 msgid "The %s that has reached its Purchase Limit"
 msgstr ""
 
-#: core/integrations/edd-purchase-limit/class-edd-slack-purchase-limit.php:236
+#: core/integrations/edd-purchase-limit/class-edd-slack-purchase-limit.php:237
 msgctxt "%purchase_limit% Hint Text"
 msgid "The Purchase Limit for the %s"
 msgstr ""
@@ -225,164 +240,339 @@ msgctxt "License Upgraded Trigger"
 msgid "License Upgraded"
 msgstr ""
 
-#: core/integrations/edd-software-licensing/class-edd-slack-software-licensing.php:321
+#: core/integrations/edd-software-licensing/class-edd-slack-software-licensing.php:322
 msgctxt "%license_key% Hint Text"
 msgid "The License Key"
 msgstr ""
 
-#: core/integrations/edd-software-licensing/class-edd-slack-software-licensing.php:322
+#: core/integrations/edd-software-licensing/class-edd-slack-software-licensing.php:323
 msgctxt "%download% Hint Text"
 msgid "The %s the License Key is for"
 msgstr ""
 
-#: core/integrations/edd-software-licensing/class-edd-slack-software-licensing.php:323
+#: core/integrations/edd-software-licensing/class-edd-slack-software-licensing.php:324
 msgctxt "%expiration% Hint Text"
 msgid "The date when the License expires"
 msgstr ""
 
-#: core/integrations/edd-software-licensing/class-edd-slack-software-licensing.php:324
+#: core/integrations/edd-software-licensing/class-edd-slack-software-licensing.php:325
 msgctxt "%license_limit% Hint Text"
 msgid "The number of sites the License can be active on"
 msgstr ""
 
-#: core/integrations/edd-software-licensing/class-edd-slack-software-licensing.php:339
+#: core/integrations/edd-software-licensing/class-edd-slack-software-licensing.php:340
 msgctxt "%old_download% Hint Text"
 msgid "The %s being upgraded from"
 msgstr ""
 
-#: core/integrations/edd-software-licensing/class-edd-slack-software-licensing.php:340
+#: core/integrations/edd-software-licensing/class-edd-slack-software-licensing.php:341
 msgctxt "%new_download% Hint Text"
 msgid "The %s being upgraded to"
 msgstr ""
 
-#: core/notifications/class-edd-slack-notification-integration.php:48
+#: core/slack/class-edd-slack-notification-integration.php:48
 msgctxt "Notification Feed CPT"
 msgid "EDD Slack"
 msgstr ""
 
-#: core/notifications/class-edd-slack-notification-integration.php:49
+#: core/slack/class-edd-slack-notification-integration.php:49
 msgctxt "Default Post Title for CPT"
 msgid "New Slack Notification"
 msgstr ""
 
-#: core/notifications/class-edd-slack-notification-integration.php:184
+#: core/slack/class-edd-slack-notification-integration.php:191
 msgctxt "No Username Replacement Text"
 msgid "This Customer does not have an account"
 msgstr ""
 
-#: core/notifications/class-edd-slack-notification-integration.php:197
+#: core/slack/class-edd-slack-notification-integration.php:204
 msgctxt "No Discount Code Applied Text"
 msgid "No Discount Code Applied"
 msgstr ""
 
-#: core/notifications/class-edd-slack-notification-integration.php:205
+#: core/slack/class-edd-slack-notification-integration.php:219
 msgctxt "View Payment Details Link"
 msgid "View Payment Details"
 msgstr ""
 
-#: core/notifications/class-edd-slack-notification-integration.php:228
+#: core/slack/class-edd-slack-notification-integration.php:242
 msgctxt "Empty Cart Replacement Text"
 msgid "There was nothing in the Cart"
 msgstr ""
 
-#: edd-slack.php:289
+#: core/ssl-only/class-edd-slack-app-oauth-settings.php:110
+msgctxt "SSL-Only Settings Header"
+msgid "Enable Interactive Buttons and Slash Commands"
+msgstr ""
+
+#: core/ssl-only/class-edd-slack-app-oauth-settings.php:115
+msgctxt "Client ID Label"
+msgid "Client ID"
+msgstr ""
+
+#: core/ssl-only/class-edd-slack-app-oauth-settings.php:118
+msgctxt "Client ID Help Text"
+msgid "Enter the Client ID found after %screating your Slack App%s."
+msgstr ""
+
+#: core/ssl-only/class-edd-slack-app-oauth-settings.php:125
+msgctxt "Client Secret Label"
+msgid "Client Secret"
+msgstr ""
+
+#: core/ssl-only/class-edd-slack-app-oauth-settings.php:128
+msgctxt "Client Secret Help Text"
+msgid "Enter the Client Secret found after %screating your Slack App%s."
+msgstr ""
+
+#: core/ssl-only/class-edd-slack-app-oauth-settings.php:135
+msgctxt "Verification Token Label"
+msgid "Verification Token"
+msgstr ""
+
+#: core/ssl-only/class-edd-slack-app-oauth-settings.php:138
+msgctxt "Verification Token Help Text"
+msgid "Enter the Verification Token found after %screating your Slack App%s."
+msgstr ""
+
+#: core/ssl-only/class-edd-slack-app-oauth-settings.php:149
+msgctxt "Default Channel for Notifications with Interactive Buttons Label"
+msgid "Default Channel for Notifications with Interactive Buttons"
+msgstr ""
+
+#: core/ssl-only/class-edd-slack-app-oauth-settings.php:151
+msgctxt "Default Channel for Notifications with Interactive Buttons Help Text"
+msgid "Notifications with Interactive Buttons don't use the Default Webhook URL, so they need to know which Channel they should default to if one for the Notification isn't defined. If this is left blank, it will default to <code>#general</code>."
+msgstr ""
+
+#: core/ssl-only/class-edd-slack-app-oauth-settings.php:156
+msgctxt "Default Icon Emoji or Image URL for Notifications with Interactive Buttons Label"
+msgid "Default Icon Emoji or Image URL for Notifications with Interactive Buttons"
+msgstr ""
+
+#: core/ssl-only/class-edd-slack-app-oauth-settings.php:158
+msgctxt "Default Icon Emoji or Image URL for Notifications with Interactive Buttons Help Text"
+msgid "Notifications with Interactive Buttons don't use the Default Webhook URL, so it can't utilize the Default Icon Emoji or Image URL you set for the Webhook URL if one for the Notification isn't defined. If this is left blank, it will use the Icon added to your Slack App if one exists."
+msgstr ""
+
+#: core/ssl-only/class-edd-slack-app-oauth-settings.php:203
+msgctxt "OAUTH Register Buton Label"
+msgid "Link Slack App"
+msgstr ""
+
+#: core/ssl-only/class-edd-slack-app-oauth-settings.php:208
+msgctxt "OAUTH Deregister Button Label"
+msgid "Unlink Slack App"
+msgstr ""
+
+#: core/ssl-only/class-edd-slack-app-oauth-settings.php:215
+msgctxt "OAUTH Registration Help Text"
+msgid "Fill out the above fields and Save the Settings to Connect your Slack App to your site."
+msgstr ""
+
+#: core/ssl-only/class-edd-slack-app-oauth-settings.php:262
+msgctxt "EDD Slack App Auth Successful"
+msgid "Slack App Linked Successfully."
+msgstr ""
+
+#: core/ssl-only/class-edd-slack-app-oauth-settings.php:293
+msgctxt "EDD Slack App Deauth Successful"
+msgid "Slack App Unlinked Successfully."
+msgstr ""
+
+#: core/ssl-only/class-edd-slack-rest.php:57
+msgctxt "No Payload Error"
+msgid "No data payload"
+msgstr ""
+
+#: core/ssl-only/class-edd-slack-rest.php:66
+msgctxt "Missing/Incorrect Verification Token Error"
+msgid "Bad Verification Token"
+msgstr ""
+
+#: core/ssl-only/class-edd-slack-rest.php:103
+msgctxt "Callback Function Missing Error"
+msgid "The Callback Function `edd_slack_rest_%s()` is missing!"
+msgstr ""
+
+#: core/ssl-only/integrations/edd-comments/class-edd-slack-app-comments.php:75, core/ssl-only/integrations/edd-frontend-submissions/class-edd-slack-app-frontend-submissions.php:113
+msgctxt "Approve Button Text"
+msgid "Approve"
+msgstr ""
+
+#: core/ssl-only/integrations/edd-comments/class-edd-slack-app-comments.php:82
+msgctxt "Mark as Spam Button Text"
+msgid "Mark as Spam"
+msgstr ""
+
+#: core/ssl-only/integrations/edd-comments/class-edd-slack-app-comments.php:138
+msgctxt "Comment Approved Response Text"
+msgid "%s has Approved %s's Comment on %s"
+msgstr ""
+
+#: core/ssl-only/integrations/edd-comments/class-edd-slack-app-comments.php:148
+msgctxt "Spam Comment Response Text"
+msgid "%s has marked %s's Comment on %s as Spam"
+msgstr ""
+
+#: core/ssl-only/integrations/edd-frontend-submissions/class-edd-slack-app-frontend-submissions.php:120
+msgctxt "Deny Button Text"
+msgid "Deny"
+msgstr ""
+
+#: core/ssl-only/integrations/edd-frontend-submissions/class-edd-slack-app-frontend-submissions.php:130, core/ssl-only/integrations/edd-frontend-submissions/class-edd-slack-app-frontend-submissions.php:141
+msgctxt "Confirmation Title Text"
+msgid "Are you sure?"
+msgstr ""
+
+#: core/ssl-only/integrations/edd-frontend-submissions/class-edd-slack-app-frontend-submissions.php:131
+msgctxt "EDD FES Vendor Denial Confirmation Explaination Text"
+msgid "They will need to re-apply to be a Vendor if this was a mistake."
+msgstr ""
+
+#: core/ssl-only/integrations/edd-frontend-submissions/class-edd-slack-app-frontend-submissions.php:132, core/ssl-only/integrations/edd-frontend-submissions/class-edd-slack-app-frontend-submissions.php:143
+msgctxt "Confirmation \"Yes\" Button"
+msgid "Yes, I understand the risks"
+msgstr ""
+
+#: core/ssl-only/integrations/edd-frontend-submissions/class-edd-slack-app-frontend-submissions.php:133, core/ssl-only/integrations/edd-frontend-submissions/class-edd-slack-app-frontend-submissions.php:144
+msgctxt "Confirmation \"No\" Button"
+msgid "No, I changed my mind"
+msgstr ""
+
+#: core/ssl-only/integrations/edd-frontend-submissions/class-edd-slack-app-frontend-submissions.php:142
+msgctxt "EDD FES Vendor Product Edit Denial Confirmation Explaination Text"
+msgid "EDD Frontend Submissions does not store old copies of Vendor Products. This will delete their Product."
+msgstr ""
+
+#: core/ssl-only/integrations/edd-frontend-submissions/class-edd-slack-app-frontend-submissions.php:191
+msgctxt "Vendor Approved Response Text"
+msgid "%s has Approved %s's Request to be a Vendor"
+msgstr ""
+
+#: core/ssl-only/integrations/edd-frontend-submissions/class-edd-slack-app-frontend-submissions.php:210
+msgctxt "Vendor Denied Response Text"
+msgid "%s has Denied %s's Request to be a Vendor"
+msgstr ""
+
+#: core/ssl-only/integrations/edd-frontend-submissions/class-edd-slack-app-frontend-submissions.php:256
+msgctxt "Vendor Product Approved Response Text"
+msgid "%s has Approved %s's Product Submission titled \"%s\""
+msgstr ""
+
+#: core/ssl-only/integrations/edd-frontend-submissions/class-edd-slack-app-frontend-submissions.php:266
+msgctxt "Vendor Product Denied Response Text"
+msgid "%s has Denied %s's Product Submission titled \"%s\""
+msgstr ""
+
+#: core/ssl-only/integrations/edd-frontend-submissions/class-edd-slack-app-frontend-submissions.php:312
+msgctxt "Vendor Product Edit Approved Response Text"
+msgid "%s has Approved %s's Product Edit for \"%s\""
+msgstr ""
+
+#: core/ssl-only/integrations/edd-frontend-submissions/class-edd-slack-app-frontend-submissions.php:322
+msgctxt "Vendor Product Edit Denied Response Text"
+msgid "%s has Trashed %s's Product titled \"%s\""
+msgstr ""
+
+#: edd-slack.php:326
 msgid "Indentifier for this Notification"
 msgstr ""
 
-#: edd-slack.php:292
+#: edd-slack.php:329
 msgid "New Slack Notification"
 msgstr ""
 
-#: edd-slack.php:297
+#: edd-slack.php:334
 msgid "Slack Trigger"
 msgstr ""
 
-#: edd-slack.php:302
+#: edd-slack.php:339
 msgctxt "Slack Trigger Default Label"
 msgid "-- Select a Slack Trigger --"
 msgstr ""
 
-#: edd-slack.php:317
+#: edd-slack.php:354
 msgctxt "Select Field Default"
 msgid "-- Select %s --"
 msgstr ""
 
-#: edd-slack.php:318
+#: edd-slack.php:355
 msgctxt "All items in a Select Field"
 msgid "All %s"
 msgstr ""
 
-#: edd-slack.php:323
+#: edd-slack.php:360
 msgctxt "Discount Code Field Label"
 msgid "Discount Code"
 msgstr ""
 
-#: edd-slack.php:332
+#: edd-slack.php:369
 msgctxt "Discount Code Field Default"
 msgid "-- Select Discount Code --"
 msgstr ""
 
-#: edd-slack.php:333
+#: edd-slack.php:370
 msgctxt "All Discount Codes Text"
 msgid "All Discount Codes"
 msgstr ""
 
-#: edd-slack.php:343
+#: edd-slack.php:380
 msgid "Message Pre-text (Shows directly below Username and above the Title/Message)"
 msgstr ""
 
-#: edd-slack.php:351
+#: edd-slack.php:388
 msgid "Message Title"
 msgstr ""
 
-#: edd-slack.php:359
+#: edd-slack.php:396
 msgid "Message"
 msgstr ""
 
-#: edd-slack.php:365
+#: edd-slack.php:402
 msgid "Slack Webhook URL"
 msgstr ""
 
-#: edd-slack.php:370
+#: edd-slack.php:407
 msgid "You can override the above Webhook URL here."
 msgstr ""
 
-#: edd-slack.php:378
+#: edd-slack.php:415
 msgid "Slack Channel"
 msgstr ""
 
-#: edd-slack.php:380, edd-slack.php:396
+#: edd-slack.php:417, edd-slack.php:433
 msgid "Webhook default"
 msgstr ""
 
-#: edd-slack.php:386
+#: edd-slack.php:423
 msgid "Username"
 msgstr ""
 
-#: edd-slack.php:394
+#: edd-slack.php:431
 msgid "Icon Emoji or Image URL"
 msgstr ""
 
-#: edd-slack.php:402
+#: edd-slack.php:439
 msgid "Color (Shows next to Message Title and Message)"
 msgstr ""
 
-#: edd-slack.php:420
+#: edd-slack.php:457
 msgctxt "Purchase Complete Trigger Label"
 msgid "Purchase Complete"
 msgstr ""
 
-#: edd-slack.php:421
+#: edd-slack.php:458
 msgctxt "Purchase Failed Trigger Label"
 msgid "Purchase Failed"
 msgstr ""
 
-#: edd-slack.php:422
+#: edd-slack.php:459
 msgctxt "Discount Code Applied Trigger Label"
 msgid "Discount Code Applied"
 msgstr ""
 
-#: edd-slack.php:423
+#: edd-slack.php:460
 msgctxt "New User Registration Trigger Label"
 msgid "New User Registration via EDD"
 msgstr ""

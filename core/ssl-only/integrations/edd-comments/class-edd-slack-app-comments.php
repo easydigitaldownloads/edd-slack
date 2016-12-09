@@ -87,7 +87,7 @@ class EDD_Slack_App_Comments {
         );
         
         // Remove the Approve Button if the Comment is auto-approved
-        if ( $args['comment_approved'] !== 0 ) {
+        if ( $args['comment_approved'] == 1 ) {
             
             array_splice( $notification_args['attachments'][0]['actions'], 0, 1 );
             

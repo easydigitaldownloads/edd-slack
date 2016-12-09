@@ -31,6 +31,9 @@ class EDD_Slack_Frontend_Submissions {
         // New Vendor Product
         add_action( 'fes_save_submission_form_values_after_save', array( $this, 'edd_fes_new_vendor_product' ), 10, 3 );
         
+        // Edit Vendor Product
+        add_action( 'fes_save_submission_form_values_after_save', array( $this, 'edd_fes_edit_vendor_product' ), 10, 3 );
+        
         // New Vendor Contact Form
         add_action( 'fes_save_vendor-contact_form_values_after_save', array( $this, 'edd_fes_vendor_contact' ), 10, 3 );
         
@@ -58,6 +61,11 @@ class EDD_Slack_Frontend_Submissions {
         // By default, Vendors cannot create their own Products
         if ( (bool) EDD_FES()->helper->get_option( 'fes-allow-vendors-to-create-products', false ) ) {
             $triggers['edd_fes_new_vendor_product'] = _x( 'New Vendor Product', 'New Vendor Product Trigger', EDD_Slack_ID );
+        }
+        
+        // By default, Vendors cannot edit their own Products
+        if ( (bool) EDD_FES()->helper->get_option( 'fes-allow-vendors-to-edit-products', false ) ) {
+            $triggers['edd_fes_edit_vendor_product'] = _x( 'Vendor Product Edited', 'Vendor Product Edited Trigger', EDD_Slack_ID );
         }
         
         $triggers['edd_fes_vendor_contact'] = _x( 'New Vendor Contact Form Submitted', 'New Vendor Contact Form Submitted Trigger', EDD_Slack_ID );
@@ -100,6 +108,11 @@ class EDD_Slack_Frontend_Submissions {
         $is_vendor = EDD_FES()->vendors->user_is_status( 'approved', $user_id );
         
         if ( ! $is_vendor ) return false;
+        
+        $new = EDD()->session->get( 'fes_is_new' );
+        
+        // If it isn't a new Product, bail
+        if ( ! $new ) return false;
 
         do_action( 'edd_slack_notify', 'edd_fes_new_vendor_product', array(
             'user_id' => $user_id,
@@ -110,7 +123,37 @@ class EDD_Slack_Frontend_Submissions {
     }
     
     /**
-     * Triggers on a New Vendor Product
+     * Triggers on a Edited Vendor Product
+     * 
+     * @param       object  $form        EDD FES Form Object that was submitted
+     * @param       integer $user_id     User ID Submitting the Form
+     * @param       integer $download_id The newly edited Vendor Product
+     *                                                            
+     * @access      public
+     * @since       1.0.0
+     * @return      void
+     */
+    public function edd_fes_edit_vendor_product( $form, $user_id, $download_id ) {
+        
+        $is_vendor = EDD_FES()->vendors->user_is_status( 'approved', $user_id );
+        
+        if ( ! $is_vendor ) return false;
+        
+        $new = EDD()->session->get( 'fes_is_new' );
+        
+        // If is is a new Product, bail
+        if ( $new ) return false;
+
+        do_action( 'edd_slack_notify', 'edd_fes_edit_vendor_product', array(
+            'user_id' => $user_id,
+            'download_id' => $download_id,
+            'form_values' => $form->get_form_values(), // This gives us direct access to the values from the Form Submission
+        ) );
+        
+    }
+    
+    /**
+     * Triggers on a New Vendor Contact Submission
      * 
      * @param       object  $form        EDD FES Form Object that was submitted
      * @param       integer $user_id     User ID Submitting the Form
@@ -183,6 +226,7 @@ class EDD_Slack_Frontend_Submissions {
             switch ( $trigger ) {
                     
                 case 'edd_fes_new_vendor_product':
+                case 'edd_fes_edit_vendor_product':
                     
                     $download_link = get_edit_post_link( $args['download_id'], '' );
                     
@@ -247,6 +291,7 @@ class EDD_Slack_Frontend_Submissions {
         }
         
         $hints['edd_fes_new_vendor_product'] = array_merge( $user_hints, $vendor_product_hints );
+        $hints['edd_fes_edit_vendor_product'] = array_merge( $user_hints, $vendor_product_hints );
         
         $vendor_contact_fields = $this->get_fields_help_text( 'vendor-contact' );
         

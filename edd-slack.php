@@ -215,14 +215,11 @@ if ( ! class_exists( 'EDD_Slack' ) ) {
             require_once EDD_Slack_DIR . '/core/notifications/class-edd-slack-notification-handler.php';
             $this->notification_handler = new EDD_Slack_Notification_Handler();
             
-            require_once EDD_Slack_DIR . '/core/notifications/class-edd-slack-notification-integration.php';
+            require_once EDD_Slack_DIR . '/core/slack/class-edd-slack-notification-integration.php';
             $this->notification_integration = new EDD_Slack_Notification_Integration();
             
             require_once EDD_Slack_DIR . '/core/slack/class-edd-slack-notification-triggers.php';
             $this->notification_triggers = new EDD_Slack_Notification_Triggers();
-            
-            require_once EDD_Slack_DIR . '/core/slack/class-edd-slack-rest.php';
-            $this->rest_api = new EDD_Slack_REST();
             
             // Include Bundled Integrations with this Plugin
             // These also serve as an example of how to tie-in to this Plugin and utilize its functionality
@@ -258,6 +255,9 @@ if ( ! class_exists( 'EDD_Slack' ) ) {
             
             // If we've got a linked Slack App
             if ( is_ssl() && edd_get_option( 'slack_app_oauth_token' ) ) {
+                
+                require_once EDD_Slack_DIR . '/core/ssl-only/class-edd-slack-rest.php';
+                $this->rest_api = new EDD_Slack_REST();
                 
                 // If Comments are Enabled for Downloads
                 if ( post_type_supports( 'download', 'comments' ) ) {

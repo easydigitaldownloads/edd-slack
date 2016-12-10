@@ -40,57 +40,6 @@ class EDD_Slack_OAUTH_Settings {
         // Display Admin Notices
         add_action( 'admin_init', array( $this, 'display_admin_notices' ) );
         
-        //add_action( 'admin_init', array( $this, 'test' ) );
-        
-    }
-    
-    public function test() {
-        
-        $message_url = add_query_arg(
-            array(
-                'as_user' => 'false',
-                'channel'     => urlencode_deep( '#slack-testing' ),
-                'username'    => urlencode_deep( 'Web API' ),
-                'icon_emoji'  => urlencode_deep( ':spaaaaace:' ),
-                'icon_url'    => '',
-                'attachments' => urlencode_deep( json_encode( array(
-                    array(
-                        'text'    => 'text',
-                        'title'   => 'title',
-                        'pretext' => 'pretext',
-                        'callback_id' => 'test_callback',
-                        "actions" => array(
-                            array(
-                                "name" => "chess",
-                                "text" => "Chess",
-                                "type" => "button",
-                                "value" => "chess"
-                            ),
-                            array(
-                                "name" => "maze",
-                                "text" => "Falken's Maze",
-                                "type" => "button",
-                                "value" => "maze"
-                            )
-                        ),
-                    ),
-                ) ) ),
-            ),
-            'chat.postMessage'
-        );
-        
-        if ( is_user_logged_in() ) {
-        
-        var_dump( $message_url );
-        
-        $test = EDDSLACK()->slack_api->post(
-            $message_url
-        );
-        
-        var_dump( $test );
-            
-        }
-        
     }
     
     /**

@@ -120,13 +120,6 @@ class EDD_Slack_Admin {
                 )
             ),
             array(
-                'type' => 'text',
-                'name' => _x( 'Timestamp Format', 'Timestamp Format Label', EDD_Slack_ID ),
-                'id' => 'slack_timestamp_format',
-                'std' => 'm/d/Y @ g:i A',
-                'desc' => _x( '<a href="//php.net/manual/en/function.date.php" target="_blank">Click Here</a> for Format Options. This applies to all %timestamp% Replacements', 'Timestamp Format Help Text', EDD_Slack_ID ),
-            ),
-            array(
                 'type' => 'rbm_repeater',
                 'id' => 'slack_notifications',
                 'input_name' => 'edd_slack_rbm_feeds',

@@ -51,6 +51,11 @@ if ( ! function_exists( 'edd_slack_slash_command_help' ) ) {
             ),
         ) );
         
+        $commands['help'] = array(
+            'description' => _x( 'Shows this Dialog. Optionally can show the Help Dialog for a Single Command.', '/edd help Description', EDD_Slack_ID ),
+            'options' => array_keys( $commands ),
+        );
+        
         // Allow Users to specify which Slash Command Callback they want to see help for
         if ( ! empty( $scope ) &&
            isset( $commands[ $scope ] ) ) {

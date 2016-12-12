@@ -108,7 +108,7 @@ class EDD_Slack_App_Comments {
 
 $integrate = new EDD_Slack_App_Comments();
 
-if ( ! function_exists( 'edd_slack_rest_comment_post' ) ) {
+if ( ! function_exists( 'edd_slack_interactive_message_comment_post' ) ) {
     
     /**
      * EDD Slack Rest New Comment on Download Endpoint
@@ -120,7 +120,7 @@ if ( ! function_exists( 'edd_slack_rest_comment_post' ) ) {
      * @since       1.0.0
      * @return      void
      */
-    function edd_slack_rest_comment_post( $button, $response_url, $payload ) {
+    function edd_slack_interactive_message_comment_post( $button, $response_url, $payload ) {
         
         $action = $button->name;
         $value = json_decode( $button->value );

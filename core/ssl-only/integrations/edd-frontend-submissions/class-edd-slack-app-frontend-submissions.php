@@ -161,7 +161,7 @@ class EDD_Slack_App_Frontend_Submissions {
 
 $integrate = new EDD_Slack_App_Frontend_Submissions();
 
-if ( ! function_exists( 'edd_slack_rest_edd_fes_vendor_registered' ) ) {
+if ( ! function_exists( 'edd_slack_interactive_message_edd_fes_vendor_registered' ) ) {
     
     /**
      * EDD Slack Rest Vendor Registered Endpoint
@@ -173,7 +173,7 @@ if ( ! function_exists( 'edd_slack_rest_edd_fes_vendor_registered' ) ) {
      * @since       1.0.0
      * @return      void
      */
-    function edd_slack_rest_edd_fes_vendor_registered( $button, $response_url, $payload ) {
+    function edd_slack_interactive_message_edd_fes_vendor_registered( $button, $response_url, $payload ) {
         
         $action = $button->name;
         $value = json_decode( $button->value );
@@ -223,7 +223,7 @@ if ( ! function_exists( 'edd_slack_rest_edd_fes_vendor_registered' ) ) {
     
 }
 
-if ( ! function_exists( 'edd_slack_rest_edd_fes_new_vendor_product' ) ) {
+if ( ! function_exists( 'edd_slack_interactive_message_edd_fes_new_vendor_product' ) ) {
     
     /**
      * EDD Slack Rest New Vendor Product Endpoint
@@ -235,7 +235,7 @@ if ( ! function_exists( 'edd_slack_rest_edd_fes_new_vendor_product' ) ) {
      * @since       1.0.0
      * @return      void
      */
-    function edd_slack_rest_edd_fes_new_vendor_product( $button, $response_url, $payload ) {
+    function edd_slack_interactive_message_edd_fes_new_vendor_product( $button, $response_url, $payload ) {
         
         $action = $button->name;
         $value = json_decode( $button->value );
@@ -279,7 +279,7 @@ if ( ! function_exists( 'edd_slack_rest_edd_fes_new_vendor_product' ) ) {
     
 }
 
-if ( ! function_exists( 'edd_slack_rest_edd_fes_edit_vendor_product' ) ) {
+if ( ! function_exists( 'edd_slack_interactive_message_edd_fes_edit_vendor_product' ) ) {
     
     /**
      * EDD Slack Rest Edited Vendor Product Endpoint
@@ -291,7 +291,7 @@ if ( ! function_exists( 'edd_slack_rest_edd_fes_edit_vendor_product' ) ) {
      * @since       1.0.0
      * @return      void
      */
-    function edd_slack_rest_edd_fes_edit_vendor_product( $button, $response_url, $payload ) {
+    function edd_slack_interactive_message_edd_fes_edit_vendor_product( $button, $response_url, $payload ) {
         
         $action = $button->name;
         $value = json_decode( $button->value );

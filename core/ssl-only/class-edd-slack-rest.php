@@ -10,6 +10,9 @@
 
 defined( 'ABSPATH' ) || die();
 
+// Slash Commands in another file
+require_once EDD_Slack_DIR . '/core/ssl-only/edd-slack-slash-commands.php';
+
 class EDD_Slack_REST {
 
     /**
@@ -32,15 +35,15 @@ class EDD_Slack_REST {
     public function create_routes() {
 
         // REST Route for all Interactive Buttons
-        register_rest_route( 'edd-slack/v1', '/slack-app/submit', array(
+        register_rest_route( 'edd-slack/v1', '/slack-app/interactive-message/submit', array(
             'methods' => 'POST',
-            'callback' => array( $this, 'route_interactive_button' ),
+            'callback' => array( $this, 'route_interactive_message' ),
         ) );
 
-        // REST Route for /eddsales Slash Command
-        register_rest_route( 'edd-slack/v1', '/slack-app/slash-command/sales', array(
+        // REST Route for /edd Slash Command
+        register_rest_route( 'edd-slack/v1', '/slack-app/slash-command/submit', array(
             'methods' => 'POST',
-            'callback' => array( $this, 'get_sales' ),
+            'callback' => array( $this, 'route_slash_command' ),
         ) );
 
     }
@@ -55,7 +58,7 @@ class EDD_Slack_REST {
      * @since       1.0.0
      * @return      void, calls another function
      */
-    public function route_interactive_button( $request ) {
+    public function route_interactive_message( $request ) {
 
         $request_body = $request->get_body_params();
 
@@ -79,8 +82,8 @@ class EDD_Slack_REST {
         $callback_id = $payload->callback_id;
 
         // Construct the callback function
-        $callback_function = 'edd_slack_rest_'. $callback_id;
-        $callback_function = ( is_callable( $callback_function ) ) ? $callback_function : 'edd_slack_rest_missing';
+        $callback_function = 'edd_slack_interactive_message_'. $callback_id;
+        $callback_function = ( is_callable( $callback_function ) ) ? $callback_function : 'edd_slack_interactive_message_missing';
 
         // Route to a Callback Function and include all the Data we need
         call_user_func( $callback_function, $payload->actions[0], $payload->response_url, $payload );
@@ -91,15 +94,16 @@ class EDD_Slack_REST {
     }
 
     /**
-     * Grabs the Sales Reports from EDD
+     * Callback for our Slash Command REST Endpoint
+     * This routes the functionality based on the first word of the passed Text
      * 
      * @param       object $request WP_REST_Request Object
      *                                              
      * @access      public
      * @since       1.0.0
-     * @return      Slack Webhook Notification
+     * @return      void, calls another function
      */
-    public function get_sales( $request ) {
+    public function route_slash_command( $request ) {
 
         $request_body = $request->get_body_params();
 
@@ -109,60 +113,32 @@ class EDD_Slack_REST {
             return _x( 'Bad Verification Token', 'Missing/Incorrect Verification Token Error', EDD_Slack_ID );
         }
 
-        // Some options (Like this_year) take longer to process. Let Slack know we're working on it.
+        // Just in case a command takes too long for Slack's liking
         http_response_code( 200 );
-
-        $date_range = trim( strtolower( $request_body['text'] ) );
-
-        // Get dates based on our Date Range
-        $dates = $this->edd_get_report_dates( $date_range );
-
-        // Get values based on our dates
-        $values = $this->edd_get_report_values( $dates );
         
-        $date_options = apply_filters( 'edd_report_date_options', array(
-            'today'        => __( 'Today', 'easy-digital-downloads' ),
-            'yesterday'    => __( 'Yesterday', 'easy-digital-downloads' ),
-            'this_week'    => __( 'This Week', 'easy-digital-downloads' ),
-            'last_week'    => __( 'Last Week', 'easy-digital-downloads' ),
-            'this_month'   => __( 'This Month', 'easy-digital-downloads' ),
-            'last_month'   => __( 'Last Month', 'easy-digital-downloads' ),
-            'this_quarter' => __( 'This Quarter', 'easy-digital-downloads' ),
-            'last_quarter' => __( 'Last Quarter', 'easy-digital-downloads' ),
-            'this_year'    => __( 'This Year', 'easy-digital-downloads' ),
-            'last_year'    => __( 'Last Year', 'easy-digital-downloads' ),
-            'other'        => __( 'Custom', 'easy-digital-downloads' )
-        ) );
+        $passed_text = explode( ' ', $request_body['text'] );
         
-        // Gets a Human Readable String for the Response
-        $human_date_range = $date_options[ $dates['range'] ];
+        $command = trim( strtolower( $passed_text[0] ) );
         
-        $attachments = array(
-            array(
-                'title' => sprintf( _x( 'Earnings Report for %s', 'Earnings Report for this Period /eddsales', EDD_Slack_ID ), $human_date_range ),
-                'text' => html_entity_decode( sprintf( _x( 'Total Earnings for %s: %s', 'Total Earnings for this Period /eddsales', EDD_Slack_ID ), $human_date_range, edd_currency_filter( edd_format_amount( $values['earnings_totals'] ) ) ) ) . "\n"
-                    . html_entity_decode( sprintf( _x( 'Total Sales for %s: %s', 'Total Sales for this Period /eddsales', EDD_Slack_ID ), $human_date_range, edd_format_amount( $values['sales_totals'], false ) ) ),
-            ),
-        );
-
-        // If we're checking for the Month, also show Estimations
-        if ( $dates['range'] == 'this_month' ) {
-
-            $attachments[0]['text'] .= "\n" . html_entity_decode( sprintf( _x( 'Estimated Monthly Earnings: %s', 'Estimated Montly Earnings /eddsales', EDD_Slack_ID ), edd_currency_filter( edd_format_amount( $values['estimated']['earnings'] ) ) ) ) . "\n"
-                . html_entity_decode( sprintf( _x( 'Estimated Monthly Sales: %s', 'Estimated Montly Sales /eddsales', EDD_Slack_ID ), edd_format_amount( $values['estimated']['sales'], false ) ) );
-
+        $parameter = '';
+        if ( count( $passed_text ) > 1 ) {
+            
+            // Cut first array index off
+            $passed_text = array_splice( $passed_text, 1 );
+            
+            // The passed Parameter back as a String. If a Callback needs to do something different, they can later
+            $parameter = trim( implode( ' ', $passed_text ) );
+            
         }
 
-        // Response URLs are Incoming Webhooks
-        $response_message = EDDSLACK()->slack_api->push_incoming_webhook(
-            $request_body['response_url'],
-            array(
-                'username' => get_bloginfo( 'name' ),
-                'icon' => function_exists( 'has_site_icon' ) && has_site_icon() ? get_site_icon_url( 270 ) : '',
-                'attachments' => $attachments,
-            )
-        );
+        // Construct the callback function
+        $callback_function = 'edd_slack_slash_command_'. $command;
+        $callback_function = ( is_callable( $callback_function ) ) ? $callback_function : 'edd_slack_slash_command_missing';
 
+        // Route to a Callback Function and include all the Data we need
+        call_user_func( $callback_function, $parameter, $request_body['response_url'], $request_body );
+
+        // We don't need to print anything outside what our callbacks provide
         die();
 
     }
@@ -173,17 +149,17 @@ class EDD_Slack_REST {
      * 
      * @param		string  $date_range Date Range String
      *                                       
-     * @access		private
+     * @access		public
      * @since		1.0.0
      * @return		array	Dates to use when calculating the Sales Report
      */
-    private function edd_get_report_dates( $date_range = 'this_month' ) {
+    public function edd_get_report_dates( $date_range = 'this_month' ) {
 
         $dates = array();
 
         $current_time = current_time( 'timestamp' );
 
-        $dates['range'] = ( ! empty( $date_range ) ) ? $date_range : 'this_month';
+        $dates['range'] = ( ! empty( $date_range ) ) ? strtolower( $date_range ) : 'this_month';
 
         // We're not going to let a custom date range through
         $dates['year']       = date( 'Y' );
@@ -340,11 +316,11 @@ class EDD_Slack_REST {
 	 * 
 	 * @param		array $dates Dates Array from edd_get_report_dates()
 	 *                                       
-	 * @access		private
+	 * @access		public
 	 * @since		1.0.0
 	 * @return		array Values for the Report
 	 */
-    private function edd_get_report_values( $dates ) {
+    public function edd_get_report_values( $dates ) {
 
         // Determine graph options
         switch ( $dates['range'] ) :
@@ -647,10 +623,10 @@ class EDD_Slack_REST {
 
 }
 
-if ( ! function_exists( 'edd_slack_rest_missing' ) ) {
+if ( ! function_exists( 'edd_slack_interactive_message_missing' ) ) {
 
     /**
-     * EDD Slack Rest Missing Callback Function Fallback
+     * EDD Slack Rest Interative Button Missing Callback Function Fallback
      * 
      * @param       object $button       name and value from the Interactive Button. value should be json_decode()'d
      * @param       string $response_url Webhook to send the Response Message to
@@ -659,16 +635,46 @@ if ( ! function_exists( 'edd_slack_rest_missing' ) ) {
      * @since       1.0.0
      * @return      void
      */
-    function edd_slack_rest_missing( $button, $response_url, $payload ) {
+    function edd_slack_interactive_message_missing( $button, $response_url, $payload ) {
 
         // Response URLs are Incoming Webhooks
         $response_message = EDDSLACK()->slack_api->push_incoming_webhook(
             $response_url,
             array(
-                'text' => sprintf( _x( 'The Callback Function `edd_slack_rest_%s()` is missing!', 'Callback Function Missing Error', EDD_Slack_ID ), $payload->callback_id ),
+                'text' => sprintf( _x( 'The Callback Function `edd_slack_interactive_message_%s()` is missing!', 'Interactive Button Callback Function Missing Error', EDD_Slack_ID ), $payload->callback_id ),
             )
         );
 
     }
 
+}
+
+if ( ! function_exists( 'edd_slack_slash_command_missing' ) ) {
+    
+    /**
+     * EDD Slack Rest Slash Command Missing Callback Function Fallback
+     * 
+     * @param       string $parameter    The remainder of the Text Passed as part of the Slash Command (Not the First Word)
+     * @param       string $response_url Webhook to send the Response Message to
+     * @param       array  $request_body POST'd data from the Slack Client
+     *                                                        
+     * @since       1.0.0
+     * @return      void
+     */
+    function edd_slack_slash_command_missing( $parameter, $response_url, $request_body ) {
+        
+        // We need to re-extract the Command from $request_body
+        $text = explode( ' ', $request_body['text'] );
+        $command = trim( strtolower( $text[0] ) );
+
+        // Response URLs are Incoming Webhooks
+        $response_message = EDDSLACK()->slack_api->push_incoming_webhook(
+            $response_url,
+            array(
+                'text' => sprintf( _x( 'The Callback Function `edd_slack_slash_command_%s()` is missing!', 'Slash Command Callback Function Missing Error', EDD_Slack_ID ), $command ),
+            )
+        );
+
+    }
+    
 }

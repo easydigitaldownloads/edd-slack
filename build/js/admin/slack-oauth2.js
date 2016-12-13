@@ -19,6 +19,7 @@
             try {
                 
                 if ( that._oauthWindow.location.href.indexOf( options.redirectURI ) !== -1 &&
+                    that._oauthWindow.location.href.indexOf( '&code=' ) !== -1 && 
                     that._oauthWindow.location.href.indexOf( '&error=access_denied' ) == -1
                    ) {
                     
@@ -30,6 +31,11 @@
                     
                     // Pass back our Temporary Code
                     options.callback( options.redirectURI );
+                    
+                    that._oauthWindow.close();
+                    
+                }
+                else if ( that._oauthWindow.location.href.indexOf( '&error=access_denied' ) !== -1 ) {
                     
                     that._oauthWindow.close();
                     

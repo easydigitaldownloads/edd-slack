@@ -132,6 +132,7 @@ class EDD_Slack_REST {
         }
 
         // Construct the callback function
+        if ( empty( $command ) ) $command = 'help';
         $callback_function = 'edd_slack_slash_command_'. $command;
         $callback_function = ( is_callable( $callback_function ) ) ? $callback_function : 'edd_slack_slash_command_missing';
 

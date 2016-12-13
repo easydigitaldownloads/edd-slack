@@ -148,7 +148,7 @@ class EDD_Slack_OAUTH_Settings {
 
             if ( ! $oauth_token ) : ?>
             
-                <a href="//slack.com/oauth/authorize?client_id=<?php echo $client_id; ?>&scope=<?php echo $scope; ?>&redirect_uri=<?php echo $redirect_uri; ?>" target="_self" class="button button-primary">
+                <a href="//slack.com/oauth/authorize?client_id=<?php echo $client_id; ?>&scope=<?php echo $scope; ?>&redirect_uri=<?php echo $redirect_uri; ?>" target="_self" class="edd-slack-app-auth button button-primary">
                     <?php echo _x( 'Link Slack App', 'OAUTH Register Buton Label', EDD_Slack_ID ); ?>
                 </a>
 
@@ -178,8 +178,14 @@ class EDD_Slack_OAUTH_Settings {
     public function store_oauth_token() {
         
         // If we need to get an OAUTH Token
+        // $_GET['state'] is set by the JavaScript for the OAUTH2 Popup
         // $_GET['section'] is set properly by our redirect_uri
-        if ( isset( $_GET['code'] ) && isset( $_GET['section'] ) && $_GET['section'] == 'edd-slack-settings' && ! edd_get_option( 'slack_app_oauth_token' ) ) {
+        if ( isset( $_GET['code'] ) && 
+            isset( $_GET['state'] ) && 
+            $_GET['state'] == 'saving' && 
+            isset( $_GET['section'] ) && 
+            $_GET['section'] == 'edd-slack-settings' && 
+            ! edd_get_option( 'slack_app_oauth_token' ) ) {
             
             $client_id = edd_get_option( 'slack_app_client_id' );
             $client_secret = edd_get_option( 'slack_app_client_secret' );

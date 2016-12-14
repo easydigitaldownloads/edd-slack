@@ -87,6 +87,35 @@
             edd_slack_conditional_fields( trigger, $( trigger ).val() );
         } );
         
+        $( '.repeater-header h2[data-repeater-collapsable-default]' ).each( function( index, header ) {
+            
+            var active = true,
+                repeaterItem = $( header ).closest( 'div[data-repeater-item]' );
+            
+            // Select Fields need to be filled out. No other field is really required
+            $( repeaterItem ).find( 'select' ).each( function( valueIndex, select ) {
+                
+                if ( ! $( select ).closest( 'td' ).hasClass( 'hidden' ) && 
+                    $( select ).val() == 0 ) {
+                    active = false;
+                    return false; // Break out of execution, we already know we're invalid
+                }
+                
+            } );
+            
+            if ( active === true ) {
+                
+                $( header ).find( '.title' ).append( '<span class="active dashicons dashicons-yes" aria-label="' + eddSlack.i18n.inactiveText + '"></span>' );
+                
+            }
+            else {
+                
+                $( header ).find( '.title' ).append( '<span class="inactive dashicons dashicons-no" aria-label="' + eddSlack.i18n.inactiveText + '"></span>' );
+                
+            }
+            
+        } );
+        
         // And toggle them on Change
         $( document ).on( 'change', '.edd-slack-trigger', function() {
             edd_slack_conditional_fields( $( this ), $( this ).val() );

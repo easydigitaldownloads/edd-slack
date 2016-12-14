@@ -7,10 +7,10 @@
         var regex = /value="(#(?:[0-9a-f]{3}){1,2})"/i;
 
         // Only try to run if there are any Color Pickers within an EDD Repeater
-        if ( $( '.edd-repeater .edd-color-picker' ).length ) {
+        if ( $( '.edd-rbm-repeater .edd-color-picker' ).length ) {
 
             // Check Each Repeater
-            $( '.edd-repeater' ).each( function( repeaterIndex, repeater ) {
+            $( '.edd-rbm-repeater' ).each( function( repeaterIndex, repeater ) {
 
                 // Check only Open Repeater Rows
                 $( repeater ).find( '.edd-repeater-item.opened' ).each( function( rowIndex, row ) {
@@ -36,9 +36,9 @@
     function init_edd_repeater_chosen() {
         
         // Only try to run if there are any Chosen Fields within an EDD Repeater
-        if ( $( '.edd-repeater .edd-chosen' ).length ) {
+        if ( $( '.edd-rbm-repeater .edd-chosen' ).length ) {
             
-            $( '.edd-repeater' ).each( function( repeaterIndex, repeater ) {
+            $( '.edd-rbm-repeater' ).each( function( repeaterIndex, repeater ) {
                 
                 // Check only Open Repeater Rows
                 $( repeater ).find( '.edd-repeater-item.opened' ).each( function( rowIndex, row ) {
@@ -175,7 +175,7 @@
             $repeater.find( '.edd-repeater-content' ).hide();
         }
 
-        $( document ).on( 'click touchend', '.edd-repeater[data-repeater-collapsable] [data-repeater-collapsable-handle]', function () {
+        $( document ).on( 'click touchend', '.edd-rbm-repeater[data-repeater-collapsable] [data-repeater-collapsable-handle]', function () {
 
             var $repeater_field = $( this ).closest( '.edd-repeater-item' ),
                 $content = $repeater_field.find( '.edd-repeater-content' ).first(),
@@ -198,7 +198,7 @@
 
         } );
 
-        $( document ).on( 'keyup change', '.edd-repeater .edd-repeater-content td:first-of-type *[type!="hidden"]', function() {
+        $( document ).on( 'keyup change', '.edd-rbm-repeater .edd-repeater-content td:first-of-type *[type!="hidden"]', function() {
             
             if ( $( this ).val() !== '' ) {
                 $( this ).closest( '.edd-repeater-item' ).find( '.repeater-header h2 span.title' ).html( $( this ).val() );

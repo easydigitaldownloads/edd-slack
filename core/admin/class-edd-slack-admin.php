@@ -24,6 +24,9 @@ class EDD_Slack_Admin {
 
         // Register Settings
         add_filter( 'edd_settings_extensions', array( $this, 'settings' ) );
+        
+        // Localize the admin.js
+        add_filter( 'edd_slack_localize_admin_script', array( $this, 'localize_script' ) );
 
         // Enqueue CSS/JS on our Admin Settings Tab
         add_action( 'edd_settings_tab_top_extensions_edd-slack-settings', array( $this, 'admin_settings_scripts' ) );
@@ -277,6 +280,26 @@ class EDD_Slack_Admin {
         <input type="hidden" name="edd_slack_deleted_rbm_feeds" value="" />
 
     <?php
+    }
+    
+    /**
+     * Localize the Admin.js with some values from PHP-land
+     * 
+     * @param       array $localization Array holding all our Localizations
+     *                                                        
+     * @access      public
+     * @since       1.0.0
+     * @return      array Modified Array
+     */
+    public function localize_script( $localization ) {
+        
+        $localization['i18n'] = array(
+            'activeText' => _x( 'Active Notification', 'Active Notification Aria Label', EDD_Slack_ID ),
+            'inactiveText' => _x( 'Inactive Notification', 'Inactive Notification Aria Label', EDD_Slack_ID ),
+        );
+        
+        return $localization;
+        
     }
 
     /**

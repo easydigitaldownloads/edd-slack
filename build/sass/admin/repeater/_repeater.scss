@@ -1,4 +1,4 @@
-.edd-repeater {
+.edd-rbm-repeater {
 
     table.widefat {
         background: transparent;
@@ -30,6 +30,23 @@
         
         & + label {
             margin-top: -1px;
+        }
+        
+    }
+    
+    h2 {
+        
+        span.active, span.inactive {
+            //color: #fff;
+            //padding: 0 0.5em;
+        }
+        
+        span.active {
+            color: green;
+        }
+        
+        span.inactive {
+            color: red;
         }
         
     }
@@ -168,7 +185,7 @@
 
 // Special Styling only needed to shift things around for Sortable Repeaters
 // It helps to line thing up in a visually appealing way
-.edd-repeater.edd-repeater-sortable {
+.edd-rbm-repeater.edd-repeater-sortable {
 
     .edd-repeater-item {
 
@@ -226,7 +243,7 @@
 
 }
 
-.edd-repeater.edd-repeater-layout-row {
+.edd-rbm-repeater.edd-repeater-layout-row {
 
     .edd-repeater-item {
 

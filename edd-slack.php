@@ -490,6 +490,12 @@ if ( ! class_exists( 'EDD_Slack' ) ) {
                 true
             );
             
+            wp_localize_script( 
+                EDD_Slack_ID . '-admin',
+                'eddSlack',
+                apply_filters( 'edd_slack_localize_admin_script', array() )
+            );
+            
         }
         
         /**

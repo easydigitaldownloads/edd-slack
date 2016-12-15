@@ -133,7 +133,7 @@ class EDD_Slack_Admin {
                 'layout' => 'row',
                 'add_item_text' => _x( 'Add Slack Notification', 'Add Slack Notification Button', EDD_Slack_ID ),
                 'delete_item_text' => _x( 'Delete Slack Notification', 'Delete Slack Notification Button', EDD_Slack_ID ),
-                'collapsable_title' => _x( 'New Slack Notification', 'New Slack Notification Header', EDD_Slack_ID ),
+                'default_title' => _x( 'New Slack Notification', 'New Slack Notification Header', EDD_Slack_ID ),
                 'fields' => $fields,
             ),
             array(

@@ -6,7 +6,7 @@
         box-shadow: none;
     }
 
-    .edd-repeater-field-handle {
+    .edd-rbm-repeater-field-handle {
 
         width: 0.5em;
 
@@ -69,12 +69,12 @@
         
     }
 
-    .edd-repeater-list {
+    .edd-rbm-repeater-list {
         border: 2px solid #e5e5e5;
         box-shadow: 0 1px 1px rgba(0,0,0,0.06);
     }
 
-    .edd-repeater-item {
+    .edd-rbm-repeater-item {
 
         .repeater-header {
 
@@ -101,11 +101,11 @@
                 float: left;
             }
 
-            .edd-repeater-collapsable-handle-arrow {
+            .edd-rbm-repeater-collapsable-handle-arrow {
                 float: right;
             }
 
-            .edd-repeater-controls {
+            .edd-rbm-repeater-controls {
 
                 width: 1px;
                 text-align: center;
@@ -152,7 +152,7 @@
 
         }
 
-        & > .edd-repeater-content {
+        & > .edd-rbm-repeater-content {
 
             background: #fff;
 
@@ -167,7 +167,7 @@
                 // This gets shoved onto its own row for readability reasons
                 & > .repeater-container {
 
-                    .edd-repeater-item {
+                    .edd-rbm-repeater-item {
 
                         display: block;
 
@@ -185,11 +185,11 @@
 
 // Special Styling only needed to shift things around for Sortable Repeaters
 // It helps to line thing up in a visually appealing way
-.edd-rbm-repeater.edd-repeater-sortable {
+.edd-rbm-repeater.edd-rbm-repeater-sortable {
 
-    .edd-repeater-item {
+    .edd-rbm-repeater-item {
 
-        & > .edd-repeater-content {
+        & > .edd-rbm-repeater-content {
 
             & > table > tbody > tr {
 
@@ -215,7 +215,7 @@
                         margin-left: 40px;
                         margin-right: 40px;
 
-                        .edd-repeater-item {
+                        .edd-rbm-repeater-item {
 
                             td {
                                 padding-left: 10px; // Default
@@ -243,11 +243,11 @@
 
 }
 
-.edd-rbm-repeater.edd-repeater-layout-row {
+.edd-rbm-repeater.edd-rbm-repeater-layout-row {
 
-    .edd-repeater-item {
+    .edd-rbm-repeater-item {
 
-        & > .edd-repeater-content {
+        & > .edd-rbm-repeater-content {
 
             & > table > tbody > tr > td {
 
@@ -307,11 +307,11 @@
 
     }
 
-    &.edd-repeater-sortable {
+    &.edd-rbm-repeater-sortable {
 
-        .edd-repeater-item {
+        .edd-rbm-repeater-item {
 
-            & > .edd-repeater-content {
+            & > .edd-rbm-repeater-content {
 
                 td {
 

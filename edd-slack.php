@@ -485,7 +485,7 @@ if ( ! class_exists( 'EDD_Slack' ) ) {
             wp_register_script(
                 EDD_Slack_ID . '-admin',
                 EDD_Slack_URL . '/admin.js',
-                array( 'jquery' ),
+                array( 'jquery', 'thickbox' ),
                 defined( 'WP_DEBUG' ) && WP_DEBUG ? time() : EDD_Slack_VER,
                 true
             );

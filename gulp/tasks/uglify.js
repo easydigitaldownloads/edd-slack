@@ -2,7 +2,6 @@ var $             = require( 'gulp-load-plugins' )();
 var config        = require( '../util/loadConfig' ).javascript;
 var gulp          = require( 'gulp' );
 var foreach       = require( 'gulp-foreach' );
-var sequence      = require( 'run-sequence' );
 var notify        = require( 'gulp-notify' );
 var fs            = require( 'fs' );
 var pkg           = JSON.parse( fs.readFileSync( './package.json' ) );
@@ -11,43 +10,49 @@ var onError       = notify.onError( {
    message:  '<%= error.name %> <%= error.message %>'   
 } );
 
-gulp.task( 'front-uglify', function() {
+gulp.task( 'uglify:front', function() {
 
-    return gulp.src( config.front.src )
+    return gulp.src( config.front.vendor.concat( config.front.src ) )
         .pipe( $.plumber( { errorHandler: onError } ) )
         .pipe( $.sourcemaps.init() )
-        .pipe( $.babel() )
+        .pipe( $.babel( {
+            presets: ['es2015'] // Gulp-uglify has no official support for ECMAScript 2015 (aka ES6, aka Harmony), so we'll transpile to EcmaScript5
+        } ) )
         .pipe( $.concat( config.front.filename ) )
         .pipe( $.uglify() )
         .pipe( $.sourcemaps.write( '.' ) )
-        .pipe( gulp.dest( config.dest.root ) )
+        .pipe( gulp.dest( config.front.root ) )
         .pipe( $.plumber.stop() )
         .pipe( notify( {
             title: pkg.name,
-            message: 'JS Complete'
+            message: 'JS Complete',
+            onLast: true
         } ) );
 
 } );
 
-gulp.task( 'admin-uglify', function() {
+gulp.task( 'uglify:admin', function() {
 
-    return gulp.src( config.admin.bowerPaths.concat( config.admin.src ) )
+    return gulp.src( config.admin.vendor.concat( config.admin.src ) )
         .pipe( $.plumber( { errorHandler: onError } ) )
         .pipe( $.sourcemaps.init() )
-        .pipe( $.babel() )
+        .pipe( $.babel( {
+            presets: ['es2015'] // Gulp-uglify has no official support for ECMAScript 2015 (aka ES6, aka Harmony), so we'll transpile to EcmaScript5
+        } ) )
         .pipe( $.concat( config.admin.filename ) )
         .pipe( $.uglify() )
         .pipe( $.sourcemaps.write( '.' ) )
-        .pipe( gulp.dest( config.dest.root ) )
+        .pipe( gulp.dest( config.admin.root ) )
         .pipe( $.plumber.stop() )
         .pipe( notify( {
             title: pkg.name,
-            message: 'Admin JS Complete'
+            message: 'Admin JS Complete',
+            onLast: true
         } ) );
 
 } );
 
-gulp.task( 'tinymce-uglify', function() {
+gulp.task( 'uglify:tinymce', function() {
 
     return gulp.src( config.tinymce.src )
         .pipe( foreach( function( stream, file ) {
@@ -60,11 +65,12 @@ gulp.task( 'tinymce-uglify', function() {
         } ) )
         .pipe( notify( {
             title: pkg.name,
-            message: 'TinyMCE JS Complete'
+            message: 'TinyMCE JS Complete',
+            onLast: true
         } ) );
 
 } );
 
-gulp.task( 'uglify', function( done ) {
-    sequence( 'front-uglify', 'admin-uglify', 'tinymce-uglify', done );
+gulp.task( 'uglify', ['uglify:front', 'uglify:admin', 'uglify:tinymce'], function( done ) {
+    done();
 } );

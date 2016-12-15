@@ -4,12 +4,12 @@
     var edd_slack_conditional_fields = function( element, option_class ) {
         
         // Handle newly created Rows
-        if ( element.type == 'edd-repeater-add' ) {
+        if ( element.type == 'edd-rbm-repeater-add' ) {
             element = option_class;
             option_class = 0;
         }
         
-        var row = $( element ).closest( '.edd-repeater-item' );
+        var row = $( element ).closest( '.edd-rbm-repeater-item' );
         
         if ( option_class == 0 ) {
             
@@ -63,17 +63,13 @@
     
     var init_edd_slack_repeater_functionality = function() {
         
-        // This JavaScript only loads on our custom Page, so we're find doing this
-        var $repeaters = $( '[data-edd-repeater]' );
-        
-        if ( typeof EDD_Slack_Admin !== undefined ) {
-            
-        }
+        // This JavaScript only loads on our custom Page, so we're fine doing this
+        var $repeaters = $( '[data-edd-rbm-repeater]' );
         
         if ( $repeaters.length ) {
-            $repeaters.on( 'edd-repeater-add', edd_slack_conditional_fields );
+            $repeaters.on( 'edd-rbm-repeater-add', edd_slack_conditional_fields );
             $repeaters.on( 'repeater-show', edd_slack_conditional_fields );
-            $repeaters.on( 'edd-repeater-remove', delete_edd_slack_feed );
+            $repeaters.on( 'edd-rbm-repeater-remove', delete_edd_slack_feed );
         }
         
     }
@@ -87,7 +83,7 @@
             edd_slack_conditional_fields( trigger, $( trigger ).val() );
         } );
         
-        $( '.repeater-header h2[data-repeater-collapsable-default]' ).each( function( index, header ) {
+        $( '.repeater-header span[data-repeater-default-title]' ).each( function( index, header ) {
             
             var active = true,
                 repeaterItem = $( header ).closest( 'div[data-repeater-item]' );

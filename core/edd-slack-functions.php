@@ -30,124 +30,74 @@ if ( ! function_exists( 'edd_rbm_repeater_callback' ) ) {
             'id' => '',
             'std' => '',
             'classes' => array(),
-            'desc' => false,
             'fields' => array(),
             'add_item_text' => __( 'Add Row', EDD_Slack_ID ),
+            'edit_item_text' => __( 'Edit Row', EDD_Slack_ID ),
             'delete_item_text' => __( 'Delete Row', EDD_Slack_ID ),
-            'sortable' => true,
-            'collapsable' => false,
-            'collapsable_title' => __( 'New Row', EDD_Slack_ID ),
-            'nested' => false,
-            'layout' => 'table',
+            'default_title' => __( 'New Row', EDD_Slack_ID ),
             'input_name' => false,
         ) );
         
         // Ensure Dummy Field is created
         $field_count = ( count( $args['std'] ) >= 1 ) ? count( $args['std'] ) : 1;
         
-        if ( $args['sortable'] ) {
-            $args['classes'][] = 'edd-repeater-sortable';
-        }
-        
-        if ( $args['collapsable'] ) {
-            $args['classes'][] = 'edd-repeater-collapsable';
-        }
-        
-        if ( $args['layout'] == 'table' ) {
-            $args['classes'][] = 'edd-repeater-layout-table';
-        }
-        else {
-            $args['classes'][] = 'edd-repeater-layout-row';
-        }
-        
         $name = $args['input_name'] !== false ? $args['input_name'] : 'edd_settings[' . esc_attr( $args['id'] ) . ']';
         
         ?>
 
-        <?php if ( $args['nested'] ) : ?>
-
-            <label for="<?php echo $args['id']; ?>"><?php echo $args['desc']; ?></label>
-
-        <?php endif; ?>
-
-        <div<?php echo ( ! $args['nested'] ) ? ' data-edd-repeater' : ''; ?><?php echo ( $args['sortable'] ) ? ' data-repeater-sortable' : ''; ?><?php echo ( $args['collapsable'] ) ? ' data-repeater-collapsable' : ''; ?> class="edd-rbm-repeater edd_meta_table_wrap<?php echo ( isset( $args['classes'] ) ) ? ' ' . implode( ' ', $args['classes'] ) : ''; ?>">
+        <div data-edd-rbm-repeater class="edd-rbm-repeater <?php echo ( isset( $args['classes'] ) ) ? ' ' . implode( ' ', $args['classes'] ) : ''; ?>">
             
-            <div data-repeater-list="<?php echo ( ! $args['nested'] ) ? $name : $args['id']; ?>" class="edd-repeater-list">
+            <div data-repeater-list="<?php echo ( ! $args['nested'] ) ? $name : $args['id']; ?>" class="edd-rbm-repeater-list">
 
                     <?php for ( $index = 0; $index < $field_count; $index++ ) : $value = ( isset( $args['std'][$index] ) ) ? $args['std'][$index] : array(); ?>
                 
-                        <div data-repeater-item<?php echo ( ! isset( $args['std'][$index] ) && ! $args['nested'] ) ? ' data-repeater-dummy style="display: none;"' : ''; ?> class="edd-repeater-item<?php echo ( $args['collapsable'] ) ? ' closed' : ''; ?>">
+                        <div data-repeater-item<?php echo ( ! isset( $args['std'][$index] ) ) ? ' data-repeater-dummy style="display: none;"' : ''; ?> class="edd-rbm-repeater-item">
                             
-                            <?php if ( ! $args['nested'] ) : ?>
-                                <table class="repeater-header widefat" width="100%" cellpadding="0" cellspacing="0"<?php echo ( $args['collapsable'] ) ? ' data-repeater-collapsable-handle' : '';?>>
-                                    
-                                    <tbody>
-                                        
-                                        <tr>
+                            <table class="repeater-header wp-list-table widefat fixed posts">
 
-                                            <?php if ( $args['sortable'] ) : ?>
-                                                <td class="edd-repeater-field-handle">
-                                                    <span class="edd_draghandle" data-repeater-item-handle></span>
-                                                </td>
-                                            <?php endif; ?>
+                                <thead>
 
-                                            <td>
-                                                <h2 data-repeater-collapsable-default="<?php echo $args['collapsable_title']; ?>">
-                                                    <span class="title">
+                                    <tr>
+                                        <th scope="col">
+                                            <span class="title" data-repeater-default-title="<?php echo $args['default_title']; ?>">
 
-                                                        <?php if ( isset( $args['std'][$index] ) && reset( $args['std'][$index] ) !== '' ) : 
+                                                <?php if ( isset( $args['std'][$index] ) && reset( $args['std'][$index] ) !== '' ) : 
 
-                                                            // Surprisingly, this is the most efficient way to do this. http://stackoverflow.com/a/21219594
-                                                            foreach ( $value as $key => $setting ) : ?>
-                                                                <?php echo $setting; ?>
-                                                            <?php 
-                                                                break;
-                                                            endforeach; 
+                                                    // Surprisingly, this is the most efficient way to do this. http://stackoverflow.com/a/21219594
+                                                    foreach ( $value as $key => $setting ) : ?>
+                                                        <?php echo $setting; ?>
+                                                    <?php 
+                                                        break;
+                                                    endforeach; 
 
-                                                        else: ?>
+                                                else: ?>
 
-                                                            <?php echo $args['collapsable_title']; ?>
+                                                    <?php echo $args['default_title']; ?>
 
-                                                        <?php endif; ?>
+                                                <?php endif; ?>
 
-                                                    </span>
+                                            </span>
 
-                                                    <?php if ( $args['collapsable'] ) : ?>
-                                                        <span class="edd-repeater-collapsable-handle-arrow">
-                                                            <span class="opened dashicons dashicons-arrow-up"></span>
-                                                            <span class="closed dashicons dashicons-arrow-down"></span>
-                                                        </span>
-                                                    <?php endif; ?>
+                                        </th>
 
-                                                </h2>
-                                            </td>
+                                        <th scope="col" class="edd-rbm-repeater-controls">
+                                            <input data-repeater-edit type="button" class="button" value="<?php echo $args['edit_item_text']; ?>" />
+                                            <input data-repeater-delete type="button" class="button" value="<?php echo $args['delete_item_text']; ?>" />
+                                        </th>
 
-                                            <td class="edd-repeater-controls">
-                                                <input data-repeater-delete type="button" class="button" value="<?php echo $args['delete_item_text']; ?>" />
-                                            </td>
+                                    </tr>
+
+                                </thead>
+
+                            </table>
                             
-                                        </tr>
-                                        
-                                    </tbody>
-
-                                </table>
-                            <?php endif; ?>
-                            
-                            <div class="edd-repeater-content">
+                            <div class="edd-rbm-repeater-content reveal" data-reveal>
 
                                 <table class="widefat" width="100%" cellpadding="0" cellspacing="0">
 
                                     <tbody>
 
                                         <tr>
-                                            
-                                            <?php if ( $args['nested'] && $args['sortable'] ) : ?>
-
-                                                <td class="edd-repeater-field-handle">
-                                                    <span class="edd_draghandle" data-repeater-item-handle></span>
-                                                </td>
-
-                                            <?php endif; ?>
 
                                             <?php foreach ( $args['fields'] as $field_id => $field ) : 
 
@@ -171,37 +121,22 @@ if ( ! function_exists( 'edd_rbm_repeater_callback' ) ) {
                                             
                                                     if ( $field['type'] !== 'hook' ) : ?>
 
-                                                        <td<?php echo ( $field['type'] == 'repeater' ) ? ' class="repeater-container"' : ''; ?>>
+                                                        <td>
 
-                                                            <?php
-                                                                if ( $field['type'] == 'rbm_repeater' ) {
-                                                                    $field['nested'] = true;
-                                                                    $field['classes'][] = 'nested-repeater';
-                                                                }
-
-                                                                call_user_func( "edd_{$field['type']}_callback", $field ); 
-                                                            ?>
+                                                            <?php call_user_func( "edd_{$field['type']}_callback", $field ); ?>
 
                                                         </td>
                                             
                                                     <?php else : 
         
+                                                        // Don't wrap calls for a Hook
                                                         call_user_func( "edd_{$field['type']}_callback", $field ); 
         
                                                     endif;
 
                                                 endif;
 
-                                            endforeach;
-
-                                            if ( $args['nested'] ) : ?>
-
-                                                <td>
-                                                    <span class="screen-reader-text"><?php echo $args['delete_item_text']; ?></span>
-                                                    <input data-repeater-delete type="button" class="edd_remove_repeatable" data-type="file" style="background: url(<?php echo admin_url('/images/xit.gif'); ?>) no-repeat;" />
-                                                </td>
-
-                                            <?php endif; ?>
+                                            endforeach; ?>
 
                                             </tr>
 

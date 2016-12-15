@@ -1,9 +1,10 @@
 javascript:
-  dest:
-    root: "."
   front:
+    root: "."
     # filename to output
     filename: "script.js"
+    vendor: 
+      - ""
     notification: "Running JavaScript"
     # Paths to JavaScript libraries, which are combined into one file
     src:
@@ -13,14 +14,22 @@ javascript:
       - "!build/js/admin/**/*.js"
       - "!build/js/tinymce/**/*.js"
   admin:
-    bowerPaths:
-      - "bower_components/jquery.repeater/jquery.repeater.min.js"
+    root: "."
     filename: "admin.js"
+    vendor:
+      - "bower_components/jquery.repeater/jquery.repeater.min.js"
+      - "bower_components/foundation-sites/js/foundation.core.js"
+      - "bower_components/foundation-sites/js/foundation.util.keyboard.js"
+      - "bower_components/foundation-sites/js/foundation.util.box.js"
+      - "bower_components/foundation-sites/js/foundation.util.mediaQuery.js"
+      - "bower_components/foundation-sites/js/foundation.util.triggers.js"
+      - "bower_components/foundation-sites/js/foundation.util.motion.js"
+      - "bower_components/foundation-sites/js/foundation.reveal.js"
     notification: "Running Admin JavaScript"
     src:
       - "build/js/admin/**/*.js"
   tinymce:
-    dest: "./tinymce/"
+    root: "./tinymce/"
     notification: "Running TinyMCE JavaScript"
     src:
       - "build/js/tinymce/**/*.js"
@@ -30,14 +39,18 @@ sass:
   compatibility:
     - "last 2 versions"
     - "ie >= 9"
-  dest:
-    root: "."
   front:
+    root: "."
     filename: "style.css"
+    vendor: 
+      - ""
     notification: "Running Sass"
     src: "build/sass/main.scss"
   admin:
+    root: "."
     filename: "admin.css"
+    vendor:
+      - "bower_components/foundation-sites/scss"
     notification: "Running Admin Sass"
     src: "build/sass/admin/main.scss"
 
@@ -57,7 +70,6 @@ watch:
 
 release:
   type: 'plugin'
-  languagesDir: './languages/'
   files:
     - "./**/*.*"
     - "!./**/*.map"

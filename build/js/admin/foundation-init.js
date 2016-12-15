@@ -74,8 +74,8 @@
     
     $( document ).on( 'open.zf.reveal', '.reveal', function() {
         
-        init_edd_repeater_colorpickers();
-        init_edd_repeater_chosen();
+        init_edd_repeater_colorpickers( this );
+        init_edd_repeater_chosen( this );
         
     } );
 

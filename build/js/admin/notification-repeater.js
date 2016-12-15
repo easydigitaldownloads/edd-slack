@@ -1,15 +1,13 @@
 ( function( $ ) {
     'use strict';
     
-    var edd_slack_conditional_fields = function( element, option_class ) {
+    var edd_slack_conditional_fields = function( row, option_class ) {
         
         // Handle newly created Rows
-        if ( element.type == 'edd-rbm-repeater-add' ) {
-            element = option_class;
+        if ( row.type == 'edd-rbm-repeater-add' ) {
+            row = option_class;
             option_class = 0;
         }
-        
-        var row = $( element ).closest( '.edd-rbm-repeater-item' );
         
         if ( option_class == 0 ) {
             
@@ -41,8 +39,11 @@
     }
     
     var delete_edd_slack_feed = function( e, $item ) {
+        
+        var uuid = $item.find( '[data-repeater-edit]' ).data( 'open' ),
+            $modal = $( '[data-reveal="' + uuid + '"]' );
 
-        var post_ID = $item.find( 'input[name$="[slack_post_id]"]' ).val(),
+        var post_ID = $modal.find( 'input[name$="[slack_post_id]"]' ).val(),
             $delete_feeds = $( 'input[type="hidden"][name^="edd_slack_deleted_"]' ),
             deleted = $delete_feeds.val();
 

@@ -1,27 +1,18 @@
 // Initialize special fields if they exist
-function init_edd_repeater_colorpickers() {
+function init_edd_repeater_colorpickers( modal ) {
 
     var regex = /value="(#(?:[0-9a-f]{3}){1,2})"/i;
 
     // Only try to run if there are any Color Pickers within an EDD Repeater
-    if ( jQuery( '.edd-rbm-repeater .edd-color-picker' ).length ) {
+    if ( jQuery( modal ).find( '.edd-color-picker' ).length ) {
 
-        // Check Each Repeater
-        jQuery( '.edd-rbm-repeater' ).each( function( repeaterIndex, repeater ) {
+        // Hit each colorpicker individually to ensure its settings are properly used
+        jQuery( modal ).find( '.edd-color-picker' ).each( function( index, colorPicker ) {
 
-            jQuery( repeater ).find( '.edd-rbm-repeater-item' ).each( function( rowIndex, row ) {
+            // Value exists in HTML but is inaccessable via JavaScript. No idea why.
+            var value = regex.exec( jQuery( colorPicker )[0].outerHTML )[1];
 
-                // Hit each colorpicker individually to ensure its settings are properly used
-                jQuery( row ).find( '.edd-color-picker' ).each( function( index, colorPicker ) {
-
-                    // Value exists in HTML but is inaccessable via JavaScript. No idea why.
-                    var value = regex.exec( $( colorPicker )[0].outerHTML )[1];
-
-                    jQuery( colorPicker ).val( value ).attr( 'value', value ).wpColorPicker();
-
-                } );
-
-            } );
+            jQuery( colorPicker ).val( value ).attr( 'value', value ).wpColorPicker();
 
         } );
 
@@ -29,21 +20,13 @@ function init_edd_repeater_colorpickers() {
 
 }
 
-function init_edd_repeater_chosen() {
+function init_edd_repeater_chosen( modal ) {
 
     // Only try to run if there are any Chosen Fields within an EDD Repeater
-    if ( jQuery( '.edd-rbm-repeater .edd-chosen' ).length ) {
+    if ( jQuery( modal ).find( '.edd-chosen' ).length ) {
 
-        jQuery( '.edd-rbm-repeater' ).each( function( repeaterIndex, repeater ) {
-
-            jQuery( repeater ).find( '.edd-rbm-repeater-item' ).each( function( rowIndex, row ) {
-
-                // Init Chosen Fields as a Glob per-row
-                jQuery( row ).find( '.edd-chosen' ).chosen();
-
-            } );
-
-        } );
+        // Init Chosen Fields as a Glob per-row
+        jQuery( modal ).find( '.edd-chosen' ).chosen();
 
     }
 
@@ -128,7 +111,7 @@ function init_edd_repeater_chosen() {
                 $( this ).closest( '.edd-rbm-repeater-item' ).find( '.repeater-header span.title' ).html( $( this ).val() );
             }
             else {
-                var defaultValue = $( this ).closest( '.edd-rbm-repeater-item' ).find( '.repeater-header h2' ).data( 'repeater-default-title' );
+                var defaultValue = $( this ).closest( '.edd-rbm-repeater-item' ).find( '.repeater-header span.title' ).data( 'repeater-default-title' );
                 $( this ).closest( '.edd-rbm-repeater-item' ).find( '.repeater-header span.title' ).html( defaultValue );
             }
             

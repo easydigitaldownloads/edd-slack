@@ -1,70 +1,27 @@
 .edd-rbm-repeater {
 
     table.widefat {
+        
         background: transparent;
         border: 0;
         box-shadow: none;
-    }
-
-    .edd-rbm-repeater-field-handle {
-
-        width: 0.5em;
-
-        .edd_draghandle {
-            background-repeat: no-repeat;
-        }
-
-    }
-
-    input.regular-text, textarea, select.edd-chosen {
-        width: 100%;
-    }
-    
-    div.chosen-container {
-        width: 100% !important;   
-    }
-    
-    input[type="checkbox"] {
         
-        float: left;
-        
-        & + label {
-            margin-top: -1px;
-        }
-        
-    }
-    
-    h2 {
-        
-        span.active, span.inactive {
-            //color: #fff;
-            //padding: 0 0.5em;
-        }
-        
-        span.active {
-            color: green;
-        }
-        
-        span.inactive {
-            color: red;
-        }
-        
-    }
-
-    span.handle {
-
-        &:hover {
-            cursor: move,
-        }
-
-    }
-
-    td {
-        
-        vertical-align: top;
-        
-        &.hidden {
-            display: none !important;
+        thead {
+            
+            tr {
+                
+                display: block;
+                
+                th {
+                    display: inline-block;
+                }
+                
+                .edd-rbm-repeater-controls {
+                    text-align: right;
+                }
+                
+            }
+            
         }
         
     }
@@ -83,26 +40,8 @@
             border-top-style: solid;
             border-bottom-style: solid;
 
-            &:hover {
-                cursor: pointer;
-            }
-
             td {
                 vertical-align: middle;
-            }
-
-            .edd_draghandle {
-                margin-top: 0;
-            }
-
-            h2 {
-                margin: 0;
-                width: 100%;
-                float: left;
-            }
-
-            .edd-rbm-repeater-collapsable-handle-arrow {
-                float: right;
             }
 
             .edd-rbm-repeater-controls {
@@ -183,147 +122,40 @@
 
 }
 
-// Special Styling only needed to shift things around for Sortable Repeaters
-// It helps to line thing up in a visually appealing way
-.edd-rbm-repeater.edd-rbm-repeater-sortable {
-
-    .edd-rbm-repeater-item {
-
-        & > .edd-rbm-repeater-content {
-
-            & > table > tbody > tr {
-
-                & > td {
-
-                    &:first-of-type {
-                        padding-left: 50px;
-                    }
-
-                    display: table-cell;
-
-                    &:after {
-                        clear: both;
-                    }
-
-                    // <td> holding Nested Repeater
-                    &.repeater-container {
-
-                        padding-left: 10px; // Default
-                        display: block;
-                        float: left;
-
-                        margin-left: 40px;
-                        margin-right: 40px;
-
-                        .edd-rbm-repeater-item {
-
-                            td {
-                                padding-left: 10px; // Default
-                            }
-
-                        }
-
-                    }
-
-                    &.repeater-collapsable {
-
-                        margin-left: 0;
-                        margin-right: 0;
-                        width: 100%;
-
-                    }
-
-                }
-
-            }
-
+.edd-rbm-repeater-content {
+    
+    table.widefat {
+        background: transparent;
+        border: 0;
+        box-shadow: none;
+    }
+    
+    input.regular-text, textarea, select.edd-chosen, div.wp-picker-container {
+        width: 100%;
+    }
+    
+    div.chosen-container {
+        width: 100% !important;   
+    }
+    
+    input[type="checkbox"] {
+        
+        float: left;
+        
+        & + label {
+            margin-top: -1px;
         }
-
+        
     }
 
-}
-
-.edd-rbm-repeater.edd-rbm-repeater-layout-row {
-
-    .edd-rbm-repeater-item {
-
-        & > .edd-rbm-repeater-content {
-
-            & > table > tbody > tr > td {
-
-                // One Field per row
-                display: block;
-
-                &:not(:last-of-type) {
-                    margin-bottom: 0;
-                    padding-bottom: 0;
-                }
-
-                input.regular-text, textarea, select.edd-chosen {
-                    width: 25em; // Default
-                }
-                
-                div.chosen-container {
-                    width: 25em !important;   
-                }
-
-                label {
-                    display: block; // Knock label to next line
-                }
-
-            }
-
-            & > table > tbody > tr {
-
-                & > td {
-
-                    // <td> holding Nested Repeater
-                    &.repeater-container {
-                        
-                        display: table;
-
-                        table > tbody > tr {
-
-                            display: table-row;
-                            width: auto;
-
-                            td {
-                                // Reset defaults
-                                padding-left: 10px;
-                                padding-bottom: 15px;
-                                margin-bottom: 9px;
-                                display: table-cell;
-                            }
-
-                        }
-
-                    }
-
-                }
-
-            }
-
+    td {
+        
+        vertical-align: top;
+        
+        &.hidden {
+            display: none !important;
         }
-
+        
     }
-
-    &.edd-rbm-repeater-sortable {
-
-        .edd-rbm-repeater-item {
-
-            & > .edd-rbm-repeater-content {
-
-                td {
-
-                    // Knock each <td> over to match the Collapsable Title
-                    padding-left: 50px;
-
-                }
-
-            }
-
-        }
-
-    }
-
+    
 }

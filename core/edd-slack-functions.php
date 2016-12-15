@@ -97,28 +97,28 @@ if ( ! function_exists( 'edd_rbm_repeater_callback' ) ) {
 
                                     <tbody>
 
-                                        <tr>
+                                        <?php foreach ( $args['fields'] as $field_id => $field ) : ?>
+                                        
+                                            <tr>
 
-                                            <?php foreach ( $args['fields'] as $field_id => $field ) : 
+                                                <?php if ( is_callable( "edd_{$field['type']}_callback" ) ) : 
 
-                                                if ( is_callable( "edd_{$field['type']}_callback" ) ) : 
-        
                                                     // EDD Generates the Name Attr based on ID, so this nasty workaround is necessary
                                                     $field['id'] = $field_id;
                                                     $field['std'] = ( isset( $value[ $field_id ] ) ) ? $value[ $field_id ] : $field['std'];
-        
+
                                                     if ( $field['type'] == 'checkbox' ) : 
-        
+
                                                         if ( isset( $field['std'] ) && is_array( $field['std'] ) ) {
                                                             $field['std'] = $field['std'][0];
                                                         }
-        
+
                                                         if ( isset( $field['std'] ) && $field['std'] ) {
                                                             $field['field_class'][] = 'default-checked';
                                                         }
-        
+
                                                     endif;
-                                            
+
                                                     if ( $field['type'] !== 'hook' ) : ?>
 
                                                         <td>
@@ -126,19 +126,19 @@ if ( ! function_exists( 'edd_rbm_repeater_callback' ) ) {
                                                             <?php call_user_func( "edd_{$field['type']}_callback", $field ); ?>
 
                                                         </td>
-                                            
+
                                                     <?php else : 
-        
+
                                                         // Don't wrap calls for a Hook
                                                         call_user_func( "edd_{$field['type']}_callback", $field ); 
-        
+
                                                     endif;
 
-                                                endif;
-
-                                            endforeach; ?>
-
+                                                endif; ?>
+                                            
                                             </tr>
+
+                                        <?php endforeach; ?>
 
                                     </tbody>
 

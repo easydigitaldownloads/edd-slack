@@ -8,6 +8,9 @@
             row = option_class;
             option_class = 0;
         }
+        else {
+            row = $( row ).closest( '.edd-rbm-repeater-content' );
+        }
         
         if ( option_class == 0 ) {
             

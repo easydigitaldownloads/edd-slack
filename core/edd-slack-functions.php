@@ -91,7 +91,7 @@ if ( ! function_exists( 'edd_rbm_repeater_callback' ) ) {
 
                             </table>
                             
-                            <div class="edd-rbm-repeater-content reveal" data-reveal>
+                            <div class="edd-rbm-repeater-content reveal" data-reveal data-v-offset="64">
 
                                 <table class="widefat" width="100%" cellpadding="0" cellspacing="0">
 

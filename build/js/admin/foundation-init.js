@@ -48,7 +48,12 @@
 
         }
         
-        $( '[data-reveal="' + uuid + '"]' ).foundation( 'open' );
+        var $modal = $( '[data-reveal="' + uuid + '"]' );
+        
+        $modal.foundation( 'open' );
+        
+        // Ensure we're looking at the top of the Modal
+        $modal.closest( '.reveal-overlay' ).scrollTop( 0 );
 
     }
 

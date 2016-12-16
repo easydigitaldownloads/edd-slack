@@ -60,35 +60,9 @@
         }
 
         &:last-of-type {
-            &.closed {
-                .repeater-header {
-                    border-bottom-style: none;
-                }
+            .repeater-header {
+                border-bottom-style: none;
             }
-        }
-
-        &.opened {
-
-            .closed {
-                display: none;
-            }
-
-            .opened {
-                display: inline-block;
-            }
-
-        }
-
-        &.closed {
-
-            .opened {
-                display: none;
-            }
-
-            .closed {
-                display: inline-block;
-            }
-
         }
 
         & > .edd-rbm-repeater-content {
@@ -124,6 +98,8 @@
 
 .edd-rbm-repeater-content {
     
+    margin-bottom: 32px; // Same Margin as the margin from the top
+    
     table.widefat {
         background: transparent;
         border: 0;
@@ -136,16 +112,6 @@
     
     div.chosen-container {
         width: 100% !important;   
-    }
-    
-    input[type="checkbox"] {
-        
-        float: left;
-        
-        & + label {
-            margin-top: -1px;
-        }
-        
     }
 
     td {

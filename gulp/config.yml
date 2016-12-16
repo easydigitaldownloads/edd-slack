@@ -25,6 +25,7 @@ javascript:
       - "bower_components/foundation-sites/js/foundation.util.triggers.js"
       - "bower_components/foundation-sites/js/foundation.util.motion.js"
       - "bower_components/foundation-sites/js/foundation.reveal.js"
+      - "bower_components/foundation-sites/js/foundation.sticky.js"
     notification: "Running Admin JavaScript"
     src:
       - "build/js/admin/**/*.js"

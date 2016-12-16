@@ -21,8 +21,12 @@
             $modal.attr( 'data-reveal', uuid );
 
             var $editButton = jQuery( item ).find( 'input[data-repeater-edit]' ).attr( 'data-open', uuid );
+            
+            
+            var $sticky = $modal.find( '[data-sticky]' );
 
             $modal = new Foundation.Reveal( $modal );
+            $sticky = new Foundation.Sticky( $sticky );
 
         } );
 

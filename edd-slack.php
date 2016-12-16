@@ -321,6 +321,10 @@ if ( ! class_exists( 'EDD_Slack' ) ) {
                 'slack_post_id' => array(
                     'type' => 'hook',
                     'std' => '',
+                    'field_class' => array(
+                        'edd-slack-field',
+                        'edd-slack-post-id',
+                    ),
                 ),
                 'admin_title' => array(
                     'desc' => __( 'Indentifier for this Notification', EDD_Slack_ID ),
@@ -328,13 +332,16 @@ if ( ! class_exists( 'EDD_Slack' ) ) {
                     'readonly' => false,
                     'placeholder' => __( 'New Slack Notification', EDD_Slack_ID ),
                     'std' => '',
-                    'field_class' => '',
+                    'field_class' => 'edd-slack-field',
                 ),
                 'trigger' => array(
                     'desc' => __( 'Slack Trigger', EDD_Slack_ID ),
                     'type' => 'select',
                     'chosen' => true,
-                    'field_class' => 'edd-slack-trigger',
+                    'field_class' => array( 
+                        'edd-slack-field',
+                        'edd-slack-trigger',
+                    ),
                     'options' => array( 
                         0 => _x( '-- Select a Slack Trigger --', 'Slack Trigger Default Label', EDD_Slack_ID ),
                      ) + $this->get_slack_triggers(),
@@ -345,6 +352,7 @@ if ( ! class_exists( 'EDD_Slack' ) ) {
                     'type' => 'select',
                     'chosen' => true,
                     'field_class' => array(
+                        'edd-slack-field',
                         'edd-slack-download',
                         'edd-slack-conditional',
                         'edd_complete_purchase',
@@ -361,6 +369,7 @@ if ( ! class_exists( 'EDD_Slack' ) ) {
                     'type' => 'select',
                     'chosen' => true,
                     'field_class' => array(
+                        'edd-slack-field',
                         'edd-slack-download',
                         'edd-slack-conditional',
                         'edd_discount_code_applied',
@@ -381,7 +390,7 @@ if ( ! class_exists( 'EDD_Slack' ) ) {
                     'readonly' => false,
                     'placeholder' => '',
                     'std' => '',
-                    'field_class' => '',
+                    'field_class' => 'edd-slack-field',
                 ),
                 'message_title'   => array(
                     'type'  => 'text',
@@ -389,13 +398,13 @@ if ( ! class_exists( 'EDD_Slack' ) ) {
                     'readonly' => false,
                     'placeholder' => '',
                     'std' => '',
-                    'field_class' => '',
+                    'field_class' => 'edd-slack-field',
                 ),
                 'message_text'    => array(
                     'type'  => 'textarea',
                     'desc' => __( 'Message', EDD_Slack_ID ),
                     'std' => '',
-                    'field_class' => '',
+                    'field_class' => 'edd-slack-field',
                 ),
                 'webhook'         => array(
                     'type'  => 'text',
@@ -408,7 +417,7 @@ if ( ! class_exists( 'EDD_Slack' ) ) {
                         '</p>',
                     ),
                     'std' => '',
-                    'field_class' => '',
+                    'field_class' => 'edd-slack-field',
                 ),
                 'channel'         => array(
                     'type'  => 'text',
@@ -416,7 +425,7 @@ if ( ! class_exists( 'EDD_Slack' ) ) {
                     'readonly' => false,
                     'placeholder' => __( 'Webhook default', EDD_Slack_ID ),
                     'std' => '',
-                    'field_class' => '',
+                    'field_class' => 'edd-slack-field',
                 ),
                 'username'        => array(
                     'type'  => 'text',
@@ -424,7 +433,7 @@ if ( ! class_exists( 'EDD_Slack' ) ) {
                     'readonly' => false,
                     'placeholder' => get_bloginfo( 'name' ),
                     'std' => '',
-                    'field_class' => '',
+                    'field_class' => 'edd-slack-field',
                 ),
                 'icon'            => array(
                     'type'  => 'text',
@@ -432,13 +441,13 @@ if ( ! class_exists( 'EDD_Slack' ) ) {
                     'readonly' => false,
                     'placeholder' => __( 'Webhook default', EDD_Slack_ID ),
                     'std' => '',
-                    'field_class' => '',
+                    'field_class' => 'edd-slack-field',
                 ),
                 'color'           => array(
                     'type'  => 'color',
                     'desc' => __( 'Color (Shows next to Message Title and Message)', EDD_Slack_ID ),
                     'std' => '#3299BB',
-                    'field_class' => '',
+                    'field_class' => 'edd-slack-field',
                 ),
             ) );
             

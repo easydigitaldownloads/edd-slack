@@ -32,7 +32,7 @@ class EDD_Slack_Admin {
         add_action( 'edd_settings_tab_top_extensions_edd-slack-settings', array( $this, 'admin_settings_scripts' ) );
         
         // Callback for the Slack Notification Repeater
-        add_action( 'edd_slack_notifications', array( $this, 'edd_slack_notifications' ) );
+        add_action( 'edd_slack_notifications_field', array( $this, 'edd_slack_notifications_field' ) );
         
         // Callback for the hidden Post ID output
         add_action( 'edd_slack_post_id', array( $this, 'post_id_field' ) );
@@ -127,12 +127,13 @@ class EDD_Slack_Admin {
             ),
             array(
                 'type' => 'hook',
-                'id' => 'slack_notifications',
+                'id' => 'slack_notifications_field',
                 'input_name' => 'edd_slack_rbm_feeds',
                 'name' => _x( 'Slack Notifications', 'Slack Notifications Repeater Label', EDD_Slack_ID ),
                 'std' => $repeater_values,
                 'add_item_text' => _x( 'Add Slack Notification', 'Add Slack Notification Button', EDD_Slack_ID ),
                 'edit_item_text' => _x( 'Edit Slack Notification', 'Edit Slack Notification Button', EDD_Slack_ID ),
+                'save_item_text' => _x( 'Save Slack Notification', 'Save Slack Notification Button', EDD_Slack_ID ),
                 'delete_item_text' => _x( 'Delete Slack Notification', 'Delete Slack Notification Button', EDD_Slack_ID ),
                 'default_title' => _x( 'New Slack Notification', 'New Slack Notification Header', EDD_Slack_ID ),
                 'fields' => $fields,
@@ -153,7 +154,7 @@ class EDD_Slack_Admin {
 
     }
     
-    public function edd_slack_notifications( $args ) {
+    public function edd_slack_notifications_field( $args ) {
 
         $args = wp_parse_args( $args, array(
             'id' => '',
@@ -162,6 +163,7 @@ class EDD_Slack_Admin {
             'fields' => array(),
             'add_item_text' => __( 'Add Row', EDD_Slack_ID ),
             'edit_item_text' => __( 'Edit Row', EDD_Slack_ID ),
+            'save_item_text' => __( 'Save Row', EDD_Slack_ID ),
             'delete_item_text' => __( 'Delete Row', EDD_Slack_ID ),
             'default_title' => __( 'New Row', EDD_Slack_ID ),
             'input_name' => false,
@@ -223,63 +225,63 @@ class EDD_Slack_Admin {
                             </table>
                             
                             <div class="edd-rbm-repeater-content reveal" data-reveal data-v-offset="64">
+                                
+                                <form class="edd-rbm-repeater-form" method="POST">
 
-                                <table class="widefat" width="100%" cellpadding="0" cellspacing="0">
+                                    <table class="widefat" width="100%" cellpadding="0" cellspacing="0">
 
-                                    <tbody>
+                                        <tbody>
 
-                                        <?php foreach ( $args['fields'] as $field_id => $field ) : ?>
-                                        
-                                            <tr>
+                                            <?php foreach ( $args['fields'] as $field_id => $field ) : ?>
 
-                                                <?php if ( is_callable( "edd_{$field['type']}_callback" ) ) : 
+                                                <tr>
 
-                                                    // EDD Generates the Name Attr based on ID, so this nasty workaround is necessary
-                                                    $field['id'] = $field_id;
-                                                    $field['std'] = ( isset( $value[ $field_id ] ) ) ? $value[ $field_id ] : $field['std'];
+                                                    <?php if ( is_callable( "edd_{$field['type']}_callback" ) ) : 
 
-                                                    if ( $field['type'] == 'checkbox' ) : 
+                                                        // EDD Generates the Name Attr based on ID, so this nasty workaround is necessary
+                                                        $field['id'] = $field_id;
+                                                        $field['std'] = ( isset( $value[ $field_id ] ) ) ? $value[ $field_id ] : $field['std'];
 
-                                                        if ( isset( $field['std'] ) && is_array( $field['std'] ) ) {
-                                                            $field['std'] = $field['std'][0];
-                                                        }
+                                                        if ( $field['type'] == 'checkbox' ) : 
 
-                                                        if ( isset( $field['std'] ) && $field['std'] ) {
-                                                            $field['field_class'][] = 'default-checked';
-                                                        }
+                                                            if ( isset( $field['std'] ) && is_array( $field['std'] ) ) {
+                                                                $field['std'] = $field['std'][0];
+                                                            }
 
-                                                    endif;
+                                                            if ( isset( $field['std'] ) && $field['std'] ) {
+                                                                $field['field_class'][] = 'default-checked';
+                                                            }
 
-                                                    if ( $field['type'] !== 'hook' ) : ?>
+                                                        endif;
 
-                                                        <td>
+                                                        if ( $field['type'] !== 'hook' ) : ?>
 
-                                                            <?php call_user_func( "edd_{$field['type']}_callback", $field ); ?>
+                                                            <td>
 
-                                                        </td>
+                                                                <?php call_user_func( "edd_{$field['type']}_callback", $field ); ?>
 
-                                                    <?php else : 
+                                                            </td>
 
-                                                        // Don't wrap calls for a Hook
-                                                        call_user_func( "edd_{$field['type']}_callback", $field ); 
+                                                        <?php else : 
 
-                                                    endif;
+                                                            // Don't wrap calls for a Hook
+                                                            call_user_func( "edd_{$field['type']}_callback", $field ); 
 
-                                                endif; ?>
-                                            
-                                            </tr>
+                                                        endif;
 
-                                        <?php endforeach; ?>
+                                                    endif; ?>
 
-                                    </tbody>
+                                                </tr>
 
-                                </table>
+                                            <?php endforeach; ?>
+
+                                        </tbody>
+
+                                    </table>
+                                    
+                                    <input type="submit" class="button button-primary alignright" value="<?php echo $args['save_item_text']; ?>" />
                                   
-                                <div data-sticky-container>
-                                    <div data-sticky data-stick-to="bottom" data-margin-top="0">
-                                        test
-                                    </div>
-                                </div>
+                                </form>
                                 
                             </div>
                             
@@ -310,9 +312,12 @@ class EDD_Slack_Admin {
         
         // Post ID of 0 on wp_insert_post() auto-generates an available Post ID
         if ( ! isset( $args['std'] ) ) $args['std'] = 0;
+        
+        if ( isset( $args['field_class'] ) ) $args['field_class'] = edd_sanitize_html_class( $args['field_class'] );
+        
         ?>
 
-        <input type="hidden" name="<?php echo $args['id']; ?>" value="<?php echo (string) $args['std']; ?>" />
+        <input type="hidden" name="<?php echo $args['id']; ?>" value="<?php echo (string) $args['std']; ?>" class="<?php echo $args['field_class']; ?>" />
 
     <?php
     }

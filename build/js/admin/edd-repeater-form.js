@@ -1,8 +1,15 @@
 ( function( $ ) {
     
-    var attachSubmitModalForm = function() {
+    var attachNotificationSubmitEvent = function( event, row = null ) {
         
-        $( document ).on( 'submit', '.edd-rbm-repeater-form', function( event ) {
+        var uuid = $( row ).find( '[data-repeater-edit]' ).data( 'open' ),
+            $modal = $( '[data-reveal="' + uuid + '"]' ),
+            $form = $modal.find( '.edd-rbm-repeater-form' ).wrap( '<form method="POST"></form>' ).parent();
+
+        // Normally HTML doesn't like us having nested Forms, so we force it like so
+        $form.submit( function( event ) {
+            
+            console.log( 'test' );
         
             event.preventDefault(); // Don't submit the form via PHP
 
@@ -42,7 +49,7 @@
         var $repeaters = $( '[data-edd-rbm-repeater]' );
 
         if ( $repeaters.length ) {
-            $repeaters.on( 'edd-rbm-repeater-add', setTimeout( function() { attachSubmitModalForm() }, 100 ) );
+            $repeaters.on( 'edd-rbm-repeater-add', function( event, row ) { setTimeout( function() { attachNotificationSubmitEvent( event, row ) }, 100 ) } );
         }
         
     } );

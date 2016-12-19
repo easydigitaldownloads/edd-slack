@@ -226,7 +226,7 @@ class EDD_Slack_Admin {
                             
                             <div class="edd-rbm-repeater-content reveal" data-reveal data-v-offset="64">
                                 
-                                <form class="edd-rbm-repeater-form" method="POST">
+                                <div class="edd-rbm-repeater-form">
 
                                     <table class="widefat" width="100%" cellpadding="0" cellspacing="0">
 
@@ -281,7 +281,7 @@ class EDD_Slack_Admin {
                                     
                                     <input type="submit" class="button button-primary alignright" value="<?php echo $args['save_item_text']; ?>" />
                                   
-                                </form>
+                                </div>
                                 
                             </div>
                             

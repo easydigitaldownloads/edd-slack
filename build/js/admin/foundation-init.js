@@ -77,7 +77,7 @@
         
     } );
     
-    $( document ).on( 'open.zf.reveal', '.reveal', function() {
+    $( document ).on( 'open.zf.reveal', '.edd-rbm-repeater-content.reveal', function() {
         
         init_edd_repeater_colorpickers( this );
         init_edd_repeater_chosen( this );

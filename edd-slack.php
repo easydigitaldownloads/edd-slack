@@ -65,10 +65,10 @@ if ( ! class_exists( 'EDD_Slack' ) ) {
         public $notification_triggers;
         
         /**
-         * @var         EDD_Slack $rest_api holds our WP REST API endpoint which routes to the necessary functions for the callback_id
+         * @var         EDD_Slack $slack_rest_api holds our WP REST API endpoints for interacting with a Slack App
          * @since       1.0.0
          */
-        public $rest_api;
+        public $slack_rest_api;
 
         /**
          * Get active instance
@@ -256,8 +256,8 @@ if ( ! class_exists( 'EDD_Slack' ) ) {
             // If we've got a linked Slack App
             if ( is_ssl() && edd_get_option( 'slack_app_oauth_token' ) ) {
                 
-                require_once EDD_Slack_DIR . '/core/ssl-only/class-edd-slack-rest.php';
-                $this->rest_api = new EDD_Slack_REST();
+                require_once EDD_Slack_DIR . '/core/ssl-only/class-edd-slack-ssl-rest.php';
+                $this->slack_rest_api = new EDD_Slack_SSL_REST();
                 
                 // If Comments are Enabled for Downloads
                 if ( post_type_supports( 'download', 'comments' ) ) {

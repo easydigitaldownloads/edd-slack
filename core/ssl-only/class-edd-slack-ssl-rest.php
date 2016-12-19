@@ -1,6 +1,6 @@
 <?php
 /**
- * Creates REST Endpoints
+ * Creates SSL REST Endpoints
  *
  * @since 0.1.0
  *
@@ -13,10 +13,10 @@ defined( 'ABSPATH' ) || die();
 // Slash Commands in another file
 require_once EDD_Slack_DIR . '/core/ssl-only/edd-slack-slash-commands.php';
 
-class EDD_Slack_REST {
+class EDD_Slack_SSL_REST {
 
     /**
-     * EDD_Slack_REST constructor.
+     * EDD_Slack_SSL_REST constructor.
      * @since 1.0.0
      */
     function __construct() {

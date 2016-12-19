@@ -10,10 +10,11 @@
      */
     var attachNotificationSubmitEvent = function( event ) {
         
-        var row = event.currentTarget,
-            $form = $( row ).find( '.edd-rbm-repeater-form' ).wrap( '<form method="POST"></form>' ).parent();
+        var row = event.currentTarget;
         
         if ( ! $( row ).hasClass( 'has-form' ) ) {
+            
+            var $form = $( row ).find( '.edd-rbm-repeater-form' ).wrap( '<form method="POST"></form>' ).parent();
             
             $( row ).addClass( 'has-form' );
 

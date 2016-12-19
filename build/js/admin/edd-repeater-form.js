@@ -16,6 +16,7 @@
         if ( ! $( row ).hasClass( 'has-form' ) ) {
             
             // We need to create the Form
+            // "novalidate" so that HTML5 doesn't try to take over before we can do our thing
             $form = $( row ).find( '.edd-rbm-repeater-form' ).wrap( '<form method="POST" novalidate></form>' ).parent();
             
             $( row ).addClass( 'has-form' );
@@ -33,7 +34,7 @@
                     // Used to construct HTML Name Attribute
                     var repeaterList = $( '.edd-rbm-repeater-list' ).data( 'repeater-list' ),
                         regex = new RegExp( repeaterList.replace( /[-\/\\^$*+?.()|[\]{}]/g, '\\$&' ) + '\\[\\d\\]\\[(.*)\\]', 'gi' ),
-                        data = [];
+                        data = {};
 
                     $( this ).find( '.edd-slack-field' ).each( function( index, field ) {
 
@@ -42,17 +43,29 @@
                         var name = $( field ).attr( 'name' ),
                             match = regex.exec( name );
 
-                        data.push( {
-                            'key' : match[1],
-                            'value' : $( field ).val(),
-                        } );
+                        data[ match[1] ] = $( field ).val();
 
                         // Reset Interal Pointer for Regex
                         regex.lastIndex = 0;
 
                     } );
-
+                    
+                    data.action = 'insert_slack_notification';
+                    
                     console.log( data );
+
+                    $.ajax( {
+                        'type' : 'POST',
+                        'url' : eddSlack.ajax,
+                        'data' : data,
+                        success : function( response ) {
+                            
+                            response = $.parseJSON( response );
+                            
+                        },
+                        error : function( request, status, error ) {
+                        }
+                    } );
                     
                 }
 

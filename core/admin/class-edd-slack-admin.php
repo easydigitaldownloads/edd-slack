@@ -448,6 +448,8 @@ class EDD_Slack_Admin {
             'inactiveText' => _x( 'Inactive Notification', 'Inactive Notification Aria Label', EDD_Slack_ID ),
         );
         
+        $localization['ajax'] = admin_url( 'admin-ajax.php' );
+        
         return $localization;
         
     }

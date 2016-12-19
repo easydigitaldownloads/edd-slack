@@ -341,11 +341,13 @@ if ( ! class_exists( 'EDD_Slack' ) ) {
                     'field_class' => array( 
                         'edd-slack-field',
                         'edd-slack-trigger',
+                        'required',
                     ),
                     'options' => array( 
-                        0 => _x( '-- Select a Slack Trigger --', 'Slack Trigger Default Label', EDD_Slack_ID ),
+                        '' => _x( '-- Select a Slack Trigger --', 'Slack Trigger Default Label', EDD_Slack_ID ),
                      ) + $this->get_slack_triggers(),
-                    'std' => 0,
+                    'placeholder' => _x( '-- Select a Slack Trigger --', 'Slack Trigger Default Label', EDD_Slack_ID ),
+                    'std' => '',
                 ),
                 'download' => array(
                     'desc' => edd_get_label_singular(),
@@ -357,12 +359,14 @@ if ( ! class_exists( 'EDD_Slack' ) ) {
                         'edd-slack-conditional',
                         'edd_complete_purchase',
                         'edd_discount_code_applied',
+                        'required',
                     ),
                     'options' => array(
-                        0 => sprintf( _x( '-- Select %s --', 'Select Field Default', EDD_Slack_ID ), edd_get_label_singular() ),
+                        '' => sprintf( _x( '-- Select %s --', 'Select Field Default', EDD_Slack_ID ), edd_get_label_singular() ),
                         'all' => sprintf( _x( 'All %s', 'All items in a Select Field', EDD_Slack_ID ), edd_get_label_plural() ),
                     ) + $downloads_array,
-                    'std' => 0,
+                    'placeholder' => sprintf( _x( '-- Select %s --', 'Select Field Default', EDD_Slack_ID ), edd_get_label_singular() ),
+                    'std' => '',
                 ),
                 'discount_code' => array(
                     'desc' => _x( 'Discount Code', 'Discount Code Field Label', EDD_Slack_ID ),
@@ -373,12 +377,14 @@ if ( ! class_exists( 'EDD_Slack' ) ) {
                         'edd-slack-download',
                         'edd-slack-conditional',
                         'edd_discount_code_applied',
+                        'required',
                     ),
                     'options' => array(
-                        0 => _x( '-- Select Discount Code --', 'Discount Code Field Default', EDD_Slack_ID  ),
+                        '' => _x( '-- Select Discount Code --', 'Discount Code Field Default', EDD_Slack_ID  ),
                         'all' => _x( 'All Discount Codes', 'All Discount Codes Text', EDD_Slack_ID ),
                     ) + $discount_codes_array,
-                    'std' => 0,
+                    'placeholder' => _x( '-- Select Discount Code --', 'Discount Code Field Default', EDD_Slack_ID  ),
+                    'std' => '',
                 ),
                 'replacement_hints' => array(
                     'type' => 'hook',

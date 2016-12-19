@@ -85,33 +85,6 @@
             }
         }
 
-        & > .edd-rbm-repeater-content {
-
-            background: #fff;
-
-            & > table > tbody > tr {
-
-                display: block;
-                width: 100%;
-                overflow: hidden;
-                float: left;
-
-                // <td> holding Nested Repeater
-                // This gets shoved onto its own row for readability reasons
-                & > .repeater-container {
-
-                    .edd-rbm-repeater-item {
-
-                        display: block;
-
-                    }
-
-                }
-
-            }
-
-        }
-
     }
 
 }
@@ -126,8 +99,14 @@
         box-shadow: none;
     }
 
-    input.regular-text, textarea, select.edd-chosen, div.wp-picker-container {
+    input.regular-text, textarea, select, div.wp-picker-container {
         width: 100%;
+    }
+    
+    select.required.edd-chosen {
+        display: block !important; // Ensure that our validation works correctly
+        position: absolute;
+        clip: rect(0,0,0,0);
     }
 
     div.chosen-container {

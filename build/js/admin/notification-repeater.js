@@ -38,6 +38,17 @@
             $( row ).find( '.edd-slack-replacement-instruction' ).not( '.' + option_class ).addClass( 'hidden' );
             
         }
+        
+        $( row ).find( '.required' ).each( function( index, field ) {
+            
+            if ( $( field ).closest( 'td' ).hasClass( 'hidden' ) ) {
+                $( field ).attr( 'required', false );
+            }
+            else {
+                $( field ).attr( 'required', true );
+            }
+            
+        } );
 
     }
     

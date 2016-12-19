@@ -10,11 +10,13 @@
      */
     var attachNotificationSubmitEvent = function( event ) {
         
-        var row = event.currentTarget;
+        var row = event.currentTarget,
+            $form = $( row ).find( 'form' );
         
         if ( ! $( row ).hasClass( 'has-form' ) ) {
             
-            var $form = $( row ).find( '.edd-rbm-repeater-form' ).wrap( '<form method="POST"></form>' ).parent();
+            // We need to create the Form
+            $form = $( row ).find( '.edd-rbm-repeater-form' ).wrap( '<form method="POST" novalidate></form>' ).parent();
             
             $( row ).addClass( 'has-form' );
 
@@ -23,30 +25,36 @@
             $form.submit( function( event ) {
 
                 event.preventDefault(); // Don't submit the form via PHP
+                
+                $form[0].reportValidity(); // Report Validity via HTML5 stuff
+                
+                if ( $form[0].checkValidity() ) { // Only run our code if we've got a Valid Form
 
-                // Used to construct HTML Name Attribute
-                var repeaterList = $( '.edd-rbm-repeater-list' ).data( 'repeater-list' ),
-                    regex = new RegExp( repeaterList.replace( /[-\/\\^$*+?.()|[\]{}]/g, '\\$&' ) + '\\[\\d\\]\\[(.*)\\]', 'gi' ),
-                    data = [];
+                    // Used to construct HTML Name Attribute
+                    var repeaterList = $( '.edd-rbm-repeater-list' ).data( 'repeater-list' ),
+                        regex = new RegExp( repeaterList.replace( /[-\/\\^$*+?.()|[\]{}]/g, '\\$&' ) + '\\[\\d\\]\\[(.*)\\]', 'gi' ),
+                        data = [];
 
-                $( this ).find( '.edd-slack-field' ).each( function( index, field ) {
+                    $( this ).find( '.edd-slack-field' ).each( function( index, field ) {
 
-                    if ( $( field ).parent().hasClass( 'hidden' ) ) return true;
+                        if ( $( field ).parent().hasClass( 'hidden' ) ) return true;
 
-                    var name = $( field ).attr( 'name' ),
-                        match = regex.exec( name );
+                        var name = $( field ).attr( 'name' ),
+                            match = regex.exec( name );
 
-                    data.push( {
-                        'key' : match[1],
-                        'value' : $( field ).val(),
+                        data.push( {
+                            'key' : match[1],
+                            'value' : $( field ).val(),
+                        } );
+
+                        // Reset Interal Pointer for Regex
+                        regex.lastIndex = 0;
+
                     } );
 
-                    // Reset Interal Pointer for Regex
-                    regex.lastIndex = 0;
-
-                } );
-
-                console.log( data );
+                    console.log( data );
+                    
+                }
 
             } );
             

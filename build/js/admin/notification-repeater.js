@@ -48,6 +48,20 @@
                 $( field ).attr( 'required', true );
             }
             
+            // Fix Tab Ordering Bug 
+            if ( $( field ).hasClass( 'edd-chosen' ) ) {
+                
+                // Ensure the Chosen Container has been built
+                $( field ).chosen();
+                
+                // No Tab index for the "hidden" Select field
+                $( field ).attr( 'tabindex', -1 );
+                
+                // Why would you be unable to tab into it by default?!?!
+                $( field ).siblings( '.chosen-container' ).find( '.chosen-single' ).attr( 'tabindex', 0 );
+                
+            }
+            
         } );
 
     }

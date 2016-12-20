@@ -92,6 +92,10 @@
 .edd-rbm-repeater-content {
 
     margin-bottom: 32px; // Same Margin as the margin from the top
+    
+    .edd-rbm-repeater-form {
+        margin-top: 1rem;
+    }
 
     table.widefat {
         background: transparent;
@@ -122,7 +126,5 @@
         }
 
     }
-
-
-
+    
 }

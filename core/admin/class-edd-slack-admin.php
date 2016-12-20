@@ -283,6 +283,10 @@ class EDD_Slack_Admin {
                                   
                                 </div>
                                 
+                                <a class="close-button" data-close aria-label="<?php echo _x( 'Close Notification Editor', 'Close Slack Notification Modal', EDD_Slack_ID ); ?>">
+                                    <span aria-hidden="true">&times;</span>
+                                </a>
+                                
                             </div>
                             
                         </div>

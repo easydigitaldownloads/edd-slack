@@ -39,9 +39,6 @@ class EDD_Slack_Admin {
         
         // Callback for the Replacement Hints
         add_action( 'edd_replacement_hints', array( $this, 'replacement_hints_field' ) );
-        
-        // Callback for the hidden "Fields to Delete" field output
-        add_action( 'edd_slack_deleted_feeds', array( $this, 'deleted_feeds' ) );
 
     }
     
@@ -137,10 +134,6 @@ class EDD_Slack_Admin {
                 'delete_item_text' => _x( 'Delete Slack Notification', 'Delete Slack Notification Button', EDD_Slack_ID ),
                 'default_title' => _x( 'New Slack Notification', 'New Slack Notification Header', EDD_Slack_ID ),
                 'fields' => $fields,
-            ),
-            array(
-                'type' => 'hook',
-                'id' => 'slack_deleted_feeds'
             ),
         ) );
 
@@ -418,22 +411,6 @@ class EDD_Slack_Admin {
 
         return $replacement_hints;
         
-    }
-    
-    /**
-     * Creates a Hidden Field to hold Post IDs of Feeds to be Deleted
-     * 
-     * @param       array  Field Args
-     * 
-     * @access      public
-     * @since       1.0.0
-     * @return      void
-     */
-    public function deleted_feeds( $args ) { ?>
-
-        <input type="hidden" name="edd_slack_deleted_rbm_feeds" value="" />
-
-    <?php
     }
     
     /**

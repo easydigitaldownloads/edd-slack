@@ -14,21 +14,21 @@ msgstr ""
 "X-Poedit-SearchPathExcluded-0: *.js\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: core/admin/class-edd-slack-admin.php:52
+#: core/admin/class-edd-slack-admin.php:55
 msgid "Slack"
 msgstr ""
 
-#: core/admin/class-edd-slack-admin.php:114
+#: core/admin/class-edd-slack-admin.php:117
 msgctxt "Default Webhook URL Label"
 msgid "Default Webhook URL"
 msgstr ""
 
-#: core/admin/class-edd-slack-admin.php:117
+#: core/admin/class-edd-slack-admin.php:120
 msgctxt "Webhook Default Help Text"
 msgid "Enter the slack Webhook URL for the team you wish to broadcast to. The channel chosen in the webhook can be overridden for each notification type below. You can set up the Webhook URL %shere%s."
 msgstr ""
 
-#: core/admin/class-edd-slack-admin.php:126
+#: core/admin/class-edd-slack-admin.php:129
 msgctxt "Slack Notifications Repeater Label"
 msgid "Slack Notifications"
 msgstr ""
@@ -39,75 +39,157 @@ msgid "Add Slack Notification"
 msgstr ""
 
 #: core/admin/class-edd-slack-admin.php:132
+msgctxt "Edit Slack Notification Button"
+msgid "Edit Slack Notification"
+msgstr ""
+
+#: core/admin/class-edd-slack-admin.php:133
+msgctxt "Save Slack Notification Button"
+msgid "Save Slack Notification"
+msgstr ""
+
+#: core/admin/class-edd-slack-admin.php:134
 msgctxt "Delete Slack Notification Button"
 msgid "Delete Slack Notification"
 msgstr ""
 
-#: core/admin/class-edd-slack-admin.php:133, core/notifications/class-edd-slack-notification-handler.php:130
+#: core/admin/class-edd-slack-admin.php:135, core/slack/class-edd-slack-notification-integration.php:361
 msgctxt "New Slack Notification Header"
 msgid "New Slack Notification"
 msgstr ""
 
-#: core/admin/class-edd-slack-admin.php:194
+#: core/admin/class-edd-slack-admin.php:157
+msgid "Add Row"
+msgstr ""
+
+#: core/admin/class-edd-slack-admin.php:158
+msgid "Edit Row"
+msgstr ""
+
+#: core/admin/class-edd-slack-admin.php:159
+msgid "Save Row"
+msgstr ""
+
+#: core/admin/class-edd-slack-admin.php:160
+msgid "Delete Row"
+msgstr ""
+
+#: core/admin/class-edd-slack-admin.php:161
+msgid "New Row"
+msgstr ""
+
+#: core/admin/class-edd-slack-admin.php:279
+msgctxt "Close Slack Notification Modal"
+msgid "Close Notification Editor"
+msgstr ""
+
+#: core/admin/class-edd-slack-admin.php:344
 msgctxt "Text Replacements Label"
 msgid "Here are the available text replacements to use in the Message Pre-Text, Message Title, and Message Fields for the Slack Trigger selected:"
 msgstr ""
 
-#: core/admin/class-edd-slack-admin.php:227
+#: core/admin/class-edd-slack-admin.php:377
 msgctxt "%username% Hint Text"
 msgid "Display the user's username"
 msgstr ""
 
-#: core/admin/class-edd-slack-admin.php:228
+#: core/admin/class-edd-slack-admin.php:378
 msgctxt "%email% Hint Text"
 msgid "Display the user's email"
 msgstr ""
 
-#: core/admin/class-edd-slack-admin.php:229
+#: core/admin/class-edd-slack-admin.php:379
 msgctxt "%name% Hint Text"
 msgid "Display the user's display name"
 msgstr ""
 
-#: core/admin/class-edd-slack-admin.php:238
+#: core/admin/class-edd-slack-admin.php:388
 msgctxt "%cart% Hint Text"
 msgid "Show the contents of the Cart"
 msgstr ""
 
-#: core/admin/class-edd-slack-admin.php:239
+#: core/admin/class-edd-slack-admin.php:389
 msgctxt "%subtotal% Hint Text"
 msgid "Show the Subtotal"
 msgstr ""
 
-#: core/admin/class-edd-slack-admin.php:240
+#: core/admin/class-edd-slack-admin.php:390
 msgctxt "%total% Hint Text"
 msgid "Show the Total"
 msgstr ""
 
-#: core/admin/class-edd-slack-admin.php:241
+#: core/admin/class-edd-slack-admin.php:391
 msgctxt "%discount_code% Hint Text"
 msgid "Show the Discount Code entered"
 msgstr ""
 
-#: core/admin/class-edd-slack-admin.php:242
+#: core/admin/class-edd-slack-admin.php:392
 msgctxt "%ip_address% Hint Text"
 msgid "Show the IP Address of the Customer"
 msgstr ""
 
-#: core/admin/class-edd-slack-admin.php:243
+#: core/admin/class-edd-slack-admin.php:393
 msgctxt "%payment_link% Hint Text"
 msgid "Show a link to the Payment Details page for this Payment"
 msgstr ""
 
-#: core/edd-slack-functions.php:35
-msgid "Add Row"
+#: core/admin/class-edd-slack-admin.php:428
+msgctxt "Active Notification Aria Label"
+msgid "Active Notification"
 msgstr ""
 
-#: core/edd-slack-functions.php:36
-msgid "Delete Row"
+#: core/admin/class-edd-slack-admin.php:429
+msgctxt "Inactive Notification Aria Label"
+msgid "Inactive Notification"
 msgstr ""
 
-#: core/edd-slack-functions.php:39
-msgid "New Row"
+#: core/admin/class-edd-slack-admin.php:430
+msgctxt "Confirm Notification Deletion"
+msgid "Are you sure you want to delete this Slack Notification?"
+msgstr ""
+
+#: core/admin/class-edd-slack-welcome.php:26, core/admin/class-edd-slack-welcome.php:27
+msgid "Getting started with EDD Slack"
+msgstr ""
+
+#: core/admin/class-edd-slack-welcome.php:85
+msgid "EDD Slack"
+msgstr ""
+
+#: core/admin/class-edd-slack-welcome.php:86
+msgid "Welcome to EDD Slack %s"
+msgstr ""
+
+#: core/admin/class-edd-slack-welcome.php:88
+msgid "Thank you for updating to the latest version! EDD Slack %s is ready to make your online store faster, safer, and better!"
+msgstr ""
+
+#: core/admin/class-edd-slack-welcome.php:109
+msgid "Getting Started"
+msgstr ""
+
+#: core/admin/class-edd-slack-welcome.php:131
+msgid "Use the tips below to get started using EDD Slack. You will be up and running in no time!"
+msgstr ""
+
+#: core/admin/class-edd-slack-welcome.php:134
+msgid "Configuring your Notifications"
+msgstr ""
+
+#: core/admin/class-edd-slack-welcome.php:140
+msgid "%s &rarr; Add New"
+msgstr ""
+
+#: core/admin/class-edd-slack-welcome.php:141
+msgid "The %s menu is your access point for all aspects of your Easy Digital Downloads product creation and setup. To create your first product, simply click Add New and then fill out the product details."
+msgstr ""
+
+#: core/admin/class-edd-slack-welcome.php:144
+msgid "Download Files"
+msgstr ""
+
+#: core/admin/class-edd-slack-welcome.php:145
+msgid "Uploading the downloadable files is simple. Click <em>Upload File</em> in the Download Files section and choose your download file. To add more than one file, simply click the <em>Add New</em> button."
 msgstr ""
 
 #: core/integrations/edd-comments/class-edd-slack-comments.php:54
@@ -205,11 +287,6 @@ msgctxt "%purchase_limit% Hint Text"
 msgid "The Purchase Limit for the %s"
 msgstr ""
 
-#: core/integrations/edd-reviews/class-edd-slack-reviews.php:48
-msgctxt "New Review on Download Trigger"
-msgid "New Review on %s"
-msgstr ""
-
 #: core/integrations/edd-software-licensing/class-edd-slack-software-licensing.php:62
 msgctxt "New License Key Generated Trigger"
 msgid "New License Key Generated"
@@ -290,102 +367,107 @@ msgctxt "Empty Cart Replacement Text"
 msgid "There was nothing in the Cart"
 msgstr ""
 
-#: core/ssl-only/class-edd-slack-app-oauth-settings.php:59
+#: core/ssl-only/class-edd-slack-app-oauth-settings.php:62
 msgctxt "SSL-Only Settings Header"
 msgid "Enable Interactive Buttons and Slash Commands"
 msgstr ""
 
-#: core/ssl-only/class-edd-slack-app-oauth-settings.php:64
+#: core/ssl-only/class-edd-slack-app-oauth-settings.php:71
 msgctxt "Client ID Label"
 msgid "Client ID"
 msgstr ""
 
-#: core/ssl-only/class-edd-slack-app-oauth-settings.php:67
+#: core/ssl-only/class-edd-slack-app-oauth-settings.php:74
 msgctxt "Client ID Help Text"
 msgid "Enter the Client ID found after %screating your Slack App%s."
 msgstr ""
 
-#: core/ssl-only/class-edd-slack-app-oauth-settings.php:74
+#: core/ssl-only/class-edd-slack-app-oauth-settings.php:81
 msgctxt "Client Secret Label"
 msgid "Client Secret"
 msgstr ""
 
-#: core/ssl-only/class-edd-slack-app-oauth-settings.php:77
+#: core/ssl-only/class-edd-slack-app-oauth-settings.php:84
 msgctxt "Client Secret Help Text"
 msgid "Enter the Client Secret found after %screating your Slack App%s."
 msgstr ""
 
-#: core/ssl-only/class-edd-slack-app-oauth-settings.php:84
+#: core/ssl-only/class-edd-slack-app-oauth-settings.php:91
 msgctxt "Verification Token Label"
 msgid "Verification Token"
 msgstr ""
 
-#: core/ssl-only/class-edd-slack-app-oauth-settings.php:87
+#: core/ssl-only/class-edd-slack-app-oauth-settings.php:94
 msgctxt "Verification Token Help Text"
 msgid "Enter the Verification Token found after %screating your Slack App%s."
 msgstr ""
 
-#: core/ssl-only/class-edd-slack-app-oauth-settings.php:98
+#: core/ssl-only/class-edd-slack-app-oauth-settings.php:105
 msgctxt "Default Channel for Notifications with Interactive Buttons Label"
 msgid "Default Channel for Notifications with Interactive Buttons"
 msgstr ""
 
-#: core/ssl-only/class-edd-slack-app-oauth-settings.php:100
+#: core/ssl-only/class-edd-slack-app-oauth-settings.php:107
 msgctxt "Default Channel for Notifications with Interactive Buttons Help Text"
 msgid "Notifications with Interactive Buttons don't use the Default Webhook URL, so they need to know which Channel they should default to if one for the Notification isn't defined. If this is left blank, it will default to <code>#general</code>."
 msgstr ""
 
-#: core/ssl-only/class-edd-slack-app-oauth-settings.php:105
+#: core/ssl-only/class-edd-slack-app-oauth-settings.php:112
 msgctxt "Default Icon Emoji or Image URL for Notifications with Interactive Buttons Label"
 msgid "Default Icon Emoji or Image URL for Notifications with Interactive Buttons"
 msgstr ""
 
-#: core/ssl-only/class-edd-slack-app-oauth-settings.php:107
+#: core/ssl-only/class-edd-slack-app-oauth-settings.php:114
 msgctxt "Default Icon Emoji or Image URL for Notifications with Interactive Buttons Help Text"
 msgid "Notifications with Interactive Buttons don't use the Default Webhook URL, so it can't utilize the Default Icon Emoji or Image URL you set for the Webhook URL if one for the Notification isn't defined. If this is left blank, it will use the Icon added to your Slack App if one exists."
 msgstr ""
 
-#: core/ssl-only/class-edd-slack-app-oauth-settings.php:152
+#: core/ssl-only/class-edd-slack-app-oauth-settings.php:167
+msgctxt "Triggers Supporting Interactive Buttons Text"
+msgid "The following Triggers support Interactive Buttons on your Site: %s"
+msgstr ""
+
+#: core/ssl-only/class-edd-slack-app-oauth-settings.php:211
 msgctxt "OAUTH Register Buton Label"
 msgid "Link Slack App"
 msgstr ""
 
-#: core/ssl-only/class-edd-slack-app-oauth-settings.php:157
+#: core/ssl-only/class-edd-slack-app-oauth-settings.php:216
 msgctxt "OAUTH Deregister Button Label"
 msgid "Unlink Slack App"
 msgstr ""
 
-#: core/ssl-only/class-edd-slack-app-oauth-settings.php:164
+#: core/ssl-only/class-edd-slack-app-oauth-settings.php:223
 msgctxt "OAUTH Registration Help Text"
 msgid "Fill out the above fields and Save the Settings to Connect your Slack App to your site."
 msgstr ""
 
-#: core/ssl-only/class-edd-slack-app-oauth-settings.php:211
+#: core/ssl-only/class-edd-slack-app-oauth-settings.php:276
 msgctxt "EDD Slack App Auth Successful"
 msgid "Slack App Linked Successfully."
 msgstr ""
 
-#: core/ssl-only/class-edd-slack-app-oauth-settings.php:242
+#: core/ssl-only/class-edd-slack-app-oauth-settings.php:307
 msgctxt "EDD Slack App Deauth Successful"
 msgid "Slack App Unlinked Successfully."
 msgstr ""
 
-#: core/ssl-only/class-edd-slack-rest.php:67
+#: core/ssl-only/class-edd-slack-ssl-rest.php:67
 msgctxt "No Payload Error"
 msgid "No data payload"
 msgstr ""
 
-#: core/ssl-only/class-edd-slack-rest.php:76, core/ssl-only/class-edd-slack-rest.php:113
+#: core/ssl-only/class-edd-slack-ssl-rest.php:76, core/ssl-only/class-edd-slack-ssl-rest.php:113
 msgctxt "Missing/Incorrect Verification Token Error"
 msgid "Bad Verification Token"
 msgstr ""
 
-#: core/ssl-only/class-edd-slack-rest.php:644
+#: core/ssl-only/class-edd-slack-ssl-rest.php:645
 msgctxt "Interactive Button Callback Function Missing Error"
 msgid "The Callback Function `edd_slack_interactive_message_%s()` is missing!"
 msgstr ""
 
-#: core/ssl-only/class-edd-slack-rest.php:674
+#: core/ssl-only/class-edd-slack-ssl-rest.php:675
 msgctxt "Slash Command Callback Function Missing Error"
 msgid "The Callback Function `edd_slack_slash_command_%s()` is missing!"
 msgstr ""
@@ -445,184 +527,184 @@ msgctxt "Estimated Montly Sales /edd sales"
 msgid "Estimated Monthly Sales: %s"
 msgstr ""
 
-#: core/ssl-only/integrations/edd-comments/class-edd-slack-app-comments.php:75, core/ssl-only/integrations/edd-frontend-submissions/class-edd-slack-app-frontend-submissions.php:113
+#: core/ssl-only/integrations/edd-comments/class-edd-slack-app-comments.php:78, core/ssl-only/integrations/edd-frontend-submissions/class-edd-slack-app-frontend-submissions.php:116
 msgctxt "Approve Button Text"
 msgid "Approve"
 msgstr ""
 
-#: core/ssl-only/integrations/edd-comments/class-edd-slack-app-comments.php:82
+#: core/ssl-only/integrations/edd-comments/class-edd-slack-app-comments.php:85
 msgctxt "Mark as Spam Button Text"
 msgid "Mark as Spam"
 msgstr ""
 
-#: core/ssl-only/integrations/edd-comments/class-edd-slack-app-comments.php:138
+#: core/ssl-only/integrations/edd-comments/class-edd-slack-app-comments.php:156
 msgctxt "Comment Approved Response Text"
 msgid "%s has Approved %s's Comment on %s"
 msgstr ""
 
-#: core/ssl-only/integrations/edd-comments/class-edd-slack-app-comments.php:148
+#: core/ssl-only/integrations/edd-comments/class-edd-slack-app-comments.php:166
 msgctxt "Spam Comment Response Text"
 msgid "%s has marked %s's Comment on %s as Spam"
 msgstr ""
 
-#: core/ssl-only/integrations/edd-frontend-submissions/class-edd-slack-app-frontend-submissions.php:120
+#: core/ssl-only/integrations/edd-frontend-submissions/class-edd-slack-app-frontend-submissions.php:123
 msgctxt "Deny Button Text"
 msgid "Deny"
 msgstr ""
 
-#: core/ssl-only/integrations/edd-frontend-submissions/class-edd-slack-app-frontend-submissions.php:130, core/ssl-only/integrations/edd-frontend-submissions/class-edd-slack-app-frontend-submissions.php:141
+#: core/ssl-only/integrations/edd-frontend-submissions/class-edd-slack-app-frontend-submissions.php:133, core/ssl-only/integrations/edd-frontend-submissions/class-edd-slack-app-frontend-submissions.php:144
 msgctxt "Confirmation Title Text"
 msgid "Are you sure?"
 msgstr ""
 
-#: core/ssl-only/integrations/edd-frontend-submissions/class-edd-slack-app-frontend-submissions.php:131
+#: core/ssl-only/integrations/edd-frontend-submissions/class-edd-slack-app-frontend-submissions.php:134
 msgctxt "EDD FES Vendor Denial Confirmation Explaination Text"
 msgid "They will need to re-apply to be a Vendor if this was a mistake."
 msgstr ""
 
-#: core/ssl-only/integrations/edd-frontend-submissions/class-edd-slack-app-frontend-submissions.php:132, core/ssl-only/integrations/edd-frontend-submissions/class-edd-slack-app-frontend-submissions.php:143
+#: core/ssl-only/integrations/edd-frontend-submissions/class-edd-slack-app-frontend-submissions.php:135, core/ssl-only/integrations/edd-frontend-submissions/class-edd-slack-app-frontend-submissions.php:146
 msgctxt "Confirmation \"Yes\" Button"
 msgid "Yes, I understand the risks"
 msgstr ""
 
-#: core/ssl-only/integrations/edd-frontend-submissions/class-edd-slack-app-frontend-submissions.php:133, core/ssl-only/integrations/edd-frontend-submissions/class-edd-slack-app-frontend-submissions.php:144
+#: core/ssl-only/integrations/edd-frontend-submissions/class-edd-slack-app-frontend-submissions.php:136, core/ssl-only/integrations/edd-frontend-submissions/class-edd-slack-app-frontend-submissions.php:147
 msgctxt "Confirmation \"No\" Button"
 msgid "No, I changed my mind"
 msgstr ""
 
-#: core/ssl-only/integrations/edd-frontend-submissions/class-edd-slack-app-frontend-submissions.php:142
+#: core/ssl-only/integrations/edd-frontend-submissions/class-edd-slack-app-frontend-submissions.php:145
 msgctxt "EDD FES Vendor Product Edit Denial Confirmation Explaination Text"
 msgid "EDD Frontend Submissions does not store old copies of Vendor Products. This will delete their Product."
 msgstr ""
 
-#: core/ssl-only/integrations/edd-frontend-submissions/class-edd-slack-app-frontend-submissions.php:191
+#: core/ssl-only/integrations/edd-frontend-submissions/class-edd-slack-app-frontend-submissions.php:219
 msgctxt "Vendor Approved Response Text"
 msgid "%s has Approved %s's Request to be a Vendor"
 msgstr ""
 
-#: core/ssl-only/integrations/edd-frontend-submissions/class-edd-slack-app-frontend-submissions.php:210
+#: core/ssl-only/integrations/edd-frontend-submissions/class-edd-slack-app-frontend-submissions.php:238
 msgctxt "Vendor Denied Response Text"
 msgid "%s has Denied %s's Request to be a Vendor"
 msgstr ""
 
-#: core/ssl-only/integrations/edd-frontend-submissions/class-edd-slack-app-frontend-submissions.php:256
+#: core/ssl-only/integrations/edd-frontend-submissions/class-edd-slack-app-frontend-submissions.php:284
 msgctxt "Vendor Product Approved Response Text"
 msgid "%s has Approved %s's Product Submission titled \"%s\""
 msgstr ""
 
-#: core/ssl-only/integrations/edd-frontend-submissions/class-edd-slack-app-frontend-submissions.php:266
+#: core/ssl-only/integrations/edd-frontend-submissions/class-edd-slack-app-frontend-submissions.php:294
 msgctxt "Vendor Product Denied Response Text"
 msgid "%s has Denied %s's Product Submission titled \"%s\""
 msgstr ""
 
-#: core/ssl-only/integrations/edd-frontend-submissions/class-edd-slack-app-frontend-submissions.php:312
+#: core/ssl-only/integrations/edd-frontend-submissions/class-edd-slack-app-frontend-submissions.php:340
 msgctxt "Vendor Product Edit Approved Response Text"
 msgid "%s has Approved %s's Product Edit for \"%s\""
 msgstr ""
 
-#: core/ssl-only/integrations/edd-frontend-submissions/class-edd-slack-app-frontend-submissions.php:322
+#: core/ssl-only/integrations/edd-frontend-submissions/class-edd-slack-app-frontend-submissions.php:350
 msgctxt "Vendor Product Edit Denied Response Text"
 msgid "%s has Trashed %s's Product titled \"%s\""
 msgstr ""
 
-#: edd-slack.php:326
+#: edd-slack.php:334
 msgid "Indentifier for this Notification"
 msgstr ""
 
-#: edd-slack.php:329
+#: edd-slack.php:337
 msgid "New Slack Notification"
 msgstr ""
 
-#: edd-slack.php:334
+#: edd-slack.php:342
 msgid "Slack Trigger"
 msgstr ""
 
-#: edd-slack.php:339
+#: edd-slack.php:351, edd-slack.php:353
 msgctxt "Slack Trigger Default Label"
 msgid "-- Select a Slack Trigger --"
 msgstr ""
 
-#: edd-slack.php:354
+#: edd-slack.php:370, edd-slack.php:373
 msgctxt "Select Field Default"
 msgid "-- Select %s --"
 msgstr ""
 
-#: edd-slack.php:355
+#: edd-slack.php:371
 msgctxt "All items in a Select Field"
 msgid "All %s"
 msgstr ""
 
-#: edd-slack.php:360
+#: edd-slack.php:377
 msgctxt "Discount Code Field Label"
 msgid "Discount Code"
 msgstr ""
 
-#: edd-slack.php:369
+#: edd-slack.php:388, edd-slack.php:391
 msgctxt "Discount Code Field Default"
 msgid "-- Select Discount Code --"
 msgstr ""
 
-#: edd-slack.php:370
+#: edd-slack.php:389
 msgctxt "All Discount Codes Text"
 msgid "All Discount Codes"
 msgstr ""
 
-#: edd-slack.php:380
+#: edd-slack.php:400
 msgid "Message Pre-text (Shows directly below Username and above the Title/Message)"
 msgstr ""
 
-#: edd-slack.php:388
+#: edd-slack.php:408
 msgid "Message Title"
 msgstr ""
 
-#: edd-slack.php:396
+#: edd-slack.php:416
 msgid "Message"
 msgstr ""
 
-#: edd-slack.php:402
+#: edd-slack.php:422
 msgid "Slack Webhook URL"
 msgstr ""
 
-#: edd-slack.php:407
+#: edd-slack.php:427
 msgid "You can override the above Webhook URL here."
 msgstr ""
 
-#: edd-slack.php:415
+#: edd-slack.php:435
 msgid "Slack Channel"
 msgstr ""
 
-#: edd-slack.php:417, edd-slack.php:433
+#: edd-slack.php:437, edd-slack.php:453
 msgid "Webhook default"
 msgstr ""
 
-#: edd-slack.php:423
+#: edd-slack.php:443
 msgid "Username"
 msgstr ""
 
-#: edd-slack.php:431
+#: edd-slack.php:451
 msgid "Icon Emoji or Image URL"
 msgstr ""
 
-#: edd-slack.php:439
+#: edd-slack.php:459
 msgid "Color (Shows next to Message Title and Message)"
 msgstr ""
 
-#: edd-slack.php:457
+#: edd-slack.php:477
 msgctxt "Purchase Complete Trigger Label"
 msgid "Purchase Complete"
 msgstr ""
 
-#: edd-slack.php:458
+#: edd-slack.php:478
 msgctxt "Purchase Failed Trigger Label"
 msgid "Purchase Failed"
 msgstr ""
 
-#: edd-slack.php:459
+#: edd-slack.php:479
 msgctxt "Discount Code Applied Trigger Label"
 msgid "Discount Code Applied"
 msgstr ""
 
-#: edd-slack.php:460
+#: edd-slack.php:480
 msgctxt "New User Registration Trigger Label"
 msgid "New User Registration via EDD"
 msgstr ""

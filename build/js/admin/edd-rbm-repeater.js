@@ -44,7 +44,7 @@ function init_edd_repeater_chosen( modal ) {
     var edd_repeater_show = function() {
 
         // Hide current title for new item and show default title
-        $( this ).find( '.repeater-header span.title' ).html( $( this ).find( '.repeater-header span.title' ).data( 'repeater-default-title' ) );
+        $( this ).find( '.repeater-header div.title' ).html( $( this ).find( '.repeater-header div.title' ).data( 'repeater-default-title' ) );
         
         // For some reason Select Fields don't show correctly despite the HTML being correct
         $( this ).find( 'select' ).each( function( index, select ) {

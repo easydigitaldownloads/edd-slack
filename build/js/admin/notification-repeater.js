@@ -66,30 +66,6 @@
 
     }
     
-    var delete_edd_slack_feed = function( e, $item ) {
-        
-        var uuid = $item.find( '[data-repeater-edit]' ).data( 'open' ),
-            $modal = $( '[data-reveal="' + uuid + '"]' );
-
-        var post_ID = $modal.find( 'input[name$="[slack_post_id]"]' ).val(),
-            $delete_feeds = $( 'input[type="hidden"][name^="edd_slack_deleted_"]' ),
-            deleted = $delete_feeds.val();
-
-        if ( ! post_ID ) {
-            return;
-        }
-
-        if ( ! deleted ) {
-            deleted = post_ID;
-        }
-        else {
-            deleted = deleted + ',' + post_ID;
-        }
-
-        $delete_feeds.val( deleted );
-
-    }
-    
     var init_edd_slack_repeater_functionality = function() {
         
         // This JavaScript only loads on our custom Page, so we're fine doing this
@@ -98,7 +74,6 @@
         if ( $repeaters.length ) {
             $repeaters.on( 'edd-rbm-repeater-add', edd_slack_conditional_fields );
             $repeaters.on( 'repeater-show', edd_slack_conditional_fields );
-            $repeaters.on( 'edd-rbm-repeater-remove', delete_edd_slack_feed );
         }
         
     }
@@ -112,30 +87,39 @@
             edd_slack_conditional_fields( trigger, $( trigger ).val() );
         } );
         
-        $( '.repeater-header span[data-repeater-default-title]' ).each( function( index, header ) {
+        $( '.repeater-header div[data-repeater-default-title]' ).each( function( index, header ) {
             
             var active = true,
-                repeaterItem = $( header ).closest( 'div[data-repeater-item]' );
+                $repeaterItem = $( header ).closest( 'div[data-repeater-item]' ),
+                uuid = $repeaterItem.find( '[data-repeater-edit]' ).data( 'open' ),
+                $modal = $( '[data-reveal="' + uuid + '"]' );
             
             // Select Fields need to be filled out. No other field is really required
-            $( repeaterItem ).find( 'select' ).each( function( valueIndex, select ) {
+            $modal.find( '.required' ).each( function( valueIndex, field ) {
                 
-                if ( ! $( select ).closest( 'td' ).hasClass( 'hidden' ) && 
-                    $( select ).val() == 0 ) {
+                if ( ! $( field ).closest( 'td' ).hasClass( 'hidden' ) && 
+                    $( field ).val() === null ) {
                     active = false;
                     return false; // Break out of execution, we already know we're invalid
                 }
                 
             } );
             
+            // If we're not saved yet
+            if ( $modal.find( '.edd-slack-post-id' ).val() == '' ) {
+                active = false;
+            }
+            
+            console.log( active );
+            
             if ( active === true ) {
                 
-                $( header ).find( '.title' ).append( '<span class="active dashicons dashicons-yes" aria-label="' + eddSlack.i18n.inactiveText + '"></span>' );
+                $( header ).append( '<span class="active dashicons dashicons-yes" aria-label="' + eddSlack.i18n.inactiveText + '"></span>' );
                 
             }
             else {
                 
-                $( header ).find( '.title' ).append( '<span class="inactive dashicons dashicons-no" aria-label="' + eddSlack.i18n.inactiveText + '"></span>' );
+                $( header ).append( '<span class="inactive dashicons dashicons-no" aria-label="' + eddSlack.i18n.inactiveText + '"></span>' );
                 
             }
             

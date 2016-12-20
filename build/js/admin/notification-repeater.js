@@ -1,6 +1,16 @@
 ( function( $ ) {
     'use strict';
     
+    /**
+     * Conditionally Hide/Show Fields based on the selected Trigger
+     * This also adds some basic Form Validation because EDD doesn't support Required Fields
+     * 
+     * @param       {Event|String}  row          Either the Event from creating a new Row or the Slack Trigger Field
+     * @param       {Object|string} option_class The new Row (unused) or the Value of the Slack Trigger Field
+     *                                     
+     * @since       1.0.0
+     * @return      void
+     */
     var edd_slack_conditional_fields = function( row, option_class ) {
         
         // Handle newly created Rows
@@ -66,6 +76,12 @@
 
     }
     
+    /**
+     * Add Notification Status Indiciators to show whether or not a Notification is "active"
+     * 
+     * @since       1.0.0
+     * @return      void
+     */
     var eddSlackNotificationIndicators = function() {
         
         $( '.repeater-header div[data-repeater-default-title]' ).each( function( index, header ) {
@@ -109,6 +125,12 @@
         
     }
     
+    /**
+     * Attach Event Handlers for things outside of basic Repeater-scope
+     * 
+     * @since       1.0.0
+     * @return      void
+     */
     var init_edd_slack_repeater_functionality = function() {
         
         // This JavaScript only loads on our custom Page, so we're fine doing this

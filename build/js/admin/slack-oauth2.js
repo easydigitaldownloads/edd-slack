@@ -3,7 +3,10 @@
     /**
      * Modified version of https://www.sitepoint.com/oauth-popup-window/
      * 
-     * @param {object} options Options to create the Popup
+     * @param       {object} options Options to create the Popup
+     *                         
+     * @since       1.0.0
+     * @return      {object} EDDSlackOauthPopup
      */
     $.EDDSlackOauthPopup = function( options ) {
         

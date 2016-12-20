@@ -359,6 +359,7 @@ if ( ! class_exists( 'EDD_Slack' ) ) {
                         'edd-slack-conditional',
                         'edd_complete_purchase',
                         'edd_discount_code_applied',
+                        'edd_failed_purchase',
                         'required',
                     ),
                     'options' => array(

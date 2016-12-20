@@ -446,6 +446,11 @@ class EDD_Slack_Admin {
     public function admin_settings_scripts() {
 
         wp_enqueue_style( EDD_Slack_ID . '-admin' );
+        
+        // Dependencies
+        wp_enqueue_script( 'jquery-effects-core' );
+        wp_enqueue_script( 'jquery-effects-highlight' );
+        
         wp_enqueue_script( EDD_Slack_ID . '-admin' );
 
     }

@@ -10,16 +10,16 @@
      */
     var attachNotificationSubmitEvent = function( event ) {
         
-        var row = event.currentTarget,
-            $form = $( row ).find( 'form' );
+        var modal = event.currentTarget,
+            $form = $( modal ).find( 'form' );
         
-        if ( ! $( row ).hasClass( 'has-form' ) ) {
+        if ( ! $( modal ).hasClass( 'has-form' ) ) {
             
             // We need to create the Form
             // "novalidate" so that HTML5 doesn't try to take over before we can do our thing
-            $form = $( row ).find( '.edd-rbm-repeater-form' ).wrap( '<form method="POST" novalidate></form>' ).parent();
+            $form = $( modal ).find( '.edd-rbm-repeater-form' ).wrap( '<form method="POST" novalidate></form>' ).parent();
             
-            $( row ).addClass( 'has-form' );
+            $( modal ).addClass( 'has-form' );
 
             // Normally HTML doesn't like us having nested Forms, so we force it like this
             // By the time the Modal opens and this code runs, the Form isn't nested anymore
@@ -58,12 +58,16 @@
                         'data' : data,
                         success : function( response ) {
                             
-                            var uuid = $( row ).data( 'reveal' );
+                            var uuid = $( modal ).data( 'reveal' ),
+                                $row = $( '[data-open="' + uuid + '"]' ).closest( '.edd-rbm-repeater-item' );
                             
                             // If the Modal started as a New Notification, we need to update the Post ID value to ensure it can be updated
                             $form.find( '.edd-slack-post-id' ).val( response.data.post_id );
                             
                             closeModal( uuid );
+                            
+                            // Highlight Green
+                            $row.effect( 'highlight', { color : '#DFF2BF' }, 1000 );
                             
                         },
                         error : function( request, status, error ) {

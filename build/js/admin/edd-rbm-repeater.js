@@ -94,8 +94,13 @@ function init_edd_repeater_chosen( modal ) {
                     $modal.parent().remove();
 
                     // Remove DOM Tree for the Notification "Header"
-                    $row.stop().slideUp( 300, function () {
-                        $row.remove();
+                    $row.stop();
+                    setTimeout( function() {
+                        
+                        $row.effect( 'highlight', { color : '#FFBABA' }, 300 ).dequeue().slideUp( 300, function () {
+                            $row.remove();
+                        } );
+                        
                     } );
 
                     $( repeater ).trigger( 'edd-rbm-repeater-remove', [$row] );

@@ -75,6 +75,12 @@ if ( ! class_exists( 'EDD_Slack' ) ) {
          * @since       1.0.0
          */
         public $slack_rest_api;
+        
+        /**
+         * @var         Stores all our Admin Notices to fire at once
+         * @since       1.0.0
+         */
+        private $admin_notices;
 
         /**
          * Get active instance
@@ -107,6 +113,27 @@ if ( ! class_exists( 'EDD_Slack' ) ) {
             // Handle licensing
             if ( class_exists( 'EDD_License' ) ) {
                 $license = new EDD_License( __FILE__, $this->plugin_data['Name'], EDD_Slack_VER, $this->plugin_data['Author'] );
+            }
+            
+            if ( version_compare( get_bloginfo( 'version' ), '4.4' ) < 0 ) {
+                
+                $this->admin_notices[] = sprintf( _x( '%s requires v%s of %s or higher to be installed!', 'Outdated Dependency Error', EDD_Slack_ID ), '<strong>' . $this->plugin_data['Name'] . '</strong>', '4.4', '<a href="' . admin_url( 'update-core.php' ) . '"><strong>WordPress</strong></a>' );
+                
+                if ( ! has_action( 'admin_notices', array( $this, 'admin_notices' ) ) ) {
+                    add_action( 'admin_notices', array( $this, 'admin_notices' ) );
+                }
+                
+            }
+            
+            if ( defined( 'EDD_VERSION' ) 
+                && ( version_compare( EDD_VERSION, '2.6.11' ) < 0 ) ) {
+                
+                $this->admin_notices[] = sprintf( _x( '%s requires v%s of %s or higher to be installed!', 'Outdated Dependency Error', EDD_Slack_ID ), '<strong>' . $this->plugin_data['Name'] . '</strong>', '2.6.11', '<a href="//wordpress.org/plugins/easy-digital-downloads/" target="_blank"><strong>Easy Digital Downloads</strong></a>' );
+                
+                if ( ! has_action( 'admin_notices', array( $this, 'admin_notices' ) ) ) {
+                    add_action( 'admin_notices', array( $this, 'admin_notices' ) );
+                }
+                
             }
             
         }
@@ -537,6 +564,25 @@ if ( ! class_exists( 'EDD_Slack' ) ) {
             // Merge this with the inserted array and the last half of the splice
             $array = array_merge( $first_array, $insert_array, $array );
             
+        }
+        
+        /**
+         * Show admin notices.
+         * 
+         * @access      public
+         * @since       1.0.0
+         * @return      HTML
+         */
+        public function admin_notices() {
+            ?>
+            <div class="error">
+                <?php foreach ( $this->admin_notices as $notice ) : ?>
+                    <p>
+                        <?php echo $notice; ?>
+                    </p>
+                <?php endforeach; ?>
+            </div>
+            <?php
         }
         
         /**

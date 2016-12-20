@@ -134,14 +134,17 @@ function init_edd_repeater_chosen( modal ) {
             $dummy.remove();
         }
 
-        $( document ).on( 'keyup change', '.edd-rbm-repeater .edd-rbm-repeater-content td:first-of-type *[type!="hidden"]', function() {
+        $( document ).on( 'keyup change', '.edd-rbm-repeater-content.reveal td:first-of-type *[type!="hidden"]', function() {
+            
+            var uuid = $( this ).closest( '.edd-rbm-repeater-content.reveal' ).data( 'reveal' ),
+                $row = $( '[data-open="' + uuid + '"]' );
             
             if ( $( this ).val() !== '' ) {
-                $( this ).closest( '.edd-rbm-repeater-item' ).find( '.repeater-header span.title' ).html( $( this ).val() );
+                $row.closest( '.edd-rbm-repeater-item' ).find( '.repeater-header div.title' ).html( $( this ).val() );
             }
             else {
-                var defaultValue = $( this ).closest( '.edd-rbm-repeater-item' ).find( '.repeater-header span.title' ).data( 'repeater-default-title' );
-                $( this ).closest( '.edd-rbm-repeater-item' ).find( '.repeater-header span.title' ).html( defaultValue );
+                var defaultValue = $row.closest( '.edd-rbm-repeater-item' ).find( '.repeater-header div.title' ).data( 'repeater-default-title' );
+                $row.closest( '.edd-rbm-repeater-item' ).find( '.repeater-header div.title' ).html( defaultValue );
             }
             
         } );

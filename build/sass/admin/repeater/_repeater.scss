@@ -62,6 +62,20 @@
                 padding: 0;
                 border: none;
             }
+            
+            .status-indicator {
+                
+                line-height: 1.2;
+            
+                &.active {
+                    color: #008000;
+                }
+
+                &.inactive {
+                    color: #ff0000;
+                }
+                
+            }
 
             .edd-rbm-repeater-controls {
 

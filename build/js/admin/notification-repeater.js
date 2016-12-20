@@ -66,26 +66,7 @@
 
     }
     
-    var init_edd_slack_repeater_functionality = function() {
-        
-        // This JavaScript only loads on our custom Page, so we're fine doing this
-        var $repeaters = $( '[data-edd-rbm-repeater]' );
-        
-        if ( $repeaters.length ) {
-            $repeaters.on( 'edd-rbm-repeater-add', edd_slack_conditional_fields );
-            $repeaters.on( 'repeater-show', edd_slack_conditional_fields );
-        }
-        
-    }
-    
-    init_edd_slack_repeater_functionality();
-    
-    $( document ).ready( function() {
-        
-        // Handle conditional fields on Page Load
-        $( '.edd-slack-trigger' ).each( function( index, trigger ) {
-            edd_slack_conditional_fields( trigger, $( trigger ).val() );
-        } );
+    var eddSlackNotificationIndicators = function() {
         
         $( '.repeater-header div[data-repeater-default-title]' ).each( function( index, header ) {
             
@@ -94,7 +75,8 @@
                 uuid = $repeaterItem.find( '[data-repeater-edit]' ).data( 'open' ),
                 $modal = $( '[data-reveal="' + uuid + '"]' );
             
-            // Select Fields need to be filled out. No other field is really required
+            // Ensure Required Fields are Filled Out
+            // This should only apply to Non-Saved Notifications, but if someone gets cheeky and attempts to get around my form validation this will tell them that they dun goof'd
             $modal.find( '.required' ).each( function( valueIndex, field ) {
                 
                 if ( ! $( field ).closest( 'td' ).hasClass( 'hidden' ) && 
@@ -110,20 +92,51 @@
                 active = false;
             }
             
-            console.log( active );
+            $( header ).siblings( '.status-indicator' ).remove();
             
             if ( active === true ) {
                 
-                $( header ).append( '<span class="active dashicons dashicons-yes" aria-label="' + eddSlack.i18n.inactiveText + '"></span>' );
+                $( header ).after( '<span class="active status-indicator dashicons dashicons-yes" aria-label="' + eddSlack.i18n.inactiveText + '"></span>' );
                 
             }
             else {
                 
-                $( header ).append( '<span class="inactive dashicons dashicons-no" aria-label="' + eddSlack.i18n.inactiveText + '"></span>' );
+                $( header ).after( '<span class="inactive status-indicator dashicons dashicons-no" aria-label="' + eddSlack.i18n.inactiveText + '"></span>' );
                 
             }
             
         } );
+        
+    }
+    
+    var init_edd_slack_repeater_functionality = function() {
+        
+        // This JavaScript only loads on our custom Page, so we're fine doing this
+        var $repeaters = $( '[data-edd-rbm-repeater]' );
+        
+        if ( $repeaters.length ) {
+            
+            $repeaters.on( 'edd-rbm-repeater-add', edd_slack_conditional_fields );
+            $repeaters.on( 'repeater-show', edd_slack_conditional_fields );
+            
+            $( document ).on( 'closed.zf.reveal', '.edd-rbm-repeater-content.reveal', function() {
+                eddSlackNotificationIndicators();
+            } );
+            
+        }
+        
+    }
+    
+    init_edd_slack_repeater_functionality();
+    
+    $( document ).ready( function() {
+        
+        // Handle conditional fields on Page Load
+        $( '.edd-slack-trigger' ).each( function( index, trigger ) {
+            edd_slack_conditional_fields( trigger, $( trigger ).val() );
+        } );
+        
+        eddSlackNotificationIndicators();
         
         // And toggle them on Change
         $( document ).on( 'change', '.edd-slack-trigger', function() {

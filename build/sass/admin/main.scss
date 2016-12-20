@@ -3,6 +3,6 @@
 @include foundation-reveal;
 @include foundation-close-button;
 
-@import "repeater/repeater.scss";
-
+@import "base.scss";
+@import "repeater.scss";
 @import "replacements.scss"

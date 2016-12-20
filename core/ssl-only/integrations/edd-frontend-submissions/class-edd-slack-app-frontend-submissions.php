@@ -25,6 +25,9 @@ class EDD_Slack_App_Frontend_Submissions {
         // Add our Interaction Buttons
         add_filter( 'edd_slack_notification_args', array( $this, 'override_arguments' ), 10, 4 );
         
+        // Add our Trigger(s) to the Interactive Triggers Array
+        add_filter( 'edd_slack_interactive_triggers', array( $this, 'add_support' ), 1, 1 );
+        
     }
     
     /**
@@ -154,6 +157,31 @@ class EDD_Slack_App_Frontend_Submissions {
         $notification_args = apply_filters( 'edd_slack_app_' . $trigger . '_notification_args', $notification_args, $notification_id, $args );
         
         return $notification_args;
+        
+    }
+    
+    /**
+     * Add our Trigger(s) to the Interactive Triggers Array
+     * 
+     * @param       array $interactive_triggers Array holding the Triggers that support Interactive Buttons
+     *                                                                                              
+     * @return      array Array with our added Triggers
+     */
+    public function add_support( $interactive_triggers ) {
+        
+        $interactive_triggers[] = 'edd_fes_vendor_registered';
+        
+        // By default, Vendors cannot create their own Products
+        if ( (bool) EDD_FES()->helper->get_option( 'fes-allow-vendors-to-create-products', false ) ) {
+            $interactive_triggers[] = 'edd_fes_new_vendor_product';
+        }
+        
+        // By default, Vendors cannot edit their own Products
+        if ( (bool) EDD_FES()->helper->get_option( 'fes-allow-vendors-to-edit-products', false ) ) {
+            $interactive_triggers[] = 'edd_fes_edit_vendor_product';
+        }
+        
+        return $interactive_triggers;
         
     }
     

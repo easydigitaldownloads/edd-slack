@@ -28,6 +28,9 @@ class EDD_Slack_OAUTH_Settings {
         // Add SSL-only settings for OAUTH
         add_filter( 'edd_slack_settings', array( $this, 'add_oauth_settings' ) );
         
+        // Display which Triggers support Interactive Buttons
+        add_action( 'edd_slack_interactive_button_support', array( $this, 'add_interactive_button_support_list' ) );
+        
         // Add the OAUTH Registration Button
         add_action( 'edd_slack_oauth_register', array( $this, 'add_oauth_registration_button' ) );
         
@@ -58,6 +61,10 @@ class EDD_Slack_OAUTH_Settings {
                 'type' => 'header',
                 'name' => '<h3>' . _x( 'Enable Interactive Buttons and Slash Commands', 'SSL-Only Settings Header', EDD_Slack_ID ),
                 'id' => 'edd-slack-ssl-only-header',
+            ),
+            array(
+                'type' => 'hook',
+                'id' => 'slack_interactive_button_support',
             ),
             array(
                 'type' => 'text',
@@ -111,6 +118,58 @@ class EDD_Slack_OAUTH_Settings {
         $settings = array_merge( $settings, $oauth_settings );
         
         return $settings;
+        
+    }
+    
+    /**
+     * Show a list of Triggers that support Interactive Buttons
+     * 
+     * @param       array $args EDD Settings API $args
+     *                                           
+     * @access      public
+     * @since       1.0.0
+     * @return      void
+     */
+    public function add_interactive_button_support_list( $args ) {
+        
+        $triggers = EDDSLACK()->get_slack_triggers();
+        
+        $interactive_triggers = apply_filters( 'edd_slack_interactive_triggers', array() );
+        
+        sort( $interactive_triggers );
+        
+        if ( ! empty ( $interactive_triggers ) ) {
+            
+            // Holds HTML representation of Triggers that Support Interactive Buttons
+            $supported = array();
+            
+            foreach ( $triggers as $trigger => $label ) {
+                
+                if ( in_array( $trigger, $interactive_triggers ) ) {
+                    
+                    $supported[] = '<li>' . $label . '</li>';
+                    
+                }
+                
+            }
+            
+            ob_start();
+            ?>
+
+            <ul>
+                <?php echo implode( '', $supported ); ?>
+            </ul>
+
+            <?php 
+            
+            $supported_list = ob_get_clean();
+            
+            printf( _x( 'The following Triggers support Interactive Buttons on your Site: %s', 'Triggers Supporting Interactive Buttons Text', EDD_Slack_ID ), $supported_list );
+            
+        }
+        else {
+            echo _x( 'None of available Triggers on your Site currently provide support for Interactive Buttons, but you will still have access to the included Slash Commands by linking a Slack App!', 'No Triggers Supporting Interactive Buttons Text', EDD_Slack );
+        }
         
     }
     

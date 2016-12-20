@@ -71,13 +71,42 @@ function init_edd_repeater_chosen( modal ) {
 
     var edd_repeater_hide = function() {
 
-        var repeater = $( this ).closest( '[data-edd-rbm-repeater]' );
+        var repeater = $( this ).closest( '[data-edd-rbm-repeater]' ),
+            confirmDeletion = confirm( eddSlack.i18n.confirmDeletion );
+            
+        if ( confirmDeletion ) {
 
-        $( this ).stop().slideUp( 300, function () {
-            $(this).remove();
-        } );
+            var $row = $( this ),
+                uuid = $row.find( '[data-repeater-edit]' ).data( 'open' ),
+                $modal = $( '[data-reveal="' + uuid + '"]' ),
+                postID = $modal.find( '.edd-slack-post-id' ).val();
+            
+            $.ajax( {
+                'type' : 'POST',
+                'url' : eddSlack.ajax,
+                'data' : {
+                    'action' : 'delete_edd_rbm_slack_notification',
+                    'post_id' : postID,
+                },
+                success : function( response ) {
+                    
+                    // Remove whole DOM tree for the Modal.
+                    $modal.parent().remove();
 
-        $( repeater ).trigger( 'edd-rbm-repeater-remove', [$( this )] );
+                    // Remove DOM Tree for the Notification "Header"
+                    $row.stop().slideUp( 300, function () {
+                        $row.remove();
+                    } );
+
+                    $( repeater ).trigger( 'edd-rbm-repeater-remove', [$row] );
+                    
+                },
+                error : function( request, status, error ) {
+                    
+                }
+            } );
+
+        }
 
     }
 

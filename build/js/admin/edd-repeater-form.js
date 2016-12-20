@@ -50,7 +50,7 @@
 
                     } );
                     
-                    data.action = 'insert_slack_notification';
+                    data.action = 'insert_edd_rbm_slack_notification';
 
                     $.ajax( {
                         'type' : 'POST',

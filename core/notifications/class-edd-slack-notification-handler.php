@@ -110,9 +110,6 @@ class EDD_Slack_Notification_Handler {
     
     /**
      * Create/Update Notification Feed Posts via your Settings Interface
-     * 
-     * @param       string $notification_id   ID Used for Notification Hooks
-     * @param       array  $notification_args Array holding some basic Strings, but more importantly the Fields Array
      *                                                                                                          
      * @access      public
      * @since       1.0.0
@@ -188,26 +185,23 @@ class EDD_Slack_Notification_Handler {
     }
     
     /**
-     * Delete Feed Posts via ID using a hidden text input with the name "edd_slack_deleted_feeds".
+     * Delete Feed Posts via ID
      * 
-     * @param       string $notification_id   ID Used for Notification Hooks
-     * 
-     * @access      private
+     * @access      public
      * @since       1.0.0
      * @return      void
      */
-    private function delete_feeds( $notification_id ) {
+    public static function delete_feed() {
 
-        $feeds = $_POST["edd_slack_deleted_{$notification_id}_feeds"];
-
-        if ( empty( $feeds ) ) {
-            return;
+        $post_id = $_POST['post_id'];
+        
+        $success = wp_delete_post( $post_id, true );
+        
+        if ( $success ) {
+            return wp_send_json_success();
         }
-
-        $feeds = explode( ',', $feeds );
-
-        foreach ( $feeds as $feed_post_id ) {
-            wp_delete_post( $feed_post_id, true );
+        else {
+            return wp_send_json_error();
         }
 
     }
@@ -344,4 +338,8 @@ class EDD_Slack_Notification_Handler {
 
 }
 
-add_action( 'wp_ajax_insert_slack_notification', array( 'EDD_Slack_Notification_Handler', 'update_feed' ) );
+// AJAX Hook for Inserting new/updating Notifications
+add_action( 'wp_ajax_insert_edd_rbm_slack_notification', array( 'EDD_Slack_Notification_Handler', 'update_feed' ) );
+
+// AJAX Hook for Deleting Notifications
+add_action( 'wp_ajax_delete_edd_rbm_slack_notification', array( 'EDD_Slack_Notification_Handler', 'delete_feed' ) );

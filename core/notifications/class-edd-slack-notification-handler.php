@@ -114,68 +114,76 @@ class EDD_Slack_Notification_Handler {
      * @param       string $notification_id   ID Used for Notification Hooks
      * @param       array  $notification_args Array holding some basic Strings, but more importantly the Fields Array
      *                                                                                                          
-     * @access      private
+     * @access      public
      * @since       1.0.0
      * @return      void
      */
-    private function update_feeds( $notification_id, $notification_args ) {
+    public static function update_feed() {
         
-        $feeds = $_POST["edd_slack_{$notification_id}_feeds"];
+        global $edd_slack_notifications;
         
-        if ( empty( $feeds ) ) {
-            return;
-        }
+        $edd_slack_notifications = apply_filters( 'edd_slack_notifications', array() );
+        
+        $notification_id = apply_filters( 'edd_slack_notification_id', 'rbm' );
+        $notification_args = $edd_slack_notifications[ $notification_id ];
         
         $notification_args = wp_parse_args( $notification_args, array(
             'default_feed_title' => _x( 'New Slack Notification', 'New Slack Notification Header', EDD_Slack_ID ),
             'fields'             => array(),
         ) );
-        
-        foreach ( $feeds as $feed ) {
             
-            $post_args = array(
-                'ID'          => (int) $feed['slack_post_id'] > 0 ? (int) $feed['slack_post_id'] : 0,
-                'post_type'   => "edd-slack-{$notification_id}-feed",
-                'post_title'  => '',
-                'post_status' => 'publish',
-            );
+        $post_args = array(
+            'ID'          => (int) $_POST['slack_post_id'] > 0 ? (int) $_POST['slack_post_id'] : 0,
+            'post_type'   => "edd-slack-{$notification_id}-feed",
+            'post_title'  => '',
+            'post_status' => 'publish',
+        );
 
-            $notification_meta = array();
+        $notification_meta = array();
 
-            foreach ( $notification_args['fields'] as $field_name => $field ) {
+        foreach ( $notification_args['fields'] as $field_name => $field ) {
 
-                if ( isset( $feed[ $field_name ] ) ) {
-                    
-                    if ( $field_name == 'post_id' || $field_name == 'admin_title' ) continue;
-                    
-                    $notification_meta["edd_slack_{$notification_id}_feed_$field_name"] = $feed[ $field_name ];
-                    
-                }
+            if ( isset( $_POST[ $field_name ] ) ) {
+
+                if ( $field_name == 'post_id' || $field_name == 'admin_title' ) continue;
+
+                $notification_meta["edd_slack_{$notification_id}_feed_$field_name"] = $_POST[ $field_name ];
 
             }
 
-            if ( $feed['admin_title'] ) {
-                $post_args['post_title'] = $feed['admin_title'];
+        }
+
+        if ( $_POST['admin_title'] ) {
+            $post_args['post_title'] = $_POST['admin_title'];
+        }
+        else {
+            $post_args['post_title'] = $notification_args['default_feed_title'];
+        }
+
+        $post_id = wp_insert_post( $post_args );
+
+        if ( $post_id !== 0 && ! is_wp_error( $post_id ) ) {
+
+            foreach ( $notification_meta as $field_name => $field_value ) {
+
+                if ( $field_name == 'slack_post_id' || $field_name == 'admin_title' ) continue;
+
+                update_post_meta( $post_id, $field_name, $field_value );
+
             }
-            else {
-                $post_args['post_title'] = $notification_args['default_feed_title'];
-            }
 
-            $post_id = wp_insert_post( $post_args );
-
-            if ( $post_id !== 0 && ! is_wp_error( $post_id ) ) {
-
-                foreach ( $notification_meta as $field_name => $field_value ) {
-                    
-                    if ( $field_name == 'slack_post_id' || $field_name == 'admin_title' ) continue;
-                    
-                    update_post_meta( $post_id, $field_name, $field_value );
-                    
-                }
-
-            }
+        }
+        else {
+            
+            return wp_send_json_error( array(
+                'error' => $post_id, // $post_id holds WP_Error object in this case
+            ) );
             
         }
+        
+        return wp_send_json_success( array(
+            'post_id' => $post_id,
+        ) );
         
     }
     
@@ -335,3 +343,5 @@ class EDD_Slack_Notification_Handler {
     }
 
 }
+
+add_action( 'wp_ajax_insert_slack_notification', array( 'EDD_Slack_Notification_Handler', 'update_feed' ) );

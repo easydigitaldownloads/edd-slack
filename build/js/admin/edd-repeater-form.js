@@ -51,8 +51,6 @@
                     } );
                     
                     data.action = 'insert_slack_notification';
-                    
-                    console.log( data );
 
                     $.ajax( {
                         'type' : 'POST',
@@ -60,7 +58,12 @@
                         'data' : data,
                         success : function( response ) {
                             
-                            response = $.parseJSON( response );
+                            var uuid = $( row ).data( 'reveal' );
+                            
+                            // If the Modal started as a New Notification, we need to update the Post ID value to ensure it can be updated
+                            $form.find( '.edd-slack-post-id' ).val( response.data.post_id );
+                            
+                            closeModal( uuid );
                             
                         },
                         error : function( request, status, error ) {

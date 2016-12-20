@@ -133,14 +133,15 @@ function init_edd_repeater_chosen( modal ) {
         if ( $dummy.length ) {
             $dummy.remove();
         }
-
-        $( document ).on( 'keyup change', '.edd-rbm-repeater-content.reveal td:first-of-type *[type!="hidden"]', function() {
+        
+        $( document ).on( 'closed.zf.reveal', '.edd-rbm-repeater-content.reveal', function() {
             
-            var uuid = $( this ).closest( '.edd-rbm-repeater-content.reveal' ).data( 'reveal' ),
+            var title = $( this ).find( 'td:first-of-type *[type!="hidden"]' ),
+                uuid = $( this ).closest( '.edd-rbm-repeater-content.reveal' ).data( 'reveal' ),
                 $row = $( '[data-open="' + uuid + '"]' );
             
-            if ( $( this ).val() !== '' ) {
-                $row.closest( '.edd-rbm-repeater-item' ).find( '.repeater-header div.title' ).html( $( this ).val() );
+            if ( $( title ).val() !== '' ) {
+                $row.closest( '.edd-rbm-repeater-item' ).find( '.repeater-header div.title' ).html( $( title ).val() );
             }
             else {
                 var defaultValue = $row.closest( '.edd-rbm-repeater-item' ).find( '.repeater-header div.title' ).data( 'repeater-default-title' );

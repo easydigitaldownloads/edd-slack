@@ -35,6 +35,12 @@ if ( ! class_exists( 'EDD_Slack' ) ) {
         public $admin;
         
         /**
+         * @var         EDD_Slack $welcome_page Welcome Page
+         * @since       1.0.0
+         */
+        public $welcome_page;
+        
+        /**
          * @var         EDD_Slack $oauth_settings SSL-only OAUTH Settings
          * @since       1.0.0
          */
@@ -196,6 +202,9 @@ if ( ! class_exists( 'EDD_Slack' ) ) {
         private function require_necessities() {
             
             if ( is_admin() ) {
+                
+                require_once EDD_Slack_DIR . '/core/admin/class-edd-slack-welcome.php';
+                $this->welcome_page = new EDD_Slack_Welcome();
                 
                 require_once EDD_Slack_DIR . '/core/admin/class-edd-slack-admin.php';
                 $this->admin = new EDD_Slack_Admin();
@@ -530,6 +539,19 @@ if ( ! class_exists( 'EDD_Slack' ) ) {
             
         }
         
+        /**
+         * Allow redirecting to our Welcome Page on Activation
+         * 
+         * @access      public
+         * @since       1.0.0
+         * @return      void
+         */
+        public static function activation() {
+            
+            set_transient( '_edd_slack_activation_redirect', true, 30 );
+            
+        }
+        
     }
 
 } // End Class Exists Check
@@ -562,3 +584,5 @@ function EDD_Slack_load() {
     }
 
 }
+
+register_activation_hook( __FILE__, array( 'EDD_Slack', 'activation' ) );

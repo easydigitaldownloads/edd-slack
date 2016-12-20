@@ -229,11 +229,6 @@ if ( ! class_exists( 'EDD_Slack' ) ) {
                 require_once EDD_Slack_DIR . '/core/integrations/edd-comments/class-edd-slack-comments.php';
             }
             
-            // If EDD Reviews is Active
-            if ( class_exists( 'EDD_Reviews' ) ) {
-                require_once EDD_Slack_DIR . '/core/integrations/edd-reviews/class-edd-slack-reviews.php';
-            }
-            
             // If EDD Software Licensing is Active
             if ( class_exists( 'EDD_Software_Licensing' ) ) {
                 require_once EDD_Slack_DIR . '/core/integrations/edd-software-licensing/class-edd-slack-software-licensing.php';

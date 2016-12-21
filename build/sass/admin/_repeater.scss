@@ -143,3 +143,24 @@
     }
     
 }
+
+// Errors about outdated Integrations
+.form-table td {
+    
+    .integration-error {
+
+        background: #fff;
+        border-left: 4px solid #dc3232;
+        -webkit-box-shadow: 0 1px 1px 0 rgba( 0, 0, 0, 0.1 );
+        box-shadow: 0 1px 1px 0 rgba( 0, 0, 0, 0.1 );
+        margin: 5px 0;
+        padding: 1px 12px;
+
+        p {
+            margin: 0.5em 0;
+            padding: 2px;
+        }
+
+    }
+    
+}

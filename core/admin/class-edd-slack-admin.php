@@ -167,6 +167,8 @@ class EDD_Slack_Admin {
         
         $name = $args['input_name'] !== false ? $args['input_name'] : 'edd_settings[' . esc_attr( $args['id'] ) . ']';
         
+        do_action( 'edd_slack_before_repeater' );
+        
         ?>
 
         <div data-edd-rbm-repeater class="edd-rbm-repeater <?php echo ( isset( $args['classes'] ) ) ? ' ' . implode( ' ', $args['classes'] ) : ''; ?>">
@@ -293,6 +295,8 @@ class EDD_Slack_Admin {
         </div>
         
         <?php
+        
+        do_action( 'edd_slack_after_repeater' );
         
     }
     

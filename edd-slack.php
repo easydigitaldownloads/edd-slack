@@ -77,10 +77,16 @@ if ( ! class_exists( 'EDD_Slack' ) ) {
         public $slack_rest_api;
         
         /**
-         * @var         Stores all our Admin Notices to fire at once
+         * @var         Stores all our Admin Errors to fire at once
          * @since       1.0.0
          */
-        private $admin_notices;
+        private $admin_errors;
+        
+        /**
+         * @var         Stores all our Integration  Errors to fire at once
+         * @since       1.0.0
+         */
+        private $integration_errors;
 
         /**
          * Get active instance
@@ -119,8 +125,8 @@ if ( ! class_exists( 'EDD_Slack' ) ) {
                 
                 $this->admin_notices[] = sprintf( _x( '%s requires v%s of %s or higher to be installed!', 'Outdated Dependency Error', EDD_Slack_ID ), '<strong>' . $this->plugin_data['Name'] . '</strong>', '4.4', '<a href="' . admin_url( 'update-core.php' ) . '"><strong>WordPress</strong></a>' );
                 
-                if ( ! has_action( 'admin_notices', array( $this, 'admin_notices' ) ) ) {
-                    add_action( 'admin_notices', array( $this, 'admin_notices' ) );
+                if ( ! has_action( 'admin_notices', array( $this, 'admin_errors' ) ) ) {
+                    add_action( 'admin_notices', array( $this, 'admin_errors' ) );
                 }
                 
             }
@@ -130,8 +136,8 @@ if ( ! class_exists( 'EDD_Slack' ) ) {
                 
                 $this->admin_notices[] = sprintf( _x( '%s requires v%s of %s or higher to be installed!', 'Outdated Dependency Error', EDD_Slack_ID ), '<strong>' . $this->plugin_data['Name'] . '</strong>', '2.6.11', '<a href="//wordpress.org/plugins/easy-digital-downloads/" target="_blank"><strong>Easy Digital Downloads</strong></a>' );
                 
-                if ( ! has_action( 'admin_notices', array( $this, 'admin_notices' ) ) ) {
-                    add_action( 'admin_notices', array( $this, 'admin_notices' ) );
+                if ( ! has_action( 'admin_notices', array( $this, 'admin_errors' ) ) ) {
+                    add_action( 'admin_notices', array( $this, 'admin_errors' ) );
                 }
                 
             }
@@ -269,21 +275,76 @@ if ( ! class_exists( 'EDD_Slack' ) ) {
             
             // If EDD Software Licensing is Active
             if ( class_exists( 'EDD_Software_Licensing' ) ) {
-                require_once EDD_Slack_DIR . '/core/integrations/edd-software-licensing/class-edd-slack-software-licensing.php';
+                
+                if ( defined( 'EDD_SL_VERSION' ) &&
+                   version_compare( EDD_SL_VERSION, '3.4.12' ) >= 0 ) {
+                    
+                    require_once EDD_Slack_DIR . '/core/integrations/edd-software-licensing/class-edd-slack-software-licensing.php';
+                    
+                }
+                else {
+                    
+                    $this->integration_errors[] = sprintf( _x( '%s includes features which integrate with %s, but v%s or greater of %s is required.', 'Outdated Integration Error', EDD_Slack_ID ), '<strong>' . $this->plugin_data['Name'] . '</strong>', '<a href="' . admin_url( 'update-core.php' ) . '"><strong>Easy Digital Downloads - Software Licenses</strong></a>', '3.4.12', '<a href="' . admin_url( 'update-core.php' ) . '"><strong>Easy Digital Downloads - Software Licenses</strong></a>' );
+                    
+                }
+                
             }
             
             // If EDD FES is Active
             if ( class_exists( 'EDD_Front_End_Submissions' ) ) { 
-                require_once EDD_Slack_DIR . '/core/integrations/edd-frontend-submissions/class-edd-slack-frontend-submissions.php';
+                
+                if ( defined( 'fes_plugin_version' ) &&
+                   version_compare( fes_plugin_version, '2.4.2' ) >= 0 ) {
+                    
+                    require_once EDD_Slack_DIR . '/core/integrations/edd-frontend-submissions/class-edd-slack-frontend-submissions.php';
+                    
+                }
+                else {
+                    
+                    $this->integration_errors[] = sprintf( _x( '%s includes features which integrate with %s, but v%s or greater of %s is required.', 'Outdated Integration Error', EDD_Slack_ID ), '<strong>' . $this->plugin_data['Name'] . '</strong>', '<a href="' . admin_url( 'update-core.php' ) . '"><strong>Easy Digital Downloads - Frontend Submissions</strong></a>', '2.4.2', '<a href="' . admin_url( 'update-core.php' ) . '"><strong>Easy Digital Downloads - Frontend Submissions</strong></a>' );
+                    
+                }
+                
             }
             
             // If EDD Commissions is Active
             if ( defined( 'EDD_COMMISSIONS_VERSION' ) ) {
-                require_once EDD_Slack_DIR . '/core/integrations/edd-commissions/class-edd-slack-commissions.php';
+                
+                if ( version_compare( EDD_COMMISSIONS_VERSION, '3.2.10' ) >= 0 ) {
+                
+                    require_once EDD_Slack_DIR . '/core/integrations/edd-commissions/class-edd-slack-commissions.php';
+                    
+                }
+                else {
+                    
+                    $this->integration_errors[] = sprintf( _x( '%s includes features which integrate with %s, but v%s or greater of %s is required.', 'Outdated Integration Error', EDD_Slack_ID ), '<strong>' . $this->plugin_data['Name'] . '</strong>', '<a href="' . admin_url( 'update-core.php' ) . '"><strong>Easy Digital Downloads - Commissions</strong></a>', '3.2.10', '<a href="' . admin_url( 'update-core.php' ) . '"><strong>Easy Digital Downloads - Commissions</strong></a>' );
+                    
+                }
+                
             }
             
+            // If EDD Purchase Limit is Active
             if ( class_exists( 'EDD_Purchase_Limit' ) ) {
-                require_once EDD_Slack_DIR . '/core/integrations/edd-purchase-limit/class-edd-slack-purchase-limit.php';
+                
+                if ( defined( 'EDD_PURCHASE_LIMIT_VERSION' ) &&
+                   version_compare( EDD_PURCHASE_LIMIT_VERSION, '1.2.16' ) >= 0 ) {
+                    
+                    require_once EDD_Slack_DIR . '/core/integrations/edd-purchase-limit/class-edd-slack-purchase-limit.php';
+                    
+                }
+                else {
+                
+                    $this->integration_errors[] = sprintf( _x( '%s includes features which integrate with %s, but v%s or greater of %s is required.', 'Outdated Integration Error', EDD_Slack_ID ), '<strong>' . $this->plugin_data['Name'] . '</strong>', '<a href="' . admin_url( 'update-core.php' ) . '"><strong>Easy Digital Downloads - Purchase Limit</strong></a>', '1.2.16', '<a href="' . admin_url( 'update-core.php' ) . '"><strong>Easy Digital Downloads - Purchase Limit</strong></a>' );
+                    
+                }
+                
+            }
+            
+            // Output all Integration-related Errors just above the Notificiation Repeater
+            if ( ! empty( $this->integration_errors ) ) {
+                
+                add_action( 'edd_slack_before_repeater', array( $this, 'integration_errors' ) );
+                
             }
             
             // If we've got a linked Slack App
@@ -569,16 +630,35 @@ if ( ! class_exists( 'EDD_Slack' ) ) {
         }
         
         /**
-         * Show admin notices.
+         * Show admin errors.
          * 
          * @access      public
          * @since       1.0.0
          * @return      HTML
          */
-        public function admin_notices() {
+        public function admin_errors() {
             ?>
             <div class="error">
-                <?php foreach ( $this->admin_notices as $notice ) : ?>
+                <?php foreach ( $this->admin_errors as $notice ) : ?>
+                    <p>
+                        <?php echo $notice; ?>
+                    </p>
+                <?php endforeach; ?>
+            </div>
+            <?php
+        }
+        
+        /**
+         * Show Integration errors.
+         * 
+         * @access      public
+         * @since       1.0.0
+         * @return      HTML
+         */
+        public function integration_errors() {
+            ?>
+            <div class="integration-error">
+                <?php foreach ( $this->integration_errors as $notice ) : ?>
                     <p>
                         <?php echo $notice; ?>
                     </p>

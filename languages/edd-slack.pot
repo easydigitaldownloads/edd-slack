@@ -78,72 +78,72 @@ msgstr ""
 msgid "New Row"
 msgstr ""
 
-#: core/admin/class-edd-slack-admin.php:279
+#: core/admin/class-edd-slack-admin.php:281
 msgctxt "Close Slack Notification Modal"
 msgid "Close Notification Editor"
 msgstr ""
 
-#: core/admin/class-edd-slack-admin.php:344
+#: core/admin/class-edd-slack-admin.php:348
 msgctxt "Text Replacements Label"
 msgid "Here are the available text replacements to use in the Message Pre-Text, Message Title, and Message Fields for the Slack Trigger selected:"
 msgstr ""
 
-#: core/admin/class-edd-slack-admin.php:377
+#: core/admin/class-edd-slack-admin.php:381
 msgctxt "%username% Hint Text"
 msgid "Display the user's username"
 msgstr ""
 
-#: core/admin/class-edd-slack-admin.php:378
+#: core/admin/class-edd-slack-admin.php:382
 msgctxt "%email% Hint Text"
 msgid "Display the user's email"
 msgstr ""
 
-#: core/admin/class-edd-slack-admin.php:379
+#: core/admin/class-edd-slack-admin.php:383
 msgctxt "%name% Hint Text"
 msgid "Display the user's display name"
 msgstr ""
 
-#: core/admin/class-edd-slack-admin.php:388
+#: core/admin/class-edd-slack-admin.php:392
 msgctxt "%cart% Hint Text"
 msgid "Show the contents of the Cart"
 msgstr ""
 
-#: core/admin/class-edd-slack-admin.php:389
+#: core/admin/class-edd-slack-admin.php:393
 msgctxt "%subtotal% Hint Text"
 msgid "Show the Subtotal"
 msgstr ""
 
-#: core/admin/class-edd-slack-admin.php:390
+#: core/admin/class-edd-slack-admin.php:394
 msgctxt "%total% Hint Text"
 msgid "Show the Total"
 msgstr ""
 
-#: core/admin/class-edd-slack-admin.php:391
+#: core/admin/class-edd-slack-admin.php:395
 msgctxt "%discount_code% Hint Text"
 msgid "Show the Discount Code entered"
 msgstr ""
 
-#: core/admin/class-edd-slack-admin.php:392
+#: core/admin/class-edd-slack-admin.php:396
 msgctxt "%ip_address% Hint Text"
 msgid "Show the IP Address of the Customer"
 msgstr ""
 
-#: core/admin/class-edd-slack-admin.php:393
+#: core/admin/class-edd-slack-admin.php:397
 msgctxt "%payment_link% Hint Text"
 msgid "Show a link to the Payment Details page for this Payment"
 msgstr ""
 
-#: core/admin/class-edd-slack-admin.php:428
+#: core/admin/class-edd-slack-admin.php:432
 msgctxt "Active Notification Aria Label"
 msgid "Active Notification"
 msgstr ""
 
-#: core/admin/class-edd-slack-admin.php:429
+#: core/admin/class-edd-slack-admin.php:433
 msgctxt "Inactive Notification Aria Label"
 msgid "Inactive Notification"
 msgstr ""
 
-#: core/admin/class-edd-slack-admin.php:430
+#: core/admin/class-edd-slack-admin.php:434
 msgctxt "Confirm Notification Deletion"
 msgid "Are you sure you want to delete this Slack Notification?"
 msgstr ""
@@ -607,104 +607,114 @@ msgctxt "Vendor Product Edit Denied Response Text"
 msgid "%s has Trashed %s's Product titled \"%s\""
 msgstr ""
 
-#: edd-slack.php:334
+#: edd-slack.php:126, edd-slack.php:137
+msgctxt "Outdated Dependency Error"
+msgid "%s requires v%s of %s or higher to be installed!"
+msgstr ""
+
+#: edd-slack.php:287, edd-slack.php:304, edd-slack.php:320, edd-slack.php:337
+msgctxt "Outdated Integration Error"
+msgid "%s includes features which integrate with %s, but v%s or greater of %s is required."
+msgstr ""
+
+#: edd-slack.php:424
 msgid "Indentifier for this Notification"
 msgstr ""
 
-#: edd-slack.php:337
+#: edd-slack.php:427
 msgid "New Slack Notification"
 msgstr ""
 
-#: edd-slack.php:342
+#: edd-slack.php:432
 msgid "Slack Trigger"
 msgstr ""
 
-#: edd-slack.php:351, edd-slack.php:353
+#: edd-slack.php:441, edd-slack.php:443
 msgctxt "Slack Trigger Default Label"
 msgid "-- Select a Slack Trigger --"
 msgstr ""
 
-#: edd-slack.php:370, edd-slack.php:373
+#: edd-slack.php:460, edd-slack.php:463
 msgctxt "Select Field Default"
 msgid "-- Select %s --"
 msgstr ""
 
-#: edd-slack.php:371
+#: edd-slack.php:461
 msgctxt "All items in a Select Field"
 msgid "All %s"
 msgstr ""
 
-#: edd-slack.php:377
+#: edd-slack.php:467
 msgctxt "Discount Code Field Label"
 msgid "Discount Code"
 msgstr ""
 
-#: edd-slack.php:388, edd-slack.php:391
+#: edd-slack.php:478, edd-slack.php:481
 msgctxt "Discount Code Field Default"
 msgid "-- Select Discount Code --"
 msgstr ""
 
-#: edd-slack.php:389
+#: edd-slack.php:479
 msgctxt "All Discount Codes Text"
 msgid "All Discount Codes"
 msgstr ""
 
-#: edd-slack.php:400
+#: edd-slack.php:490
 msgid "Message Pre-text (Shows directly below Username and above the Title/Message)"
 msgstr ""
 
-#: edd-slack.php:408
+#: edd-slack.php:498
 msgid "Message Title"
 msgstr ""
 
-#: edd-slack.php:416
+#: edd-slack.php:506
 msgid "Message"
 msgstr ""
 
-#: edd-slack.php:422
+#: edd-slack.php:512
 msgid "Slack Webhook URL"
 msgstr ""
 
-#: edd-slack.php:427
+#: edd-slack.php:517
 msgid "You can override the above Webhook URL here."
 msgstr ""
 
-#: edd-slack.php:435
+#: edd-slack.php:525
 msgid "Slack Channel"
 msgstr ""
 
-#: edd-slack.php:437, edd-slack.php:453
+#: edd-slack.php:527, edd-slack.php:543
 msgid "Webhook default"
 msgstr ""
 
-#: edd-slack.php:443
+#: edd-slack.php:533
 msgid "Username"
 msgstr ""
 
-#: edd-slack.php:451
+#: edd-slack.php:541
 msgid "Icon Emoji or Image URL"
 msgstr ""
 
-#: edd-slack.php:459
+#: edd-slack.php:549
 msgid "Color (Shows next to Message Title and Message)"
 msgstr ""
 
-#: edd-slack.php:477
+#: edd-slack.php:567
 msgctxt "Purchase Complete Trigger Label"
 msgid "Purchase Complete"
 msgstr ""
 
-#: edd-slack.php:478
+#: edd-slack.php:568
 msgctxt "Purchase Failed Trigger Label"
 msgid "Purchase Failed"
 msgstr ""
 
-#: edd-slack.php:479
+#: edd-slack.php:569
 msgctxt "Discount Code Applied Trigger Label"
 msgid "Discount Code Applied"
 msgstr ""
 
-#: edd-slack.php:480
+#: edd-slack.php:570
 msgctxt "New User Registration Trigger Label"
 msgid "New User Registration via EDD"
 msgstr ""

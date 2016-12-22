@@ -521,7 +521,10 @@ if ( ! class_exists( 'EDD_Slack' ) ) {
                         '</p>',
                     ),
                     'std' => '',
-                    'field_class' => 'edd-slack-field',
+                    'field_class' => array(
+                        'edd-slack-field',
+                        'edd-slack-webhook-url',
+                    ),
                 ),
                 'channel'         => array(
                     'type'  => 'text',

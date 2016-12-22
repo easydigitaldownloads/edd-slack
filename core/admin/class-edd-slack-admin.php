@@ -120,7 +120,8 @@ class EDD_Slack_Admin {
                     _x( 'Enter the slack Webhook URL for the team you wish to broadcast to. The channel chosen in the webhook can be overridden for each notification type below. You can set up the Webhook URL %shere%s.', 'Webhook Default Help Text', EDD_Slack_ID ),
                     '<a href="//my.slack.com/services/new/incoming-webhook/" target="_blank">',
                     '</a>'
-                )
+                ),
+                'field_class' => 'edd-slack-webhook-default',
             ),
             array(
                 'type' => 'hook',

@@ -108,9 +108,6 @@
                 active = false;
             }
             
-            console.log( $( '.edd-slack-webhook-default' ).val() );
-            console.log( $modal.find( '.edd-slack-webhook-url' ).val() );
-            
             if ( $( '.edd-slack-webhook-default' ).val() == '' &&
                 $modal.find( '.edd-slack-webhook-url' ).val() == '' ) {
                 active = false;

@@ -19,11 +19,16 @@ class EDD_Slack_App_Frontend_Submissions {
      */
     function __construct() {
         
-        // Set the new Notification API Endpoint
-        add_filter( 'edd_slack_notification_webhook', array( $this, 'override_webhook' ), 10, 4 );
-        
-        // Add our Interaction Buttons
-        add_filter( 'edd_slack_notification_args', array( $this, 'override_arguments' ), 10, 4 );
+        // If we've got a linked Slack App
+        if ( edd_get_option( 'slack_app_oauth_token' ) ) {
+            
+            // Set the new Notification API Endpoint
+            add_filter( 'edd_slack_notification_webhook', array( $this, 'override_webhook' ), 10, 4 );
+
+            // Add our Interaction Buttons
+            add_filter( 'edd_slack_notification_args', array( $this, 'override_arguments' ), 10, 4 );
+            
+        }
         
         // Add our Trigger(s) to the Interactive Triggers Array
         add_filter( 'edd_slack_interactive_triggers', array( $this, 'add_support' ), 1, 1 );

@@ -347,11 +347,14 @@ if ( ! class_exists( 'EDD_Slack' ) ) {
                 
             }
             
-            // If we've got a linked Slack App
-            if ( is_ssl() && edd_get_option( 'slack_app_oauth_token' ) ) {
-                
-                require_once EDD_Slack_DIR . '/core/ssl-only/class-edd-slack-ssl-rest.php';
-                $this->slack_rest_api = new EDD_Slack_SSL_REST();
+            // SSL anywhere, not just Admin
+            if ( is_ssl() ) {
+            
+                // If we've got a linked Slack App
+                if ( edd_get_option( 'slack_app_oauth_token' ) ) {
+                    require_once EDD_Slack_DIR . '/core/ssl-only/class-edd-slack-ssl-rest.php';
+                    $this->slack_rest_api = new EDD_Slack_SSL_REST();
+                }
                 
                 // If Comments are Enabled for Downloads
                 if ( post_type_supports( 'download', 'comments' ) ) {

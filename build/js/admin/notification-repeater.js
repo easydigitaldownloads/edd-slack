@@ -108,6 +108,7 @@
                 active = false;
             }
             
+            // Check for a Webhook URL
             if ( $( '.edd-slack-webhook-default' ).val() == '' &&
                 $modal.find( '.edd-slack-webhook-url' ).val() == '' ) {
                 active = false;

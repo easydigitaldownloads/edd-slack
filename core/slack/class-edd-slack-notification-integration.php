@@ -323,7 +323,7 @@ class EDD_Slack_Notification_Integration {
             // You can't use wp_parse_args() to target nested Array Indices apparently
             $notification_args['attachments'][0] = wp_parse_args( $notification_args['attachments'][0], array(
                 'callback_id' => $trigger, // Constructs the Routing function for the WP REST API
-                'fallback' => $notification_args['attachments'][0]['pretext'],
+                'fallback' => ( isset( $notification_args['attachments'][0]['pretext'] ) ) ? $notification_args['attachments'][0]['pretext'] : $notification_args['attachments'][0]['title'],
             ) );
             
             // Construct the URL using the $args from the Notification that have been filtered

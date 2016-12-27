@@ -41,9 +41,17 @@
                         if ( $( field ).parent().hasClass( 'hidden' ) ) return true;
 
                         var name = $( field ).attr( 'name' ),
-                            match = regex.exec( name );
+                            match = regex.exec( name ),
+                            value = $( field ).val();
+                        
+                        if ( $( field ).is( 'input[type="checkbox"]' ) ) {
+                            
+                            value = ( $( field ).prop( 'checked' ) ) ? 1 : 0;
+                            
+                        }
 
-                        data[ match[1] ] = $( field ).val();
+                        // Checkboxes don't place nice with my regex and I'm not rewriting it
+                        data[ match[1].replace( '][', '' ) ] = value;
 
                         // Reset Interal Pointer for Regex
                         regex.lastIndex = 0;

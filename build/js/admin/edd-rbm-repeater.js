@@ -45,21 +45,6 @@ function init_edd_repeater_chosen( modal ) {
 
         // Hide current title for new item and show default title
         $( this ).find( '.repeater-header div.title' ).html( $( this ).find( '.repeater-header div.title' ).data( 'repeater-default-title' ) );
-        
-        // For some reason Select Fields don't show correctly despite the HTML being correct
-        $( this ).find( 'select' ).each( function( index, select ) {
-            
-            var selected = $( select ).find( 'option[selected]' ).val();
-            
-            $( select ).val( selected );
-            
-        } );
-        
-        $( this ).find( 'input[type="checkbox"].default-checked' ).each( function( index, checkbox ) {
-            
-            $( checkbox ).prop( 'checked', true );
-            
-        } );
 
         $( this ).stop().slideDown();
         

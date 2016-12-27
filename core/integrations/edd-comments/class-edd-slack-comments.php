@@ -89,6 +89,7 @@ class EDD_Slack_Comments {
                 'type' => 'checkbox',
                 'desc' => _x( 'Only Trigger on New, Top-Level Comments', 'Top Level Comments Checkbox Label', EDD_Slack_ID ),
                 'field_class' => array(
+                    'edd-slack-field',
                     'edd-slack-comments-top-level-only',
                     'edd-slack-conditional',
                     'comment_post',

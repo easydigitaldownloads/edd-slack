@@ -240,11 +240,7 @@ class EDD_Slack_Admin {
 
                                                         if ( $field['type'] == 'checkbox' ) : 
 
-                                                            if ( isset( $field['std'] ) && is_array( $field['std'] ) ) {
-                                                                $field['std'] = $field['std'][0];
-                                                            }
-
-                                                            if ( isset( $field['std'] ) && $field['std'] ) {
+                                                            if ( isset( $field['std'] ) && (int) $field['std'] !== 0 ) {
                                                                 $field['field_class'][] = 'default-checked';
                                                             }
 

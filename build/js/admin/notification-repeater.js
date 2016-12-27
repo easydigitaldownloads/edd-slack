@@ -73,6 +73,12 @@
             }
             
         } );
+        
+        $( row ).find( 'input[type="checkbox"].default-checked' ).each( function( index, checkbox ) {
+            
+            $( checkbox ).prop( 'checked', true );
+            
+        } );
 
     }
     

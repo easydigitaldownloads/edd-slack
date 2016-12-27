@@ -87,18 +87,18 @@ class EDD_Slack_OAUTH_Settings {
                 )
             ),
             array(
+                'type' => 'hook',
+                'id' => 'slack_oauth_register',
+            ),
+            array(
                 'type' => 'text',
                 'name' => _x( 'Verification Token', 'Verification Token Label', EDD_Slack_ID ),
                 'id' => 'slack_app_verification_token',
                 'desc' => sprintf(
-                    _x( 'Enter the Verification Token found after %screating your Slack App%s.', 'Verification Token Help Text', EDD_Slack_ID ),
+                    _x( 'Enter the Verification Token found after %ssetting up your Slack App%s.', 'Verification Token Help Text', EDD_Slack_ID ),
                     '<a href="//api.slack.com/apps" target="_blank">',
                     '</a>'
                 )
-            ),
-            array(
-                'type' => 'hook',
-                'id' => 'slack_oauth_register',
             ),
             array(
                 'type' => 'text',

@@ -350,69 +350,77 @@ class EDD_Slack_Notification_Integration {
      */
     public static function update_feed() {
         
-        global $edd_slack_notifications;
+        if ( is_admin() && current_user_can( 'manage_shop_settings' ) ) {
         
-        $edd_slack_notifications = apply_filters( 'edd_slack_notifications', array() );
-        
-        $notification_id = apply_filters( 'edd_slack_notification_id', 'rbm' );
-        $notification_args = $edd_slack_notifications[ $notification_id ];
-        
-        $notification_args = wp_parse_args( $notification_args, array(
-            'default_feed_title' => _x( 'New Slack Notification', 'New Slack Notification Header', EDD_Slack_ID ),
-            'fields'             => array(),
-        ) );
-            
-        $post_args = array(
-            'ID'          => (int) $_POST['slack_post_id'] > 0 ? (int) $_POST['slack_post_id'] : 0,
-            'post_type'   => "edd-slack-{$notification_id}-feed",
-            'post_title'  => '',
-            'post_status' => 'publish',
-        );
+            global $edd_slack_notifications;
 
-        $notification_meta = array();
+            $edd_slack_notifications = apply_filters( 'edd_slack_notifications', array() );
 
-        foreach ( $notification_args['fields'] as $field_name => $field ) {
+            $notification_id = apply_filters( 'edd_slack_notification_id', 'rbm' );
+            $notification_args = $edd_slack_notifications[ $notification_id ];
 
-            if ( isset( $_POST[ $field_name ] ) ) {
+            $notification_args = wp_parse_args( $notification_args, array(
+                'default_feed_title' => _x( 'New Slack Notification', 'New Slack Notification Header', EDD_Slack_ID ),
+                'fields'             => array(),
+            ) );
 
-                if ( $field_name == 'post_id' || $field_name == 'admin_title' ) continue;
+            $post_args = array(
+                'ID'          => (int) $_POST['slack_post_id'] > 0 ? (int) $_POST['slack_post_id'] : 0,
+                'post_type'   => "edd-slack-{$notification_id}-feed",
+                'post_title'  => '',
+                'post_status' => 'publish',
+            );
 
-                $notification_meta["edd_slack_{$notification_id}_feed_$field_name"] = $_POST[ $field_name ];
+            $notification_meta = array();
+
+            foreach ( $notification_args['fields'] as $field_name => $field ) {
+
+                if ( isset( $_POST[ $field_name ] ) ) {
+
+                    if ( $field_name == 'post_id' || $field_name == 'admin_title' ) continue;
+
+                    $notification_meta["edd_slack_{$notification_id}_feed_$field_name"] = $_POST[ $field_name ];
+
+                }
 
             }
 
-        }
+            if ( $_POST['admin_title'] ) {
+                $post_args['post_title'] = $_POST['admin_title'];
+            }
+            else {
+                $post_args['post_title'] = $notification_args['default_feed_title'];
+            }
 
-        if ( $_POST['admin_title'] ) {
-            $post_args['post_title'] = $_POST['admin_title'];
-        }
-        else {
-            $post_args['post_title'] = $notification_args['default_feed_title'];
-        }
+            $post_id = wp_insert_post( $post_args );
 
-        $post_id = wp_insert_post( $post_args );
+            if ( $post_id !== 0 && ! is_wp_error( $post_id ) ) {
 
-        if ( $post_id !== 0 && ! is_wp_error( $post_id ) ) {
+                foreach ( $notification_meta as $field_name => $field_value ) {
 
-            foreach ( $notification_meta as $field_name => $field_value ) {
+                    if ( $field_name == 'slack_post_id' || $field_name == 'admin_title' ) continue;
 
-                if ( $field_name == 'slack_post_id' || $field_name == 'admin_title' ) continue;
+                    update_post_meta( $post_id, $field_name, $field_value );
 
-                update_post_meta( $post_id, $field_name, $field_value );
+                }
+
+            }
+            else {
+
+                return wp_send_json_error( array(
+                    'error' => $post_id, // $post_id holds WP_Error object in this case
+                ) );
 
             }
 
-        }
-        else {
-            
-            return wp_send_json_error( array(
-                'error' => $post_id, // $post_id holds WP_Error object in this case
+            return wp_send_json_success( array(
+                'post_id' => $post_id,
             ) );
             
         }
         
-        return wp_send_json_success( array(
-            'post_id' => $post_id,
+        return wp_send_json_error( array(
+            'error' => _x( 'Access Denied', 'Current User Cannot Create Notications Error', EDD_Slack_ID ),
         ) );
         
     }
@@ -425,17 +433,25 @@ class EDD_Slack_Notification_Integration {
      * @return      void
      */
     public static function delete_feed() {
+        
+        if ( is_admin() && current_user_can( 'manage_shop_settings' ) ) {
 
-        $post_id = $_POST['post_id'];
-        
-        $success = wp_delete_post( $post_id, true );
-        
-        if ( $success ) {
-            return wp_send_json_success();
+            $post_id = $_POST['post_id'];
+
+            $success = wp_delete_post( $post_id, true );
+
+            if ( $success ) {
+                return wp_send_json_success();
+            }
+            else {
+                return wp_send_json_error();
+            }
+            
         }
-        else {
-            return wp_send_json_error();
-        }
+        
+        return wp_send_json_error( array(
+            'error' => _x( 'Access Denied', 'Current User Cannot Delete Notications Error', EDD_Slack_ID ),
+        ) );
 
     }
     

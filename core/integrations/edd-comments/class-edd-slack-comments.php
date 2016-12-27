@@ -209,6 +209,7 @@ class EDD_Slack_Comments {
                     
                     $replacements['%download%'] = get_the_title( $args['comment_post_id'] );
                     $replacements['%comment_content%'] = $args['comment_content'];
+                    $replacements['%comment_link%'] = '<' . get_comment_link( $args['comment_id'] ) . '|' . _x( 'View this Comment', 'View this Comment Link Text', EDD_Slack_ID ) . '>';
                     break;
                     
                 default:
@@ -238,6 +239,7 @@ class EDD_Slack_Comments {
         $comment_hints = array(
             '%download%' => sprintf( _x( 'The %s the Comment was made on', '%download% Hint Text', EDD_Slack_ID ), edd_get_label_singular() ),
             '%comment_content%' => _x( 'The Comment itself', '%comment_content% Hint Text', EDD_Slack_ID ),
+            '%comment_link%' => _x( 'A link to the Comment', '%comment_link% Hint Text', EDD_Slack_ID ),
         );
         
         $hints['comment_post'] = array_merge( $user_hints, $comment_hints );

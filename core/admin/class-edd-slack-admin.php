@@ -174,7 +174,7 @@ class EDD_Slack_Admin {
 
         <div data-edd-rbm-repeater class="edd-rbm-repeater <?php echo ( isset( $args['classes'] ) ) ? ' ' . implode( ' ', $args['classes'] ) : ''; ?>">
             
-            <div data-repeater-list="<?php echo ( ! $args['nested'] ) ? $name : $args['id']; ?>" class="edd-rbm-repeater-list">
+            <div data-repeater-list="<?php echo $name; ?>" class="edd-rbm-repeater-list">
 
                     <?php for ( $index = 0; $index < $field_count; $index++ ) : $value = ( isset( $args['std'][$index] ) ) ? $args['std'][$index] : array(); ?>
                 

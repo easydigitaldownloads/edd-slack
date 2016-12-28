@@ -119,9 +119,9 @@ class EDD_Slack_Welcome extends EDD_Welcome {
     /**
 	 * Render Getting Started Screen
 	 *
-	 * @access public
-	 * @since 1.9
-	 * @return void
+	 * @access     public
+	 * @since      1.0.0
+	 * @return     void
 	 */
 	public function getting_started_screen() {
 		?>

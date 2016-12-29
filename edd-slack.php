@@ -3,7 +3,7 @@
 Plugin Name: Easy Digital Downloads - Slack
 Plugin URL: http://easydigitaldownloads.com/downloads/slack
 Description: Slack Integration for Easy Digital Downloads
-Version: 0.9.3
+Version: 0.9.4
 Text Domain: edd-slack
 Author: Real Big Plugins
 Author URI: http://realbigplugins.com

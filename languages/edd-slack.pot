@@ -148,6 +148,11 @@ msgctxt "Confirm Notification Deletion"
 msgid "Are you sure you want to delete this Slack Notification?"
 msgstr ""
 
+#: core/admin/class-edd-slack-admin.php:432
+msgctxt "Required Field not filled out (Ancient/Bad Browsers Only)"
+msgid "This field is required"
+msgstr ""
+
 #: core/admin/class-edd-slack-welcome.php:26, core/admin/class-edd-slack-welcome.php:27
 msgid "Getting started with EDD Slack"
 msgstr ""
@@ -429,7 +434,7 @@ msgstr ""
 
 #: core/ssl-only/class-edd-slack-app-oauth-settings.php:62
 msgctxt "SSL-Only Settings Header"
-msgid "Enable Interactive Buttons and Slash Commands"
+msgid "Enable Interactive Notifications and Slash Commands"
 msgstr ""
 
 #: core/ssl-only/class-edd-slack-app-oauth-settings.php:71
@@ -463,28 +468,28 @@ msgid "Enter the Verification Token found after %ssetting up your Slack App%s."
 msgstr ""
 
 #: core/ssl-only/class-edd-slack-app-oauth-settings.php:105
-msgctxt "Default Channel for Notifications with Interactive Buttons Label"
-msgid "Default Channel for Notifications with Interactive Buttons"
+msgctxt "Default Channel for Notifications with Interactive Notifications Label"
+msgid "Default Channel for Notifications with Interactive Notifications"
 msgstr ""
 
 #: core/ssl-only/class-edd-slack-app-oauth-settings.php:107
-msgctxt "Default Channel for Notifications with Interactive Buttons Help Text"
-msgid "Notifications with Interactive Buttons don't use the Default Webhook URL, so they need to know which Channel they should default to if one for the Notification isn't defined. If this is left blank, it will default to <code>#general</code>."
+msgctxt "Default Channel for Notifications with Interactive Notifications Help Text"
+msgid "Notifications with Interactive Notifications don't use the Default Webhook URL, so they need to know which Channel they should default to if one for the Notification isn't defined. If this is left blank, it will default to <code>#general</code>."
 msgstr ""
 
 #: core/ssl-only/class-edd-slack-app-oauth-settings.php:112
-msgctxt "Default Icon Emoji or Image URL for Notifications with Interactive Buttons Label"
-msgid "Default Icon Emoji or Image URL for Notifications with Interactive Buttons"
+msgctxt "Default Icon Emoji or Image URL for Notifications with Interactive Notifications Label"
+msgid "Default Icon Emoji or Image URL for Notifications with Interactive Notifications"
 msgstr ""
 
 #: core/ssl-only/class-edd-slack-app-oauth-settings.php:114
-msgctxt "Default Icon Emoji or Image URL for Notifications with Interactive Buttons Help Text"
-msgid "Notifications with Interactive Buttons don't use the Default Webhook URL, so it can't utilize the Default Icon Emoji or Image URL you set for the Webhook URL if one for the Notification isn't defined. If this is left blank, it will use the Icon added to your Slack App if one exists."
+msgctxt "Default Icon Emoji or Image URL for Notifications with Interactive Notifications Help Text"
+msgid "Notifications with Interactive Notifications don't use the Default Webhook URL, so it can't utilize the Default Icon Emoji or Image URL you set for the Webhook URL if one for the Notification isn't defined. If this is left blank, it will use the Icon added to your Slack App if one exists."
 msgstr ""
 
 #: core/ssl-only/class-edd-slack-app-oauth-settings.php:167
-msgctxt "Triggers Supporting Interactive Buttons Text"
-msgid "The following Triggers support Interactive Buttons on your Site: %s"
+msgctxt "Triggers Supporting Interactive Notifications Text"
+msgid "The following Triggers support Interactive Notifications on your Site: %s"
 msgstr ""
 
 #: core/ssl-only/class-edd-slack-app-oauth-settings.php:211

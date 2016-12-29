@@ -1,6 +1,7 @@
 var $             = require( 'gulp-load-plugins' )();
 var config        = require( '../util/loadConfig' ).javascript;
 var gulp          = require( 'gulp' );
+var gulpif        = require( 'gulp-if' );
 var foreach       = require( 'gulp-foreach' );
 var notify        = require( 'gulp-notify' );
 var fs            = require( 'fs' );
@@ -9,6 +10,9 @@ var onError       = notify.onError( {
    title:    pkg.name,
    message:  '<%= error.name %> <%= error.message %>'   
 } );
+
+// This needs defined here too to prevent errors on default task
+isRelease = false;
 
 gulp.task( 'uglify:front', function() {
 
@@ -20,7 +24,7 @@ gulp.task( 'uglify:front', function() {
         } ) )
         .pipe( $.concat( config.front.filename ) )
         .pipe( $.uglify() )
-        .pipe( $.sourcemaps.write( '.' ) )
+        .pipe( gulpif( ! isRelease, $.sourcemaps.write( '.' ) ) )
         .pipe( gulp.dest( config.front.root ) )
         .pipe( $.plumber.stop() )
         .pipe( notify( {
@@ -41,7 +45,7 @@ gulp.task( 'uglify:admin', function() {
         } ) )
         .pipe( $.concat( config.admin.filename ) )
         .pipe( $.uglify() )
-        .pipe( $.sourcemaps.write( '.' ) )
+        .pipe( gulpif( ! isRelease, $.sourcemaps.write( '.' ) ) )
         .pipe( gulp.dest( config.admin.root ) )
         .pipe( $.plumber.stop() )
         .pipe( notify( {

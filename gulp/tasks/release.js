@@ -11,6 +11,9 @@ require( 'gulp-grunt' )( gulp, {
 } ); // add all the gruntfile tasks to gulp
 
 gulp.task( 'release:localization', function( done ) {
+    
+    // Set as a Release build, important for Source Files
+    isRelease = true;
 
     return gulp.src( './**/*.php' )
         .pipe( $.sort() )
@@ -63,5 +66,5 @@ gulp.task( 'release:cleanup', function( done ) {
 } );
 
 gulp.task( 'release', function( done ) {
-    $.sequence( 'release:localization', 'release:copy', 'release:grunt-compress', 'release:rename', 'release:cleanup', done );
+    $.sequence( 'release:localization', 'sass', 'uglify', 'release:copy', 'release:grunt-compress', 'release:rename', 'release:cleanup', done );
 } );

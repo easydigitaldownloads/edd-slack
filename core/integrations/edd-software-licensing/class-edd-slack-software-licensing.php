@@ -83,6 +83,7 @@ class EDD_Slack_Software_Licensing {
         $repeater_fields['download']['field_class'][] = 'edd_sl_store_license';
         $repeater_fields['download']['field_class'][] = 'edd_sl_activate_license';
         $repeater_fields['download']['field_class'][] = 'edd_sl_deactivate_license';
+        $repeater_fields['download']['field_class'][] = 'edd_sl_license_upgraded';
         
         return $repeater_fields;
         
@@ -225,7 +226,8 @@ class EDD_Slack_Software_Licensing {
             
             if ( $trigger == 'edd_sl_store_license' ||
                 $trigger == 'edd_sl_activate_license' ||
-                $trigger == 'edd_sl_deactivate_license' ) {
+                $trigger == 'edd_sl_deactivate_license' ||
+                $trigger == 'edd_sl_license_upgraded' ) {
                 
                 // Download commented on doesn't match our Notification, bail
                 if ( $fields['download'] !== 'all' && (int) $fields['download'] !== $args['download_id'] ) {

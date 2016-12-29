@@ -20,7 +20,7 @@ if ( ! HTMLFormElement.prototype.reportValidity ) {
             element.setCustomValidity( '' );
             
             if ( ! jQuery( element ).closest( 'td' ).hasClass( 'hidden') && 
-                jQuery( element ).val().length == 0 ) {
+                ( jQuery( element ).val() === null || jQuery( element ).val() == '' ) ) {
                 
                 element.setCustomValidity( error );
                 jQuery( element ).before( '<span class="validation-error">' + error + '</span>' );

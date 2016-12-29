@@ -102,16 +102,16 @@ class EDD_Slack_OAUTH_Settings {
             ),
             array(
                 'type' => 'text',
-                'name' => _x( 'Default Channel for Notifications with Interactive Notifications', 'Default Channel for Notifications with Interactive Notifications Label', EDD_Slack_ID ),
+                'name' => _x( 'Default Channel for Interactive Notifications', 'Default Channel for Interactive Notifications Label', EDD_Slack_ID ),
                 'id' => 'slack_app_channel_default',
-                'desc' => _x( "Notifications with Interactive Notifications don't use the Default Webhook URL, so they need to know which Channel they should default to if one for the Notification isn't defined. If this is left blank, it will default to <code>#general</code>.", 'Default Channel for Notifications with Interactive Notifications Help Text', EDD_Slack_ID ),
+                'desc' => _x( "Interactive Notifications don't use the Default Webhook URL, so they need to know which Channel they should default to if one for the Notification isn't defined. If this is left blank, it will default to <code>#general</code>.", 'Default Channel for Interactive Notifications Help Text', EDD_Slack_ID ),
                 'placeholder' => '#general',
             ),
             array(
                 'type' => 'text',
-                'name' => _x( 'Default Icon Emoji or Image URL for Notifications with Interactive Notifications', 'Default Icon Emoji or Image URL for Notifications with Interactive Notifications Label', EDD_Slack_ID ),
+                'name' => _x( 'Default Icon Emoji or Image URL for Interactive Notifications', 'Default Icon Emoji or Image URL for Interactive Notifications Label', EDD_Slack_ID ),
                 'id' => 'slack_app_icon_default',
-                'desc' => _x( "Notifications with Interactive Notifications don't use the Default Webhook URL, so it can't utilize the Default Icon Emoji or Image URL you set for the Webhook URL if one for the Notification isn't defined. If this is left blank, it will use the Icon added to your Slack App if one exists.", 'Default Icon Emoji or Image URL for Notifications with Interactive Notifications Help Text', EDD_Slack_ID ),
+                'desc' => _x( "Interactive Notifications don't use the Default Webhook URL, so they can't utilize the Default Icon Emoji or Image URL you set for the Webhook URL if one for the Notification isn't defined. If this is left blank, it will use the Icon added to your Slack App if one exists.", 'Default Icon Emoji or Image URL for Interactive Notifications Help Text', EDD_Slack_ID ),
             ),
         );
         

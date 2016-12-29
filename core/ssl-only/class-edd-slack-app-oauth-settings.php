@@ -28,8 +28,8 @@ class EDD_Slack_OAUTH_Settings {
         // Add SSL-only settings for OAUTH
         add_filter( 'edd_slack_settings', array( $this, 'add_oauth_settings' ) );
         
-        // Display which Triggers support Interactive Buttons
-        add_action( 'edd_slack_interactive_button_support', array( $this, 'add_interactive_button_support_list' ) );
+        // Display which Triggers support Interactive Notifications
+        add_action( 'edd_slack_interactive_notification_support', array( $this, 'add_interactive_button_support_list' ) );
         
         // Add the OAUTH Registration Button
         add_action( 'edd_slack_oauth_register', array( $this, 'add_oauth_registration_button' ) );
@@ -59,12 +59,12 @@ class EDD_Slack_OAUTH_Settings {
         $oauth_settings = array(
             array(
                 'type' => 'header',
-                'name' => '<h3>' . _x( 'Enable Interactive Buttons and Slash Commands', 'SSL-Only Settings Header', EDD_Slack_ID ),
+                'name' => '<h3>' . _x( 'Enable Interactive Notifications and Slash Commands', 'SSL-Only Settings Header', EDD_Slack_ID ),
                 'id' => 'edd-slack-ssl-only-header',
             ),
             array(
                 'type' => 'hook',
-                'id' => 'slack_interactive_button_support',
+                'id' => 'slack_interactive_notification_support',
             ),
             array(
                 'type' => 'text',
@@ -102,16 +102,16 @@ class EDD_Slack_OAUTH_Settings {
             ),
             array(
                 'type' => 'text',
-                'name' => _x( 'Default Channel for Notifications with Interactive Buttons', 'Default Channel for Notifications with Interactive Buttons Label', EDD_Slack_ID ),
+                'name' => _x( 'Default Channel for Notifications with Interactive Notifications', 'Default Channel for Notifications with Interactive Notifications Label', EDD_Slack_ID ),
                 'id' => 'slack_app_channel_default',
-                'desc' => _x( "Notifications with Interactive Buttons don't use the Default Webhook URL, so they need to know which Channel they should default to if one for the Notification isn't defined. If this is left blank, it will default to <code>#general</code>.", 'Default Channel for Notifications with Interactive Buttons Help Text', EDD_Slack_ID ),
+                'desc' => _x( "Notifications with Interactive Notifications don't use the Default Webhook URL, so they need to know which Channel they should default to if one for the Notification isn't defined. If this is left blank, it will default to <code>#general</code>.", 'Default Channel for Notifications with Interactive Notifications Help Text', EDD_Slack_ID ),
                 'placeholder' => '#general',
             ),
             array(
                 'type' => 'text',
-                'name' => _x( 'Default Icon Emoji or Image URL for Notifications with Interactive Buttons', 'Default Icon Emoji or Image URL for Notifications with Interactive Buttons Label', EDD_Slack_ID ),
+                'name' => _x( 'Default Icon Emoji or Image URL for Notifications with Interactive Notifications', 'Default Icon Emoji or Image URL for Notifications with Interactive Notifications Label', EDD_Slack_ID ),
                 'id' => 'slack_app_icon_default',
-                'desc' => _x( "Notifications with Interactive Buttons don't use the Default Webhook URL, so it can't utilize the Default Icon Emoji or Image URL you set for the Webhook URL if one for the Notification isn't defined. If this is left blank, it will use the Icon added to your Slack App if one exists.", 'Default Icon Emoji or Image URL for Notifications with Interactive Buttons Help Text', EDD_Slack_ID ),
+                'desc' => _x( "Notifications with Interactive Notifications don't use the Default Webhook URL, so it can't utilize the Default Icon Emoji or Image URL you set for the Webhook URL if one for the Notification isn't defined. If this is left blank, it will use the Icon added to your Slack App if one exists.", 'Default Icon Emoji or Image URL for Notifications with Interactive Notifications Help Text', EDD_Slack_ID ),
             ),
         );
         
@@ -122,7 +122,7 @@ class EDD_Slack_OAUTH_Settings {
     }
     
     /**
-     * Show a list of Triggers that support Interactive Buttons
+     * Show a list of Triggers that support Interactive Notifications
      * 
      * @param       array $args EDD Settings API $args
      *                                           
@@ -140,7 +140,7 @@ class EDD_Slack_OAUTH_Settings {
         
         if ( ! empty ( $interactive_triggers ) ) {
             
-            // Holds HTML representation of Triggers that Support Interactive Buttons
+            // Holds HTML representation of Triggers that Support Interactive Notifications
             $supported = array();
             
             foreach ( $triggers as $trigger => $label ) {
@@ -164,11 +164,11 @@ class EDD_Slack_OAUTH_Settings {
             
             $supported_list = ob_get_clean();
             
-            printf( _x( 'The following Triggers support Interactive Buttons on your Site: %s', 'Triggers Supporting Interactive Buttons Text', EDD_Slack_ID ), $supported_list );
+            printf( _x( 'The following Triggers support Interactive Notifications on your Site: %s', 'Triggers Supporting Interactive Notifications Text', EDD_Slack_ID ), $supported_list );
             
         }
         else {
-            echo _x( 'None of available Triggers on your Site currently provide support for Interactive Buttons, but you will still have access to the included Slash Commands by linking a Slack App!', 'No Triggers Supporting Interactive Buttons Text', EDD_Slack );
+            echo _x( 'None of available Triggers on your Site currently provide support for Interactive Notifications, but you will still have access to the included Slash Commands by linking a Slack App!', 'No Triggers Supporting Interactive Notifications Text', EDD_Slack );
         }
         
     }

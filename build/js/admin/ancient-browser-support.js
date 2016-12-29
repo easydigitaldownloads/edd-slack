@@ -31,8 +31,6 @@ if ( ! HTMLFormElement.prototype.reportValidity ) {
             
         }
         
-        return this.checkValidity();
-        
     };
     
 };

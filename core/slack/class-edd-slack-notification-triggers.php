@@ -60,6 +60,7 @@ class EDD_Slack_Notification_Triggers {
             'email' => $customer->email,
             'payment_id' => $payment_id,
             'discount_code' => $payment_meta['user_info']['discount'],
+            'ip_address' => get_post_meta( $payment_id, '_edd_payment_user_ip', true ),
             'cart' => wp_list_pluck( $cart_items, 'item_number', 'id' ),
             'subtotal' => edd_get_payment_subtotal( $payment_id ),
             'total' => edd_get_payment_amount( $payment_id ),

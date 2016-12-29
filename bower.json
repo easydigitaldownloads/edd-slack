@@ -1,6 +1,6 @@
 {
     "name": "edd_slack",
-    "version": "0.9.4.2",
+    "version": "0.9.4.3",
     "repository": {
         "type": "git",
         "url": "https://github.com/realbigplugins/edd-slack.git"

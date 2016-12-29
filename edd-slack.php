@@ -593,14 +593,14 @@ if ( ! class_exists( 'EDD_Slack' ) ) {
             
             wp_register_style(
                 EDD_Slack_ID . '-admin',
-                EDD_Slack_URL . '/admin.css',
+                EDD_Slack_URL . '/assets/css/admin.css',
                 null,
                 defined( 'WP_DEBUG' ) && WP_DEBUG ? time() : EDD_Slack_VER
             );
             
             wp_register_script(
                 EDD_Slack_ID . '-admin',
-                EDD_Slack_URL . '/admin.js',
+                EDD_Slack_URL . '/assets/js/admin.js',
                 array( 'jquery', 'jquery-effects-core', 'jquery-effects-highlight' ),
                 defined( 'WP_DEBUG' ) && WP_DEBUG ? time() : EDD_Slack_VER,
                 true

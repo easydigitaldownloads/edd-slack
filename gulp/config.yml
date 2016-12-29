@@ -1,6 +1,6 @@
 javascript:
   front:
-    root: "."
+    root: "./assets/js"
     # filename to output
     filename: "script.js"
     vendor: 
@@ -14,7 +14,7 @@ javascript:
       - "!build/js/admin/**/*.js"
       - "!build/js/tinymce/**/*.js"
   admin:
-    root: "."
+    root: "./assets/js"
     filename: "admin.js"
     vendor:
       - "bower_components/jquery.repeater/jquery.repeater.min.js"
@@ -25,6 +25,7 @@ javascript:
       - "bower_components/foundation-sites/js/foundation.util.triggers.js"
       - "bower_components/foundation-sites/js/foundation.util.motion.js"
       - "bower_components/foundation-sites/js/foundation.reveal.js"
+      - "bower_components/webshim/js-webshim/minified/polyfiller.js"
     notification: "Running Admin JavaScript"
     src:
       - "build/js/admin/**/*.js"
@@ -40,14 +41,14 @@ sass:
     - "last 2 versions"
     - "ie >= 9"
   front:
-    root: "."
+    root: "./assets/css"
     filename: "style.css"
     vendor: 
       - ""
     notification: "Running Sass"
     src: "build/sass/main.scss"
   admin:
-    root: "."
+    root: "./assets/css"
     filename: "admin.css"
     vendor:
       - "bower_components/foundation-sites/scss"

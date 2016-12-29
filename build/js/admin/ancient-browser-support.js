@@ -8,12 +8,16 @@ if ( ! HTMLFormElement.prototype.reportValidity ) {
      */
     HTMLFormElement.prototype.reportValidity = function () {
         
-        var error = eddSlack.i18n.validationError;
+        var error = eddSlack.i18n.validationError,
+            valid = true;
         
         // Remove all old Validation Errors
         jQuery( this ).find( '.validation-error' ).remove();
         
         jQuery( this ).find( '.required' ).each( function( index, element ) {
+            
+            // Reset Custom Validity Message
+            element.setCustomValidity( '' );
             
             if ( ! jQuery( element ).closest( 'td' ).hasClass( 'hidden') && 
                 jQuery( element ).val().length == 0 ) {
@@ -21,15 +25,20 @@ if ( ! HTMLFormElement.prototype.reportValidity ) {
                 element.setCustomValidity( error );
                 jQuery( element ).before( '<span class="validation-error">' + error + '</span>' );
                 
+                valid = false;
+                
             }
             
         } );
         
-        if ( ! this.checkValidity() ) {
+        if ( ! valid ) {
             
             jQuery( this ).closest( '.reveal-overlay' ).scrollTop( jQuery( this ).find( '.validation-error:first-of-type' ) );
+            return valid;
             
         }
+        
+        return valid;
         
     };
     

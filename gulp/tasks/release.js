@@ -50,6 +50,9 @@ gulp.task( 'release:rename', function( done ) {
     
     fs.renameSync( './' + packageName + '.zip', './' + packageName + '-' + version + '.zip' );
     
+    // We need to recreate those files with Source Maps now
+    isRelease = false;
+    
     return done();
     
 } );
@@ -66,5 +69,5 @@ gulp.task( 'release:cleanup', function( done ) {
 } );
 
 gulp.task( 'release', function( done ) {
-    $.sequence( 'release:localization', 'sass', 'uglify', 'release:copy', 'release:grunt-compress', 'release:rename', 'release:cleanup', done );
+    $.sequence( 'release:localization', 'sass', 'uglify', 'release:copy', 'release:grunt-compress', 'release:rename', 'sass', 'uglify', 'release:cleanup', done );
 } );

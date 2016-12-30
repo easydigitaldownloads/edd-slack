@@ -542,7 +542,7 @@ if ( ! class_exists( 'EDD_Slack' ) ) {
                     'std' => '',
                     'field_class' => 'edd-slack-field',
                     'tooltip_title' => __( 'Slack Channel', EDD_Slack_ID ),
-                    'tooltip_desc'  => __( 'This overrides the Default Channel defined by the Webhook URL.', EDD_Slack_ID ),
+                    'tooltip_desc'  => __( 'This overrides the Default Channel defined by the Webhook URL. Notifications can be sent to individual Users instead by entering their Username like so: <code>@&laquo;username&raquo;</code>.', EDD_Slack_ID ),
                 ),
                 'username'        => array(
                     'type'  => 'text',

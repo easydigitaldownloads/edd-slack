@@ -279,6 +279,8 @@ class EDD_Slack_Notification_Integration {
             $fields['channel'] = '#' . $fields['channel'];
         }
         
+        $fields['icon'] = $this->format_icon_emoji( $fields['icon'] );
+        
         $notification_args = array(
 			'channel'     => $fields['channel'] ? $fields['channel'] : '',
 			'username'    => $fields['username'],
@@ -300,7 +302,7 @@ class EDD_Slack_Notification_Integration {
          *
          * @since 1.0.0
          */
-        $notification_args = apply_filters_ref_array( 'edd_slack_notification_args', array( $fields['webhook_url'], &$notification_args, $trigger, $notification_id, $args ) );
+        $notification_args = apply_filters_ref_array( 'edd_slack_notification_args', array( &$notification_args, $fields['webhook_url'], $trigger, $notification_id, $args ) );
         
         // If we're using a regular Webhook
         if ( strpos( $fields['webhook_url'], 'hooks.slack.com' ) ) {
@@ -313,7 +315,7 @@ class EDD_Slack_Notification_Integration {
             $default_channel = edd_get_option( 'slack_app_channel_default' );
             $default_channel = ( empty( $default_channel ) ) ? '#general' : $default_channel; // Since it can be saved as an empty value
 
-            $default_icon = edd_get_option( 'slack_app_icon_default' );
+            $default_icon = $this->format_icon_emoji( edd_get_option( 'slack_app_icon_default' ) );
 
             // Remove keys with empty strings as their value
             $notification_args = array_filter( $notification_args );
@@ -344,6 +346,28 @@ class EDD_Slack_Notification_Integration {
             );
             
         }
+        
+    }
+    
+    /**
+     * Ensures an Emoji passed to Slack is formatted correctly
+     * 
+     * @param       string $icon_emoji Image/Emoji String
+     *                                             
+     * @access      public
+     * @since       1.0.0
+     * @return      string Image/Emoji String
+     */
+    public function format_icon_emoji( $icon_emoji ) {
+        
+        // If an image was passed through
+        if ( strpos( $icon_emoji, 'http' ) !== false ) return $icon_emoji;
+        
+        // Sanitize the emoji string somewhat
+        $icon_emoji = preg_replace( '/\W/i', '', $icon_emoji );
+        
+        // Ensure it is wrapped by colons
+        return ':' . $icon_emoji . ':';
         
     }
     

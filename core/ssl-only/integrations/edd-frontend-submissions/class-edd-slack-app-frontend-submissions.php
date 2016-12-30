@@ -84,8 +84,8 @@ class EDD_Slack_App_Frontend_Submissions {
     /**
      * Override Notification Args for Slack App if appropriate
      * 
-     * @param       string $webhook_url         The Webhook URL provided for the Slack Notification
      * @param       string $notification_args   Args for creating the Notification
+     * @param       string $webhook_url         The Webhook URL provided for the Slack Notification
      * @param       string $trigger             Notification Trigger
      * @param       string $notification_id     ID used for Notification Hooks
      * @param       array  $args                $args Array passed from the original Trigger of the process
@@ -94,13 +94,13 @@ class EDD_Slack_App_Frontend_Submissions {
      * @since       1.0.0
      * @return      array  Altered Notification Args
      */
-    public function override_arguments( $webhook_url, &$notification_args, $trigger, $notification_id, $args ) {
+    public function override_arguments( &$notification_args, $webhook_url, $trigger, $notification_id, $args ) {
         
         if ( $notification_id !== 'rbm' ) return $notification_args;
         
         // Allow Webhook URL overrides to bail Interactive Notifications
         if ( strpos( $webhook_url, 'hooks.slack.com' ) &&
-            $webhook_url !== edd_get_option( 'slack_webhook_default' ) ) return $webhook_url;
+            $webhook_url !== edd_get_option( 'slack_webhook_default' ) ) return $notification_args;
         
         // If our Trigger doesn't an applicable FES Trigger, bail
         if ( $trigger !== 'edd_fes_vendor_registered' && 

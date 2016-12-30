@@ -142,7 +142,7 @@ class EDD_Slack_Welcome extends EDD_Welcome {
 					<div class="feature-section-content">
 						
                         <h4><a href="//my.slack.com/services/new/incoming-webhook/" target="_blank"><?php _e( 'Create an Incoming Webhook URL', EDD_Slack_ID ); ?></a></h4>
-						<p><?php _e( 'Create a Incoming Webhook URL using the above link, then enter it in the Default Webhook URL Field on the EDD Slack Settings Page.', EDD_Slack_ID ); ?></p>
+						<p><?php _e( 'Create an Incoming Webhook URL using the above link, then enter it in the Default Webhook URL Field on the EDD Slack Settings Page.', EDD_Slack_ID ); ?></p>
 
 						<h4><a href="<?php echo admin_url( 'edit.php?post_type=download&page=edd-settings&tab=extensions&section=edd-slack-settings' ) ?>"><?php printf( __( '%s &rarr; Settings &rarr; Extensions &rarr; Slack', EDD_Slack_ID ), edd_get_label_plural() ); ?></a></h4>
 						<p><?php _e( 'Create Notifications by clicking the "Add Slack Notification" Button and filling out the form. Congratulations! You\'ve created a Notification within EDD Slack!', EDD_Slack_ID );?></p>

@@ -146,10 +146,10 @@ if ( ! function_exists( 'edd_slack_slash_command_sales' ) ) {
     function edd_slack_slash_command_sales( $date_range, $response_url, $request_body ) {
 
         // Get dates based on our Date Range
-        $dates = EDDSLACK()->rest_api->edd_get_report_dates( $date_range );
+        $dates = EDDSLACK()->slack_rest_api->edd_get_report_dates( $date_range );
 
         // Get values based on our dates
-        $values = EDDSLACK()->rest_api->edd_get_report_values( $dates );
+        $values = EDDSLACK()->slack_rest_api->edd_get_report_values( $dates );
 
         $date_options = apply_filters( 'edd_report_date_options', array(
             'today'        => __( 'Today', 'easy-digital-downloads' ),

@@ -105,6 +105,9 @@ class EDD_Slack_SSL_REST {
      */
     public function route_slash_command( $request ) {
 
+        // Just in case a command takes too long for Slack's liking
+        http_response_code( 200 );
+
         $request_body = $request->get_body_params();
 
         // If the Verification Code doesn't match, bail
@@ -112,9 +115,6 @@ class EDD_Slack_SSL_REST {
         if ( $verification_token !== edd_get_option( 'slack_app_verification_token' ) ) {
             return _x( 'Bad Verification Token', 'Missing/Incorrect Verification Token Error', EDD_Slack_ID );
         }
-
-        // Just in case a command takes too long for Slack's liking
-        http_response_code( 200 );
         
         $passed_text = explode( ' ', $request_body['text'] );
         

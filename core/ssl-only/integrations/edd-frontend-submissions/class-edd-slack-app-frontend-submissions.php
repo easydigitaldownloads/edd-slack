@@ -64,7 +64,7 @@ class EDD_Slack_App_Frontend_Submissions {
         if ( $trigger == 'edd_fes_new_vendor_product' && 
            (bool) EDD_FES()->helper->get_option( 'fes-auto-approve-submissions', false ) ) return $webhook_url;
         
-        // If we are auto-approving new Product Submissions, bail
+        // If we are auto-approving editted Product Submissions, bail
         if ( $trigger == 'edd_fes_edit_vendor_product' && 
            (bool) EDD_FES()->helper->get_option( 'fes-auto-approve-edits', false ) ) return $webhook_url;
         
@@ -174,15 +174,19 @@ class EDD_Slack_App_Frontend_Submissions {
      */
     public function add_support( $interactive_triggers ) {
         
-        $interactive_triggers[] = 'edd_fes_vendor_registered';
+        if ( ! (bool) EDD_FES()->helper->get_option( 'fes-auto-approve-vendors', false ) ) {
+            $interactive_triggers[] = 'edd_fes_vendor_registered';
+        }
         
         // By default, Vendors cannot create their own Products
-        if ( (bool) EDD_FES()->helper->get_option( 'fes-allow-vendors-to-create-products', false ) ) {
+        if ( (bool) EDD_FES()->helper->get_option( 'fes-allow-vendors-to-create-products', false ) &&
+           ! (bool) EDD_FES()->helper->get_option( 'fes-auto-approve-submissions', false ) ) {
             $interactive_triggers[] = 'edd_fes_new_vendor_product';
         }
         
         // By default, Vendors cannot edit their own Products
-        if ( (bool) EDD_FES()->helper->get_option( 'fes-allow-vendors-to-edit-products', false ) ) {
+        if ( (bool) EDD_FES()->helper->get_option( 'fes-allow-vendors-to-edit-products', false ) &&
+           ! (bool) EDD_FES()->helper->get_option( 'fes-auto-approve-edits', false ) ) {
             $interactive_triggers[] = 'edd_fes_edit_vendor_product';
         }
         

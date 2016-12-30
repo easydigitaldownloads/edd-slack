@@ -155,7 +155,7 @@ class EDD_Slack_Welcome extends EDD_Welcome {
 				<h3><?php _e( 'Customize Unlimited Notifications', EDD_Slack_ID );?></h3>
 				<div class="feature-section">
 					<div class="feature-section-media">
-						<img src="<?php echo EDD_Slack_URL . 'assets/images/screenshots/notifications-condensed.png'; ?>" class="edd-welcome-screenshots"/>
+						<img src="<?php echo EDD_Slack_URL . 'assets/images/screenshots/notifications.png'; ?>" class="edd-welcome-screenshots"/>
 					</div>
 					<div class="feature-section-content">
 						

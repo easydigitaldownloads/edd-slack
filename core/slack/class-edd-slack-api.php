@@ -54,7 +54,10 @@ class EDD_Slack_API {
         ) );
 
         $result = wp_remote_post( $hook, array(
-            'body' => 'payload=' . wp_json_encode( $args ),
+            'headers' => array(
+                'content-type' => 'application/json',
+            ),
+            'body' => wp_json_encode( $args ),
         ) );
 
         return $result;

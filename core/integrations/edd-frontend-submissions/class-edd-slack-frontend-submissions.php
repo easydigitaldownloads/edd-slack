@@ -331,7 +331,7 @@ class EDD_Slack_Frontend_Submissions {
         $fields = array();
         foreach ( $field_objects as $key => $field ) {
 
-            $fields[ $key ] = $field->help;
+            $fields[ $key ] = ( property_exists( $field, 'help' ) ) ? $field->help : '';
 
         }
 

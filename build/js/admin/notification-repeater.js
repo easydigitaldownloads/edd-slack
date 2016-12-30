@@ -79,6 +79,28 @@
             $( checkbox ).prop( 'checked', true );
             
         } );
+        
+        $( row ).find( '.edd-help-tip' ).each( function( index, tooltip ) {
+            
+            $( tooltip ).tooltip( {
+                content: function() {
+                    return $( tooltip ).prop( 'title' );
+                },
+                tooltipClass: 'edd-ui-tooltip',
+                position: {
+                    my: 'center top',
+                    at: 'center bottom+10',
+                    collision: 'flipfit',
+                },
+                hide: {
+                    duration: 200,
+                },
+                show: {
+                    duration: 200,
+                },
+            } );
+            
+        } );
 
     }
     

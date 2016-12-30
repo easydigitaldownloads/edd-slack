@@ -53,7 +53,7 @@ msgctxt "Delete Slack Notification Button"
 msgid "Delete Slack Notification"
 msgstr ""
 
-#: core/admin/class-edd-slack-admin.php:136, core/slack/class-edd-slack-notification-integration.php:369
+#: core/admin/class-edd-slack-admin.php:136, core/slack/class-edd-slack-notification-integration.php:393
 msgctxt "New Slack Notification Header"
 msgid "New Slack Notification"
 msgstr ""
@@ -422,12 +422,12 @@ msgctxt "Empty Cart Replacement Text"
 msgid "There was nothing in the Cart"
 msgstr ""
 
-#: core/slack/class-edd-slack-notification-integration.php:429
+#: core/slack/class-edd-slack-notification-integration.php:453
 msgctxt "Current User Cannot Create Notications Error"
 msgid "Access Denied"
 msgstr ""
 
-#: core/slack/class-edd-slack-notification-integration.php:459
+#: core/slack/class-edd-slack-notification-integration.php:483
 msgctxt "Current User Cannot Delete Notications Error"
 msgid "Access Denied"
 msgstr ""

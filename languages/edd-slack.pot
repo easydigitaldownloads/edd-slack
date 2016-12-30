@@ -25,7 +25,7 @@ msgstr ""
 
 #: core/admin/class-edd-slack-admin.php:120
 msgctxt "Webhook Default Help Text"
-msgid "Enter the slack Webhook URL for the team you wish to broadcast to. The channel chosen in the webhook can be overridden for each notification type below. You can set up the Webhook URL %shere%s."
+msgid "Enter the Slack Webhook URL for the team you wish to broadcast to. The channel chosen in the webhook can be overridden for each notification type below. You can set up the Webhook URL %shere%s."
 msgstr ""
 
 #: core/admin/class-edd-slack-admin.php:130
@@ -190,7 +190,7 @@ msgid "Create an Incoming Webhook URL"
 msgstr ""
 
 #: core/admin/class-edd-slack-welcome.php:145
-msgid "Create a Incoming Webhook URL using the above link, then enter it in the Default Webhook URL Field on the EDD Slack Settings Page."
+msgid "Create an Incoming Webhook URL using the above link, then enter it in the Default Webhook URL Field on the EDD Slack Settings Page."
 msgstr ""
 
 #: core/admin/class-edd-slack-welcome.php:147

@@ -642,32 +642,32 @@ msgctxt "EDD FES Vendor Product Edit Denial Confirmation Explaination Text"
 msgid "EDD Frontend Submissions does not store old copies of Vendor Products. This will delete their Product."
 msgstr ""
 
-#: core/ssl-only/integrations/edd-frontend-submissions/class-edd-slack-app-frontend-submissions.php:224
+#: core/ssl-only/integrations/edd-frontend-submissions/class-edd-slack-app-frontend-submissions.php:228
 msgctxt "Vendor Approved Response Text"
 msgid "%s has Approved %s's Request to be a Vendor"
 msgstr ""
 
-#: core/ssl-only/integrations/edd-frontend-submissions/class-edd-slack-app-frontend-submissions.php:243
+#: core/ssl-only/integrations/edd-frontend-submissions/class-edd-slack-app-frontend-submissions.php:247
 msgctxt "Vendor Denied Response Text"
 msgid "%s has Denied %s's Request to be a Vendor"
 msgstr ""
 
-#: core/ssl-only/integrations/edd-frontend-submissions/class-edd-slack-app-frontend-submissions.php:289
+#: core/ssl-only/integrations/edd-frontend-submissions/class-edd-slack-app-frontend-submissions.php:293
 msgctxt "Vendor Product Approved Response Text"
 msgid "%s has Approved %s's Product Submission titled \"%s\""
 msgstr ""
 
-#: core/ssl-only/integrations/edd-frontend-submissions/class-edd-slack-app-frontend-submissions.php:299
+#: core/ssl-only/integrations/edd-frontend-submissions/class-edd-slack-app-frontend-submissions.php:303
 msgctxt "Vendor Product Denied Response Text"
 msgid "%s has Denied %s's Product Submission titled \"%s\""
 msgstr ""
 
-#: core/ssl-only/integrations/edd-frontend-submissions/class-edd-slack-app-frontend-submissions.php:345
+#: core/ssl-only/integrations/edd-frontend-submissions/class-edd-slack-app-frontend-submissions.php:349
 msgctxt "Vendor Product Edit Approved Response Text"
 msgid "%s has Approved %s's Product Edit for \"%s\""
 msgstr ""
 
-#: core/ssl-only/integrations/edd-frontend-submissions/class-edd-slack-app-frontend-submissions.php:355
+#: core/ssl-only/integrations/edd-frontend-submissions/class-edd-slack-app-frontend-submissions.php:359
 msgctxt "Vendor Product Edit Denied Response Text"
 msgid "%s has Trashed %s's Product titled \"%s\""
 msgstr ""

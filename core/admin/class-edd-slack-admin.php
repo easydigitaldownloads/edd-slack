@@ -117,7 +117,7 @@ class EDD_Slack_Admin {
                 'name' => _x( 'Default Webhook URL', 'Default Webhook URL Label', EDD_Slack_ID ),
                 'id' => 'slack_webhook_default',
                 'desc' => sprintf(
-                    _x( 'Enter the slack Webhook URL for the team you wish to broadcast to. The channel chosen in the webhook can be overridden for each notification type below. You can set up the Webhook URL %shere%s.', 'Webhook Default Help Text', EDD_Slack_ID ),
+                    _x( 'Enter the Slack Webhook URL for the team you wish to broadcast to. The channel chosen in the webhook can be overridden for each notification type below. You can set up the Webhook URL %shere%s.', 'Webhook Default Help Text', EDD_Slack_ID ),
                     '<a href="//my.slack.com/services/new/incoming-webhook/" target="_blank">',
                     '</a>'
                 ),

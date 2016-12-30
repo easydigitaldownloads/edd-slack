@@ -69,6 +69,18 @@ class EDD_Slack_Notification_Integration {
      */
     public function create_notification( $post, $fields, $trigger, $notification_id, $args ) {
         
+        // Ensure we don't end up with non-set errors
+        $fields['webhook_url'] = ( isset( $fields['webhook'] ) ) ? $fields['webhook'] : '';
+        
+        /**
+         * Allow the Webhook URL to be overriden. Useful for Slack App Integration
+         * Do this before parse_args so we have more control over whether or not this Filter should change things
+         *
+         * @since 1.0.0
+         */
+        $fields['webhook_url'] = apply_filters( 'edd_slack_notification_webhook', $fields['webhook_url'], $trigger, $notification_id, $args );
+        
+        // Throw in some defaults
         $fields = wp_parse_args( array_filter( $fields ), array(
 			'webhook_url'     => ( $webhook = edd_get_option( 'slack_webhook_default') ) ? $webhook : '',
 			'channel'         => '',
@@ -79,13 +91,6 @@ class EDD_Slack_Notification_Integration {
 			'username'        => get_bloginfo( 'name' ),
 			'icon'            => function_exists( 'has_site_icon' ) && has_site_icon() ? get_site_icon_url( 270 ) : '',
 		) );
-        
-        /**
-         * Allow the Webhook URL to be overriden. Useful for Slack App Integration
-         *
-         * @since 1.0.0
-         */
-        $fields['webhook_url'] = apply_filters( 'edd_slack_notification_webhook', $fields['webhook_url'], $trigger, $notification_id, $args );
         
         // This allows the chance to possibly alter $args if needed
         do_action_ref_array( 'edd_slack_before_replacements', array( $post, $fields, $trigger, $notification_id, &$args ) );
@@ -291,10 +296,11 @@ class EDD_Slack_Notification_Integration {
         
         /**
          * Allow the Notification Args to be overriden. Useful for Slack App Integration
+         * Passing $notification_args by reference to help ensure that each Integration doesn't override another
          *
          * @since 1.0.0
          */
-        $notification_args = apply_filters( 'edd_slack_notification_args', $notification_args, $trigger, $notification_id, $args );
+        $notification_args = apply_filters_ref_array( 'edd_slack_notification_args', array( $fields['webhook_url'], &$notification_args, $trigger, $notification_id, $args ) );
         
         // If we're using a regular Webhook
         if ( strpos( $fields['webhook_url'], 'hooks.slack.com' ) ) {

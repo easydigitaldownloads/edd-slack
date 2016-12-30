@@ -26,7 +26,7 @@ class EDD_Slack_App_Comments {
             add_filter( 'edd_slack_notification_webhook', array( $this, 'override_webhook' ), 10, 4 );
 
             // Add our Interaction Buttons
-            add_filter( 'edd_slack_notification_args', array( $this, 'override_arguments' ), 10, 4 );
+            add_filter( 'edd_slack_notification_args', array( $this, 'override_arguments' ), 10, 5 );
             
         }
         
@@ -51,6 +51,10 @@ class EDD_Slack_App_Comments {
         
         if ( $notification_id !== 'rbm' ) return $webhook_url;
         
+        // Allow Webhook URL overrides to bail Interactive Notifications
+        if ( ( $webhook_url !== '' ) &&
+            ( $webhook_url !== edd_get_option( 'slack_webhook_default' ) ) ) return $webhook_url;
+        
         // If our Trigger doesn't an applicable Trigger, bail
         if ( $trigger !== 'comment_post' ) return $webhook_url;
 
@@ -61,18 +65,23 @@ class EDD_Slack_App_Comments {
     /**
      * Override Notification Args for Slack App if appropriate
      * 
-     * @param       string $webhook_url     The Webhook URL provided for the Slack Notification
-     * @param       string $trigger         Notification Trigger
-     * @param       string $notification_id ID used for Notification Hooks
-     * @param       array  $args            $args Array passed from the original Trigger of the process
+     * @param       string $webhook_url         The Webhook URL provided for the Slack Notification
+     * @param       string $notification_args   Args for creating the Notification
+     * @param       string $trigger             Notification Trigger
+     * @param       string $notification_id     ID used for Notification Hooks
+     * @param       array  $args                $args Array passed from the original Trigger of the process
      *                                                               
      * @access      public
      * @since       1.0.0
-     * @return      string Altered URL
+     * @return      array  Altered Notification Args
      */
-    public function override_arguments( $notification_args, $trigger, $notification_id, $args ) {
+    public function override_arguments( $webhook_url, &$notification_args, $trigger, $notification_id, $args ) {
         
         if ( $notification_id !== 'rbm' ) return $notification_args;
+        
+        // Allow Webhook URL overrides to bail Interactive Notifications
+        if ( strpos( $webhook_url, 'hooks.slack.com' ) &&
+            $webhook_url !== edd_get_option( 'slack_webhook_default' ) ) return $notification_args;
         
         // If our Trigger doesn't an applicable Trigger, bail
         if ( $trigger !== 'comment_post' ) return $notification_args;

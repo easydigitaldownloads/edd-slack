@@ -39,6 +39,26 @@
             
         }
         else {
+            
+            var $download = $( row ).find( '.edd-slack-download' );
+            
+            if ( eddSlack.variantExclusion.indexOf( option_class ) > -1 ) {
+                
+                // Reset value if it is set to a variant
+                if ( $download.val().indexOf( '-' ) ) $download.val( 0 );
+                
+                $download.find( 'option[value*="-"]' ).hide();
+                
+            }
+            else {
+                
+                $download.find( 'option[value*="-"]' ).show();
+                
+            }
+                
+            if ( $download.hasClass( 'edd-chosen' ) ) {
+                $download.trigger( 'chosen:updated' );
+            }
 
             $( row ).find( '.edd-slack-conditional.' + option_class ).closest( 'td.hidden' ).removeClass( 'hidden' );
             $( row ).find( '.edd-slack-conditional' ).not( '.' + option_class ).closest( 'td' ).addClass( 'hidden' );

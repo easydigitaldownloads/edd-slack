@@ -9,7 +9,9 @@ Author: Real Big Plugins
 Author URI: http://realbigplugins.com
 Contributors: d4mation
 */
-
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 // Exit if accessed directly
 if ( ! defined( 'ABSPATH' ) ) exit;
 
@@ -397,7 +399,36 @@ if ( ! class_exists( 'EDD_Slack' ) ) {
                     'post_type' => 'download',
                 ) + $base_args );
                 
-                $downloads_array = wp_list_pluck( $downloads, 'post_title', 'ID' );
+                $downloads_query = wp_list_pluck( $downloads, 'post_title', 'ID' );
+                
+                // Sort before adding 
+                asort( $downloads_query );
+                
+                foreach ( $downloads_query as $download_id => $download_name ) {
+                    
+                    // If there's no variable Prices, continue
+                    if ( ! edd_has_variable_prices( $download_id ) ) {
+                        $downloads_array[ $download_id ] = $download_name;
+                        continue;
+                    }
+                    
+                    $variations = edd_get_variable_prices( $download_id );
+                    
+                    $downloads_array[ $download_id ] = $download_name . ' - ' . _x( 'All Variations', 'All Variations Option Text', EDD_Slack_ID );
+                    
+                    // Apparently edd_get_variable_prices() can't be trusted to get Price IDs
+                    // After the first Price ID it just has an empty String
+                    // Thankfully, EDD reliably starts its index for those at 1
+                    $price_id = 1;
+                    foreach ( $variations as $variation ) {
+                        
+                        $downloads_array[ $download_id . '-' . $price_id ] = $download_name . ' - ' . edd_get_price_option_name( $download_id, $price_id );
+                        
+                        $price_id++;
+                        
+                    }
+                    
+                }
                 
                 $discount_codes = get_posts( array(
                     'post_type' => 'edd_discount',

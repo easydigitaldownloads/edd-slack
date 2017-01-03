@@ -165,9 +165,31 @@ class EDD_Slack_Purchase_Limit {
             ) );
             
             if ( $trigger == 'edd_purchase_limit' ) {
+                
+                $download_id = $fields['download'];
+                $price_id = null;
+                
+                // Check if a Price ID was saved
+                if ( strpos( $download_id, '-' ) !== false ) {
+                    
+                    $download = explode( '-', $download_id );
+                    
+                    // First half is Download ID
+                    $download_id = $download[0];
+                    
+                    // Second half is Price ID
+                    $price_id = $download[1];
+                    
+                }
 
                 // Download doesn't match our Notification, bail
-                if ( $fields['download'] !== 'all' && (int) $fields['download'] !== $args['download_id'] ) {
+                if ( $download_id !== 'all' && (int) $download_id !== $args['download_id'] ) {
+                    $args['bail'] = true;
+                    return false;
+                }
+                
+                // Price ID doesn't match our Notification, bail
+                if ( $price_id !== null && (int) $price_id !== $args['price_id'] ) {
                     $args['bail'] = true;
                     return false;
                 }

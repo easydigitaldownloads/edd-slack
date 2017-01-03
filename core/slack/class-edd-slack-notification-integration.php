@@ -150,12 +150,28 @@ class EDD_Slack_Notification_Integration {
             ) );
             
             if ( $trigger == 'edd_complete_purchase' ||
+                $trigger == 'edd_failed_purchase' ||
                $trigger == 'edd_discount_code_applied' ) {
                 
-                // Cart doesn't match our Notification, bail
-                if ( $fields['download'] !== 'all' && ! array_key_exists( $fields['download'], $args['cart'] ) ) {
+                $download = $this->check_for_price_id( $fields['download'] );
+                
+                $download_id = $download['download_id'];
+                $price_id = $download['price_id'];
+                
+                // Cart doesn't match have our Download ID, bail
+                if ( $download_id !== 'all' && ! array_key_exists( $download_id, $args['cart'] ) ) {
                     $args['bail'] = true;
                     return false;
+                }
+                
+                // Cart doesn't have our Price ID, bail
+                if ( $price_id !== null ) {
+                    
+                    if ( $price_id !== $args['cart'][ $download_id ]['options']['price_id'] ) {
+                        $args['bail'] = true;
+                        return false;
+                    }
+                    
                 }
                 
             }
@@ -368,6 +384,41 @@ class EDD_Slack_Notification_Integration {
         
         // Ensure it is wrapped by colons
         return ':' . $icon_emoji . ':';
+        
+    }
+    
+    /**
+     * One day HTML will let me reliably pass more than one value from a single field, but until then...
+     * 
+     * @param       string $download String Download ID with a Price ID or just a Download ID
+     *                                                                                     
+     * @access      public
+     * @since       1.0.0
+     * @return      array  Download ID and Price ID, if applicable
+     */
+    public function check_for_price_id( $download ) {
+        
+        // Fallbacks for Downloads with no Price ID defined
+        $download_id = $download;
+        $price_id = null;
+        
+        // If there's a Price ID
+        if ( strpos( $download, '-' ) !== false ) {
+                    
+            $download = explode( '-', $download );
+
+            // First half is Download ID
+            $download_id = $download[0];
+
+            // Second half is Price ID
+            $price_id = $download[1];
+
+        }
+       
+        return array(
+            'download_id' => $download_id,
+            'price_id' => $price_id,
+        );
         
     }
     

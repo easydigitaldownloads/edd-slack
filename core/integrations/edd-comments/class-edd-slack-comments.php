@@ -38,6 +38,9 @@ class EDD_Slack_Comments {
         // Add our own Hints for the Replacement Strings
         add_filter( 'edd_slack_text_replacement_hints', array( $this, 'custom_replacement_hints' ), 10, 3 );
         
+        // Conditionally hide Download Variant Values
+        add_filter( 'edd_slack_localize_admin_script', array( $this, 'add_variant_exclusion' ) );
+        
     }
     
     /**
@@ -165,8 +168,12 @@ class EDD_Slack_Comments {
             
             if ( $trigger == 'comment_post' ) {
                 
+                $download = $this->check_for_price_id( $fields['download'] );
+                
+                $download_id = $download['download_id'];
+                
                 // Download commented on doesn't match our Notification, bail
-                if ( $fields['download'] !== 'all' && (int) $fields['download'] !== $args['comment_post_id'] ) {
+                if ( $download_id !== 'all' && (int) $download_id !== $args['comment_post_id'] ) {
                     $args['bail'] = true;
                     return false;
                 }
@@ -246,6 +253,23 @@ class EDD_Slack_Comments {
         $hints['comment_post'] = array_merge( $user_hints, $comment_hints );
         
         return $hints;
+        
+    }
+    
+    /**
+     * Add our Trigger(s) to the Variant Exclusion Array. This prevents Variants from being selectable in the Downloads dropdown.
+     *
+     * @param       array $localized_script PHP Localized values for JavaScript
+     *                                                               
+     * @access      public
+     * @since       1.0.0
+     * @return      array Modified Localized values
+     */
+    public function add_variant_exclusion( $localized_script ) {
+        
+        $localized_script['variantExclusion'][] = 'comment_post';
+        
+        return $localized_script;
         
     }
     

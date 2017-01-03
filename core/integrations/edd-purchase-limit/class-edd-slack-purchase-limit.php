@@ -178,7 +178,7 @@ class EDD_Slack_Purchase_Limit {
                 }
                 
                 // Price ID doesn't match our Notification, bail
-                if ( $price_id !== null && (int) $price_id !== $args['price_id'] ) {
+                if ( $price_id !== null && $price_id !== $args['price_id'] ) {
                     $args['bail'] = true;
                     return false;
                 }

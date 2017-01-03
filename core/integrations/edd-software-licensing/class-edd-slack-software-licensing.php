@@ -236,13 +236,13 @@ class EDD_Slack_Software_Licensing {
                 $price_id = $download['price_id'];
                 
                 // Download commented on doesn't match our Notification, bail
-                if ( $download_id !== 'all' && (int) $download_id !== $args['download_id'] ) {
+                if ( $download_id !== 'all' && $download_id !== $args['download_id'] ) {
                     $args['bail'] = true;
                     return false;
                 }
                 
                 // Price ID doesn't match our Notification, bail
-                if ( $price_id !== null && (int) $price_id !== $args['price_id'] ) {
+                if ( $price_id !== null && $price_id !== $args['price_id'] ) {
                     $args['bail'] = true;
                     return false;
                 }

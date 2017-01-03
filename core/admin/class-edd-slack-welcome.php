@@ -46,9 +46,9 @@ class EDD_Slack_Welcome extends EDD_Welcome {
 		?>
 		<style type="text/css" media="screen">
 			/*<![CDATA[*/
-			.edd-slack-about-wrap .edd-slack-badge { float: right; border-radius: 4px; margin: 0 0 15px 15px; max-width: 100px; }
+			.edd-slack-about-wrap .edd-slack-badge { float: right; border-radius: 4px; margin: 0 0 15px 15px; }
 			.edd-slack-about-wrap #edd-slack-header { margin-bottom: 15px; }
-			.edd-slack-about-wrap #edd-slack-header h1 { margin-bottom: 15px !important; }
+			.edd-slack-about-wrap #edd-slack-header h1 { margin: 0; margin-bottom: 15px !important; }
 			.edd-slack-about-wrap .about-text { margin: 0 0 15px; max-width: 670px; }
 			.edd-slack-about-wrap .feature-section { margin-top: 20px; }
 			.edd-slack-about-wrap .feature-section-content,
@@ -58,6 +58,7 @@ class EDD_Slack_Welcome extends EDD_Welcome {
 			.edd-slack-about-wrap .feature-section-media { float: right; text-align: right; margin-bottom: 20px; }
 			.edd-slack-about-wrap .feature-section-media img { border: 1px solid #ddd; }
 			.edd-slack-about-wrap .feature-section:not(.under-the-hood) .col { margin-top: 0; }
+            }
 			/* responsive */
 			@media all and ( max-width: 782px ) {
 				.edd-slack-about-wrap .feature-section-content,
@@ -82,7 +83,7 @@ class EDD_Slack_Welcome extends EDD_Welcome {
         
         ?>
         <div id="edd-slack-header">
-            <img class="edd-slack-badge" src="<?php echo EDD_Slack_URL . 'assets/images/edd-slack-logo.svg'; ?>" alt="<?php _e( 'EDD Slack', EDD_Slack_ID ); ?>" / >
+            <img class="edd-slack-badge" src="<?php echo EDD_Slack_URL . 'assets/images/edd-slack-logo.png'; ?>" alt="<?php _e( 'EDD Slack', EDD_Slack_ID ); ?>" / >
             <h1><?php printf( __( 'Welcome to EDD Slack %s', EDD_Slack_ID ), $display_version ); ?></h1>
             <p class="about-text">
                 <?php printf( __( 'Thank you for updating to the latest version! EDD Slack %s is ready to make your online store integrate seamlessly with Slack!', EDD_Slack_ID ), $display_version ); ?>
@@ -108,7 +109,7 @@ class EDD_Slack_Welcome extends EDD_Welcome {
             <a class="nav-tab <?php echo $selected == 'edd-slack-getting-started' ? 'nav-tab-active' : ''; ?>" href="<?php echo esc_url( admin_url( add_query_arg( array( 'page' => 'edd-slack-getting-started' ), 'index.php' ) ) ); ?>">
                 <?php _e( 'Getting Started', EDD_Slack_ID ); ?>
             </a>
-            <a class="nav-tab" href="https://realbigplugins.com/docs/edd-slack/" target="_blank">
+            <a class="nav-tab" href="//docs.easydigitaldownloads.com/category/1724-slack" target="_blank">
                 <?php _e( 'Complete Documentation', EDD_Slack_ID ); ?>
             </a>
         </h1>
@@ -155,7 +156,7 @@ class EDD_Slack_Welcome extends EDD_Welcome {
 				<h3><?php _e( 'Customize Unlimited Notifications', EDD_Slack_ID );?></h3>
 				<div class="feature-section">
 					<div class="feature-section-media">
-						<img src="<?php echo EDD_Slack_URL . 'assets/images/screenshots/notifications.png'; ?>" class="edd-welcome-screenshots"/>
+						<img src="<?php echo EDD_Slack_URL . 'assets/images/screenshots/notification.png'; ?>" class="edd-welcome-screenshots"/>
 					</div>
 					<div class="feature-section-content">
 						
@@ -163,7 +164,7 @@ class EDD_Slack_Welcome extends EDD_Welcome {
                         
                         <p><?php _e( 'You can customize the Notification however you like to include all kinds of information about the event, with different Triggers providing you with different Text Replacements to use!', EDD_Slack_ID ); ?></p>
                         
-                        <p><?php _e( 'Different Notifications can even be set to be sent to different Channels or even different Users! View our <a href="https://realbigplugins.com/docs/edd-slack/" target="_blank">Complete Documentation</a> for more details!', EDD_Slack_ID ); ?></p>
+                        <p><?php _e( 'Different Notifications can even be set to be sent to different Channels or even different Users! Check out our <a href="//docs.easydigitaldownloads.com/article/1726-edd-slack-creating-notifications" target="_blank">Documentation</a> for more details!', EDD_Slack_ID ); ?></p>
                         
 					</div>
 				</div>
@@ -173,18 +174,17 @@ class EDD_Slack_Welcome extends EDD_Welcome {
 				<h3><?php _e( 'Unlocking Extra Functionality', EDD_Slack_ID );?></h3>
 				<div class="feature-section">
 					<div class="feature-section-media">
-						<img src="<?php echo EDD_Slack_URL . 'assets/images/screenshots/regular-vs-ssl-notification-condensed.png'; ?>" class="edd-welcome-screenshots" />
-                        <img src="<?php echo EDD_Slack_URL . 'assets/images/screenshots/slash-command.png'; ?>" class="edd-welcome-screenshots" />
+                        <img src="<?php echo EDD_Slack_URL . 'assets/images/screenshots/interactive-notification.png'; ?>" class="edd-welcome-screenshots" />
 					</div>
 					<div class="feature-section-content">
 						
                         <h4><?php _e( 'SSL-enabled Sites Only', EDD_Slack_ID ); ?></h4>
                         
-						<p><?php _e( 'If your site is SSL-enabled, you can add Slack App integration to enable Slash Commands and Interactive Notifications.', EDD_Slack_ID ); ?></p>
+						<p><?php _e( 'If your site is SSL-enabled, you can add Slack App integration to enable Interactive Notifications and Slash Commands.', EDD_Slack_ID ); ?></p>
                         
                         <p><?php _e( 'This will allow you to interact with events happening on your online store immediately and view data from your online store all from within Slack.', EDD_Slack_ID ); ?></p>
                         
-                        <p><?php _e( 'View our <a href="https://realbigplugins.com/docs/edd-slack/" target="_blank">Complete Documentation</a> for more details!', EDD_Slack_ID ); ?></p>
+                        <p><?php _e( 'Check out our <a href="//docs.easydigitaldownloads.com/article/1727-edd-slack-setting-up-a-slack-app" target="_blank">Documentation</a> for more details!', EDD_Slack_ID ); ?></p>
                         
 					</div>
 				</div>

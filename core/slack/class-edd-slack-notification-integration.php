@@ -382,7 +382,10 @@ class EDD_Slack_Notification_Integration {
         // Sanitize the emoji string somewhat
         $icon_emoji = preg_replace( '/\W/i', '', $icon_emoji );
         
-        // Ensure it is wrapped by colons
+        // If it is empty, pass it as empty so the Webhook can handle it
+        if ( empty( $icon_emoji ) ) return $icon_emoji;
+        
+        // Otherwise ensure it is wrapped by colons
         return ':' . $icon_emoji . ':';
         
     }

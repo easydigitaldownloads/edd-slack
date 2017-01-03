@@ -1,4 +1,4 @@
-# Copyright (C) 2016 EDD_Slack
+# Copyright (C) 2017 EDD_Slack
 # This file is distributed under the same license as the EDD_Slack package.
 msgid ""
 msgstr ""
@@ -6,7 +6,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2016-MO-DA HO:MI+ZONE\n"
+"PO-Revision-Date: 2017-MO-DA HO:MI+ZONE\n"
 "X-Poedit-Basepath: ..\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;esc_attr__;esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;_n_noop:1,2;_nx_noop:3c,1,2;__ngettext_noop:1,2\n"
@@ -53,7 +53,7 @@ msgctxt "Delete Slack Notification Button"
 msgid "Delete Slack Notification"
 msgstr ""
 
-#: core/admin/class-edd-slack-admin.php:136, core/slack/class-edd-slack-notification-integration.php:393
+#: core/admin/class-edd-slack-admin.php:136, core/slack/class-edd-slack-notification-integration.php:447
 msgctxt "New Slack Notification Header"
 msgid "New Slack Notification"
 msgstr ""
@@ -157,67 +157,67 @@ msgstr ""
 msgid "Getting started with EDD Slack"
 msgstr ""
 
-#: core/admin/class-edd-slack-welcome.php:85
+#: core/admin/class-edd-slack-welcome.php:86
 msgid "EDD Slack"
 msgstr ""
 
-#: core/admin/class-edd-slack-welcome.php:86
+#: core/admin/class-edd-slack-welcome.php:87
 msgid "Welcome to EDD Slack %s"
 msgstr ""
 
-#: core/admin/class-edd-slack-welcome.php:88
+#: core/admin/class-edd-slack-welcome.php:89
 msgid "Thank you for updating to the latest version! EDD Slack %s is ready to make your online store integrate seamlessly with Slack!"
 msgstr ""
 
-#: core/admin/class-edd-slack-welcome.php:109
+#: core/admin/class-edd-slack-welcome.php:110
 msgid "Getting Started"
 msgstr ""
 
-#: core/admin/class-edd-slack-welcome.php:112
+#: core/admin/class-edd-slack-welcome.php:113
 msgid "Complete Documentation"
 msgstr ""
 
-#: core/admin/class-edd-slack-welcome.php:134
+#: core/admin/class-edd-slack-welcome.php:135
 msgid "Use the tips below to get started using EDD Slack. You will be up and running in no time!"
 msgstr ""
 
-#: core/admin/class-edd-slack-welcome.php:137
+#: core/admin/class-edd-slack-welcome.php:138
 msgid "Configuring your Notifications"
 msgstr ""
 
-#: core/admin/class-edd-slack-welcome.php:144
+#: core/admin/class-edd-slack-welcome.php:145
 msgid "Create an Incoming Webhook URL"
 msgstr ""
 
-#: core/admin/class-edd-slack-welcome.php:145
+#: core/admin/class-edd-slack-welcome.php:146
 msgid "Create an Incoming Webhook URL using the above link, then enter it in the Default Webhook URL Field on the EDD Slack Settings Page."
 msgstr ""
 
-#: core/admin/class-edd-slack-welcome.php:147
+#: core/admin/class-edd-slack-welcome.php:148
 msgid "%s &rarr; Settings &rarr; Extensions &rarr; Slack"
 msgstr ""
 
-#: core/admin/class-edd-slack-welcome.php:148
+#: core/admin/class-edd-slack-welcome.php:149
 msgid "Create Notifications by clicking the \"Add Slack Notification\" Button and filling out the form. Congratulations! You've created a Notification within EDD Slack!"
 msgstr ""
 
-#: core/admin/class-edd-slack-welcome.php:155
+#: core/admin/class-edd-slack-welcome.php:156
 msgid "Customize Unlimited Notifications"
 msgstr ""
 
-#: core/admin/class-edd-slack-welcome.php:162
+#: core/admin/class-edd-slack-welcome.php:163
 msgid "EDD Slack comes bundled with Triggers for standard Easy Digital Downloads events as well as some for other Easy Digital Downloads Extensions so that you can know what is happening on your storefront as soon as it happens."
 msgstr ""
 
-#: core/admin/class-edd-slack-welcome.php:164
+#: core/admin/class-edd-slack-welcome.php:165
 msgid "You can customize the Notification however you like to include all kinds of information about the event, with different Triggers providing you with different Text Replacements to use!"
 msgstr ""
 
-#: core/admin/class-edd-slack-welcome.php:166
-msgid "Different Notifications can even be set to be sent to different Channels or even different Users! View our <a href=\"https://realbigplugins.com/docs/edd-slack/\" target=\"_blank\">Complete Documentation</a> for more details!"
+#: core/admin/class-edd-slack-welcome.php:167
+msgid "Different Notifications can even be set to be sent to different Channels or even different Users! Check out our <a href=\"//docs.easydigitaldownloads.com/article/1726-edd-slack-creating-notifications\" target=\"_blank\">Documentation</a> for more details!"
 msgstr ""
 
-#: core/admin/class-edd-slack-welcome.php:173
+#: core/admin/class-edd-slack-welcome.php:174
 msgid "Unlocking Extra Functionality"
 msgstr ""
 
@@ -226,7 +226,7 @@ msgid "SSL-enabled Sites Only"
 msgstr ""
 
 #: core/admin/class-edd-slack-welcome.php:183
-msgid "If your site is SSL-enabled, you can add Slack App integration to enable Slash Commands and Interactive Notifications."
+msgid "If your site is SSL-enabled, you can add Slack App integration to enable Interactive Notifications and Slash Commands."
 msgstr ""
 
 #: core/admin/class-edd-slack-welcome.php:185
@@ -234,60 +234,60 @@ msgid "This will allow you to interact with events happening on your online stor
 msgstr ""
 
 #: core/admin/class-edd-slack-welcome.php:187
-msgid "View our <a href=\"https://realbigplugins.com/docs/edd-slack/\" target=\"_blank\">Complete Documentation</a> for more details!"
+msgid "Check out our <a href=\"//docs.easydigitaldownloads.com/article/1727-edd-slack-setting-up-a-slack-app\" target=\"_blank\">Documentation</a> for more details!"
 msgstr ""
 
-#: core/integrations/edd-comments/class-edd-slack-comments.php:54
+#: core/integrations/edd-comments/class-edd-slack-comments.php:57
 msgctxt "New Comment on Download Trigger"
 msgid "New Comment on %s"
 msgstr ""
 
-#: core/integrations/edd-comments/class-edd-slack-comments.php:90
+#: core/integrations/edd-comments/class-edd-slack-comments.php:93
 msgctxt "Top Level Comments Checkbox Label"
 msgid "Only Trigger on New, Top-Level Comments"
 msgstr ""
 
-#: core/integrations/edd-comments/class-edd-slack-comments.php:208
+#: core/integrations/edd-comments/class-edd-slack-comments.php:215
 msgctxt "No Username Replacement Text"
 msgid "This Commenter does not have an account"
 msgstr ""
 
-#: core/integrations/edd-comments/class-edd-slack-comments.php:213
+#: core/integrations/edd-comments/class-edd-slack-comments.php:220
 msgctxt "View this Comment Link Text"
 msgid "View this Comment"
 msgstr ""
 
-#: core/integrations/edd-comments/class-edd-slack-comments.php:241
+#: core/integrations/edd-comments/class-edd-slack-comments.php:248
 msgctxt "%download% Hint Text"
 msgid "The %s the Comment was made on"
 msgstr ""
 
-#: core/integrations/edd-comments/class-edd-slack-comments.php:242
+#: core/integrations/edd-comments/class-edd-slack-comments.php:249
 msgctxt "%comment_content% Hint Text"
 msgid "The Comment itself"
 msgstr ""
 
-#: core/integrations/edd-comments/class-edd-slack-comments.php:243
+#: core/integrations/edd-comments/class-edd-slack-comments.php:250
 msgctxt "%comment_link% Hint Text"
 msgid "A link to the Comment"
 msgstr ""
 
-#: core/integrations/edd-commissions/class-edd-slack-commissions.php:53
+#: core/integrations/edd-commissions/class-edd-slack-commissions.php:56
 msgctxt "New Commision Trigger"
 msgid "New Commission"
 msgstr ""
 
-#: core/integrations/edd-commissions/class-edd-slack-commissions.php:200
+#: core/integrations/edd-commissions/class-edd-slack-commissions.php:207
 msgctxt "%download% Hint Text"
 msgid "The %s that the Commission is for"
 msgstr ""
 
-#: core/integrations/edd-commissions/class-edd-slack-commissions.php:201
+#: core/integrations/edd-commissions/class-edd-slack-commissions.php:208
 msgctxt "%commission_amount% Hint Text"
 msgid "The amount of Commission awarded for the sale"
 msgstr ""
 
-#: core/integrations/edd-commissions/class-edd-slack-commissions.php:202
+#: core/integrations/edd-commissions/class-edd-slack-commissions.php:209
 msgctxt "%commission_rate% Hint Text"
 msgid "Either the Flat Rate or Percentage that the Commission is calculated based on"
 msgstr ""
@@ -332,12 +332,12 @@ msgctxt "Purchase Limit Reached Trigger"
 msgid "Purchase Limit Reached"
 msgstr ""
 
-#: core/integrations/edd-purchase-limit/class-edd-slack-purchase-limit.php:236
+#: core/integrations/edd-purchase-limit/class-edd-slack-purchase-limit.php:247
 msgctxt "%download% Hint Text"
 msgid "The %s that has reached its Purchase Limit"
 msgstr ""
 
-#: core/integrations/edd-purchase-limit/class-edd-slack-purchase-limit.php:237
+#: core/integrations/edd-purchase-limit/class-edd-slack-purchase-limit.php:248
 msgctxt "%purchase_limit% Hint Text"
 msgid "The Purchase Limit for the %s"
 msgstr ""
@@ -362,32 +362,32 @@ msgctxt "License Upgraded Trigger"
 msgid "License Upgraded"
 msgstr ""
 
-#: core/integrations/edd-software-licensing/class-edd-slack-software-licensing.php:324
+#: core/integrations/edd-software-licensing/class-edd-slack-software-licensing.php:336
 msgctxt "%license_key% Hint Text"
 msgid "The License Key"
 msgstr ""
 
-#: core/integrations/edd-software-licensing/class-edd-slack-software-licensing.php:325
+#: core/integrations/edd-software-licensing/class-edd-slack-software-licensing.php:337
 msgctxt "%download% Hint Text"
 msgid "The %s the License Key is for"
 msgstr ""
 
-#: core/integrations/edd-software-licensing/class-edd-slack-software-licensing.php:326
+#: core/integrations/edd-software-licensing/class-edd-slack-software-licensing.php:338
 msgctxt "%expiration% Hint Text"
 msgid "The date when the License expires"
 msgstr ""
 
-#: core/integrations/edd-software-licensing/class-edd-slack-software-licensing.php:327
+#: core/integrations/edd-software-licensing/class-edd-slack-software-licensing.php:339
 msgctxt "%license_limit% Hint Text"
 msgid "The number of sites the License can be active on"
 msgstr ""
 
-#: core/integrations/edd-software-licensing/class-edd-slack-software-licensing.php:342
+#: core/integrations/edd-software-licensing/class-edd-slack-software-licensing.php:354
 msgctxt "%old_download% Hint Text"
 msgid "The %s being upgraded from"
 msgstr ""
 
-#: core/integrations/edd-software-licensing/class-edd-slack-software-licensing.php:343
+#: core/integrations/edd-software-licensing/class-edd-slack-software-licensing.php:355
 msgctxt "%new_download% Hint Text"
 msgid "The %s being upgraded to"
 msgstr ""
@@ -402,32 +402,32 @@ msgctxt "Default Post Title for CPT"
 msgid "New Slack Notification"
 msgstr ""
 
-#: core/slack/class-edd-slack-notification-integration.php:196
+#: core/slack/class-edd-slack-notification-integration.php:212
 msgctxt "No Username Replacement Text"
 msgid "This Customer does not have an account"
 msgstr ""
 
-#: core/slack/class-edd-slack-notification-integration.php:209
+#: core/slack/class-edd-slack-notification-integration.php:225
 msgctxt "No Discount Code Applied Text"
 msgid "No Discount Code Applied"
 msgstr ""
 
-#: core/slack/class-edd-slack-notification-integration.php:224
+#: core/slack/class-edd-slack-notification-integration.php:240
 msgctxt "View Payment Details Link"
 msgid "View Payment Details"
 msgstr ""
 
-#: core/slack/class-edd-slack-notification-integration.php:247
+#: core/slack/class-edd-slack-notification-integration.php:263
 msgctxt "Empty Cart Replacement Text"
 msgid "There was nothing in the Cart"
 msgstr ""
 
-#: core/slack/class-edd-slack-notification-integration.php:453
+#: core/slack/class-edd-slack-notification-integration.php:507
 msgctxt "Current User Cannot Create Notications Error"
 msgid "Access Denied"
 msgstr ""
 
-#: core/slack/class-edd-slack-notification-integration.php:483
+#: core/slack/class-edd-slack-notification-integration.php:537
 msgctxt "Current User Cannot Delete Notications Error"
 msgid "Access Denied"
 msgstr ""
@@ -682,160 +682,165 @@ msgctxt "Outdated Integration Error"
 msgid "%s includes features which integrate with %s, but v%s or greater of %s is required."
 msgstr ""
 
-#: edd-slack.php:427, edd-slack.php:433
+#: edd-slack.php:415
+msgctxt "All Variations Option Text"
+msgid "All Variations"
+msgstr ""
+
+#: edd-slack.php:456, edd-slack.php:462
 msgid "Indentifier for this Notification"
 msgstr ""
 
-#: edd-slack.php:430
+#: edd-slack.php:459
 msgid "New Slack Notification"
 msgstr ""
 
-#: edd-slack.php:434
+#: edd-slack.php:463
 msgid "Helps distinguish Notifications from one another on the Settings Screen. If left blank, your Notification will be labeled &ldquo;New Slack Notification&rdquo;."
 msgstr ""
 
-#: edd-slack.php:437
+#: edd-slack.php:466
 msgid "Slack Trigger"
 msgstr ""
 
-#: edd-slack.php:446, edd-slack.php:448
+#: edd-slack.php:475, edd-slack.php:477
 msgctxt "Slack Trigger Default Label"
 msgid "-- Select a Slack Trigger --"
 msgstr ""
 
-#: edd-slack.php:465, edd-slack.php:468
+#: edd-slack.php:494, edd-slack.php:497
 msgctxt "Select Field Default"
 msgid "-- Select %s --"
 msgstr ""
 
-#: edd-slack.php:466
+#: edd-slack.php:495
 msgctxt "All items in a Select Field"
 msgid "All %s"
 msgstr ""
 
-#: edd-slack.php:472
+#: edd-slack.php:501
 msgctxt "Discount Code Field Label"
 msgid "Discount Code"
 msgstr ""
 
-#: edd-slack.php:483, edd-slack.php:486
+#: edd-slack.php:512, edd-slack.php:515
 msgctxt "Discount Code Field Default"
 msgid "-- Select Discount Code --"
 msgstr ""
 
-#: edd-slack.php:484
+#: edd-slack.php:513
 msgctxt "All Discount Codes Text"
 msgid "All Discount Codes"
 msgstr ""
 
-#: edd-slack.php:495
+#: edd-slack.php:524
 msgid "Message Pre-text (Optional)"
 msgstr ""
 
-#: edd-slack.php:500
+#: edd-slack.php:529
 msgid "Message Pre-text"
 msgstr ""
 
-#: edd-slack.php:501
+#: edd-slack.php:530
 msgid "Shows directly below Username and above the Title/Message."
 msgstr ""
 
-#: edd-slack.php:505
+#: edd-slack.php:534
 msgid "Message Title (Optional)"
 msgstr ""
 
-#: edd-slack.php:510
+#: edd-slack.php:539
 msgid "Message Title"
 msgstr ""
 
-#: edd-slack.php:511
+#: edd-slack.php:540
 msgid "If left blank this will default to the Notification Identifier."
 msgstr ""
 
-#: edd-slack.php:515
+#: edd-slack.php:544
 msgid "Message (Optional)"
 msgstr ""
 
-#: edd-slack.php:521
+#: edd-slack.php:550
 msgid "Slack Webhook URL (Optional)"
 msgstr ""
 
-#: edd-slack.php:526
+#: edd-slack.php:555
 msgid "You can override the above Webhook URL here."
 msgstr ""
 
-#: edd-slack.php:534
+#: edd-slack.php:563
 msgid "Slack Webhook URL"
 msgstr ""
 
-#: edd-slack.php:535
+#: edd-slack.php:564
 msgid "This overrides the Default Webhook URL. This can be useful if you want a specific Notification to send to another Slack Team entirely."
 msgstr ""
 
-#: edd-slack.php:539
+#: edd-slack.php:568
 msgid "Slack Channel (Optional)"
 msgstr ""
 
-#: edd-slack.php:541, edd-slack.php:561
+#: edd-slack.php:570, edd-slack.php:590
 msgid "Webhook default"
 msgstr ""
 
-#: edd-slack.php:544
+#: edd-slack.php:573
 msgid "Slack Channel"
 msgstr ""
 
-#: edd-slack.php:545
+#: edd-slack.php:574
 msgid "This overrides the Default Channel defined by the Webhook URL. Notifications can be sent to individual Users instead by entering their Username like so: <code>@&laquo;username&raquo;</code>."
 msgstr ""
 
-#: edd-slack.php:549
+#: edd-slack.php:578
 msgid "Username (Optional)"
 msgstr ""
 
-#: edd-slack.php:554
+#: edd-slack.php:583
 msgid "Username"
 msgstr ""
 
-#: edd-slack.php:555
+#: edd-slack.php:584
 msgid "This controls who the Notification appears to be from. It does not have to be a valid User in your Slack Team. This will default to &ldquo;%s&rdquo;."
 msgstr ""
 
-#: edd-slack.php:559
+#: edd-slack.php:588
 msgid "Icon Emoji or Image URL (Optional)"
 msgstr ""
 
-#: edd-slack.php:564
+#: edd-slack.php:593
 msgid "Icon Emoji or Image URL"
 msgstr ""
 
-#: edd-slack.php:565
+#: edd-slack.php:594
 msgid "This accepts an Emoji (Example: <code>:rocket:</code>) or an Image URL. You can even use Custom Emojis defined within your Slack Team. If left empty, it will default to the Emoji or Image defined by the Webhook URL."
 msgstr ""
 
-#: edd-slack.php:569, edd-slack.php:572
+#: edd-slack.php:598, edd-slack.php:601
 msgid "Color"
 msgstr ""
 
-#: edd-slack.php:573
+#: edd-slack.php:602
 msgid "Shows next to Message Title and Message."
 msgstr ""
 
-#: edd-slack.php:589
+#: edd-slack.php:618
 msgctxt "Purchase Complete Trigger Label"
 msgid "Purchase Complete"
 msgstr ""
 
-#: edd-slack.php:590
+#: edd-slack.php:619
 msgctxt "Purchase Failed Trigger Label"
 msgid "Purchase Failed"
 msgstr ""
 
-#: edd-slack.php:591
+#: edd-slack.php:620
 msgctxt "Discount Code Applied Trigger Label"
 msgid "Discount Code Applied"
 msgstr ""
 
-#: edd-slack.php:592
+#: edd-slack.php:621
 msgctxt "New User Registration Trigger Label"
 msgid "New User Registration via EDD"
 msgstr ""

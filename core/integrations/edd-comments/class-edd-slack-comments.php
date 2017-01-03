@@ -168,7 +168,7 @@ class EDD_Slack_Comments {
             
             if ( $trigger == 'comment_post' ) {
                 
-                $download = $this->check_for_price_id( $fields['download'] );
+                $download = EDDSLACK()->notification_integration->check_for_price_id( $fields['download'] );
                 
                 $download_id = $download['download_id'];
                 

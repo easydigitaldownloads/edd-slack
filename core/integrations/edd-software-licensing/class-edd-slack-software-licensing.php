@@ -83,7 +83,6 @@ class EDD_Slack_Software_Licensing {
         $repeater_fields['download']['field_class'][] = 'edd_sl_store_license';
         $repeater_fields['download']['field_class'][] = 'edd_sl_activate_license';
         $repeater_fields['download']['field_class'][] = 'edd_sl_deactivate_license';
-        $repeater_fields['download']['field_class'][] = 'edd_sl_license_upgraded';
         
         return $repeater_fields;
         
@@ -113,6 +112,7 @@ class EDD_Slack_Software_Licensing {
             'email' => $customer->email,
             'license_key' => edd_software_licensing()->get_license_key( $license_id ),
             'download_id' => $download_id,
+            'price_id' => edd_software_licensing()->get_price_id( $license_id ),
             'expiration' => get_post_meta( $license_id, '_edd_sl_expiration', true ),
             'license_limit' => edd_software_licensing()->license_limit( $license_id ),
         ) );
@@ -146,6 +146,7 @@ class EDD_Slack_Software_Licensing {
                 'email' => $customer->email,
                 'license_key' => edd_software_licensing()->get_license_key( $license_id ),
                 'download_id' => edd_software_licensing()->get_download_id( $license_id ),
+                'price_id' => edd_software_licensing()->get_price_id( $license_id ),
                 'expiration' => get_post_meta( $license_id, '_edd_sl_expiration', true ),
                 'site_count' => edd_software_licensing()->get_site_count( $license_id ),
                 'license_limit' => edd_software_licensing()->license_limit( $license_id ),
@@ -160,6 +161,7 @@ class EDD_Slack_Software_Licensing {
                 'email' => $customer->email,
                 'license_key' => edd_software_licensing()->get_license_key( $license_id ),
                 'download_id' => edd_software_licensing()->get_download_id( $license_id ),
+                'price_id' => edd_software_licensing()->get_price_id( $license_id ),
                 'expiration' => get_post_meta( $license_id, '_edd_sl_expiration', true ),
                 'site_count' => edd_software_licensing()->get_site_count( $license_id ),
                 'license_limit' => edd_software_licensing()->license_limit( $license_id ),
@@ -226,11 +228,21 @@ class EDD_Slack_Software_Licensing {
             
             if ( $trigger == 'edd_sl_store_license' ||
                 $trigger == 'edd_sl_activate_license' ||
-                $trigger == 'edd_sl_deactivate_license' ||
-                $trigger == 'edd_sl_license_upgraded' ) {
+                $trigger == 'edd_sl_deactivate_license' ) {
+                
+                $download = EDDSLACK()->notification_integration->check_for_price_id( $fields['download'] );
+                
+                $download_id = $download['download_id'];
+                $price_id = $download['price_id'];
                 
                 // Download commented on doesn't match our Notification, bail
-                if ( $fields['download'] !== 'all' && (int) $fields['download'] !== $args['download_id'] ) {
+                if ( $download_id !== 'all' && (int) $download_id !== $args['download_id'] ) {
+                    $args['bail'] = true;
+                    return false;
+                }
+                
+                // Price ID doesn't match our Notification, bail
+                if ( $price_id !== null && (int) $price_id !== $args['price_id'] ) {
                     $args['bail'] = true;
                     return false;
                 }

@@ -166,21 +166,10 @@ class EDD_Slack_Purchase_Limit {
             
             if ( $trigger == 'edd_purchase_limit' ) {
                 
-                $download_id = $fields['download'];
-                $price_id = null;
+                $download = EDDSLACK()->notification_integration->check_for_price_id( $fields['download'] );
                 
-                // Check if a Price ID was saved
-                if ( strpos( $download_id, '-' ) !== false ) {
-                    
-                    $download = explode( '-', $download_id );
-                    
-                    // First half is Download ID
-                    $download_id = $download[0];
-                    
-                    // Second half is Price ID
-                    $price_id = $download[1];
-                    
-                }
+                $download_id = $download['download_id'];
+                $price_id = $download['price_id'];
 
                 // Download doesn't match our Notification, bail
                 if ( $download_id !== 'all' && (int) $download_id !== $args['download_id'] ) {

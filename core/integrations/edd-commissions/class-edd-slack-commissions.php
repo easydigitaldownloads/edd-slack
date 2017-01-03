@@ -37,6 +37,9 @@ class EDD_Slack_Commissions {
         // Add our own Hints for the Replacement Strings
         add_filter( 'edd_slack_text_replacement_hints', array( $this, 'custom_replacement_hints' ), 10, 3 );
         
+        // Conditionally hide Download Variant Values
+        add_filter( 'edd_slack_localize_admin_script', array( $this, 'add_variant_exclusion' ) );
+        
     }
     
     /**
@@ -123,10 +126,14 @@ class EDD_Slack_Commissions {
                 'bail' => false,
             ) );
             
+            $download = EDDSLACK()->notification_integration->check_for_price_id( $fields['download'] );
+
+            $download_id = $download['download_id'];
+            
             if ( $trigger == 'eddc_insert_commission' ) {
 
                 // Download doesn't match our Notification, bail
-                if ( $fields['download'] !== 'all' && (int) $fields['download'] !== $args['download_id'] ) {
+                if ( $download_id !== 'all' && (int) $download_id !== $args['download_id'] ) {
                     $args['bail'] = true;
                     return false;
                 }
@@ -205,6 +212,23 @@ class EDD_Slack_Commissions {
         $hints['eddc_insert_commission'] = array_merge( $user_hints, $commission_hints );
         
         return $hints;
+        
+    }
+    
+    /**
+     * Add our Trigger(s) to the Variant Exclusion Array. This prevents Variants from being selectable in the Downloads dropdown.
+     *
+     * @param       array $localized_script PHP Localized values for JavaScript
+     *                                                               
+     * @access      public
+     * @since       1.0.0
+     * @return      array Modified Localized values
+     */
+    public function add_variant_exclusion( $localized_script ) {
+        
+        $localized_script['variantExclusion'][] = 'eddc_insert_commission';
+        
+        return $localized_script;
         
     }
     

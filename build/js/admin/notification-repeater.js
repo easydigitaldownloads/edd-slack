@@ -42,7 +42,8 @@
             
             var $download = $( row ).find( '.edd-slack-download' );
             
-            if ( eddSlack.variantExclusion.indexOf( option_class ) > -1 ) {
+            if ( eddSlack.variantExclusion !== undefined && 
+                eddSlack.variantExclusion.indexOf( option_class ) > -1 ) {
                 
                 // Reset value if it is set to a variant
                 if ( $download.val().indexOf( '-' ) > -1 ) $download.val( 0 );

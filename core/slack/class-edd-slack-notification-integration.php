@@ -232,11 +232,6 @@ class EDD_Slack_Notification_Integration {
                     
                     $payment_link = add_query_arg( 'id', $args['payment_id'], admin_url( 'edit.php?post_type=download&page=edd-payment-history&view=view-order-details' ) );
                     
-                    // If we're using a regular Webhook
-                    if ( strpos( $fields['webhook_url'], 'hooks.slack.com' ) ) {
-                        $payment_link = urlencode_deep( add_query_arg( 'id', $args['payment_id'], admin_url( 'edit.php?post_type=download&page=edd-payment-history&view=view-order-details' ) ) );
-                    }
-                    
                     $replacements['%payment_link%'] = '<' . $payment_link . '|' . _x( 'View Payment Details', 'View Payment Details Link', EDD_Slack_ID ) . '>'; // No function to get this?
                     
                     $replacements['%cart%'] = '';

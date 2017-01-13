@@ -230,11 +230,6 @@ class EDD_Slack_Frontend_Submissions {
                     
                     $download_link = get_edit_post_link( $args['download_id'], '' );
                     
-                    // If we're using a regular Webhook
-                    if ( strpos( $fields['webhook_url'], 'hooks.slack.com' ) ) {
-                        $download_link = urlencode_deep( $download_link );
-                    }
-                    
                     $replacements['%download_link%'] = '<' . $download_link . '|' . sprintf( _x( "View this Vendor's %s", "View this Vendor's Download Link", EDD_Slack_ID ) . '>', edd_get_label_singular() );
                     
                     // Intentionally not break-ing to include the next Case

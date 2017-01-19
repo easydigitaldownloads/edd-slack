@@ -122,7 +122,10 @@ class EDD_Slack_Comments {
     public function comment_post( $comment_id, $comment_approved, $commentdata ) {
         
         $comment_post = get_post( $commentdata['comment_post_ID'] );
-        
+		
+		// EDD Reviews normally doesn't trigger this, but if it is paired with EDD FES it does
+		if ( $commentdata['comment_type'] == 'edd_vendor_feedback' ) return false;
+		
         if ( get_post_type( $comment_post ) == 'download' && $comment_approved !== 'spam' ) {
             
             $comment = get_comment ( $comment_id );

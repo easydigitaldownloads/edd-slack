@@ -1,5 +1,5 @@
-var gulp          = require( 'gulp' );
+var gulp		  = require( 'gulp' );
 
 gulp.task( 'default', ['sass', 'uglify', 'watch'], function( done ) {
-    done();
+	done();
 } );

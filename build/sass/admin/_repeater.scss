@@ -1,171 +1,171 @@
 .edd-rbm-repeater {
 
-    table.widefat {
+	table.widefat {
 
-        background: transparent;
-        border: 0;
-        box-shadow: none;
+		background: transparent;
+		border: 0;
+		box-shadow: none;
 
-        thead {
+		thead {
 
-            tr {
+			tr {
 
-                display: block;
+				display: block;
 
-                th {
+				th {
 
-                    display: inline-block;
+					display: inline-block;
 
-                    div {
+					div {
 
-                        display: inline-block;
-                        vertical-align: middle;
+						display: inline-block;
+						vertical-align: middle;
 
-                    }
+					}
 
-                }
+				}
 
-                .edd-rbm-repeater-controls {
-                    text-align: right;
-                }
+				.edd-rbm-repeater-controls {
+					text-align: right;
+				}
 
-            }
+			}
 
-        }
+		}
 
-    }
+	}
 
-    .button.button-danger {
-        background: #ff7151;
-        border-color: #c6573e;
-        color: #fff;
-    }
+	.button.button-danger {
+		background: #ff7151;
+		border-color: #c6573e;
+		color: #fff;
+	}
 
-    .edd-rbm-repeater-list {
-        border: 2px solid #e5e5e5;
-        box-shadow: 0 1px 1px rgba(0,0,0,0.06);
-    }
+	.edd-rbm-repeater-list {
+		border: 2px solid #e5e5e5;
+		box-shadow: 0 1px 1px rgba(0,0,0,0.06);
+	}
 
-    .edd-rbm-repeater-item {
-        
-        background: #f5f5f5;
+	.edd-rbm-repeater-item {
+		
+		background: #f5f5f5;
 
-        .repeater-header {
+		.repeater-header {
 
-            border: 1px #ddd;
-            border-top-style: solid;
-            border-bottom-style: solid;
-            padding: 20px 0px 20px 10px;
+			border: 1px #ddd;
+			border-top-style: solid;
+			border-bottom-style: solid;
+			padding: 20px 0px 20px 10px;
 
-            th {
-                vertical-align: middle;
-                width: 100%;
-                padding: 0;
-                border: none;
-            }
-            
-            .status-indicator {
-                
-                line-height: 1.2;
-            
-                &.active {
-                    color: #4F8A10;
-                }
+			th {
+				vertical-align: middle;
+				width: 100%;
+				padding: 0;
+				border: none;
+			}
+			
+			.status-indicator {
+				
+				line-height: 1.2;
+			
+				&.active {
+					color: #4F8A10;
+				}
 
-                &.inactive {
-                    color: #D8000C;
-                }
-                
-            }
+				&.inactive {
+					color: #D8000C;
+				}
+				
+			}
 
-            .edd-rbm-repeater-controls {
+			.edd-rbm-repeater-controls {
 
-                float: right;
-                text-align: center;
-                margin-right: 10px;
+				float: right;
+				text-align: center;
+				margin-right: 10px;
 
-            }
+			}
 
-        }
+		}
 
-        &:first-of-type {
-            .repeater-header {
-                border-top-style: none;
-            }
-        }
+		&:first-of-type {
+			.repeater-header {
+				border-top-style: none;
+			}
+		}
 
-        &:last-of-type {
-            .repeater-header {
-                border-bottom-style: none;
-            }
-        }
+		&:last-of-type {
+			.repeater-header {
+				border-bottom-style: none;
+			}
+		}
 
-    }
+	}
 
 }
 
 .edd-rbm-repeater-content {
 
-    margin-bottom: 32px; // Same Margin as the margin from the top
-    overflow-x: hidden;
-    
-    .edd-rbm-repeater-form {
-        margin-top: 1rem;
-    }
+	margin-bottom: 32px; // Same Margin as the margin from the top
+	overflow-x: hidden;
+	
+	.edd-rbm-repeater-form {
+		margin-top: 1rem;
+	}
 
-    table.widefat {
-        background: transparent;
-        border: 0;
-        box-shadow: none;
-    }
+	table.widefat {
+		background: transparent;
+		border: 0;
+		box-shadow: none;
+	}
 
-    input.regular-text, textarea, select, div.wp-picker-container {
-        width: 100%;
-    }
-    
-    select.required.edd-chosen {
-        display: block !important; // Ensure that our validation works correctly
-        position: absolute;
-        clip: rect(0,0,0,0);
-    }
+	input.regular-text, textarea, select, div.wp-picker-container {
+		width: 100%;
+	}
+	
+	select.required.edd-chosen {
+		display: block !important; // Ensure that our validation works correctly
+		position: absolute;
+		clip: rect(0,0,0,0);
+	}
 
-    div.chosen-container {
-        width: 100% !important;   
-    }
+	div.chosen-container {
+		width: 100% !important;   
+	}
 
-    td {
+	td {
 
-        vertical-align: top;
+		vertical-align: top;
 
-        &.hidden {
-            display: none !important;
-        }
+		&.hidden {
+			display: none !important;
+		}
 
-    }
-    
-    .validation-error {
-        color: #D8000C;
-    }
-    
+	}
+	
+	.validation-error {
+		color: #D8000C;
+	}
+	
 }
 
 // Errors about outdated Integrations
 .form-table td {
-    
-    .integration-error {
+	
+	.integration-error {
 
-        background: #fff;
-        border-left: 4px solid #dc3232;
-        -webkit-box-shadow: 0 1px 1px 0 rgba( 0, 0, 0, 0.1 );
-        box-shadow: 0 1px 1px 0 rgba( 0, 0, 0, 0.1 );
-        margin: 5px 0;
-        padding: 1px 12px;
+		background: #fff;
+		border-left: 4px solid #dc3232;
+		-webkit-box-shadow: 0 1px 1px 0 rgba( 0, 0, 0, 0.1 );
+		box-shadow: 0 1px 1px 0 rgba( 0, 0, 0, 0.1 );
+		margin: 5px 0;
+		padding: 1px 12px;
 
-        p {
-            margin: 0.5em 0;
-            padding: 2px;
-        }
+		p {
+			margin: 0.5em 0;
+			padding: 2px;
+		}
 
-    }
-    
+	}
+	
 }

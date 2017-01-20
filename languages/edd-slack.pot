@@ -53,7 +53,7 @@ msgctxt "Delete Slack Notification Button"
 msgid "Delete Slack Notification"
 msgstr ""
 
-#: core/admin/class-edd-slack-admin.php:136, core/slack/class-edd-slack-notification-integration.php:447
+#: core/admin/class-edd-slack-admin.php:136, core/slack/class-edd-slack-notification-integration.php:442
 msgctxt "New Slack Notification Header"
 msgid "New Slack Notification"
 msgstr ""
@@ -247,27 +247,27 @@ msgctxt "Top Level Comments Checkbox Label"
 msgid "Only Trigger on New, Top-Level Comments"
 msgstr ""
 
-#: core/integrations/edd-comments/class-edd-slack-comments.php:215
+#: core/integrations/edd-comments/class-edd-slack-comments.php:221
 msgctxt "No Username Replacement Text"
 msgid "This Commenter does not have an account"
 msgstr ""
 
-#: core/integrations/edd-comments/class-edd-slack-comments.php:220
+#: core/integrations/edd-comments/class-edd-slack-comments.php:226
 msgctxt "View this Comment Link Text"
 msgid "View this Comment"
 msgstr ""
 
-#: core/integrations/edd-comments/class-edd-slack-comments.php:248
+#: core/integrations/edd-comments/class-edd-slack-comments.php:254
 msgctxt "%download% Hint Text"
 msgid "The %s the Comment was made on"
 msgstr ""
 
-#: core/integrations/edd-comments/class-edd-slack-comments.php:249
+#: core/integrations/edd-comments/class-edd-slack-comments.php:255
 msgctxt "%comment_content% Hint Text"
 msgid "The Comment itself"
 msgstr ""
 
-#: core/integrations/edd-comments/class-edd-slack-comments.php:250
+#: core/integrations/edd-comments/class-edd-slack-comments.php:256
 msgctxt "%comment_link% Hint Text"
 msgid "A link to the Comment"
 msgstr ""
@@ -312,17 +312,17 @@ msgctxt "New Vendor Contact Form Submitted Trigger"
 msgid "New Vendor Contact Form Submitted"
 msgstr ""
 
-#: core/integrations/edd-frontend-submissions/class-edd-slack-frontend-submissions.php:238
+#: core/integrations/edd-frontend-submissions/class-edd-slack-frontend-submissions.php:233
 msgctxt "View this Vendor's Download Link"
 msgid "View this Vendor's %s"
 msgstr ""
 
-#: core/integrations/edd-frontend-submissions/class-edd-slack-frontend-submissions.php:278
+#: core/integrations/edd-frontend-submissions/class-edd-slack-frontend-submissions.php:273
 msgctxt "%download_link% Hint Text"
 msgid "Show a link to the Admin Edit screen for this %s"
 msgstr ""
 
-#: core/integrations/edd-frontend-submissions/class-edd-slack-frontend-submissions.php:286, core/integrations/edd-frontend-submissions/class-edd-slack-frontend-submissions.php:302
+#: core/integrations/edd-frontend-submissions/class-edd-slack-frontend-submissions.php:281, core/integrations/edd-frontend-submissions/class-edd-slack-frontend-submissions.php:297
 msgctxt "No Hint Text Notice"
 msgid "No Hint Text Provided for this Form Field"
 msgstr ""
@@ -412,22 +412,22 @@ msgctxt "No Discount Code Applied Text"
 msgid "No Discount Code Applied"
 msgstr ""
 
-#: core/slack/class-edd-slack-notification-integration.php:240
+#: core/slack/class-edd-slack-notification-integration.php:235
 msgctxt "View Payment Details Link"
 msgid "View Payment Details"
 msgstr ""
 
-#: core/slack/class-edd-slack-notification-integration.php:263
+#: core/slack/class-edd-slack-notification-integration.php:258
 msgctxt "Empty Cart Replacement Text"
 msgid "There was nothing in the Cart"
 msgstr ""
 
-#: core/slack/class-edd-slack-notification-integration.php:507
+#: core/slack/class-edd-slack-notification-integration.php:502
 msgctxt "Current User Cannot Create Notications Error"
 msgid "Access Denied"
 msgstr ""
 
-#: core/slack/class-edd-slack-notification-integration.php:537
+#: core/slack/class-edd-slack-notification-integration.php:532
 msgctxt "Current User Cannot Delete Notications Error"
 msgid "Access Denied"
 msgstr ""

@@ -677,170 +677,170 @@ msgctxt "Outdated Dependency Error"
 msgid "%s requires v%s of %s or higher to be installed!"
 msgstr ""
 
-#: edd-slack.php:287, edd-slack.php:304, edd-slack.php:320, edd-slack.php:337
+#: edd-slack.php:282, edd-slack.php:299, edd-slack.php:315, edd-slack.php:332
 msgctxt "Outdated Integration Error"
 msgid "%s includes features which integrate with %s, but v%s or greater of %s is required."
 msgstr ""
 
-#: edd-slack.php:415
+#: edd-slack.php:410
 msgctxt "All Variations Option Text"
 msgid "All Variations"
 msgstr ""
 
-#: edd-slack.php:456, edd-slack.php:462
+#: edd-slack.php:451, edd-slack.php:457
 msgid "Indentifier for this Notification"
 msgstr ""
 
-#: edd-slack.php:459
+#: edd-slack.php:454
 msgid "New Slack Notification"
 msgstr ""
 
-#: edd-slack.php:463
+#: edd-slack.php:458
 msgid "Helps distinguish Notifications from one another on the Settings Screen. If left blank, your Notification will be labeled &ldquo;New Slack Notification&rdquo;."
 msgstr ""
 
-#: edd-slack.php:466
+#: edd-slack.php:461
 msgid "Slack Trigger"
 msgstr ""
 
-#: edd-slack.php:475, edd-slack.php:477
+#: edd-slack.php:470, edd-slack.php:472
 msgctxt "Slack Trigger Default Label"
 msgid "-- Select a Slack Trigger --"
 msgstr ""
 
-#: edd-slack.php:494, edd-slack.php:497
+#: edd-slack.php:489, edd-slack.php:492
 msgctxt "Select Field Default"
 msgid "-- Select %s --"
 msgstr ""
 
-#: edd-slack.php:495
+#: edd-slack.php:490
 msgctxt "All items in a Select Field"
 msgid "All %s"
 msgstr ""
 
-#: edd-slack.php:501
+#: edd-slack.php:496
 msgctxt "Discount Code Field Label"
 msgid "Discount Code"
 msgstr ""
 
-#: edd-slack.php:512, edd-slack.php:515
+#: edd-slack.php:507, edd-slack.php:510
 msgctxt "Discount Code Field Default"
 msgid "-- Select Discount Code --"
 msgstr ""
 
-#: edd-slack.php:513
+#: edd-slack.php:508
 msgctxt "All Discount Codes Text"
 msgid "All Discount Codes"
 msgstr ""
 
-#: edd-slack.php:524
+#: edd-slack.php:519
 msgid "Message Pre-text (Optional)"
 msgstr ""
 
-#: edd-slack.php:529
+#: edd-slack.php:524
 msgid "Message Pre-text"
 msgstr ""
 
-#: edd-slack.php:530
+#: edd-slack.php:525
 msgid "Shows directly below Username and above the Title/Message."
 msgstr ""
 
-#: edd-slack.php:534
+#: edd-slack.php:529
 msgid "Message Title (Optional)"
 msgstr ""
 
-#: edd-slack.php:539
+#: edd-slack.php:534
 msgid "Message Title"
 msgstr ""
 
-#: edd-slack.php:540
+#: edd-slack.php:535
 msgid "If left blank this will default to the Notification Identifier."
 msgstr ""
 
-#: edd-slack.php:544
+#: edd-slack.php:539
 msgid "Message (Optional)"
 msgstr ""
 
-#: edd-slack.php:550
+#: edd-slack.php:545
 msgid "Slack Webhook URL (Optional)"
 msgstr ""
 
-#: edd-slack.php:555
+#: edd-slack.php:550
 msgid "You can override the above Webhook URL here."
 msgstr ""
 
-#: edd-slack.php:563
+#: edd-slack.php:558
 msgid "Slack Webhook URL"
 msgstr ""
 
-#: edd-slack.php:564
+#: edd-slack.php:559
 msgid "This overrides the Default Webhook URL. This can be useful if you want a specific Notification to send to another Slack Team entirely."
 msgstr ""
 
-#: edd-slack.php:568
+#: edd-slack.php:563
 msgid "Slack Channel (Optional)"
 msgstr ""
 
-#: edd-slack.php:570, edd-slack.php:590
+#: edd-slack.php:565, edd-slack.php:585
 msgid "Webhook default"
 msgstr ""
 
-#: edd-slack.php:573
+#: edd-slack.php:568
 msgid "Slack Channel"
 msgstr ""
 
-#: edd-slack.php:574
+#: edd-slack.php:569
 msgid "This overrides the Default Channel defined by the Webhook URL. Notifications can be sent to individual Users instead by entering their Username like so: <code>@&laquo;username&raquo;</code>."
 msgstr ""
 
-#: edd-slack.php:578
+#: edd-slack.php:573
 msgid "Username (Optional)"
 msgstr ""
 
-#: edd-slack.php:583
+#: edd-slack.php:578
 msgid "Username"
 msgstr ""
 
-#: edd-slack.php:584
+#: edd-slack.php:579
 msgid "This controls who the Notification appears to be from. It does not have to be a valid User in your Slack Team. This will default to &ldquo;%s&rdquo;."
 msgstr ""
 
-#: edd-slack.php:588
+#: edd-slack.php:583
 msgid "Icon Emoji or Image URL (Optional)"
 msgstr ""
 
-#: edd-slack.php:593
+#: edd-slack.php:588
 msgid "Icon Emoji or Image URL"
 msgstr ""
 
-#: edd-slack.php:594
+#: edd-slack.php:589
 msgid "This accepts an Emoji (Example: <code>:rocket:</code>) or an Image URL. You can even use Custom Emojis defined within your Slack Team. If left empty, it will default to the Emoji or Image defined by the Webhook URL."
 msgstr ""
 
-#: edd-slack.php:598, edd-slack.php:601
+#: edd-slack.php:593, edd-slack.php:596
 msgid "Color"
 msgstr ""
 
-#: edd-slack.php:602
+#: edd-slack.php:597
 msgid "Shows next to Message Title and Message."
 msgstr ""
 
-#: edd-slack.php:618
+#: edd-slack.php:613
 msgctxt "Purchase Complete Trigger Label"
 msgid "Purchase Complete"
 msgstr ""
 
-#: edd-slack.php:619
+#: edd-slack.php:614
 msgctxt "Purchase Failed Trigger Label"
 msgid "Purchase Failed"
 msgstr ""
 
-#: edd-slack.php:620
+#: edd-slack.php:615
 msgctxt "Discount Code Applied Trigger Label"
 msgid "Discount Code Applied"
 msgstr ""
 
-#: edd-slack.php:621
+#: edd-slack.php:616
 msgctxt "New User Registration Trigger Label"
 msgid "New User Registration via EDD"
 msgstr ""

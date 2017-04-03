@@ -1,14 +1,14 @@
 <?php
-/*
-Plugin Name: Easy Digital Downloads - Slack
-Plugin URL: http://easydigitaldownloads.com/downloads/slack
-Description: Slack Integration for Easy Digital Downloads
-Version: 1.0.3
-Text Domain: edd-slack
-Author: Real Big Plugins
-Author URI: http://realbigplugins.com
-Contributors: d4mation
-*/
+/**
+ * Plugin Name: Easy Digital Downloads - Slack
+ * Plugin URL: http://easydigitaldownloads.com/downloads/slack
+ * Description: Slack Integration for Easy Digital Downloads
+ * Version: 1.0.3
+ * Text Domain: edd-slack
+ * Author: Real Big Plugins
+ * Author URI: http://realbigplugins.com
+ * Contributors: d4mation
+ */
 
 // Exit if accessed directly
 if ( ! defined( 'ABSPATH' ) ) exit;

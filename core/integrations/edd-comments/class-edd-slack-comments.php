@@ -54,7 +54,7 @@ class EDD_Slack_Comments {
 	 */
 	public function add_comment_post_trigger( $triggers ) {
 
-		$triggers['comment_post'] = sprintf( _x( 'New Comment on %s', 'New Comment on Download Trigger', EDD_Slack_ID ), edd_get_label_singular() );
+		$triggers['comment_post'] = sprintf( _x( 'New Comment on %s', 'New Comment on Download Trigger', 'edd-slack' ), edd_get_label_singular() );
 
 		return $triggers;
 
@@ -90,7 +90,7 @@ class EDD_Slack_Comments {
 		$top_level_only = array(
 			'comments_top_level_only' => array(
 				'type' => 'checkbox',
-				'desc' => _x( 'Only Trigger on New, Top-Level Comments', 'Top Level Comments Checkbox Label', EDD_Slack_ID ),
+				'desc' => _x( 'Only Trigger on New, Top-Level Comments', 'Top Level Comments Checkbox Label', 'edd-slack' ),
 				'field_class' => array(
 					'edd-slack-field',
 					'edd-slack-comments-top-level-only',
@@ -218,12 +218,12 @@ class EDD_Slack_Comments {
 				case 'comment_post':
 					
 					if ( $args['user_id'] == 0 ) {
-						$replacements['%username%'] = _x( 'This Commenter does not have an account', 'No Username Replacement Text', EDD_Slack_ID );
+						$replacements['%username%'] = _x( 'This Commenter does not have an account', 'No Username Replacement Text', 'edd-slack' );
 					}
 					
 					$replacements['%download%'] = get_the_title( $args['comment_post_id'] );
 					$replacements['%comment_content%'] = $args['comment_content'];
-					$replacements['%comment_link%'] = '<' . get_comment_link( $args['comment_id'] ) . '|' . _x( 'View this Comment', 'View this Comment Link Text', EDD_Slack_ID ) . '>';
+					$replacements['%comment_link%'] = '<' . get_comment_link( $args['comment_id'] ) . '|' . _x( 'View this Comment', 'View this Comment Link Text', 'edd-slack' ) . '>';
 					break;
 					
 				default:
@@ -251,9 +251,9 @@ class EDD_Slack_Comments {
 	public function custom_replacement_hints( $hints, $user_hints, $payment_hints ) {
 		
 		$comment_hints = array(
-			'%download%' => sprintf( _x( 'The %s the Comment was made on', '%download% Hint Text', EDD_Slack_ID ), edd_get_label_singular() ),
-			'%comment_content%' => _x( 'The Comment itself', '%comment_content% Hint Text', EDD_Slack_ID ),
-			'%comment_link%' => _x( 'A link to the Comment', '%comment_link% Hint Text', EDD_Slack_ID ),
+			'%download%' => sprintf( _x( 'The %s the Comment was made on', '%download% Hint Text', 'edd-slack' ), edd_get_label_singular() ),
+			'%comment_content%' => _x( 'The Comment itself', '%comment_content% Hint Text', 'edd-slack' ),
+			'%comment_link%' => _x( 'A link to the Comment', '%comment_link% Hint Text', 'edd-slack' ),
 		);
 		
 		$hints['comment_post'] = array_merge( $user_hints, $comment_hints );

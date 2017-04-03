@@ -34,7 +34,7 @@ if ( ! function_exists( 'edd_slack_slash_command_help' ) ) {
 		 */
 		$commands = apply_filters( 'edd_slack_slash_command_help_response', array(
 			'sales' => array(
-				'description' => _x( 'Show an Earnings Report for the Selected Time Period', '/edd sales Description', EDD_Slack_ID ),
+				'description' => _x( 'Show an Earnings Report for the Selected Time Period', '/edd sales Description', 'edd-slack' ),
 				'options' => array( 
 					'today',
 					'yesterday',
@@ -52,7 +52,7 @@ if ( ! function_exists( 'edd_slack_slash_command_help' ) ) {
 		) );
 		
 		$commands['help'] = array(
-			'description' => _x( 'Shows this Dialog. Optionally can show the Help Dialog for a Single Command.', '/edd help Description', EDD_Slack_ID ),
+			'description' => _x( 'Shows this Dialog. Optionally can show the Help Dialog for a Single Command.', '/edd help Description', 'edd-slack' ),
 			'options' => array_keys( $commands ),
 		);
 		
@@ -75,18 +75,18 @@ if ( ! function_exists( 'edd_slack_slash_command_help' ) ) {
 			$title = sprintf( '*%s*', $request_body['command'] . ' ' . $command );
 			
 			if ( isset( $args['description'] ) && ! empty( $args['description'] ) ) {
-				$description = "\n" . sprintf( _x( 'Description: %s', 'Slash Command Description', EDD_Slack_ID ), $args['description'] );
+				$description = "\n" . sprintf( _x( 'Description: %s', 'Slash Command Description', 'edd-slack' ), $args['description'] );
 			}
 			else {
 				$description = '';
 			}
 			
-			$example = "\n" . sprintf( _x( 'Example: `%s', 'Slash Command Example', EDD_Slack_ID ), $request_body['command'] . ' ' . $command );
+			$example = "\n" . sprintf( _x( 'Example: `%s', 'Slash Command Example', 'edd-slack' ), $request_body['command'] . ' ' . $command );
 			
 			// If there's a default set, make some strings
 			if ( isset( $args['default'] ) && ! empty( $args['default'] ) ) {
 				$example .= ' ' . $args['default'] . '`';
-				$default = "\n" . sprintf( _x( 'Default: `%s`', 'Slash Command Default', EDD_Slack_ID ), $args['default'] );
+				$default = "\n" . sprintf( _x( 'Default: `%s`', 'Slash Command Default', 'edd-slack' ), $args['default'] );
 			}
 			else {
 				$example .= '`';
@@ -106,7 +106,7 @@ if ( ! function_exists( 'edd_slack_slash_command_help' ) ) {
 				}
 				
 				// Append our Options
-				$options = "\n" . sprintf( _x( 'Option(s): %s', 'Slash Command Options', EDD_Slack_ID ), rtrim( $options, ', ' ) );
+				$options = "\n" . sprintf( _x( 'Option(s): %s', 'Slash Command Options', 'edd-slack' ), rtrim( $options, ', ' ) );
 				
 			}
 			else {
@@ -170,17 +170,17 @@ if ( ! function_exists( 'edd_slack_slash_command_sales' ) ) {
 
 		$attachments = array(
 			array(
-				'title' => sprintf( _x( 'Earnings Report for %s', 'Earnings Report for this Period /edd sales', EDD_Slack_ID ), $human_date_range ),
-				'text' => html_entity_decode( sprintf( _x( 'Total Earnings for %s: %s', 'Total Earnings for this Period /edd sales', EDD_Slack_ID ), $human_date_range, edd_currency_filter( edd_format_amount( $values['earnings_totals'] ) ) ) ) . "\n"
-					. html_entity_decode( sprintf( _x( 'Total Sales for %s: %s', 'Total Sales for this Period /edd sales', EDD_Slack_ID ), $human_date_range, edd_format_amount( $values['sales_totals'], false ) ) ),
+				'title' => sprintf( _x( 'Earnings Report for %s', 'Earnings Report for this Period /edd sales', 'edd-slack' ), $human_date_range ),
+				'text' => html_entity_decode( sprintf( _x( 'Total Earnings for %s: %s', 'Total Earnings for this Period /edd sales', 'edd-slack' ), $human_date_range, edd_currency_filter( edd_format_amount( $values['earnings_totals'] ) ) ) ) . "\n"
+					. html_entity_decode( sprintf( _x( 'Total Sales for %s: %s', 'Total Sales for this Period /edd sales', 'edd-slack' ), $human_date_range, edd_format_amount( $values['sales_totals'], false ) ) ),
 			),
 		);
 
 		// If we're checking for the Month, also show Estimations
 		if ( $dates['range'] == 'this_month' ) {
 
-			$attachments[0]['text'] .= "\n" . html_entity_decode( sprintf( _x( 'Estimated Monthly Earnings: %s', 'Estimated Montly Earnings /eddsales', EDD_Slack_ID ), edd_currency_filter( edd_format_amount( $values['estimated']['earnings'] ) ) ) ) . "\n"
-				. html_entity_decode( sprintf( _x( 'Estimated Monthly Sales: %s', 'Estimated Montly Sales /edd sales', EDD_Slack_ID ), edd_format_amount( $values['estimated']['sales'], false ) ) );
+			$attachments[0]['text'] .= "\n" . html_entity_decode( sprintf( _x( 'Estimated Monthly Earnings: %s', 'Estimated Montly Earnings /eddsales', 'edd-slack' ), edd_currency_filter( edd_format_amount( $values['estimated']['earnings'] ) ) ) ) . "\n"
+				. html_entity_decode( sprintf( _x( 'Estimated Monthly Sales: %s', 'Estimated Montly Sales /edd sales', 'edd-slack' ), edd_format_amount( $values['estimated']['sales'], false ) ) );
 
 		}
 

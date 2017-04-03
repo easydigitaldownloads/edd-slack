@@ -89,14 +89,14 @@ class EDD_Slack_App_Comments {
 		$notification_args['attachments'][0]['actions'] = array(
 			array(
 				'name' => 'approve',
-				'text' => _x( 'Approve', 'Approve Button Text', EDD_Slack_ID ),
+				'text' => _x( 'Approve', 'Approve Button Text', 'edd-slack' ),
 				'type' => 'button',
 				'style' => 'primary',
 				'value' => json_encode( $args ),
 			),
 			array(
 				'name' => 'spam',
-				'text' => _x( 'Mark as Spam', 'Mark as Spam Button Text', EDD_Slack_ID ),
+				'text' => _x( 'Mark as Spam', 'Mark as Spam Button Text', 'edd-slack' ),
 				'type' => 'button',
 				'style' => 'danger',
 				'value' => json_encode( $args ),
@@ -167,7 +167,7 @@ if ( ! function_exists( 'edd_slack_interactive_message_comment_post' ) ) {
 				'comment_approved' => 1,
 			) );
 			
-			$message = sprintf( _x( "%s has Approved %s's Comment on %s", 'Comment Approved Response Text', EDD_Slack_ID ), $payload->user->name, $value->name, get_the_title( $value->comment_post_id ) );
+			$message = sprintf( _x( "%s has Approved %s's Comment on %s", 'Comment Approved Response Text', 'edd-slack' ), $payload->user->name, $value->name, get_the_title( $value->comment_post_id ) );
 			
 		}
 		else if ( strtolower( $action ) == 'spam' ) {
@@ -177,7 +177,7 @@ if ( ! function_exists( 'edd_slack_interactive_message_comment_post' ) ) {
 				'comment_approved' => 'spam',
 			) );
 			
-			$message = sprintf( _x( "%s has marked %s's Comment on %s as Spam", 'Spam Comment Response Text', EDD_Slack_ID ), $payload->user->name, $value->name, get_the_title( $value->comment_post_id ) );
+			$message = sprintf( _x( "%s has marked %s's Comment on %s as Spam", 'Spam Comment Response Text', 'edd-slack' ), $payload->user->name, $value->name, get_the_title( $value->comment_post_id ) );
 			
 		}
 		

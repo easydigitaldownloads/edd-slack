@@ -59,10 +59,10 @@ class EDD_Slack_Software_Licensing {
 	 */
 	public function add_triggers( $triggers ) {
 
-		$triggers['edd_sl_store_license'] = _x( 'New License Key Generated', 'New License Key Generated Trigger', EDD_Slack_ID );
-		$triggers['edd_sl_activate_license'] = _x( 'License Key Activated', 'License Key Activated Trigger', EDD_Slack_ID );
-		$triggers['edd_sl_deactivate_license'] = _x( 'License Key Deactivated', 'License Key Deactivated Trigger', EDD_Slack_ID );
-		$triggers['edd_sl_license_upgraded'] = _x( 'License Upgraded', 'License Upgraded Trigger', EDD_Slack_ID );
+		$triggers['edd_sl_store_license'] = _x( 'New License Key Generated', 'New License Key Generated Trigger', 'edd-slack' );
+		$triggers['edd_sl_activate_license'] = _x( 'License Key Activated', 'License Key Activated Trigger', 'edd-slack' );
+		$triggers['edd_sl_deactivate_license'] = _x( 'License Key Deactivated', 'License Key Deactivated Trigger', 'edd-slack' );
+		$triggers['edd_sl_license_upgraded'] = _x( 'License Upgraded', 'License Upgraded Trigger', 'edd-slack' );
 
 		return $triggers;
 
@@ -333,10 +333,10 @@ class EDD_Slack_Software_Licensing {
 	public function custom_replacement_hints( $hints, $user_hints, $payment_hints ) {
 		
 		$licensing_hints = array(
-			'%license_key%' => _x( 'The License Key', '%license_key% Hint Text', EDD_Slack_ID ),
-			'%download%' => sprintf( _x( 'The %s the License Key is for', '%download% Hint Text', EDD_Slack_ID ), edd_get_label_singular() ),
-			'%expiration%' => _x( 'The date when the License expires', '%expiration% Hint Text', EDD_Slack_ID ),
-			'%license_limit%' => _x( 'The number of sites the License can be active on', '%license_limit% Hint Text', EDD_Slack_ID ),
+			'%license_key%' => _x( 'The License Key', '%license_key% Hint Text', 'edd-slack' ),
+			'%download%' => sprintf( _x( 'The %s the License Key is for', '%download% Hint Text', 'edd-slack' ), edd_get_label_singular() ),
+			'%expiration%' => _x( 'The date when the License expires', '%expiration% Hint Text', 'edd-slack' ),
+			'%license_limit%' => _x( 'The number of sites the License can be active on', '%license_limit% Hint Text', 'edd-slack' ),
 		);
 		
 		$hints['edd_sl_store_license'] = array_merge( $user_hints, $licensing_hints );
@@ -351,8 +351,8 @@ class EDD_Slack_Software_Licensing {
 		
 		unset( $hints['edd_sl_license_upgraded']['%download%'] );
 		
-		$hints['edd_sl_license_upgraded']['%old_download%'] = sprintf( _x( 'The %s being upgraded from', '%old_download% Hint Text', EDD_Slack_ID ), edd_get_label_singular() );
-		$hints['edd_sl_license_upgraded']['%new_download%'] = sprintf( _x( 'The %s being upgraded to', '%new_download% Hint Text', EDD_Slack_ID ), edd_get_label_singular() );
+		$hints['edd_sl_license_upgraded']['%old_download%'] = sprintf( _x( 'The %s being upgraded from', '%old_download% Hint Text', 'edd-slack' ), edd_get_label_singular() );
+		$hints['edd_sl_license_upgraded']['%new_download%'] = sprintf( _x( 'The %s being upgraded to', '%new_download% Hint Text', 'edd-slack' ), edd_get_label_singular() );
 		
 		return $hints;
 		

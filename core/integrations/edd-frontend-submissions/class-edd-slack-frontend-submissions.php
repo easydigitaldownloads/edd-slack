@@ -56,19 +56,19 @@ class EDD_Slack_Frontend_Submissions {
 	 */
 	public function add_triggers( $triggers ) {
 
-		$triggers['edd_fes_vendor_registered'] = _x( 'New Vendor Application', 'New Vendor Application Trigger', EDD_Slack_ID );
+		$triggers['edd_fes_vendor_registered'] = _x( 'New Vendor Application', 'New Vendor Application Trigger', 'edd-slack' );
 		
 		// By default, Vendors cannot create their own Products
 		if ( (bool) EDD_FES()->helper->get_option( 'fes-allow-vendors-to-create-products', false ) ) {
-			$triggers['edd_fes_new_vendor_product'] = _x( 'New Vendor Product', 'New Vendor Product Trigger', EDD_Slack_ID );
+			$triggers['edd_fes_new_vendor_product'] = _x( 'New Vendor Product', 'New Vendor Product Trigger', 'edd-slack' );
 		}
 		
 		// By default, Vendors cannot edit their own Products
 		if ( (bool) EDD_FES()->helper->get_option( 'fes-allow-vendors-to-edit-products', false ) ) {
-			$triggers['edd_fes_edit_vendor_product'] = _x( 'Vendor Product Edited', 'Vendor Product Edited Trigger', EDD_Slack_ID );
+			$triggers['edd_fes_edit_vendor_product'] = _x( 'Vendor Product Edited', 'Vendor Product Edited Trigger', 'edd-slack' );
 		}
 		
-		$triggers['edd_fes_vendor_contact'] = _x( 'New Vendor Contact Form Submitted', 'New Vendor Contact Form Submitted Trigger', EDD_Slack_ID );
+		$triggers['edd_fes_vendor_contact'] = _x( 'New Vendor Contact Form Submitted', 'New Vendor Contact Form Submitted Trigger', 'edd-slack' );
 
 		return $triggers;
 
@@ -230,7 +230,7 @@ class EDD_Slack_Frontend_Submissions {
 					
 					$download_link = get_edit_post_link( $args['download_id'], '' );
 					
-					$replacements['%download_link%'] = '<' . $download_link . '|' . sprintf( _x( "View this Vendor's %s", "View this Vendor's Download Link", EDD_Slack_ID ) . '>', edd_get_label_singular() );
+					$replacements['%download_link%'] = '<' . $download_link . '|' . sprintf( _x( "View this Vendor's %s", "View this Vendor's Download Link", 'edd-slack' ) . '>', edd_get_label_singular() );
 					
 					// Intentionally not break-ing to include the next Case
 					
@@ -270,7 +270,7 @@ class EDD_Slack_Frontend_Submissions {
 		$hints['edd_fes_vendor_registered'] = $user_hints;
 		
 		$vendor_product_hints = array(
-			'%download_link%' => sprintf( _x( 'Show a link to the Admin Edit screen for this %s', '%download_link% Hint Text', EDD_Slack_ID ), edd_get_label_singular() ),
+			'%download_link%' => sprintf( _x( 'Show a link to the Admin Edit screen for this %s', '%download_link% Hint Text', 'edd-slack' ), edd_get_label_singular() ),
 		);
 		
 		$vendor_product_fields = $this->get_fields_help_text( 'submission' );
@@ -278,7 +278,7 @@ class EDD_Slack_Frontend_Submissions {
 		foreach ( $vendor_product_fields as $key => $help_text ) {
 			
 			if ( empty( $help_text ) ) {
-				$help_text = _x( 'No Hint Text Provided for this Form Field', 'No Hint Text Notice', EDD_Slack_ID );
+				$help_text = _x( 'No Hint Text Provided for this Form Field', 'No Hint Text Notice', 'edd-slack' );
 			}
 			
 			$vendor_product_hints[ '%' . $key . '%' ] = $help_text;
@@ -294,7 +294,7 @@ class EDD_Slack_Frontend_Submissions {
 		foreach ( $vendor_contact_fields as $key => $help_text ) {
 			
 			if ( empty( $help_text ) ) {
-				$help_text = _x( 'No Hint Text Provided for this Form Field', 'No Hint Text Notice', EDD_Slack_ID );
+				$help_text = _x( 'No Hint Text Provided for this Form Field', 'No Hint Text Notice', 'edd-slack' );
 			}
 			
 			$vendor_contact_hints[ '%' . $key . '%' ] = $help_text;

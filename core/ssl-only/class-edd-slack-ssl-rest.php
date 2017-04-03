@@ -64,7 +64,7 @@ class EDD_Slack_SSL_REST {
 
 		// If no Payload was sent, bail
 		if ( empty( $request_body['payload'] ) ) {
-			return _x( 'No data payload', 'No Payload Error', EDD_Slack_ID );
+			return _x( 'No data payload', 'No Payload Error', 'edd-slack' );
 		}
 
 		// Decode the Payload JSON
@@ -73,7 +73,7 @@ class EDD_Slack_SSL_REST {
 		// If the Verification Code doesn't match, bail
 		$verification_token = $payload->token;
 		if ( $verification_token !== edd_get_option( 'slack_app_verification_token' ) ) {
-			return _x( 'Bad Verification Token', 'Missing/Incorrect Verification Token Error', EDD_Slack_ID );
+			return _x( 'Bad Verification Token', 'Missing/Incorrect Verification Token Error', 'edd-slack' );
 		}
 		
 		// Just in case a command takes too long for Slack's liking
@@ -113,7 +113,7 @@ class EDD_Slack_SSL_REST {
 		// If the Verification Code doesn't match, bail
 		$verification_token = $request_body['token'];
 		if ( $verification_token !== edd_get_option( 'slack_app_verification_token' ) ) {
-			return _x( 'Bad Verification Token', 'Missing/Incorrect Verification Token Error', EDD_Slack_ID );
+			return _x( 'Bad Verification Token', 'Missing/Incorrect Verification Token Error', 'edd-slack' );
 		}
 		
 		$passed_text = explode( ' ', $request_body['text'] );
@@ -642,7 +642,7 @@ if ( ! function_exists( 'edd_slack_interactive_message_missing' ) ) {
 		$response_message = EDDSLACK()->slack_api->push_incoming_webhook(
 			$response_url,
 			array(
-				'text' => sprintf( _x( 'The Callback Function `edd_slack_interactive_message_%s()` is missing!', 'Interactive Button Callback Function Missing Error', EDD_Slack_ID ), $payload->callback_id ),
+				'text' => sprintf( _x( 'The Callback Function `edd_slack_interactive_message_%s()` is missing!', 'Interactive Button Callback Function Missing Error', 'edd-slack' ), $payload->callback_id ),
 			)
 		);
 
@@ -672,7 +672,7 @@ if ( ! function_exists( 'edd_slack_slash_command_missing' ) ) {
 		$response_message = EDDSLACK()->slack_api->push_incoming_webhook(
 			$response_url,
 			array(
-				'text' => sprintf( _x( 'The Callback Function `edd_slack_slash_command_%s()` is missing!', 'Slash Command Callback Function Missing Error', EDD_Slack_ID ), $command ),
+				'text' => sprintf( _x( 'The Callback Function `edd_slack_slash_command_%s()` is missing!', 'Slash Command Callback Function Missing Error', 'edd-slack' ), $command ),
 			)
 		);
 

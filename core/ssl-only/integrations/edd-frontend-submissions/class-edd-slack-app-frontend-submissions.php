@@ -127,14 +127,14 @@ class EDD_Slack_App_Frontend_Submissions {
 		$notification_args['attachments'][0]['actions'] = array(
 			array(
 				'name' => 'approve',
-				'text' => _x( 'Approve', 'Approve Button Text', EDD_Slack_ID ),
+				'text' => _x( 'Approve', 'Approve Button Text', 'edd-slack' ),
 				'type' => 'button',
 				'style' => 'primary',
 				'value' => json_encode( $args ),
 			),
 			array(
 				'name' => 'deny',
-				'text' => _x( 'Deny', 'Deny Button Text', EDD_Slack_ID ),
+				'text' => _x( 'Deny', 'Deny Button Text', 'edd-slack' ),
 				'type' => 'button',
 				'style' => 'default',
 				'value' => json_encode( $args ),
@@ -144,10 +144,10 @@ class EDD_Slack_App_Frontend_Submissions {
 		if ( $trigger == 'edd_fes_vendor_registered' ) {
 		
 			$notification_args['attachments'][0]['actions'][1]['confirm'] = array(
-				'title' => _x( 'Are you sure?', 'Confirmation Title Text', EDD_Slack_ID ),
-				'text' => _x( 'They will need to re-apply to be a Vendor if this was a mistake.', 'EDD FES Vendor Denial Confirmation Explaination Text', EDD_Slack_ID ),
-				'ok_text' => _x( 'Yes, I understand the risks', 'Confirmation "Yes" Button', EDD_Slack_ID ),
-				'dismiss_text' => _x( 'No, I changed my mind', 'Confirmation "No" Button', EDD_Slack_ID ),
+				'title' => _x( 'Are you sure?', 'Confirmation Title Text', 'edd-slack' ),
+				'text' => _x( 'They will need to re-apply to be a Vendor if this was a mistake.', 'EDD FES Vendor Denial Confirmation Explaination Text', 'edd-slack' ),
+				'ok_text' => _x( 'Yes, I understand the risks', 'Confirmation "Yes" Button', 'edd-slack' ),
+				'dismiss_text' => _x( 'No, I changed my mind', 'Confirmation "No" Button', 'edd-slack' ),
 			);
 			
 		}
@@ -155,10 +155,10 @@ class EDD_Slack_App_Frontend_Submissions {
 		if ( $trigger == 'edd_fes_edit_vendor_product' ) {
 		
 			$notification_args['attachments'][0]['actions'][1]['confirm'] = array(
-				'title' => _x( 'Are you sure?', 'Confirmation Title Text', EDD_Slack_ID ),
-				'text' => _x( 'EDD Frontend Submissions does not store old copies of Vendor Products. This will delete their Product.', 'EDD FES Vendor Product Edit Denial Confirmation Explaination Text', EDD_Slack_ID ),
-				'ok_text' => _x( 'Yes, I understand the risks', 'Confirmation "Yes" Button', EDD_Slack_ID ),
-				'dismiss_text' => _x( 'No, I changed my mind', 'Confirmation "No" Button', EDD_Slack_ID ),
+				'title' => _x( 'Are you sure?', 'Confirmation Title Text', 'edd-slack' ),
+				'text' => _x( 'EDD Frontend Submissions does not store old copies of Vendor Products. This will delete their Product.', 'EDD FES Vendor Product Edit Denial Confirmation Explaination Text', 'edd-slack' ),
+				'ok_text' => _x( 'Yes, I understand the risks', 'Confirmation "Yes" Button', 'edd-slack' ),
+				'dismiss_text' => _x( 'No, I changed my mind', 'Confirmation "No" Button', 'edd-slack' ),
 			);
 			
 		}
@@ -234,7 +234,7 @@ if ( ! function_exists( 'edd_slack_interactive_message_edd_fes_vendor_registered
 			
 			$vendor->change_status( 'approved', false, false );
 			
-			$message = sprintf( _x( "%s has Approved %s's Request to be a Vendor", 'Vendor Approved Response Text', EDD_Slack_ID ), $payload->user->name, $vendor->name );
+			$message = sprintf( _x( "%s has Approved %s's Request to be a Vendor", 'Vendor Approved Response Text', 'edd-slack' ), $payload->user->name, $vendor->name );
 			
 		}
 		else if ( strtolower( $action ) == 'deny' ) {
@@ -253,7 +253,7 @@ if ( ! function_exists( 'edd_slack_interactive_message_edd_fes_vendor_registered
 			$vendor_db = new FES_DB_Vendors();
 			$vendor_db->delete( $vendor->id ); // delete vendor row
 			
-			$message = sprintf( _x( "%s has Denied %s's Request to be a Vendor", 'Vendor Denied Response Text', EDD_Slack_ID ), $payload->user->name, $vendor->name );
+			$message = sprintf( _x( "%s has Denied %s's Request to be a Vendor", 'Vendor Denied Response Text', 'edd-slack' ), $payload->user->name, $vendor->name );
 			
 		}
 		
@@ -299,7 +299,7 @@ if ( ! function_exists( 'edd_slack_interactive_message_edd_fes_new_vendor_produc
 				'post_status' => 'publish',
 			) );
 			
-			$message = sprintf( _x( "%s has Approved %s's Product Submission titled \"%s\"", 'Vendor Product Approved Response Text', EDD_Slack_ID ), $payload->user->name, $vendor->name, get_the_title( $value->download_id ) );
+			$message = sprintf( _x( "%s has Approved %s's Product Submission titled \"%s\"", 'Vendor Product Approved Response Text', 'edd-slack' ), $payload->user->name, $vendor->name, get_the_title( $value->download_id ) );
 			
 		}
 		else if ( strtolower( $action ) == 'deny' ) {
@@ -309,7 +309,7 @@ if ( ! function_exists( 'edd_slack_interactive_message_edd_fes_new_vendor_produc
 				'post_status' => 'trash',
 			) );
 			
-			$message = sprintf( _x( "%s has Denied %s's Product Submission titled \"%s\"", 'Vendor Product Denied Response Text', EDD_Slack_ID ), $payload->user->name, $vendor->name, get_the_title( $value->download_id ) );
+			$message = sprintf( _x( "%s has Denied %s's Product Submission titled \"%s\"", 'Vendor Product Denied Response Text', 'edd-slack' ), $payload->user->name, $vendor->name, get_the_title( $value->download_id ) );
 			
 		}
 		
@@ -355,7 +355,7 @@ if ( ! function_exists( 'edd_slack_interactive_message_edd_fes_edit_vendor_produ
 				'post_status' => 'publish',
 			) );
 			
-			$message = sprintf( _x( "%s has Approved %s's Product Edit for \"%s\"", 'Vendor Product Edit Approved Response Text', EDD_Slack_ID ), $payload->user->name, $vendor->name, get_the_title( $value->download_id ) );
+			$message = sprintf( _x( "%s has Approved %s's Product Edit for \"%s\"", 'Vendor Product Edit Approved Response Text', 'edd-slack' ), $payload->user->name, $vendor->name, get_the_title( $value->download_id ) );
 			
 		}
 		else if ( strtolower( $action ) == 'deny' ) {
@@ -365,7 +365,7 @@ if ( ! function_exists( 'edd_slack_interactive_message_edd_fes_edit_vendor_produ
 				'post_status' => 'trash',
 			) );
 			
-			$message = sprintf( _x( "%s has Trashed %s's Product titled \"%s\"", 'Vendor Product Edit Denied Response Text', EDD_Slack_ID ), $payload->user->name, $vendor->name, get_the_title( $value->download_id ) );
+			$message = sprintf( _x( "%s has Trashed %s's Product titled \"%s\"", 'Vendor Product Edit Denied Response Text', 'edd-slack' ), $payload->user->name, $vendor->name, get_the_title( $value->download_id ) );
 			
 		}
 		

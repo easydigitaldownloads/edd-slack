@@ -23,8 +23,8 @@ class EDD_Slack_Welcome extends EDD_Welcome {
 
 		// Getting Started Page
 		add_dashboard_page(
-			__( 'Getting started with EDD Slack', EDD_Slack_ID ),
-			__( 'Getting started with EDD Slack', EDD_Slack_ID ),
+			__( 'Getting started with EDD Slack', 'edd-slack' ),
+			__( 'Getting started with EDD Slack', 'edd-slack' ),
 			$this->minimum_capability,
 			'edd-slack-getting-started',
 			array( $this, 'getting_started_screen' )
@@ -83,10 +83,10 @@ class EDD_Slack_Welcome extends EDD_Welcome {
 		
 		?>
 		<div id="edd-slack-header">
-			<img class="edd-slack-badge" src="<?php echo EDD_Slack_URL . 'assets/images/edd-slack-logo.png'; ?>" alt="<?php _e( 'EDD Slack', EDD_Slack_ID ); ?>" / >
-			<h1><?php printf( __( 'Welcome to EDD Slack %s', EDD_Slack_ID ), $display_version ); ?></h1>
+			<img class="edd-slack-badge" src="<?php echo EDD_Slack_URL . 'assets/images/edd-slack-logo.png'; ?>" alt="<?php _e( 'EDD Slack', 'edd-slack' ); ?>" / >
+			<h1><?php printf( __( 'Welcome to EDD Slack %s', 'edd-slack' ), $display_version ); ?></h1>
 			<p class="about-text">
-				<?php printf( __( 'Thank you for updating to the latest version! EDD Slack %s is ready to make your online store integrate seamlessly with Slack!', EDD_Slack_ID ), $display_version ); ?>
+				<?php printf( __( 'Thank you for updating to the latest version! EDD Slack %s is ready to make your online store integrate seamlessly with Slack!', 'edd-slack' ), $display_version ); ?>
 			</p>
 		</div>
 		<?php
@@ -107,10 +107,10 @@ class EDD_Slack_Welcome extends EDD_Welcome {
 		?>
 		<h1 class="nav-tab-wrapper">
 			<a class="nav-tab <?php echo $selected == 'edd-slack-getting-started' ? 'nav-tab-active' : ''; ?>" href="<?php echo esc_url( admin_url( add_query_arg( array( 'page' => 'edd-slack-getting-started' ), 'index.php' ) ) ); ?>">
-				<?php _e( 'Getting Started', EDD_Slack_ID ); ?>
+				<?php _e( 'Getting Started', 'edd-slack' ); ?>
 			</a>
 			<a class="nav-tab" href="//docs.easydigitaldownloads.com/category/1724-slack" target="_blank">
-				<?php _e( 'Complete Documentation', EDD_Slack_ID ); ?>
+				<?php _e( 'Complete Documentation', 'edd-slack' ); ?>
 			</a>
 		</h1>
 		<?php
@@ -132,59 +132,59 @@ class EDD_Slack_Welcome extends EDD_Welcome {
 				$this->welcome_message();
 				$this->tabs();
 			?>
-			<p class="about-description"><?php _e( 'Use the tips below to get started using EDD Slack. You will be up and running in no time!', EDD_Slack_ID ); ?></p>
+			<p class="about-description"><?php _e( 'Use the tips below to get started using EDD Slack. You will be up and running in no time!', 'edd-slack' ); ?></p>
 
 			<div class="create-notifications">
-				<h3><?php _e( 'Configuring your Notifications', EDD_Slack_ID );?></h3>
+				<h3><?php _e( 'Configuring your Notifications', 'edd-slack' );?></h3>
 				<div class="feature-section">
 					<div class="feature-section-media">
 						<img src="<?php echo EDD_Slack_URL . 'assets/images/screenshots/settings-cropped.png'; ?>" class="edd-welcome-screenshots"/>
 					</div>
 					<div class="feature-section-content">
 						
-						<h4><a href="//my.slack.com/services/new/incoming-webhook/" target="_blank"><?php _e( 'Create an Incoming Webhook URL', EDD_Slack_ID ); ?></a></h4>
-						<p><?php _e( 'Create an Incoming Webhook URL using the above link, then enter it in the Default Webhook URL Field on the EDD Slack Settings Page.', EDD_Slack_ID ); ?></p>
+						<h4><a href="//my.slack.com/services/new/incoming-webhook/" target="_blank"><?php _e( 'Create an Incoming Webhook URL', 'edd-slack' ); ?></a></h4>
+						<p><?php _e( 'Create an Incoming Webhook URL using the above link, then enter it in the Default Webhook URL Field on the EDD Slack Settings Page.', 'edd-slack' ); ?></p>
 
-						<h4><a href="<?php echo admin_url( 'edit.php?post_type=download&page=edd-settings&tab=extensions&section=edd-slack-settings' ) ?>"><?php printf( __( '%s &rarr; Settings &rarr; Extensions &rarr; Slack', EDD_Slack_ID ), edd_get_label_plural() ); ?></a></h4>
-						<p><?php _e( 'Create Notifications by clicking the "Add Slack Notification" Button and filling out the form. Congratulations! You\'ve created a Notification within EDD Slack!', EDD_Slack_ID );?></p>
+						<h4><a href="<?php echo admin_url( 'edit.php?post_type=download&page=edd-settings&tab=extensions&section=edd-slack-settings' ) ?>"><?php printf( __( '%s &rarr; Settings &rarr; Extensions &rarr; Slack', 'edd-slack' ), edd_get_label_plural() ); ?></a></h4>
+						<p><?php _e( 'Create Notifications by clicking the "Add Slack Notification" Button and filling out the form. Congratulations! You\'ve created a Notification within EDD Slack!', 'edd-slack' );?></p>
 						
 					</div>
 				</div>
 			</div>
 			
 			<div class="get-notifications">
-				<h3><?php _e( 'Customize Unlimited Notifications', EDD_Slack_ID );?></h3>
+				<h3><?php _e( 'Customize Unlimited Notifications', 'edd-slack' );?></h3>
 				<div class="feature-section">
 					<div class="feature-section-media">
 						<img src="<?php echo EDD_Slack_URL . 'assets/images/screenshots/notification.png'; ?>" class="edd-welcome-screenshots"/>
 					</div>
 					<div class="feature-section-content">
 						
-						<p><?php _e( 'EDD Slack comes bundled with Triggers for standard Easy Digital Downloads events as well as some for other Easy Digital Downloads Extensions so that you can know what is happening on your storefront as soon as it happens.', EDD_Slack_ID ); ?></p>
+						<p><?php _e( 'EDD Slack comes bundled with Triggers for standard Easy Digital Downloads events as well as some for other Easy Digital Downloads Extensions so that you can know what is happening on your storefront as soon as it happens.', 'edd-slack' ); ?></p>
 						
-						<p><?php _e( 'You can customize the Notification however you like to include all kinds of information about the event, with different Triggers providing you with different Text Replacements to use!', EDD_Slack_ID ); ?></p>
+						<p><?php _e( 'You can customize the Notification however you like to include all kinds of information about the event, with different Triggers providing you with different Text Replacements to use!', 'edd-slack' ); ?></p>
 						
-						<p><?php _e( 'Different Notifications can even be set to be sent to different Channels or even different Users! Check out our <a href="//docs.easydigitaldownloads.com/article/1726-edd-slack-creating-notifications" target="_blank">Documentation</a> for more details!', EDD_Slack_ID ); ?></p>
+						<p><?php _e( 'Different Notifications can even be set to be sent to different Channels or even different Users! Check out our <a href="//docs.easydigitaldownloads.com/article/1726-edd-slack-creating-notifications" target="_blank">Documentation</a> for more details!', 'edd-slack' ); ?></p>
 						
 					</div>
 				</div>
 			</div>
 			
 			<div class="unlock-functionality">
-				<h3><?php _e( 'Unlocking Extra Functionality', EDD_Slack_ID );?></h3>
+				<h3><?php _e( 'Unlocking Extra Functionality', 'edd-slack' );?></h3>
 				<div class="feature-section">
 					<div class="feature-section-media">
 						<img src="<?php echo EDD_Slack_URL . 'assets/images/screenshots/interactive-notification.png'; ?>" class="edd-welcome-screenshots" />
 					</div>
 					<div class="feature-section-content">
 						
-						<h4><?php _e( 'SSL-enabled Sites Only', EDD_Slack_ID ); ?></h4>
+						<h4><?php _e( 'SSL-enabled Sites Only', 'edd-slack' ); ?></h4>
 						
-						<p><?php _e( 'If your site is SSL-enabled, you can add Slack App integration to enable Interactive Notifications and Slash Commands.', EDD_Slack_ID ); ?></p>
+						<p><?php _e( 'If your site is SSL-enabled, you can add Slack App integration to enable Interactive Notifications and Slash Commands.', 'edd-slack' ); ?></p>
 						
-						<p><?php _e( 'This will allow you to interact with events happening on your online store immediately and view data from your online store all from within Slack.', EDD_Slack_ID ); ?></p>
+						<p><?php _e( 'This will allow you to interact with events happening on your online store immediately and view data from your online store all from within Slack.', 'edd-slack' ); ?></p>
 						
-						<p><?php _e( 'Check out our <a href="//docs.easydigitaldownloads.com/article/1727-edd-slack-setting-up-a-slack-app" target="_blank">Documentation</a> for more details!', EDD_Slack_ID ); ?></p>
+						<p><?php _e( 'Check out our <a href="//docs.easydigitaldownloads.com/article/1727-edd-slack-setting-up-a-slack-app" target="_blank">Documentation</a> for more details!', 'edd-slack' ); ?></p>
 						
 					</div>
 				</div>

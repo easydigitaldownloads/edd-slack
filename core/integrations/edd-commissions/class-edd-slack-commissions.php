@@ -53,7 +53,7 @@ class EDD_Slack_Commissions {
 	 */
 	public function add_triggers( $triggers ) {
 
-		$triggers['eddc_insert_commission'] = _x( 'New Commission', 'New Commision Trigger', EDD_Slack_ID );
+		$triggers['eddc_insert_commission'] = _x( 'New Commission', 'New Commision Trigger', 'edd-slack' );
 
 		return $triggers;
 
@@ -204,9 +204,9 @@ class EDD_Slack_Commissions {
 	public function custom_replacement_hints( $hints, $user_hints, $payment_hints ) {
 		
 		$commission_hints = array(
-			'%download%' => sprintf( _x( 'The %s that the Commission is for', '%download% Hint Text', EDD_Slack_ID ), edd_get_label_singular() ),
-			'%commission_amount%' => _x( 'The amount of Commission awarded for the sale', '%commission_amount% Hint Text', EDD_Slack_ID ),
-			'%commission_rate%' => _x( 'Either the Flat Rate or Percentage that the Commission is calculated based on', '%commission_rate% Hint Text', EDD_Slack_ID ),
+			'%download%' => sprintf( _x( 'The %s that the Commission is for', '%download% Hint Text', 'edd-slack' ), edd_get_label_singular() ),
+			'%commission_amount%' => _x( 'The amount of Commission awarded for the sale', '%commission_amount% Hint Text', 'edd-slack' ),
+			'%commission_rate%' => _x( 'Either the Flat Rate or Percentage that the Commission is calculated based on', '%commission_rate% Hint Text', 'edd-slack' ),
 		);
 		
 		$hints['eddc_insert_commission'] = array_merge( $user_hints, $commission_hints );

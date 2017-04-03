@@ -59,7 +59,7 @@ class EDD_Slack_OAUTH_Settings {
 		$oauth_settings = array(
 			array(
 				'type' => 'header',
-				'name' => '<h3>' . _x( 'Enable Interactive Notifications and Slash Commands', 'SSL-Only Settings Header', EDD_Slack_ID ),
+				'name' => '<h3>' . _x( 'Enable Interactive Notifications and Slash Commands', 'SSL-Only Settings Header', 'edd-slack' ),
 				'id' => 'edd-slack-ssl-only-header',
 			),
 			array(
@@ -68,20 +68,20 @@ class EDD_Slack_OAUTH_Settings {
 			),
 			array(
 				'type' => 'text',
-				'name' => _x( 'Client ID', 'Client ID Label', EDD_Slack_ID ),
+				'name' => _x( 'Client ID', 'Client ID Label', 'edd-slack' ),
 				'id' => 'slack_app_client_id',
 				'desc' => sprintf(
-					_x( 'Enter the Client ID found after %screating your Slack App%s.', 'Client ID Help Text', EDD_Slack_ID ),
+					_x( 'Enter the Client ID found after %screating your Slack App%s.', 'Client ID Help Text', 'edd-slack' ),
 					'<a href="//api.slack.com/apps" target="_blank">',
 					'</a>'
 				)
 			),
 			array(
 				'type' => 'text',
-				'name' => _x( 'Client Secret', 'Client Secret Label', EDD_Slack_ID ),
+				'name' => _x( 'Client Secret', 'Client Secret Label', 'edd-slack' ),
 				'id' => 'slack_app_client_secret',
 				'desc' => sprintf(
-					_x( 'Enter the Client Secret found after %screating your Slack App%s.', 'Client Secret Help Text', EDD_Slack_ID ),
+					_x( 'Enter the Client Secret found after %screating your Slack App%s.', 'Client Secret Help Text', 'edd-slack' ),
 					'<a href="//api.slack.com/apps" target="_blank">',
 					'</a>'
 				)
@@ -92,26 +92,26 @@ class EDD_Slack_OAUTH_Settings {
 			),
 			array(
 				'type' => 'text',
-				'name' => _x( 'Verification Token', 'Verification Token Label', EDD_Slack_ID ),
+				'name' => _x( 'Verification Token', 'Verification Token Label', 'edd-slack' ),
 				'id' => 'slack_app_verification_token',
 				'desc' => sprintf(
-					_x( 'Enter the Verification Token found after %ssetting up your Slack App%s.', 'Verification Token Help Text', EDD_Slack_ID ),
+					_x( 'Enter the Verification Token found after %ssetting up your Slack App%s.', 'Verification Token Help Text', 'edd-slack' ),
 					'<a href="//api.slack.com/apps" target="_blank">',
 					'</a>'
 				)
 			),
 			array(
 				'type' => 'text',
-				'name' => _x( 'Default Channel for Interactive Notifications', 'Default Channel for Interactive Notifications Label', EDD_Slack_ID ),
+				'name' => _x( 'Default Channel for Interactive Notifications', 'Default Channel for Interactive Notifications Label', 'edd-slack' ),
 				'id' => 'slack_app_channel_default',
-				'desc' => _x( "Interactive Notifications don't use the Default Webhook URL, so they need to know which Channel they should default to if one for the Notification isn't defined. If this is left blank, it will default to <code>#general</code>.", 'Default Channel for Interactive Notifications Help Text', EDD_Slack_ID ),
+				'desc' => _x( "Interactive Notifications don't use the Default Webhook URL, so they need to know which Channel they should default to if one for the Notification isn't defined. If this is left blank, it will default to <code>#general</code>.", 'Default Channel for Interactive Notifications Help Text', 'edd-slack' ),
 				'placeholder' => '#general',
 			),
 			array(
 				'type' => 'text',
-				'name' => _x( 'Default Icon Emoji or Image URL for Interactive Notifications', 'Default Icon Emoji or Image URL for Interactive Notifications Label', EDD_Slack_ID ),
+				'name' => _x( 'Default Icon Emoji or Image URL for Interactive Notifications', 'Default Icon Emoji or Image URL for Interactive Notifications Label', 'edd-slack' ),
 				'id' => 'slack_app_icon_default',
-				'desc' => _x( "Interactive Notifications don't use the Default Webhook URL, so they can't utilize the Default Icon Emoji or Image URL you set for the Webhook URL if one for the Notification isn't defined. If this is left blank, it will use the Icon added to your Slack App if one exists.", 'Default Icon Emoji or Image URL for Interactive Notifications Help Text', EDD_Slack_ID ),
+				'desc' => _x( "Interactive Notifications don't use the Default Webhook URL, so they can't utilize the Default Icon Emoji or Image URL you set for the Webhook URL if one for the Notification isn't defined. If this is left blank, it will use the Icon added to your Slack App if one exists.", 'Default Icon Emoji or Image URL for Interactive Notifications Help Text', 'edd-slack' ),
 			),
 		);
 		
@@ -164,7 +164,7 @@ class EDD_Slack_OAUTH_Settings {
 			
 			$supported_list = ob_get_clean();
 			
-			printf( _x( 'The following Triggers support Interactive Notifications on your Site: %s', 'Triggers Supporting Interactive Notifications Text', EDD_Slack_ID ), $supported_list );
+			printf( _x( 'The following Triggers support Interactive Notifications on your Site: %s', 'Triggers Supporting Interactive Notifications Text', 'edd-slack' ), $supported_list );
 			
 		}
 		else {
@@ -208,19 +208,19 @@ class EDD_Slack_OAUTH_Settings {
 			if ( ! $oauth_token ) : ?>
 			
 				<a href="//slack.com/oauth/authorize?client_id=<?php echo $client_id; ?>&scope=<?php echo $scope; ?>&redirect_uri=<?php echo $redirect_uri; ?>" target="_self" class="edd-slack-app-auth button button-primary">
-					<?php echo _x( 'Link Slack App', 'OAUTH Register Buton Label', EDD_Slack_ID ); ?>
+					<?php echo _x( 'Link Slack App', 'OAUTH Register Buton Label', 'edd-slack' ); ?>
 				</a>
 
 			<?php else : ?>
 
-				<input type="submit" name="edd_slack_app_deauth" class="button" value="<?php echo _x( 'Unlink Slack App', 'OAUTH Deregister Button Label', EDD_Slack_ID ); ?>"/>
+				<input type="submit" name="edd_slack_app_deauth" class="button" value="<?php echo _x( 'Unlink Slack App', 'OAUTH Deregister Button Label', 'edd-slack' ); ?>"/>
 
 			<?php endif; ?>
 			
 		<?php else : ?>
 
 			<p class="description">
-				<?php echo _x( 'Fill out the above fields and Save the Settings to Connect your Slack App to your site.', 'OAUTH Registration Help Text', EDD_Slack_ID ); ?>
+				<?php echo _x( 'Fill out the above fields and Save the Settings to Connect your Slack App to your site.', 'OAUTH Registration Help Text', 'edd-slack' ); ?>
 			</p>
 		
 		<?php endif;
@@ -273,7 +273,7 @@ class EDD_Slack_OAUTH_Settings {
 				$this->admin_notices[] = array(
 					'edd-notices',
 					'edd_slack_app_auth',
-					_x( 'Slack App Linked Successfully.', 'EDD Slack App Auth Successful', EDD_Slack_ID ),
+					_x( 'Slack App Linked Successfully.', 'EDD Slack App Auth Successful', 'edd-slack' ),
 					'updated'
 				);
 				
@@ -304,7 +304,7 @@ class EDD_Slack_OAUTH_Settings {
 				$this->admin_notices[] = array(
 					'edd-notices',
 					'edd_slack_app_deauth',
-					_x( 'Slack App Unlinked Successfully.', 'EDD Slack App Deauth Successful', EDD_Slack_ID ),
+					_x( 'Slack App Unlinked Successfully.', 'EDD Slack App Deauth Successful', 'edd-slack' ),
 					'updated'
 				);
 

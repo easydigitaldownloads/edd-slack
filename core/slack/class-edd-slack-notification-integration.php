@@ -45,8 +45,8 @@ class EDD_Slack_Notification_Integration {
 	public function init_global_notifications( $notifications ) {
 		
 		$notifications['rbm'] = array(
-			'name' => _x( 'EDD Slack', 'Notification Feed CPT', EDD_Slack_ID ),
-			'default_feed_title' => _x( 'New Slack Notification', 'Default Post Title for CPT', EDD_Slack_ID ),
+			'name' => _x( 'EDD Slack', 'Notification Feed CPT', 'edd-slack' ),
+			'default_feed_title' => _x( 'New Slack Notification', 'Default Post Title for CPT', 'edd-slack' ),
 			'fields' => EDDSLACK()->get_notification_fields( false ),
 		);
 		
@@ -209,7 +209,7 @@ class EDD_Slack_Notification_Integration {
 		if ( $args['user_id'] == 0 ) {
 			$replacements['%email%'] = $args['email'];
 			$replacements['%name%'] = $args['name'];
-			$replacements['%username%'] = _x( 'This Customer does not have an account', 'No Username Replacement Text', EDD_Slack_ID );
+			$replacements['%username%'] = _x( 'This Customer does not have an account', 'No Username Replacement Text', 'edd-slack' );
 		}
 
 		if ( $notification_id == 'rbm' ) {
@@ -222,7 +222,7 @@ class EDD_Slack_Notification_Integration {
 					
 					// Display a nicer message in the event of no Discount Code being used
 					if ( $args['discount_code'] == 'none' ) {
-						$args['discount_code'] = _x( 'No Discount Code Applied', 'No Discount Code Applied Text', EDD_Slack_ID );
+						$args['discount_code'] = _x( 'No Discount Code Applied', 'No Discount Code Applied Text', 'edd-slack' );
 					}
 					
 					$replacements['%discount_code%'] = $args['discount_code'];
@@ -232,7 +232,7 @@ class EDD_Slack_Notification_Integration {
 					
 					$payment_link = add_query_arg( 'id', $args['payment_id'], admin_url( 'edit.php?post_type=download&page=edd-payment-history&view=view-order-details' ) );
 					
-					$replacements['%payment_link%'] = '<' . $payment_link . '|' . _x( 'View Payment Details', 'View Payment Details Link', EDD_Slack_ID ) . '>'; // No function to get this?
+					$replacements['%payment_link%'] = '<' . $payment_link . '|' . _x( 'View Payment Details', 'View Payment Details Link', 'edd-slack' ) . '>'; // No function to get this?
 					
 					$replacements['%cart%'] = '';
 					foreach ( $args['cart'] as $post_id => $item_number ) {
@@ -255,7 +255,7 @@ class EDD_Slack_Notification_Integration {
 					
 					// This shouldn't happen, but I guess you never know
 					if ( empty( $replacements['%cart%'] ) ) {
-						$replacements['%cart%'] = _x( 'There was nothing in the Cart', 'Empty Cart Replacement Text', EDD_Slack_ID );
+						$replacements['%cart%'] = _x( 'There was nothing in the Cart', 'Empty Cart Replacement Text', 'edd-slack' );
 					}
 					
 					break;
@@ -439,7 +439,7 @@ class EDD_Slack_Notification_Integration {
 			$notification_args = $edd_slack_notifications[ $notification_id ];
 
 			$notification_args = wp_parse_args( $notification_args, array(
-				'default_feed_title' => _x( 'New Slack Notification', 'New Slack Notification Header', EDD_Slack_ID ),
+				'default_feed_title' => _x( 'New Slack Notification', 'New Slack Notification Header', 'edd-slack' ),
 				'fields'			 => array(),
 			) );
 
@@ -499,7 +499,7 @@ class EDD_Slack_Notification_Integration {
 		}
 		
 		return wp_send_json_error( array(
-			'error' => _x( 'Access Denied', 'Current User Cannot Create Notications Error', EDD_Slack_ID ),
+			'error' => _x( 'Access Denied', 'Current User Cannot Create Notications Error', 'edd-slack' ),
 		) );
 		
 	}
@@ -529,7 +529,7 @@ class EDD_Slack_Notification_Integration {
 		}
 		
 		return wp_send_json_error( array(
-			'error' => _x( 'Access Denied', 'Current User Cannot Delete Notications Error', EDD_Slack_ID ),
+			'error' => _x( 'Access Denied', 'Current User Cannot Delete Notications Error', 'edd-slack' ),
 		) );
 
 	}

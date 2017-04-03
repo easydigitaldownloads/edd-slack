@@ -52,7 +52,7 @@ class EDD_Slack_Admin {
 	*/
 	public function settings_section( $sections ) {
 
-		$sections['edd-slack-settings'] = __( 'Slack', EDD_Slack_ID );
+		$sections['edd-slack-settings'] = __( 'Slack', 'edd-slack' );
 
 		return $sections;
 
@@ -114,10 +114,10 @@ class EDD_Slack_Admin {
 		$edd_slack_settings = apply_filters( 'edd_slack_settings', array(
 			array(
 				'type' => 'text',
-				'name' => _x( 'Default Webhook URL', 'Default Webhook URL Label', EDD_Slack_ID ),
+				'name' => _x( 'Default Webhook URL', 'Default Webhook URL Label', 'edd-slack' ),
 				'id' => 'slack_webhook_default',
 				'desc' => sprintf(
-					_x( 'Enter the Slack Webhook URL for the team you wish to broadcast to. The channel chosen in the webhook can be overridden for each notification type below. You can set up the Webhook URL %shere%s.', 'Webhook Default Help Text', EDD_Slack_ID ),
+					_x( 'Enter the Slack Webhook URL for the team you wish to broadcast to. The channel chosen in the webhook can be overridden for each notification type below. You can set up the Webhook URL %shere%s.', 'Webhook Default Help Text', 'edd-slack' ),
 					'<a href="//my.slack.com/services/new/incoming-webhook/" target="_blank">',
 					'</a>'
 				),
@@ -127,13 +127,13 @@ class EDD_Slack_Admin {
 				'type' => 'hook',
 				'id' => 'slack_notifications_field',
 				'input_name' => 'edd_slack_rbm_feeds',
-				'name' => _x( 'Slack Notifications', 'Slack Notifications Repeater Label', EDD_Slack_ID ),
+				'name' => _x( 'Slack Notifications', 'Slack Notifications Repeater Label', 'edd-slack' ),
 				'std' => $repeater_values,
-				'add_item_text' => _x( 'Add Slack Notification', 'Add Slack Notification Button', EDD_Slack_ID ),
-				'edit_item_text' => _x( 'Edit Slack Notification', 'Edit Slack Notification Button', EDD_Slack_ID ),
-				'save_item_text' => _x( 'Save Slack Notification', 'Save Slack Notification Button', EDD_Slack_ID ),
-				'delete_item_text' => _x( 'Delete Slack Notification', 'Delete Slack Notification Button', EDD_Slack_ID ),
-				'default_title' => _x( 'New Slack Notification', 'New Slack Notification Header', EDD_Slack_ID ),
+				'add_item_text' => _x( 'Add Slack Notification', 'Add Slack Notification Button', 'edd-slack' ),
+				'edit_item_text' => _x( 'Edit Slack Notification', 'Edit Slack Notification Button', 'edd-slack' ),
+				'save_item_text' => _x( 'Save Slack Notification', 'Save Slack Notification Button', 'edd-slack' ),
+				'delete_item_text' => _x( 'Delete Slack Notification', 'Delete Slack Notification Button', 'edd-slack' ),
+				'default_title' => _x( 'New Slack Notification', 'New Slack Notification Header', 'edd-slack' ),
 				'fields' => $fields,
 			),
 		) );
@@ -155,11 +155,11 @@ class EDD_Slack_Admin {
 			'std' => '',
 			'classes' => array(),
 			'fields' => array(),
-			'add_item_text' => __( 'Add Row', EDD_Slack_ID ),
-			'edit_item_text' => __( 'Edit Row', EDD_Slack_ID ),
-			'save_item_text' => __( 'Save Row', EDD_Slack_ID ),
-			'delete_item_text' => __( 'Delete Row', EDD_Slack_ID ),
-			'default_title' => __( 'New Row', EDD_Slack_ID ),
+			'add_item_text' => __( 'Add Row', 'edd-slack' ),
+			'edit_item_text' => __( 'Edit Row', 'edd-slack' ),
+			'save_item_text' => __( 'Save Row', 'edd-slack' ),
+			'delete_item_text' => __( 'Delete Row', 'edd-slack' ),
+			'default_title' => __( 'New Row', 'edd-slack' ),
 			'input_name' => false,
 		) );
 		
@@ -275,7 +275,7 @@ class EDD_Slack_Admin {
 								  
 								</div>
 								
-								<a class="close-button" data-close aria-label="<?php echo _x( 'Close Notification Editor', 'Close Slack Notification Modal', EDD_Slack_ID ); ?>">
+								<a class="close-button" data-close aria-label="<?php echo _x( 'Close Notification Editor', 'Close Slack Notification Modal', 'edd-slack' ); ?>">
 									<span aria-hidden="true">&times;</span>
 								</a>
 								
@@ -342,7 +342,7 @@ class EDD_Slack_Admin {
 
 			<td class="edd-slack-replacement-instruction <?php echo $class; ?><?php echo ( $class !== $selected ) ? ' hidden' : ''; ?>">
 				<div class="header-text">
-					<?php echo _x( 'Here are the available text replacements to use in the Message Pre-Text, Message Title, and Message Fields for the Slack Trigger selected:', 'Text Replacements Label', EDD_Slack_ID ); ?>
+					<?php echo _x( 'Here are the available text replacements to use in the Message Pre-Text, Message Title, and Message Fields for the Slack Trigger selected:', 'Text Replacements Label', 'edd-slack' ); ?>
 
 				</div>
 
@@ -375,9 +375,9 @@ class EDD_Slack_Admin {
 		 * @since 1.0.0
 		 */
 		$user_hints = apply_filters( 'edd_slack_user_replacement_hints', array(
-			'%username%' => _x( 'Display the user\'s username', '%username% Hint Text', EDD_Slack_ID ),
-			'%email%' => _x( 'Display the user\'s email', '%email% Hint Text', EDD_Slack_ID ),
-			'%name%' => _x( 'Display the user\'s display name', '%name% Hint Text', EDD_Slack_ID ),
+			'%username%' => _x( 'Display the user\'s username', '%username% Hint Text', 'edd-slack' ),
+			'%email%' => _x( 'Display the user\'s email', '%email% Hint Text', 'edd-slack' ),
+			'%name%' => _x( 'Display the user\'s display name', '%name% Hint Text', 'edd-slack' ),
 		) );
 		
 		/**
@@ -386,12 +386,12 @@ class EDD_Slack_Admin {
 		 * @since 1.0.0
 		 */
 		$payment_hints = apply_filters( 'edd_slack_payment_replacement_hints', array(
-			'%cart%' => _x( 'Show the contents of the Cart', '%cart% Hint Text', EDD_Slack_ID ),
-			'%subtotal%' => _x( 'Show the Subtotal', '%subtotal% Hint Text', EDD_Slack_ID ),
-			'%total%' => _x( 'Show the Total', '%total% Hint Text', EDD_Slack_ID ),
-			'%discount_code%' => _x( 'Show the Discount Code entered', '%discount_code% Hint Text', EDD_Slack_ID ),
-			'%ip_address%' => _x( 'Show the IP Address of the Customer', '%ip_address% Hint Text', EDD_Slack_ID ),
-			'%payment_link%' => _x( 'Show a link to the Payment Details page for this Payment', '%payment_link% Hint Text', EDD_Slack_ID ),
+			'%cart%' => _x( 'Show the contents of the Cart', '%cart% Hint Text', 'edd-slack' ),
+			'%subtotal%' => _x( 'Show the Subtotal', '%subtotal% Hint Text', 'edd-slack' ),
+			'%total%' => _x( 'Show the Total', '%total% Hint Text', 'edd-slack' ),
+			'%discount_code%' => _x( 'Show the Discount Code entered', '%discount_code% Hint Text', 'edd-slack' ),
+			'%ip_address%' => _x( 'Show the IP Address of the Customer', '%ip_address% Hint Text', 'edd-slack' ),
+			'%payment_link%' => _x( 'Show a link to the Payment Details page for this Payment', '%payment_link% Hint Text', 'edd-slack' ),
 		) );
 
 		/**
@@ -426,10 +426,10 @@ class EDD_Slack_Admin {
 	public function localize_script( $localization ) {
 		
 		$localization['i18n'] = array(
-			'activeText' => _x( 'Active Notification', 'Active Notification Aria Label', EDD_Slack_ID ),
-			'inactiveText' => _x( 'Inactive Notification', 'Inactive Notification Aria Label', EDD_Slack_ID ),
-			'confirmDeletion' => _x( 'Are you sure you want to delete this Slack Notification?', 'Confirm Notification Deletion', EDD_Slack_ID ),
-			'validationError' => _x( 'This field is required', 'Required Field not filled out (Ancient/Bad Browsers Only)', EDD_Slack_ID ),
+			'activeText' => _x( 'Active Notification', 'Active Notification Aria Label', 'edd-slack' ),
+			'inactiveText' => _x( 'Inactive Notification', 'Inactive Notification Aria Label', 'edd-slack' ),
+			'confirmDeletion' => _x( 'Are you sure you want to delete this Slack Notification?', 'Confirm Notification Deletion', 'edd-slack' ),
+			'validationError' => _x( 'This field is required', 'Required Field not filled out (Ancient/Bad Browsers Only)', 'edd-slack' ),
 		);
 		
 		$localization['ajax'] = admin_url( 'admin-ajax.php' );
@@ -447,13 +447,13 @@ class EDD_Slack_Admin {
 	 */
 	public function admin_settings_scripts() {
 
-		wp_enqueue_style( EDD_Slack_ID . '-admin' );
+		wp_enqueue_style( 'edd-slack-admin' );
 		
 		// Dependencies
 		wp_enqueue_script( 'jquery-effects-core' );
 		wp_enqueue_script( 'jquery-effects-highlight' );
 		
-		wp_enqueue_script( EDD_Slack_ID . '-admin' );
+		wp_enqueue_script( 'edd-slack-admin' );
 
 	}
 

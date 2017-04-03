@@ -49,7 +49,7 @@ class EDD_Slack_Purchase_Limit {
 	 */
 	public function add_triggers( $triggers ) {
 
-		$triggers['edd_purchase_limit'] = _x( 'Purchase Limit Reached', 'Purchase Limit Reached Trigger', EDD_Slack_ID );
+		$triggers['edd_purchase_limit'] = _x( 'Purchase Limit Reached', 'Purchase Limit Reached Trigger', 'edd-slack' );
 
 		return $triggers;
 
@@ -244,8 +244,8 @@ class EDD_Slack_Purchase_Limit {
 	public function custom_replacement_hints( $hints, $user_hints, $payment_hints ) {
 		
 		$purchase_limit_hints = array(
-			'%download%' => sprintf( _x( 'The %s that has reached its Purchase Limit', '%download% Hint Text', EDD_Slack_ID ), edd_get_label_singular() ),
-			'%purchase_limit%' => sprintf( _x( 'The Purchase Limit for the %s', '%purchase_limit% Hint Text', EDD_Slack_ID ), edd_get_label_singular() ),
+			'%download%' => sprintf( _x( 'The %s that has reached its Purchase Limit', '%download% Hint Text', 'edd-slack' ), edd_get_label_singular() ),
+			'%purchase_limit%' => sprintf( _x( 'The Purchase Limit for the %s', '%purchase_limit% Hint Text', 'edd-slack' ), edd_get_label_singular() ),
 		);
 		
 		$hints['edd_purchase_limit'] = array_merge( $user_hints, $purchase_limit_hints );

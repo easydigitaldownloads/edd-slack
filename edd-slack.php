@@ -123,7 +123,7 @@ if ( ! class_exists( 'EDD_Slack' ) ) {
 			
 			if ( version_compare( get_bloginfo( 'version' ), '4.4' ) < 0 ) {
 				
-				$this->admin_errors[] = sprintf( _x( '%s requires v%s of %s or higher to be installed!', 'Outdated Dependency Error', EDD_Slack_ID ), '<strong>' . $this->plugin_data['Name'] . '</strong>', '4.4', '<a href="' . admin_url( 'update-core.php' ) . '"><strong>WordPress</strong></a>' );
+				$this->admin_errors[] = sprintf( _x( '%s requires v%s of %s or higher to be installed!', 'Outdated Dependency Error', 'edd-slack' ), '<strong>' . $this->plugin_data['Name'] . '</strong>', '4.4', '<a href="' . admin_url( 'update-core.php' ) . '"><strong>WordPress</strong></a>' );
 				
 				if ( ! has_action( 'admin_notices', array( $this, 'admin_errors' ) ) ) {
 					add_action( 'admin_notices', array( $this, 'admin_errors' ) );
@@ -134,7 +134,7 @@ if ( ! class_exists( 'EDD_Slack' ) ) {
 			if ( defined( 'EDD_VERSION' ) 
 				&& ( version_compare( EDD_VERSION, '2.6.11' ) < 0 ) ) {
 				
-				$this->admin_errors[] = sprintf( _x( '%s requires v%s of %s or higher to be installed!', 'Outdated Dependency Error', EDD_Slack_ID ), '<strong>' . $this->plugin_data['Name'] . '</strong>', '2.6.11', '<a href="//wordpress.org/plugins/easy-digital-downloads/" target="_blank"><strong>Easy Digital Downloads</strong></a>' );
+				$this->admin_errors[] = sprintf( _x( '%s requires v%s of %s or higher to be installed!', 'Outdated Dependency Error', 'edd-slack' ), '<strong>' . $this->plugin_data['Name'] . '</strong>', '2.6.11', '<a href="//wordpress.org/plugins/easy-digital-downloads/" target="_blank"><strong>Easy Digital Downloads</strong></a>' );
 				
 				if ( ! has_action( 'admin_notices', array( $this, 'admin_errors' ) ) ) {
 					add_action( 'admin_notices', array( $this, 'admin_errors' ) );
@@ -160,11 +160,6 @@ if ( ! class_exists( 'EDD_Slack' ) ) {
 			
 			// Only call this once, accessible always
 			$this->plugin_data = get_plugin_data( __FILE__ );
-			
-			if ( ! defined( 'EDD_Slack_ID' ) ) {
-				// Plugin Text Domain
-				define( 'EDD_Slack_ID', $this->plugin_data['TextDomain'] );
-			}
 
 			if ( ! defined( 'EDD_Slack_VER' ) ) {
 				// Plugin version
@@ -202,25 +197,25 @@ if ( ! class_exists( 'EDD_Slack' ) ) {
 			$lang_dir = apply_filters( 'edd_slack_languages_directory', $lang_dir );
 
 			// Traditional WordPress plugin locale filter
-			$locale = apply_filters( 'plugin_locale', get_locale(), EDD_Slack_ID );
-			$mofile = sprintf( '%1$s-%2$s.mo', EDD_Slack_ID, $locale );
+			$locale = apply_filters( 'plugin_locale', get_locale(), 'edd-slack' );
+			$mofile = sprintf( '%1$s-%2$s.mo', 'edd-slack', $locale );
 
 			// Setup paths to current locale file
 			$mofile_local   = $lang_dir . $mofile;
-			$mofile_global  = WP_LANG_DIR . '/' . EDD_Slack_ID . '/' . $mofile;
+			$mofile_global  = WP_LANG_DIR . '/' . 'edd-slack' . '/' . $mofile;
 
 			if ( file_exists( $mofile_global ) ) {
 				// Look in global /wp-content/languages/edd-slack/ folder
 				// This way translations can be overridden via the Theme/Child Theme
-				load_textdomain( EDD_Slack_ID, $mofile_global );
+				load_textdomain( 'edd-slack', $mofile_global );
 			}
 			else if ( file_exists( $mofile_local ) ) {
 				// Look in local /wp-content/plugins/edd-slack/languages/ folder
-				load_textdomain( EDD_Slack_ID, $mofile_local );
+				load_textdomain( 'edd-slack', $mofile_local );
 			}
 			else {
 				// Load the default language files
-				load_plugin_textdomain( EDD_Slack_ID, false, $lang_dir );
+				load_plugin_textdomain( 'edd-slack', false, $lang_dir );
 			}
 
 		}
@@ -284,7 +279,7 @@ if ( ! class_exists( 'EDD_Slack' ) ) {
 				}
 				else {
 					
-					$this->integration_errors[] = sprintf( _x( '%s includes features which integrate with %s, but v%s or greater of %s is required.', 'Outdated Integration Error', EDD_Slack_ID ), '<strong>' . $this->plugin_data['Name'] . '</strong>', '<a href="' . admin_url( 'update-core.php' ) . '"><strong>Easy Digital Downloads - Software Licenses</strong></a>', '3.4.12', '<a href="' . admin_url( 'update-core.php' ) . '"><strong>Easy Digital Downloads - Software Licenses</strong></a>' );
+					$this->integration_errors[] = sprintf( _x( '%s includes features which integrate with %s, but v%s or greater of %s is required.', 'Outdated Integration Error', 'edd-slack' ), '<strong>' . $this->plugin_data['Name'] . '</strong>', '<a href="' . admin_url( 'update-core.php' ) . '"><strong>Easy Digital Downloads - Software Licenses</strong></a>', '3.4.12', '<a href="' . admin_url( 'update-core.php' ) . '"><strong>Easy Digital Downloads - Software Licenses</strong></a>' );
 					
 				}
 				
@@ -301,7 +296,7 @@ if ( ! class_exists( 'EDD_Slack' ) ) {
 				}
 				else {
 					
-					$this->integration_errors[] = sprintf( _x( '%s includes features which integrate with %s, but v%s or greater of %s is required.', 'Outdated Integration Error', EDD_Slack_ID ), '<strong>' . $this->plugin_data['Name'] . '</strong>', '<a href="' . admin_url( 'update-core.php' ) . '"><strong>Easy Digital Downloads - Frontend Submissions</strong></a>', '2.4.2', '<a href="' . admin_url( 'update-core.php' ) . '"><strong>Easy Digital Downloads - Frontend Submissions</strong></a>' );
+					$this->integration_errors[] = sprintf( _x( '%s includes features which integrate with %s, but v%s or greater of %s is required.', 'Outdated Integration Error', 'edd-slack' ), '<strong>' . $this->plugin_data['Name'] . '</strong>', '<a href="' . admin_url( 'update-core.php' ) . '"><strong>Easy Digital Downloads - Frontend Submissions</strong></a>', '2.4.2', '<a href="' . admin_url( 'update-core.php' ) . '"><strong>Easy Digital Downloads - Frontend Submissions</strong></a>' );
 					
 				}
 				
@@ -317,7 +312,7 @@ if ( ! class_exists( 'EDD_Slack' ) ) {
 				}
 				else {
 					
-					$this->integration_errors[] = sprintf( _x( '%s includes features which integrate with %s, but v%s or greater of %s is required.', 'Outdated Integration Error', EDD_Slack_ID ), '<strong>' . $this->plugin_data['Name'] . '</strong>', '<a href="' . admin_url( 'update-core.php' ) . '"><strong>Easy Digital Downloads - Commissions</strong></a>', '3.2.10', '<a href="' . admin_url( 'update-core.php' ) . '"><strong>Easy Digital Downloads - Commissions</strong></a>' );
+					$this->integration_errors[] = sprintf( _x( '%s includes features which integrate with %s, but v%s or greater of %s is required.', 'Outdated Integration Error', 'edd-slack' ), '<strong>' . $this->plugin_data['Name'] . '</strong>', '<a href="' . admin_url( 'update-core.php' ) . '"><strong>Easy Digital Downloads - Commissions</strong></a>', '3.2.10', '<a href="' . admin_url( 'update-core.php' ) . '"><strong>Easy Digital Downloads - Commissions</strong></a>' );
 					
 				}
 				
@@ -334,7 +329,7 @@ if ( ! class_exists( 'EDD_Slack' ) ) {
 				}
 				else {
 				
-					$this->integration_errors[] = sprintf( _x( '%s includes features which integrate with %s, but v%s or greater of %s is required.', 'Outdated Integration Error', EDD_Slack_ID ), '<strong>' . $this->plugin_data['Name'] . '</strong>', '<a href="' . admin_url( 'update-core.php' ) . '"><strong>Easy Digital Downloads - Purchase Limit</strong></a>', '1.2.16', '<a href="' . admin_url( 'update-core.php' ) . '"><strong>Easy Digital Downloads - Purchase Limit</strong></a>' );
+					$this->integration_errors[] = sprintf( _x( '%s includes features which integrate with %s, but v%s or greater of %s is required.', 'Outdated Integration Error', 'edd-slack' ), '<strong>' . $this->plugin_data['Name'] . '</strong>', '<a href="' . admin_url( 'update-core.php' ) . '"><strong>Easy Digital Downloads - Purchase Limit</strong></a>', '1.2.16', '<a href="' . admin_url( 'update-core.php' ) . '"><strong>Easy Digital Downloads - Purchase Limit</strong></a>' );
 					
 				}
 				
@@ -412,7 +407,7 @@ if ( ! class_exists( 'EDD_Slack' ) ) {
 					
 					$variations = edd_get_variable_prices( $download_id );
 					
-					$downloads_array[ $download_id ] = $download_name . ' - ' . _x( 'All Variations', 'All Variations Option Text', EDD_Slack_ID );
+					$downloads_array[ $download_id ] = $download_name . ' - ' . _x( 'All Variations', 'All Variations Option Text', 'edd-slack' );
 					
 					// Apparently edd_get_variable_prices() can't be trusted to get Price IDs
 					// After the first Price ID it just has an empty String
@@ -453,17 +448,17 @@ if ( ! class_exists( 'EDD_Slack' ) ) {
 					),
 				),
 				'admin_title' => array(
-					'desc' => __( 'Indentifier for this Notification', EDD_Slack_ID ),
+					'desc' => __( 'Indentifier for this Notification', 'edd-slack' ),
 					'type' => 'text',
 					'readonly' => false,
-					'placeholder' => __( 'New Slack Notification', EDD_Slack_ID ),
+					'placeholder' => __( 'New Slack Notification', 'edd-slack' ),
 					'std' => '',
 					'field_class' => 'edd-slack-field',
-					'tooltip_title' => __( 'Indentifier for this Notification', EDD_Slack_ID ),
-					'tooltip_desc'  => __( 'Helps distinguish Notifications from one another on the Settings Screen. If left blank, your Notification will be labeled &ldquo;New Slack Notification&rdquo;.', EDD_Slack_ID ),
+					'tooltip_title' => __( 'Indentifier for this Notification', 'edd-slack' ),
+					'tooltip_desc'  => __( 'Helps distinguish Notifications from one another on the Settings Screen. If left blank, your Notification will be labeled &ldquo;New Slack Notification&rdquo;.', 'edd-slack' ),
 				),
 				'trigger' => array(
-					'desc' => __( 'Slack Trigger', EDD_Slack_ID ),
+					'desc' => __( 'Slack Trigger', 'edd-slack' ),
 					'type' => 'select',
 					'chosen' => true,
 					'field_class' => array( 
@@ -472,9 +467,9 @@ if ( ! class_exists( 'EDD_Slack' ) ) {
 						'required',
 					),
 					'options' => array( 
-						'' => _x( '-- Select a Slack Trigger --', 'Slack Trigger Default Label', EDD_Slack_ID ),
+						'' => _x( '-- Select a Slack Trigger --', 'Slack Trigger Default Label', 'edd-slack' ),
 					 ) + $this->get_slack_triggers(),
-					'placeholder' => _x( '-- Select a Slack Trigger --', 'Slack Trigger Default Label', EDD_Slack_ID ),
+					'placeholder' => _x( '-- Select a Slack Trigger --', 'Slack Trigger Default Label', 'edd-slack' ),
 					'std' => '',
 				),
 				'download' => array(
@@ -491,14 +486,14 @@ if ( ! class_exists( 'EDD_Slack' ) ) {
 						'required',
 					),
 					'options' => array(
-						'' => sprintf( _x( '-- Select %s --', 'Select Field Default', EDD_Slack_ID ), edd_get_label_singular() ),
-						'all' => sprintf( _x( 'All %s', 'All items in a Select Field', EDD_Slack_ID ), edd_get_label_plural() ),
+						'' => sprintf( _x( '-- Select %s --', 'Select Field Default', 'edd-slack' ), edd_get_label_singular() ),
+						'all' => sprintf( _x( 'All %s', 'All items in a Select Field', 'edd-slack' ), edd_get_label_plural() ),
 					) + $downloads_array,
-					'placeholder' => sprintf( _x( '-- Select %s --', 'Select Field Default', EDD_Slack_ID ), edd_get_label_singular() ),
+					'placeholder' => sprintf( _x( '-- Select %s --', 'Select Field Default', 'edd-slack' ), edd_get_label_singular() ),
 					'std' => '',
 				),
 				'discount_code' => array(
-					'desc' => _x( 'Discount Code', 'Discount Code Field Label', EDD_Slack_ID ),
+					'desc' => _x( 'Discount Code', 'Discount Code Field Label', 'edd-slack' ),
 					'type' => 'select',
 					'chosen' => true,
 					'field_class' => array(
@@ -509,10 +504,10 @@ if ( ! class_exists( 'EDD_Slack' ) ) {
 						'required',
 					),
 					'options' => array(
-						'' => _x( '-- Select Discount Code --', 'Discount Code Field Default', EDD_Slack_ID  ),
-						'all' => _x( 'All Discount Codes', 'All Discount Codes Text', EDD_Slack_ID ),
+						'' => _x( '-- Select Discount Code --', 'Discount Code Field Default', 'edd-slack'  ),
+						'all' => _x( 'All Discount Codes', 'All Discount Codes Text', 'edd-slack' ),
 					) + $discount_codes_array,
-					'placeholder' => _x( '-- Select Discount Code --', 'Discount Code Field Default', EDD_Slack_ID  ),
+					'placeholder' => _x( '-- Select Discount Code --', 'Discount Code Field Default', 'edd-slack'  ),
 					'std' => '',
 				),
 				'replacement_hints' => array(
@@ -521,38 +516,38 @@ if ( ! class_exists( 'EDD_Slack' ) ) {
 				),
 				'message_pretext' => array(
 					'type'  => 'text',
-					'desc' => __( 'Message Pre-text (Optional)', EDD_Slack_ID ),
+					'desc' => __( 'Message Pre-text (Optional)', 'edd-slack' ),
 					'readonly' => false,
 					'placeholder' => '',
 					'std' => '',
 					'field_class' => 'edd-slack-field',
-					'tooltip_title' => __( 'Message Pre-text', EDD_Slack_ID ),
-					'tooltip_desc'  => __( 'Shows directly below Username and above the Title/Message.', EDD_Slack_ID ),
+					'tooltip_title' => __( 'Message Pre-text', 'edd-slack' ),
+					'tooltip_desc'  => __( 'Shows directly below Username and above the Title/Message.', 'edd-slack' ),
 				),
 				'message_title'   => array(
 					'type'  => 'text',
-					'desc' => __( 'Message Title (Optional)', EDD_Slack_ID ),
+					'desc' => __( 'Message Title (Optional)', 'edd-slack' ),
 					'readonly' => false,
 					'placeholder' => '',
 					'std' => '',
 					'field_class' => 'edd-slack-field',
-					'tooltip_title' => __( 'Message Title', EDD_Slack_ID ),
-					'tooltip_desc'  => __( 'If left blank this will default to the Notification Identifier.', EDD_Slack_ID ),
+					'tooltip_title' => __( 'Message Title', 'edd-slack' ),
+					'tooltip_desc'  => __( 'If left blank this will default to the Notification Identifier.', 'edd-slack' ),
 				),
 				'message_text'	=> array(
 					'type'  => 'textarea',
-					'desc' => __( 'Message (Optional)', EDD_Slack_ID ),
+					'desc' => __( 'Message (Optional)', 'edd-slack' ),
 					'std' => '',
 					'field_class' => 'edd-slack-field',
 				),
 				'webhook'		 => array(
 					'type'  => 'text',
-					'desc' => __( 'Slack Webhook URL (Optional)', EDD_Slack_ID ),
+					'desc' => __( 'Slack Webhook URL (Optional)', 'edd-slack' ),
 					'readonly' => false,
 					'placeholder' => edd_get_option( 'edd_slack_webhook' ),
 					'args'  => array(
 						'desc'		=> '<p class="description">' .
-						__( 'You can override the above Webhook URL here.', EDD_Slack_ID ) .
+						__( 'You can override the above Webhook URL here.', 'edd-slack' ) .
 						'</p>',
 					),
 					'std' => '',
@@ -560,46 +555,46 @@ if ( ! class_exists( 'EDD_Slack' ) ) {
 						'edd-slack-field',
 						'edd-slack-webhook-url',
 					),
-					'tooltip_title' => __( 'Slack Webhook URL', EDD_Slack_ID ),
-					'tooltip_desc'  => __( 'This overrides the Default Webhook URL. This can be useful if you want a specific Notification to send to another Slack Team entirely.', EDD_Slack_ID ),
+					'tooltip_title' => __( 'Slack Webhook URL', 'edd-slack' ),
+					'tooltip_desc'  => __( 'This overrides the Default Webhook URL. This can be useful if you want a specific Notification to send to another Slack Team entirely.', 'edd-slack' ),
 				),
 				'channel'		 => array(
 					'type'  => 'text',
-					'desc' => __( 'Slack Channel (Optional)', EDD_Slack_ID ),
+					'desc' => __( 'Slack Channel (Optional)', 'edd-slack' ),
 					'readonly' => false,
-					'placeholder' => __( 'Webhook default', EDD_Slack_ID ),
+					'placeholder' => __( 'Webhook default', 'edd-slack' ),
 					'std' => '',
 					'field_class' => 'edd-slack-field',
-					'tooltip_title' => __( 'Slack Channel', EDD_Slack_ID ),
-					'tooltip_desc'  => __( 'This overrides the Default Channel defined by the Webhook URL. Notifications can be sent to individual Users instead by entering their Username like so: <code>@&laquo;username&raquo;</code>.', EDD_Slack_ID ),
+					'tooltip_title' => __( 'Slack Channel', 'edd-slack' ),
+					'tooltip_desc'  => __( 'This overrides the Default Channel defined by the Webhook URL. Notifications can be sent to individual Users instead by entering their Username like so: <code>@&laquo;username&raquo;</code>.', 'edd-slack' ),
 				),
 				'username'		=> array(
 					'type'  => 'text',
-					'desc' => __( 'Username (Optional)', EDD_Slack_ID ),
+					'desc' => __( 'Username (Optional)', 'edd-slack' ),
 					'readonly' => false,
 					'placeholder' => get_bloginfo( 'name' ),
 					'std' => '',
 					'field_class' => 'edd-slack-field',
-					'tooltip_title' => __( 'Username', EDD_Slack_ID ),
-					'tooltip_desc'  => sprintf( __( 'This controls who the Notification appears to be from. It does not have to be a valid User in your Slack Team. This will default to &ldquo;%s&rdquo;.', EDD_Slack_ID ), get_bloginfo( 'name' ) ),
+					'tooltip_title' => __( 'Username', 'edd-slack' ),
+					'tooltip_desc'  => sprintf( __( 'This controls who the Notification appears to be from. It does not have to be a valid User in your Slack Team. This will default to &ldquo;%s&rdquo;.', 'edd-slack' ), get_bloginfo( 'name' ) ),
 				),
 				'icon'			=> array(
 					'type'  => 'text',
-					'desc' => __( 'Icon Emoji or Image URL (Optional)', EDD_Slack_ID ),
+					'desc' => __( 'Icon Emoji or Image URL (Optional)', 'edd-slack' ),
 					'readonly' => false,
-					'placeholder' => __( 'Webhook default', EDD_Slack_ID ),
+					'placeholder' => __( 'Webhook default', 'edd-slack' ),
 					'std' => '',
 					'field_class' => 'edd-slack-field',
-					'tooltip_title' => __( 'Icon Emoji or Image URL', EDD_Slack_ID ),
-					'tooltip_desc'  => __( 'This accepts an Emoji (Example: <code>:rocket:</code>) or an Image URL. You can even use Custom Emojis defined within your Slack Team. If left empty, it will default to the Emoji or Image defined by the Webhook URL.', EDD_Slack_ID ),
+					'tooltip_title' => __( 'Icon Emoji or Image URL', 'edd-slack' ),
+					'tooltip_desc'  => __( 'This accepts an Emoji (Example: <code>:rocket:</code>) or an Image URL. You can even use Custom Emojis defined within your Slack Team. If left empty, it will default to the Emoji or Image defined by the Webhook URL.', 'edd-slack' ),
 				),
 				'color'		  => array(
 					'type'  => 'color',
-					'desc' => __( 'Color', EDD_Slack_ID ),
+					'desc' => __( 'Color', 'edd-slack' ),
 					'std' => '#3299BB',
 					'field_class' => 'edd-slack-field',
-					'tooltip_title' => __( 'Color', EDD_Slack_ID ),
-					'tooltip_desc'  => __( 'Shows next to Message Title and Message.', EDD_Slack_ID ),
+					'tooltip_title' => __( 'Color', 'edd-slack' ),
+					'tooltip_desc'  => __( 'Shows next to Message Title and Message.', 'edd-slack' ),
 				),
 			) );
 			
@@ -615,10 +610,10 @@ if ( ! class_exists( 'EDD_Slack' ) ) {
 		public function get_slack_triggers() {
 			
 			$triggers = apply_filters( 'edd_slack_triggers', array(
-				'edd_complete_purchase' => _x( 'Purchase Complete', 'Purchase Complete Trigger Label', EDD_Slack_ID ),
-				'edd_failed_purchase' => _x( 'Purchase Failed', 'Purchase Failed Trigger Label', EDD_Slack_ID ),
-				'edd_discount_code_applied' => _x( 'Discount Code Applied', 'Discount Code Applied Trigger Label', EDD_Slack_ID ),
-				'edd_insert_user' => _x( 'New User Registration via EDD', 'New User Registration Trigger Label', EDD_Slack_ID ),
+				'edd_complete_purchase' => _x( 'Purchase Complete', 'Purchase Complete Trigger Label', 'edd-slack' ),
+				'edd_failed_purchase' => _x( 'Purchase Failed', 'Purchase Failed Trigger Label', 'edd-slack' ),
+				'edd_discount_code_applied' => _x( 'Discount Code Applied', 'Discount Code Applied Trigger Label', 'edd-slack' ),
+				'edd_insert_user' => _x( 'New User Registration via EDD', 'New User Registration Trigger Label', 'edd-slack' ),
 			) );
 			
 			asort( $triggers );
@@ -637,14 +632,14 @@ if ( ! class_exists( 'EDD_Slack' ) ) {
 		public function register_scripts() {
 			
 			wp_register_style(
-				EDD_Slack_ID . '-admin',
+				'edd-slack-admin',
 				EDD_Slack_URL . 'assets/css/admin.css',
 				null,
 				defined( 'WP_DEBUG' ) && WP_DEBUG ? time() : EDD_Slack_VER
 			);
 			
 			wp_register_script(
-				EDD_Slack_ID . '-admin',
+				'edd-slack-admin',
 				EDD_Slack_URL . 'assets/js/admin.js',
 				array( 'jquery', 'jquery-effects-core', 'jquery-effects-highlight' ),
 				defined( 'WP_DEBUG' ) && WP_DEBUG ? time() : EDD_Slack_VER,
@@ -652,7 +647,7 @@ if ( ! class_exists( 'EDD_Slack' ) ) {
 			);
 			
 			wp_localize_script( 
-				EDD_Slack_ID . '-admin',
+				'edd-slack-admin',
 				'eddSlack',
 				apply_filters( 'edd_slack_localize_admin_script', array() )
 			);

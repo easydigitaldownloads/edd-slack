@@ -4,13 +4,20 @@ function init_edd_repeater_colorpickers( modal ) {
 	var regex = /value="(#(?:[0-9a-f]{3}){1,2})"/i;
 
 	// Only try to run if there are any Color Pickers within an EDD Repeater
-	if ( jQuery( modal ).find( '.edd-color-picker' ).length ) {
+	if ( jQuery( modal ).find( '.edd-color-picker' ).length > 0 ) {
 
 		// Hit each colorpicker individually to ensure its settings are properly used
 		jQuery( modal ).find( '.edd-color-picker' ).each( function( index, colorPicker ) {
 
 			// Value exists in HTML but is inaccessable via JavaScript. No idea why.
-			var value = regex.exec( jQuery( colorPicker )[0].outerHTML )[1];
+			var value = regex.exec( jQuery( colorPicker )[0].outerHTML );
+			
+			if ( value !== null ) {
+				value = value[1]; // Set to Regex Match
+			}
+			else {
+				value = jQuery( colorPicker ).data( 'defaultColor' ); // Set to default
+			}
 
 			jQuery( colorPicker ).val( value ).attr( 'value', value ).wpColorPicker();
 

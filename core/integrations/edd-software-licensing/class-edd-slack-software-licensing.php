@@ -131,8 +131,6 @@ class EDD_Slack_Software_Licensing {
 	 */
 	public function edd_sl_activate_license( $license_id, $download_id ) {
 		
-		file_put_contents( __DIR__ . '/test.txt', 'here' );
-		
 		// We need the Payment ID to get accurate Customer Data
 		$payment_id = get_post_meta( $license_id, '_edd_sl_payment_id', true );
 		

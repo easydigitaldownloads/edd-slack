@@ -28,6 +28,9 @@ class EDD_Slack_Recurring {
 		// Fires when a Recurring Subscription is created
 		add_action( 'edd_subscription_post_create', array( $this, 'edd_subscription_post_create' ), 10, 2 );
 		
+		// Fires when a Recurring Subscription is cancelled
+		add_action( 'edd_subscription_cancelled', array( $this, 'edd_subscription_cancelled' ), 10, 2 );
+		
 		// Inject some Checks before we do Replacements or send the Notification
 		add_action( 'edd_slack_before_replacements', array( $this, 'before_notification_replacements' ), 10, 5 );
 		
@@ -51,6 +54,7 @@ class EDD_Slack_Recurring {
 	public function add_triggers( $triggers ) {
 
 		$triggers['edd_subscription_post_create'] = _x( 'New Subscription Created', 'New Subscription Created Trigger', 'edd-slack' );
+		$triggers['edd_subscription_cancelled'] = _x( 'Subscription Cancelled', 'Subscription Cancelled Trigger', 'edd-slack' );
 
 		return $triggers;
 
@@ -68,6 +72,7 @@ class EDD_Slack_Recurring {
 	public function add_extra_fields( $repeater_fields ) {
 		
 		$repeater_fields['download']['field_class'][] = 'edd_subscription_post_create';
+		$repeater_fields['download']['field_class'][] = 'edd_subscription_cancelled';
 		
 		return $repeater_fields;
 		
@@ -127,6 +132,56 @@ class EDD_Slack_Recurring {
 	}
 	
 	/**
+	 * Send a Slack Notification when a Subscription is Cancelled
+	 * 
+	 * @param		integer $subscription_id Subscription ID
+	 * @param		object  $subscription    EDD_Subscription Object
+	 *                                                   
+	 * @access		public
+	 * @since		1.1.0
+	 * @return		void
+	 */
+	public function edd_subscription_cancelled( $subscription_id, $subscription ) {
+		
+		$customer = new EDD_Customer( $subscription->customer_id );
+		
+		// Cart details
+		$cart_items = edd_get_payment_meta_cart_details( $subscription->parent_payment_id );
+		
+		$price_id = null;
+		foreach ( $cart_items as $item ) {
+			
+			if ( edd_has_variable_prices( $item['id'] ) ) {
+				
+				$price_id = $item['item_number']['options']['price_id'];
+				break;
+				
+			}
+			
+		}
+		
+		do_action( 'edd_slack_notify', 'edd_subscription_cancelled', array(
+			'subscription_id' => $subscription_id,
+			'user_id' => $customer->user_id, // Subscriptions require a Log in, regardless of EDD Settings
+			'name' => $customer->name,
+			'email' => $customer->email,
+			'period' => $subscription->period, // Default empty string
+			'initial_amount' => $subscription->initial_amount, // Default empty string
+			'recurring_amount' => $subscription->recurring_amount, // Default empty string
+			'times_billed' => $subscription->get_times_billed(),
+			'times_to_bill' => $subscription->bill_times, // Defaults to 0, which is "Until cancelled"
+			'parent_payment_id' => $subscription->parent_payment_id, // Default 0
+			'download_id' => $subscription->product_id, // Default 0
+			'price_id' => $price_id,
+			'created' => $subscription->created, // Default empty string
+			'expiration' => $subscription->expiration, // Default empty string
+			'status' => $subscription->status, // Default empty string
+			'profile_id' => $subscription->profile_id, // Default empty string
+		) );
+		
+	}
+	
+	/**
 	 * Inject some checks on whether or not to bail on the Notification
 	 * 
 	 * @param	  object  $post			WP_Post Object for our Saved Notification Data
@@ -151,7 +206,9 @@ class EDD_Slack_Recurring {
 				'bail' => false,
 			) );
 			
-			if ( $trigger == 'edd_subscription_post_create' ) {
+			if ( $trigger == 'edd_subscription_post_create' ||
+				$trigger == 'edd_subscription_cancelled'
+			   ) {
 				
 				$download = EDDSLACK()->notification_integration->check_for_price_id( $fields['download'] );
 				
@@ -159,7 +216,7 @@ class EDD_Slack_Recurring {
 				$price_id = $download['price_id'];
 				
 				// Download Subscribed to doesn't match our Notification, bail
-				if ( $download_id !== 'all' && (int) $download_id !== $args['download_id'] ) {
+				if ( $download_id !== 'all' && $download_id !== $args['download_id'] ) {
 					$args['bail'] = true;
 					return false;
 				}
@@ -196,6 +253,7 @@ class EDD_Slack_Recurring {
 			switch ( $trigger ) {
 
 				case 'edd_subscription_post_create':
+				case 'edd_subscription_cancelled':
 					
 					$replacements['%download%'] = get_the_title( $args['download_id'] );
 					
@@ -250,6 +308,13 @@ class EDD_Slack_Recurring {
 		);
 		
 		$hints['edd_subscription_post_create'] = array_merge( $user_hints, $recurring_hints );
+		
+		// Change the hint text slightly for Cancellation
+		// Overall they do the same thing
+		$recurring_hints['%expiration%'] = _x( 'The date the Subscription would have ended', '%expiration% Hint Text', 'edd-slack' );
+		$recurring_hints['%times_to_bill%'] = _x( 'Number of times the Subscription would have been billed in total', '%times_to_bill% Hint Text', 'edd-slack' );
+		
+		$hints['edd_subscription_cancelled'] = array_merge( $user_hints, $recurring_hints );
 		
 		return $hints;
 		

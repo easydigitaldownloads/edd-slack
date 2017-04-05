@@ -107,6 +107,7 @@ class EDD_Slack_App_Reviews {
 		
 		// Remove the Approve Button if the Review is auto-approved
 		// EDD Reviews handles this via Post Meta instead of as part of the Comment itself (Which is WRONG)
+		// This will always return WP_Error, which makes it useless
 		if ( $auto_approval = wp_allow_comment( $args, true ) == '1' ) {
 			
 			array_splice( $notification_args['attachments'][0]['actions'], 0, 1 );

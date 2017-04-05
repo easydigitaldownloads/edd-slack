@@ -1,19 +1,19 @@
 <?php
 /**
- * EDD Comments Integration for the Slack App
+ * EDD Fraud Monitor Integration for the Slack App
  *
  * @since 1.0.0
  *
  * @package EDD_Slack
- * @subpackage EDD_Slack/core/ssl-only/integrations/edd-comments
+ * @subpackage EDD_Slack/core/ssl-only/integrations/edd-fraud-monitor
  */
 
 defined( 'ABSPATH' ) || die();
 
-class EDD_Slack_App_Comments {
+class EDD_Slack_App_Fraud_Monitor {
 	
 	/**
-	 * EDD_Slack_App_Comments constructor.
+	 * EDD_Slack_App_Fraud_Monitor constructor.
 	 *
 	 * @since 1.0.0
 	 */
@@ -56,7 +56,7 @@ class EDD_Slack_App_Comments {
 			( $webhook_url !== edd_get_option( 'slack_webhook_default' ) ) ) return $webhook_url;
 		
 		// If our Trigger doesn't an applicable Trigger, bail
-		if ( $trigger !== 'comment_post' ) return $webhook_url;
+		if ( $trigger !== 'edd_fraud_purchase' ) return $webhook_url;
 
 		return 'chat.postMessage';
 		
@@ -84,31 +84,24 @@ class EDD_Slack_App_Comments {
 			$webhook_url !== edd_get_option( 'slack_webhook_default' ) ) return $notification_args;
 		
 		// If our Trigger doesn't an applicable Trigger, bail
-		if ( $trigger !== 'comment_post' ) return $notification_args;
+		if ( $trigger !== 'edd_fraud_purchase' ) return $notification_args;
 		
 		$notification_args['attachments'][0]['actions'] = array(
 			array(
-				'name' => 'approve',
-				'text' => _x( 'Approve', 'Approve Button Text', 'edd-slack' ),
+				'name' => 'valid',
+				'text' => __( 'Accept as Valid', 'edd-fm' ),
 				'type' => 'button',
 				'style' => 'primary',
 				'value' => json_encode( $args ),
 			),
 			array(
-				'name' => 'spam',
-				'text' => _x( 'Mark as Spam', 'Mark as Spam Button Text', 'edd-slack' ),
+				'name' => 'fraud',
+				'text' => __( 'Confirm as Fraud', 'edd-fm' ),
 				'type' => 'button',
 				'style' => 'danger',
 				'value' => json_encode( $args ),
 			),
 		);
-		
-		// Remove the Approve Button if the Comment is auto-approved
-		if ( $args['comment_approved'] == 1 ) {
-			
-			array_splice( $notification_args['attachments'][0]['actions'], 0, 1 );
-			
-		}
 		
 		/**
 		 * Allow the Notification Args for the Slack App Integration to be overriden
@@ -130,7 +123,7 @@ class EDD_Slack_App_Comments {
 	 */
 	public function add_support( $interactive_triggers ) {
 		
-		$interactive_triggers[] = 'comment_post';
+		$interactive_triggers[] = 'edd_fraud_purchase';
 		
 		return $interactive_triggers;
 		
@@ -138,12 +131,12 @@ class EDD_Slack_App_Comments {
 	
 }
 
-$integrate = new EDD_Slack_App_Comments();
+$integrate = new EDD_Slack_App_Fraud_Monitor();
 
-if ( ! function_exists( 'edd_slack_interactive_message_comment_post' ) ) {
+if ( ! function_exists( 'edd_slack_interactive_message_edd_fraud_purchase' ) ) {
 	
 	/**
-	 * EDD Slack Rest New Comment on Download Endpoint
+	 * EDD Slack Rest Possible Fraudulent Purchase Endpoint
 	 * 
 	 * @param	  object $button	  name and value from the Interactive Button. value should be json_decode()'d
 	 * @param	  string $response_url Webhook to send the Response Message to
@@ -152,7 +145,7 @@ if ( ! function_exists( 'edd_slack_interactive_message_comment_post' ) ) {
 	 * @since	  1.0.0
 	 * @return	  void
 	 */
-	function edd_slack_interactive_message_comment_post( $button, $response_url, $payload ) {
+	function edd_slack_interactive_message_edd_fraud_purchase( $button, $response_url, $payload ) {
 		
 		$action = $button->name;
 		$value = json_decode( $button->value );
@@ -160,24 +153,53 @@ if ( ! function_exists( 'edd_slack_interactive_message_comment_post' ) ) {
 		// Set depending on the Action
 		$message = '';
 		
-		if ( strtolower( $action ) == 'approve' ) {
+		if ( strtolower( $action ) == 'valid' ) {
 			
-			$approve = wp_update_comment( array(
-				'comment_ID' => $value->comment_id,
-				'comment_approved' => 1,
-			) );
+			// Copied from EDD_Fraud_Monitor()->remove_fraud_flag()
+			// This is because it attempts to grab a WP User and in this case, it makes more sense to modify that String to show a Slack User
+			// If one day that String can be manipulated, this can be much cleaner
 			
-			$message = sprintf( _x( "%s has Approved %s's Comment on %s", 'Comment Approved Response Text', 'edd-slack' ), $payload->user->name, $value->name, get_the_title( $value->comment_post_id ) );
+			delete_post_meta( $value->payment_id, '_edd_maybe_is_fraud' );
+			delete_post_meta( $value->payment_id, '_edd_maybe_is_fraud_reason' );
+			add_post_meta( $value->payment_id, '_edd_not_fraud', '1' );
+
+			edd_update_payment_status( $value->payment_id );
+
+			// Log a note about possible fraud
+			edd_insert_payment_note( $value->payment_id, sprintf( __( 'This payment was cleared as legitimate by %s via %s.', 'edd-slack' ), $payload->user->name, EDDSLACK()->plugin_data['Name'] ) );
+
+			// clear IP from blacklist
+			$user_ip   = edd_get_payment_user_ip( $value->payment_id );
+			$blacklist =  EDD_Fraud_Monitor()->banned_ips();
+
+			// check if IP in in blacklist
+			if ( in_array( $user_ip, $blacklist ) ) {
+
+				// find key which includes the IP address
+				$key_to_remove = array_search( $user_ip, $blacklist );
+				// unset the key
+				if ( isset( $key_to_remove ) ) {
+					unset( $blacklist[ $key_to_remove ] );
+				}
+
+				// update blacklist
+				update_option( '_edd_ip_blacklist', $blacklist );
+				
+			}
+			
+			$message = sprintf( _x( "%s has Accepted %s's Payment as Valid", 'Accepted Payment as Valid Response Text', 'edd-slack' ), $payload->user->name, $value->name );
 			
 		}
-		else if ( strtolower( $action ) == 'spam' ) {
+		else if ( strtolower( $action ) == 'fraud' ) {
 			
-			$spam = wp_update_comment( array(
-				'comment_ID' => $value->comment_id,
-				'comment_approved' => 'spam',
-			) );
+			delete_post_meta( $value->payment_id, '_edd_maybe_is_fraud' );
+			delete_post_meta( $value->payment_id, '_edd_maybe_is_fraud_reason' );
+
+			edd_update_payment_status( $value->payment_id, 'revoked' );
 			
-			$message = sprintf( _x( "%s has marked %s's Comment on %s as Spam", 'Spam Comment Response Text', 'edd-slack' ), $payload->user->name, $value->name, get_the_title( $value->comment_post_id ) );
+			edd_insert_payment_note( $value->payment_id, sprintf( __( 'This payment was confirmed as fraud by %s via %s.', 'edd-slack' ), $payload->user->name, EDDSLACK()->plugin_data['Name'] ) );
+			
+			$message = sprintf( _x( "%s has Confirmed %s's Payment as Fraud", 'Confirmed Payment as Fraud Response Text', 'edd-slack' ), $payload->user->name, $value->name );
 			
 		}
 		

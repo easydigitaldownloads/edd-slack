@@ -46,7 +46,8 @@
 				eddSlack.variantExclusion.indexOf( option_class ) > -1 ) {
 				
 				// Reset value if it is set to a variant
-				if ( $download.val().indexOf( '-' ) > -1 ) $download.val( 0 );
+				if ( $download.val() !== null &&
+					$download.val().indexOf( '-' ) > -1 ) $download.val( 0 );
 				
 				$download.find( 'option[value*="-"]' ).hide();
 				

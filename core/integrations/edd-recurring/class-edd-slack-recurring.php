@@ -272,6 +272,9 @@ class EDD_Slack_Recurring {
 					$replacements['%times_billed%'] = $args['times_billed'];
 					$replacements['%times_to_bill%'] = ( $args['times_to_bill'] == 0 ) ? __( 'Until cancelled', 'edd-recurring' ) : $args['times_to_bill'];
 					
+					$replacements['%initial_amount%'] = edd_currency_filter( number_format( $args['initial_amount'], 2 ) );
+					$replacements['%recurring_amount%'] = edd_currency_filter( number_format( $args['recurring_amount'], 2 ) );
+					
 					break;
 					
 				default:
@@ -303,6 +306,8 @@ class EDD_Slack_Recurring {
 			'%period%' => _x( 'The Subscription Period', '%period% Hint Text', 'edd-slack' ),
 			'%created%' => _x( 'The date the Subscription started', '%created% Hint Text', 'edd-slack' ),
 			'%expiration%' => _x( 'The date the Subscription ends', '%expiration% Hint Text', 'edd-slack' ),
+			'%initial_amount%' => _x( 'The initial Subscription cost', '%initial_amount% Hint Text', 'edd-slack' ),
+			'%recurring_amount%' => _x( 'The cost of the Subscription each time it is renewed', '%recurring_amount% Hint Text', 'edd-slack' ),
 			'%times_billed%' => _x( 'Number of times the Subscription has been billed', '%times_billed% Hint Text', 'edd-slack' ),
 			'%times_to_bill%' => _x( 'Number of times the Subscription will be billed in total', '%times_to_bill% Hint Text', 'edd-slack' ),
 		);

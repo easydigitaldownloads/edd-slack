@@ -335,6 +335,22 @@ if ( ! class_exists( 'EDD_Slack' ) ) {
 				
 			}
 			
+			// If EDD Reviews is Active
+			if ( class_exists( 'EDD_Reviews' ) ) {
+				
+				if ( version_compare( edd_reviews()->version, '2.0.5' ) >= 0 ) {
+				
+					require_once EDD_Slack_DIR . '/core/integrations/edd-reviews/class-edd-slack-reviews.php';
+					
+				}
+				else {
+					
+					$this->integration_errors[] = sprintf( _x( '%s includes features which integrate with %s, but v%s or greater of %s is required.', 'Outdated Integration Error', 'edd-slack' ), '<strong>' . $this->plugin_data['Name'] . '</strong>', '<a href="' . admin_url( 'update-core.php' ) . '"><strong>Easy Digital Downloads - Reviews</strong></a>', '2.0.5', '<a href="' . admin_url( 'update-core.php' ) . '"><strong>Easy Digital Downloads - Reviews</strong></a>' );
+					
+				}
+				
+			}
+			
 			// Output all Integration-related Errors just above the Notificiation Repeater
 			if ( ! empty( $this->integration_errors ) ) {
 				

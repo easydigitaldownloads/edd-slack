@@ -345,7 +345,7 @@ if ( ! class_exists( 'EDD_Slack' ) ) {
 				}
 				else {
 					
-					$this->integration_errors[] = sprintf( _x( '%s includes features which integrate with %s, but v%s or greater of %s is required.', 'Outdated Integration Error', 'edd-slack' ), '<strong>' . $this->plugin_data['Name'] . '</strong>', '<a href="' . admin_url( 'update-core.php' ) . '"><strong>Easy Digital Downloads - Reviews</strong></a>', '3.2.10', '<a href="' . admin_url( 'update-core.php' ) . '"><strong>Easy Digital Downloads - Reviews</strong></a>' );
+					$this->integration_errors[] = sprintf( _x( '%s includes features which integrate with %s, but v%s or greater of %s is required.', 'Outdated Integration Error', 'edd-slack' ), '<strong>' . $this->plugin_data['Name'] . '</strong>', '<a href="' . admin_url( 'update-core.php' ) . '"><strong>Easy Digital Downloads - Reviews</strong></a>', '2.0.5', '<a href="' . admin_url( 'update-core.php' ) . '"><strong>Easy Digital Downloads - Reviews</strong></a>' );
 					
 				}
 				

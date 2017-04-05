@@ -123,7 +123,7 @@ class EDD_Slack_Reviews {
 			$vendor_select = array(
 				'vendor' => array(
 					'type' => 'select',
-					'desc' => _x( 'Vendor', 'Vendor Select Label', 'edd-slack' ),
+					'desc' => EDD_FES()->helper->get_vendor_constant_name( false, true ),
 					'field_class' => array(
 						'edd-slack-field',
 						'edd-slack-vendor',

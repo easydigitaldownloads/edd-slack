@@ -56,22 +56,22 @@ class EDD_Slack_Frontend_Submissions {
 	 */
 	public function add_triggers( $triggers ) {
 
-		$triggers['edd_fes_vendor_registered'] = _x( 'New Vendor Application', 'New Vendor Application Trigger', 'edd-slack' );
+		$triggers['edd_fes_vendor_registered'] = sprintf( _x( 'New %s Application', 'New Vendor Application Trigger', 'edd-slack' ), EDD_FES()->helper->get_vendor_constant_name( false, true ) );
 		
 		// By default, Vendors cannot create their own Products
 		if ( (bool) EDD_FES()->helper->get_option( 'fes-allow-vendors-to-create-products', false ) ) {
-			$triggers['edd_fes_new_vendor_product'] = _x( 'New Vendor Product', 'New Vendor Product Trigger', 'edd-slack' );
+			$triggers['edd_fes_new_vendor_product'] = sprintf( _x( 'New %s Product', 'New Vendor Product Trigger', 'edd-slack' ), EDD_FES()->helper->get_vendor_constant_name( false, true ) );
 		}
 		
 		// By default, Vendors cannot edit their own Products
 		if ( (bool) EDD_FES()->helper->get_option( 'fes-allow-vendors-to-edit-products', false ) ) {
-			$triggers['edd_fes_edit_vendor_product'] = _x( 'Vendor Product Edited', 'Vendor Product Edited Trigger', 'edd-slack' );
+			$triggers['edd_fes_edit_vendor_product'] = sprintf( _x( '%s Product Edited', 'Vendor Product Edited Trigger', 'edd-slack' ), EDD_FES()->helper->get_vendor_constant_name( false, true ) );
 		}
 		
-		$triggers['edd_fes_vendor_contact'] = _x( 'New Vendor Contact Form Submitted', 'New Vendor Contact Form Submitted Trigger', 'edd-slack' );
+		$triggers['edd_fes_vendor_contact'] = sprintf( _x( 'New %s Contact Form Submitted', 'New Vendor Contact Form Submitted Trigger', 'edd-slack' ), EDD_FES()->helper->get_vendor_constant_name( false, true ) );
 
 		return $triggers;
-
+		
 	}
 	
 	/**

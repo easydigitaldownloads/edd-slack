@@ -78,7 +78,7 @@ class EDD_Slack_Reviews {
 		$triggers['edd_insert_review'] = sprintf( _x( 'New Review on %s', 'New Review on Download Created Trigger', 'edd-slack' ), edd_get_label_singular() );
 		
 		if ( $this->support_fes ) {
-			$triggers['edd_vendor_feedback'] = _x( 'New Vendor Feedback', 'New Vendor Feedback Created Trigger', 'edd-slack' );
+			$triggers['edd_vendor_feedback'] = sprintf( _x( 'New %s Feedback', 'New Vendor Feedback Created Trigger', 'edd-slack' ), EDD_FES()->helper->get_vendor_constant_name( false, true ) );
 		}
 
 		return $triggers;

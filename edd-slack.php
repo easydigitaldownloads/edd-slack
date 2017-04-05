@@ -411,6 +411,11 @@ if ( ! class_exists( 'EDD_Slack' ) ) {
 					require_once EDD_Slack_DIR . '/core/ssl-only/integrations/edd-frontend-submissions/class-edd-slack-app-frontend-submissions.php';
 				}
 				
+				// If EDD Fraud Monitor is Active
+				if ( defined( 'EDD_FM_VERSION' ) ) {
+					require_once EDD_Slack_DIR . '/core/ssl-only/integrations/edd-fraud-monitor/class-edd-slack-app-fraud-monitor.php';
+				}
+				
 			}
 			
 		}

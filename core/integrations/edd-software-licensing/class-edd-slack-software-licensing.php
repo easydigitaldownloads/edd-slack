@@ -29,10 +29,10 @@ class EDD_Slack_Software_Licensing {
 		add_action( 'edd_sl_store_license', array( $this, 'edd_sl_store_license' ), 10, 4 );
 		
 		// Fires when a License is Activated
-		add_action( 'edd_sl_post_set_status', array( $this, 'edd_sl_post_set_status' ), 10, 2 );
+		add_action( 'edd_sl_activate_license', array( $this, 'edd_sl_activate_license' ), -999, 2 );
 		
 		// Fires when a License is Deactivated
-		add_action( 'edd_sl_deactivate_license', array( $this, 'edd_sl_deactivate_license' ), 10, 2 );
+		add_action( 'edd_sl_deactivate_license', array( $this, 'edd_sl_deactivate_license' ), -999, 2 );
 		
 		// Fires when a License is Upgraded
 		add_action( 'edd_sl_license_upgraded', array( $this, 'edd_sl_license_upgraded' ), 10, 2 );
@@ -120,16 +120,16 @@ class EDD_Slack_Software_Licensing {
 	}
 	
 	/**
-	 * Fires whenever the License Status Changes
+	 * Fires when a License is activated
 	 * 
-	 * @param	  integer $license_id License ID
-	 * @param	  string  $status	 License Status
+	 * @param	  integer $license_id  License ID
+	 * @param	  string  $download_id Download ID
 	 *										  
 	 * @access	  public
 	 * @since	  1.0.0
 	 * @return	  void
 	 */
-	public function edd_sl_post_set_status( $license_id, $status ) {
+	public function edd_sl_activate_license( $license_id, $download_id ) {
 		
 		// We need the Payment ID to get accurate Customer Data
 		$payment_id = get_post_meta( $license_id, '_edd_sl_payment_id', true );
@@ -138,36 +138,50 @@ class EDD_Slack_Software_Licensing {
 		$customer_id = get_post_meta( $payment_id, '_edd_payment_customer_id', true );
 		$customer = new EDD_Customer( $customer_id );
 		
-		if ( $status == 'active' ) {
+		do_action( 'edd_slack_notify', 'edd_sl_activate_license', array(
+			'user_id' => $customer->user_id, // If the User isn't a proper WP User, this will be 0
+			'name' => $customer->name,
+			'email' => $customer->email,
+			'license_key' => edd_software_licensing()->get_license_key( $license_id ),
+			'download_id' => $download_id,
+			'price_id' => edd_software_licensing()->get_price_id( $license_id ),
+			'expiration' => get_post_meta( $license_id, '_edd_sl_expiration', true ),
+			'site_count' => edd_software_licensing()->get_site_count( $license_id ),
+			'license_limit' => edd_software_licensing()->license_limit( $license_id ),
+		) );
 		
-			do_action( 'edd_slack_notify', 'edd_sl_activate_license', array(
-				'user_id' => $customer->user_id, // If the User isn't a proper WP User, this will be 0
-				'name' => $customer->name,
-				'email' => $customer->email,
-				'license_key' => edd_software_licensing()->get_license_key( $license_id ),
-				'download_id' => edd_software_licensing()->get_download_id( $license_id ),
-				'price_id' => edd_software_licensing()->get_price_id( $license_id ),
-				'expiration' => get_post_meta( $license_id, '_edd_sl_expiration', true ),
-				'site_count' => edd_software_licensing()->get_site_count( $license_id ),
-				'license_limit' => edd_software_licensing()->license_limit( $license_id ),
-			) );
-			
-		}
-		else if ( $status == 'inactive' ) {
-			
-			do_action( 'edd_slack_notify', 'edd_sl_deactivate_license', array(
-				'user_id' => $customer->user_id, // If the User isn't a proper
-				'name' => $customer->name,
-				'email' => $customer->email,
-				'license_key' => edd_software_licensing()->get_license_key( $license_id ),
-				'download_id' => edd_software_licensing()->get_download_id( $license_id ),
-				'price_id' => edd_software_licensing()->get_price_id( $license_id ),
-				'expiration' => get_post_meta( $license_id, '_edd_sl_expiration', true ),
-				'site_count' => edd_software_licensing()->get_site_count( $license_id ),
-				'license_limit' => edd_software_licensing()->license_limit( $license_id ),
-			) );
-			
-		}
+	}
+	
+	/**
+	 * Fires when a License is deactivated
+	 * 
+	 * @param	  integer $license_id  License ID
+	 * @param	  string  $download_id Download ID
+	 *										  
+	 * @access	  public
+	 * @since	  1.0.0
+	 * @return	  void
+	 */
+	public function edd_sl_deactivate_license( $license_id, $download_id ) {
+		
+		// We need the Payment ID to get accurate Customer Data
+		$payment_id = get_post_meta( $license_id, '_edd_sl_payment_id', true );
+		
+		// This is the EDD Customer ID. This is not necessarily the same as the WP User ID
+		$customer_id = get_post_meta( $payment_id, '_edd_payment_customer_id', true );
+		$customer = new EDD_Customer( $customer_id );
+		
+		do_action( 'edd_slack_notify', 'edd_sl_deactivate_license', array(
+			'user_id' => $customer->user_id, // If the User isn't a proper WP User, this will be 0
+			'name' => $customer->name,
+			'email' => $customer->email,
+			'license_key' => edd_software_licensing()->get_license_key( $license_id ),
+			'download_id' => $download_id,
+			'price_id' => edd_software_licensing()->get_price_id( $license_id ),
+			'expiration' => get_post_meta( $license_id, '_edd_sl_expiration', true ),
+			'site_count' => edd_software_licensing()->get_site_count( $license_id ),
+			'license_limit' => edd_software_licensing()->license_limit( $license_id ),
+		) );
 		
 	}
 	

@@ -184,10 +184,14 @@ class EDD_Slack_Reviews {
 			'email' => $comment_object->comment_author_email,
 			'comment_id' => $comment_id,
 			'comment_approved' => $comment_object->comment_approved,
-			'comment_post_id' => $comment_object->comment_post_ID,
+			'comment_post_ID' => $comment_object->comment_post_ID,
 			'comment_content' => $comment_object->comment_content,
 			'review_rating' => $rating,
 			'review_title' => $review_title,
+			'comment_author_IP' => $comment_object->comment_author_IP,
+			'comment_author' => $comment_object->comment_author,
+			'comment_author_email' => $comment_object->comment_author_email,
+			'comment_date_gmt' => $comment_object->comment_date_gmt,
 		) );
 		
 	}
@@ -227,7 +231,7 @@ class EDD_Slack_Reviews {
 			'email' => $comment_object->comment_author_email,
 			'comment_id' => $comment_id,
 			'comment_approved' => $comment_object->comment_approved,
-			'comment_post_id' => $comment_object->comment_post_ID,
+			'comment_post_ID' => $comment_object->comment_post_ID,
 			'comment_content' => $comment_object->comment_content,
 			'review_rating' => $rating,
 			'review_item_as_described' => $item_as_described,
@@ -235,6 +239,10 @@ class EDD_Slack_Reviews {
 			'vendor_user_id' => $vendor_user_id,
 			'vendor_name' => $vendor->name,
 			'vendor_email' => $vendor->email,
+			'comment_author_IP' => $comment_object->comment_author_IP,
+			'comment_author' => $comment_object->comment_author,
+			'comment_author_email' => $comment_object->comment_author_email,
+			'comment_date_gmt' => $comment_object->comment_date_gmt,
 		) );
 		
 	}
@@ -258,7 +266,7 @@ class EDD_Slack_Reviews {
 		
 			$args = wp_parse_args( $args, array(
 				'user_id' => null,
-				'comment_post_id' => 0,
+				'comment_post_ID' => 0,
 				'comment_parent' => 0,
 				'bail' => false,
 			) );
@@ -271,7 +279,7 @@ class EDD_Slack_Reviews {
 				$download_id = $download['download_id'];
 				
 				// Download Reviewed to doesn't match our Notification, bail
-				if ( $download_id !== 'all' && $download_id !== $args['comment_post_id'] ) {
+				if ( $download_id !== 'all' && $download_id !== $args['comment_post_ID'] ) {
 					$args['bail'] = true;
 					return false;
 				}
@@ -320,7 +328,7 @@ class EDD_Slack_Reviews {
 						$replacements['%username%'] = _x( 'This Reviewer does not have an account', 'No Username Replacement Text', 'edd-slack' );
 					}
 					
-					$replacements['%download%'] = get_the_title( $args['comment_post_id'] );
+					$replacements['%download%'] = get_the_title( $args['comment_post_ID'] );
 					
 					$replacements['%review_content%'] = $args['comment_content'];
 					$replacements['%review_link%'] = '<' . get_comment_link( $args['comment_id'] ) . '|' . _x( 'View this Review', 'View this Review Link Text', 'edd-slack' ) . '>';

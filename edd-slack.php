@@ -416,6 +416,10 @@ if ( ! class_exists( 'EDD_Slack' ) ) {
 					require_once EDD_Slack_DIR . '/core/ssl-only/integrations/edd-fraud-monitor/class-edd-slack-app-fraud-monitor.php';
 				}
 				
+				if ( class_exists( 'EDD_Reviews' ) ) {
+					require_once EDD_Slack_DIR . '/core/ssl-only/integrations/edd-reviews/class-edd-slack-app-reviews.php';
+				}
+				
 			}
 			
 		}

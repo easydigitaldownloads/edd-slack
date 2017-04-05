@@ -9,7 +9,9 @@
  * Author URI: http://realbigplugins.com
  * Contributors: d4mation
  */
-
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 // Exit if accessed directly
 if ( ! defined( 'ABSPATH' ) ) exit;
 
@@ -351,7 +353,7 @@ if ( ! class_exists( 'EDD_Slack' ) ) {
 				
 			}
 			
-			// If EDD Recurring is Active
+			// If EDD Fraud Monitor is Active
 			if ( defined( 'EDD_FM_VERSION' ) ) {
 				
 				if ( version_compare( EDD_FM_VERSION, '1.0.3' ) >= 0 ) {
@@ -362,6 +364,22 @@ if ( ! class_exists( 'EDD_Slack' ) ) {
 				else {
 					
 					$this->integration_errors[] = sprintf( _x( '%s includes features which integrate with %s, but v%s or greater of %s is required.', 'Outdated Integration Error', 'edd-slack' ), '<strong>' . $this->plugin_data['Name'] . '</strong>', '<a href="' . admin_url( 'update-core.php' ) . '"><strong>Easy Digital Downloads - Fraud Monitor</strong></a>', '1.0.3', '<a href="' . admin_url( 'update-core.php' ) . '"><strong>Easy Digital Downloads - Fraud Monitor</strong></a>' );
+					
+				}
+				
+			}
+			
+			// If EDD Recurring is Active
+			if ( defined( 'EDD_RECURRING_VERSION' ) ) {
+				
+				if ( version_compare( EDD_RECURRING_VERSION, '2.6.9' ) >= 0 ) {
+				
+					require_once EDD_Slack_DIR . '/core/integrations/edd-recurring/class-edd-slack-recurring.php';
+					
+				}
+				else {
+					
+					$this->integration_errors[] = sprintf( _x( '%s includes features which integrate with %s, but v%s or greater of %s is required.', 'Outdated Integration Error', 'edd-slack' ), '<strong>' . $this->plugin_data['Name'] . '</strong>', '<a href="' . admin_url( 'update-core.php' ) . '"><strong>Easy Digital Downloads - Recurring Payments</strong></a>', '2.6.9', '<a href="' . admin_url( 'update-core.php' ) . '"><strong>Easy Digital Downloads - Recurring Payments</strong></a>' );
 					
 				}
 				

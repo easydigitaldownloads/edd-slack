@@ -295,7 +295,7 @@ class EDD_Slack_Software_Licensing {
 					// We're going to have some interior conditionals for the small differences.
 					
 					$replacements['%license_key%'] = $args['license_key'];
-					$replacements['%expiration%'] = date_i18n( get_option( 'date_format' ), $args['expiration'] );
+					$replacements['%expiration%'] = date_i18n( get_option( 'date_format', 'F j, Y' ), $args['expiration'] );
 					$replacements['%license_limit%'] = $args['license_limit'];
 					
 					if ( $trigger == 'edd_sl_activate_license' ||

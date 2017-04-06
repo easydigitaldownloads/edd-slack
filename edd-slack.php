@@ -241,12 +241,12 @@ if ( ! class_exists( 'EDD_Slack' ) ) {
 				require_once EDD_Slack_DIR . '/core/admin/class-edd-slack-admin.php';
 				$this->admin = new EDD_Slack_Admin();
 				
-				if ( is_ssl() ) {
+				//if ( is_ssl() ) {
 					
 					require_once EDD_Slack_DIR . '/core/ssl-only/class-edd-slack-app-oauth-settings.php';
 					$this->oauth_settings = new EDD_Slack_OAUTH_Settings();
 					
-				}
+				//}
 				
 			}
 			

@@ -14,6 +14,7 @@
 		options.windowOptions = options.windowOptions || 'location=0,status=0,width=800,height=400';
 		options.callback = options.callback || function() { window.location.reload(); };
 		options.redirectURI = options.redirectURI || false;
+		options.tokenType = options.tokenType || 'main';
 		
 		var that = this;
 		that._oauthWindow = window.open( options.path, options.windowName, options.windowOptions );
@@ -30,7 +31,7 @@
 					
 					// Setting State now rather than before ensures that we only Save the OAUTH Token once the Popup is closed out
 					// Otherwise it Saves and immediately closes the Popup and the User doesn't get the Success Message
-					options.redirectURI = that._oauthWindow.location.href.replace( '&state=', '&state=' + 'saving' );
+					options.redirectURI = that._oauthWindow.location.href.replace( '&state=', '&state=' + 'saving&token_type=' + options.tokenType );
 					
 					// Pass back our Temporary Code
 					options.callback( options.redirectURI );
@@ -92,6 +93,7 @@
 					path: oAuthURL,
 					redirectURI: redirectURI,
 					windowOptions: 'location=0,status=0,width=' + popupWidth + ',height=' + popupHeight + ',top=' + top + ',left=' + left,
+					tokenType: $( this ).data( 'token_type' ),
 					callback: function( newURL ) {
 						window.location = newURL; // "Refresh" the page with the new URL in order to save our OAUTH Token
 					}

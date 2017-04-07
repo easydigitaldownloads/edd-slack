@@ -17,6 +17,12 @@ class EDD_Slack_OAUTH_Settings {
 	 * @since	  1.0.0
 	 */
 	private $admin_notices = array();
+	
+	/**
+	 * @var		 EDD_Slack_OAUTH_Settings $general_channel If we know what the renamed General Channel is, use it instead
+	 * @since	  1.1.0
+	 */
+	public $general_channel = 'general';
 
 	/**
 	 * EDD_Slack_OAUTH_Settings constructor.
@@ -45,6 +51,9 @@ class EDD_Slack_OAUTH_Settings {
 		
 		// Display Admin Notices
 		add_action( 'admin_init', array( $this, 'display_admin_notices' ) );
+		
+		// Updates our $general_channel and sets/updates our Transient
+		add_action( 'admin_init', array( $this, 'get_public_channels' ) );
 		
 		//add_action( 'admin_init', array( $this, 'test_invite' ) );
 		
@@ -128,6 +137,26 @@ class EDD_Slack_OAUTH_Settings {
 				'type' => 'hook',
 				'id' => 'slack_invites_oauth_register',
 			),
+			array(
+				'type' => 'hook',
+				'id' => 'slack_invites_oauth_register',
+			),
+			array(
+				'type' => 'select',
+				'name' => 'Channels for Customers',
+				'id' => 'slack_app_team_invites_customer_channels',
+				'options' => array(
+					'' => sprintf( _x( 'Just #%s', 'Just #general Channel Invite', 'edd-slack' ), $this->general_channel ),
+				) + $this->get_public_channels(),
+			),
+			array(
+				'type' => 'select',
+				'name' => 'Channels for Vendors',
+				'id' => 'slack_app_team_invites_vendor_channels',
+				'options' => array(
+					'' => sprintf( _x( 'Just #%s', 'Just #general Channel Invite', 'edd-slack' ), $this->general_channel ),
+				) + $this->get_public_channels(),
+			),
 		);
 		
 		$settings = array_merge( $settings, $oauth_settings );
@@ -183,7 +212,7 @@ class EDD_Slack_OAUTH_Settings {
 			
 		}
 		else {
-			echo _x( 'None of available Triggers on your Site currently provide support for Interactive Notifications, but you will still have access to the included Slash Commands by linking a Slack App!', 'No Triggers Supporting Interactive Notifications Text', EDD_Slack );
+			echo _x( 'None of available Triggers on your Site currently provide support for Interactive Notifications, but you will still have access to the included Slash Commands by linking a Slack App!', 'No Triggers Supporting Interactive Notifications Text', 'edd-slack' );
 		}
 		
 	}
@@ -426,6 +455,48 @@ class EDD_Slack_OAUTH_Settings {
 		
 		// Clear out Notices
 		$this->admin_notices = array();
+		
+	}
+	
+	/**
+	 * Returns all Public Slack Channels from the Slack API
+	 * 
+	 * @access		public
+	 * @since		1.1.0
+	 * @return		array Slack Channels
+	 */
+	public function get_public_channels() {
+		
+		// Don't bother if we aren't granting Client Scope
+		if ( ! edd_get_option( 'slack_app_has_client_scope' ) ) return array();
+		
+		if ( ! $channels_array = maybe_unserialize( get_transient( 'edd_slack_channels_list' ) ) ) {
+		
+			$result = EDDSLACK()->slack_api->get( 'channels.list' );
+
+			$channels = $result->channels;
+
+			$channels_array = array();
+			foreach ( $channels as $channel ) {
+
+				if ( $channel->is_general ) {
+
+					// If necessary, update our General Channel
+					$this->general_channel = ( $channel->name !== $this->general_channel ) ? $channel->name : $this->general_channel;
+
+					continue; // Skip
+
+				}
+
+				$channels_array[ $channel->id ] = '#' . $channel->name;
+
+			}
+			
+			set_transient( 'edd_slack_channels_list', $channels_array, DAY_IN_SECONDS );
+			
+		}
+		
+		return $channels_array;
 		
 	}
 	

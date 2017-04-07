@@ -35,7 +35,6 @@ class EDD_Slack_Invites {
 		   edd_get_option( 'slack_app_team_invites_vendor', false ) ) {
 
 			// Adds a Checkbox to the Vendor Submission Form for Vendors to be added to the Slack Team
-			//add_filter( 'fes_render_registration_form_frontend_fields', array( $this, 'vendors_slack_invite_checkbox' ), 10, 4 );
 			add_filter( 'fes_load_registration_form_fields', array( $this, 'vendors_slack_invite_checkbox' ), 10, 2 );
 			
 			// Checks if a Vendor should be added to a Slack Team

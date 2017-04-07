@@ -36,7 +36,16 @@ class EDD_Slack_Invites_Settings {
 		
 	}
 	
-	public function add_slack_invites_settings( $settings ) {
+	/**
+	 * Adds the Slack Team Invite Settings to the OAUTH Section
+	 * 
+	 * @param		array $oauth_settings OAUTH Settings
+	 *                                     
+	 * @access		public
+	 * @since		1.1.0
+	 * @return		array Modified OAUTH Settings
+	 */
+	public function add_slack_invites_settings( $oauth_settings ) {
 		
 		$slack_invites_settings = array(
 			array(
@@ -90,9 +99,9 @@ class EDD_Slack_Invites_Settings {
 			
 		}
 		
-		$settings = array_merge( $settings, $slack_invites_settings );
+		$oauth_settings = array_merge( $oauth_settings, $slack_invites_settings );
 		
-		return $settings;
+		return $oauth_settings;
 		
 	}
 	
@@ -138,6 +147,16 @@ class EDD_Slack_Invites_Settings {
 		
 	}
 	
+	/**
+	 * Updates the #general Channel used in a few places via a Filter
+	 * Since channels can be renamed, if possible we want to use their actual "general" channel name 
+	 * 
+	 * @param		string $general_channel The "general" channel without the hash
+	 *                                                                   
+	 * @access		public
+	 * @since		1.1.0
+	 * @return		string The correct "general" channel name
+	 */
 	public function update_general_channel( $general_channel ) {
 		
 		return $this->general_channel;

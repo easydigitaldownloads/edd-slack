@@ -433,38 +433,4 @@ class EDD_Slack_OAUTH_Settings {
 		
 	}
 	
-	public function test_invite() {
-		
-		if ( $_GET['test_invite'] == 'true' ) {
-			
-			$args = array(
-				'email' => 'someemail@gmail.com',
-				'channels' => 'C4VG46RHS,C4UPXDKT3',
-				'first_name' => 'test',
-				'last_name' => 'invite',
-			);
-			
-			// Construct the URL using the $args from the Notification that have been filtered
-			$invite_url = add_query_arg( 
-				EDDSLACK()->slack_api->encode_arguments( $args ),
-				'users.admin.invite'
-			);
-
-			$invite = EDDSLACK()->slack_api->post( 
-				'users.admin.invite',
-				array(
-					'body' => $args
-				)
-			);
-			
-			ob_start();
-			var_dump( $invite );
-			$test = ob_get_clean();
-			
-			file_put_contents( EDD_Slack_DIR . '/test-invite.txt', $test );
-			
-		}
-		
-	}
-	
 }

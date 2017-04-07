@@ -43,6 +43,9 @@ class EDD_Slack_OAUTH_Settings {
 		// Add the OAUTH Registration Button for Slack Team Invites
 		add_action( 'edd_slack_invites_oauth_register', array( $this, 'add_slack_invites_oauth_register' ) );
 		
+		// Allow a previously saved Multi-select to be cleared out
+		add_filter( 'edd_settings_sanitize_rbm_multi_select', array( $this, 'clear_multiselect' ), 10, 2 );
+		
 		// Grab the OAUTH Key as part of the handshake process
 		add_action( 'admin_init', array( $this, 'store_oauth_token' ) );
 		
@@ -142,19 +145,21 @@ class EDD_Slack_OAUTH_Settings {
 				'id' => 'slack_invites_oauth_register',
 			),
 			array(
-				'type' => 'select',
+				'type' => 'rbm_multi_select',
 				'name' => 'Channels for Customers',
 				'id' => 'slack_app_team_invites_customer_channels',
 				'field_class' => array(
 					'edd-slack-multi-select',
 					'regular-text',
+					'edd-slack-customer-channels'
 				),
 				'chosen' => true,
 				'options' => $this->get_public_channels(),
 				'placeholder' => sprintf( _x( 'Just #%s', 'Just #general Channel Invite', 'edd-slack' ), $this->general_channel ),
+				'std' => array(),
 			),
 			array(
-				'type' => 'select',
+				'type' => 'rbm_multi_select',
 				'name' => 'Channels for Vendors',
 				'id' => 'slack_app_team_invites_vendor_channels',
 				'field_class' => array(
@@ -164,6 +169,7 @@ class EDD_Slack_OAUTH_Settings {
 				'chosen' => true,
 				'options' => $this->get_public_channels(),
 				'placeholder' => sprintf( _x( 'Just #%s', 'Just #general Channel Invite', 'edd-slack' ), $this->general_channel ),
+				'std' => array(),
 			),
 		);
 		
@@ -506,6 +512,24 @@ class EDD_Slack_OAUTH_Settings {
 		
 		return $channels_array;
 		
+	}
+	
+	/**
+	 * If a Multiselect is previously saved, it is not normally possible to clear them out
+	 * 
+	 * @param		array  $value Array value of the Multi-select
+	 * @param		string $key   EDD Field ID
+	 *                                 
+	 * @access		public
+	 * @since		1.1.0
+	 * @return		array  Sanitized Array value of the Multi-select
+	 */
+	public function clear_multiselect( $value, $key ) {
+	
+		if ( empty( $_POST['edd_settings'][ $key ] ) ) $value = array();
+
+		return $value;
+
 	}
 	
 	public function test_invite() {

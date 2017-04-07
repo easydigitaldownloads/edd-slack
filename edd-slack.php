@@ -401,6 +401,15 @@ if ( ! class_exists( 'EDD_Slack' ) ) {
 					$this->slack_rest_api = new EDD_Slack_SSL_REST();
 				}
 				
+				// If we've been granted Client Scope
+				if ( edd_get_option( 'slack_app_has_client_scope' ) ) {
+
+					// This file does mostly things on the Admin-side, but it runs Filters that need access on the Frontend based on results from the Admin-side
+					// Primarily, replacing `#general` as appropriate
+					require_once EDD_Slack_DIR . '/core/ssl-only/slack-invites/class-edd-slack-app-invites-settings.php';
+
+				}
+				
 				// If Comments are Enabled for Downloads
 				if ( post_type_supports( 'download', 'comments' ) ) {
 					require_once EDD_Slack_DIR . '/core/ssl-only/integrations/edd-comments/class-edd-slack-app-comments.php';

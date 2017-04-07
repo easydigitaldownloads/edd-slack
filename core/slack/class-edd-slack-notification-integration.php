@@ -322,9 +322,11 @@ class EDD_Slack_Notification_Integration {
 			
 		}
 		else { // Send it via Slack's Web API
-				
+			
+			$general_channel = '#' . apply_filters( 'edd_slack_general_channel', 'general' );
+			
 			$default_channel = edd_get_option( 'slack_app_channel_default' );
-			$default_channel = ( empty( $default_channel ) ) ? '#general' : $default_channel; // Since it can be saved as an empty value
+			$default_channel = ( empty( $default_channel ) ) ? $general_channel : $default_channel; // Since it can be saved as an empty value
 
 			$default_icon = $this->format_icon_emoji( edd_get_option( 'slack_app_icon_default' ) );
 

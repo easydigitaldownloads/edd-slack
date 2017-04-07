@@ -28,7 +28,11 @@ class EDD_Slack_Invites_Settings {
 		// Updates our $general_channel and sets/updates our Transient
 		add_action( 'admin_init', array( $this, 'get_public_channels' ) );
 		
+		// Adds our Slack Team Invite Settings
 		add_filter( 'edd_slack_oauth_settings', array( $this, 'add_slack_invites_settings' ) );
+		
+		// Updates #general Channel in other places
+		add_filter( 'edd_slack_general_channel', array( $this, 'update_general_channel' ) );
 		
 	}
 	
@@ -131,6 +135,12 @@ class EDD_Slack_Invites_Settings {
 		}
 		
 		return $channels_array;
+		
+	}
+	
+	public function update_general_channel( $general_channel ) {
+		
+		return $this->general_channel;
 		
 	}
 	

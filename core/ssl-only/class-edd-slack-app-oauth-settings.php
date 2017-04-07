@@ -25,13 +25,6 @@ class EDD_Slack_OAUTH_Settings {
 	 */
 	function __construct() {
 		
-		// If we've been granted Client Scope
-		if ( edd_get_option( 'slack_app_has_client_scope' ) ) {
-			
-			require_once EDD_Slack_DIR . '/core/ssl-only/slack-invites/class-edd-slack-app-invites-settings.php';
-			
-		}
-		
 		// Add SSL-only settings for OAUTH
 		add_filter( 'edd_slack_settings', array( $this, 'add_oauth_settings' ) );
 		
@@ -116,8 +109,8 @@ class EDD_Slack_OAUTH_Settings {
 				'type' => 'text',
 				'name' => _x( 'Default Channel for Interactive Notifications', 'Default Channel for Interactive Notifications Label', 'edd-slack' ),
 				'id' => 'slack_app_channel_default',
-				'desc' => _x( "Interactive Notifications don't use the Default Webhook URL, so they need to know which Channel they should default to if one for the Notification isn't defined. If this is left blank, it will default to <code>#general</code>.", 'Default Channel for Interactive Notifications Help Text', 'edd-slack' ),
-				'placeholder' => '#general',
+				'desc' => sprintf( _x( "Interactive Notifications don't use the Default Webhook URL, so they need to know which Channel they should default to if one for the Notification isn't defined. If this is left blank, it will default to <code>#%s</code>.", 'Default Channel for Interactive Notifications Help Text', 'edd-slack' ), apply_filters( 'edd_slack_general_channel', 'general' ) ),
+				'placeholder' => sprintf( '#%s', apply_filters( 'edd_slack_general_channel', 'general' ) ),
 			),
 			array(
 				'type' => 'text',

@@ -17,12 +17,6 @@ class EDD_Slack_OAUTH_Settings {
 	 * @since	  1.0.0
 	 */
 	private $admin_notices = array();
-	
-	/**
-	 * @var		 EDD_Slack_OAUTH_Settings $general_channel If we know what the renamed General Channel is, use it instead
-	 * @since	  1.1.0
-	 */
-	public $general_channel = 'general';
 
 	/**
 	 * EDD_Slack_OAUTH_Settings constructor.
@@ -30,6 +24,13 @@ class EDD_Slack_OAUTH_Settings {
 	 * @since 1.0.0
 	 */
 	function __construct() {
+		
+		// If we've been granted Client Scope
+		if ( edd_get_option( 'slack_app_has_client_scope' ) ) {
+			
+			require_once EDD_Slack_DIR . '/core/ssl-only/slack-invites/class-edd-slack-app-invites-settings.php';
+			
+		}
 		
 		// Add SSL-only settings for OAUTH
 		add_filter( 'edd_slack_settings', array( $this, 'add_oauth_settings' ) );
@@ -43,9 +44,6 @@ class EDD_Slack_OAUTH_Settings {
 		// Add the OAUTH Registration Button for Slack Team Invites
 		add_action( 'edd_slack_invites_oauth_register', array( $this, 'add_slack_invites_oauth_register' ) );
 		
-		// Allow a previously saved Multi-select to be cleared out
-		add_filter( 'edd_settings_sanitize_rbm_multi_select', array( $this, 'clear_multiselect' ), 10, 2 );
-		
 		// Grab the OAUTH Key as part of the handshake process
 		add_action( 'admin_init', array( $this, 'store_oauth_token' ) );
 		
@@ -54,9 +52,6 @@ class EDD_Slack_OAUTH_Settings {
 		
 		// Display Admin Notices
 		add_action( 'admin_init', array( $this, 'display_admin_notices' ) );
-		
-		// Updates our $general_channel and sets/updates our Transient
-		add_action( 'admin_init', array( $this, 'get_public_channels' ) );
 		
 		//add_action( 'admin_init', array( $this, 'test_invite' ) );
 		
@@ -73,7 +68,7 @@ class EDD_Slack_OAUTH_Settings {
 	 */
 	public function add_oauth_settings( $settings ) {
 		
-		$oauth_settings = array(
+		$oauth_settings = apply_filters( 'edd_slack_oauth_settings', array(
 			array(
 				'type' => 'header',
 				'name' => '<h3>' . _x( 'Enable Interactive Notifications and Slash Commands', 'Interactive Notifications Settings Header', 'edd-slack' ),
@@ -144,36 +139,7 @@ class EDD_Slack_OAUTH_Settings {
 				'type' => 'hook',
 				'id' => 'slack_invites_oauth_register',
 			),
-			array(
-				'type' => 'rbm_multi_select',
-				'name' => _x( 'Channels for Customers', 'Channels for Customers Label', 'edd-slack' ),
-				'id' => 'slack_app_team_invites_customer_channels',
-				'field_class' => array(
-					'edd-slack-multi-select',
-					'regular-text',
-					'edd-slack-customer-channels'
-				),
-				'chosen' => true,
-				'options' => $this->get_public_channels(),
-				'placeholder' => sprintf( _x( 'Just #%s', 'Just #general Channel Invite', 'edd-slack' ), $this->general_channel ),
-				'std' => array(),
-				'desc' => sprintf( _x( 'The <code>#%s</code> Channel is always granted by default. Choose any other additional Channels you would like to auto-invite Customers to.', 'Channels for Customers Description Text', 'edd-slack' ), $this->general_channel )
-			),
-			array(
-				'type' => 'rbm_multi_select',
-				'name' => sprintf( _x( 'Channels for %s', 'Channels for Vendors label', 'edd-slack' ), EDD_FES()->helper->get_vendor_constant_name( true, true ) ),
-				'id' => 'slack_app_team_invites_vendor_channels',
-				'field_class' => array(
-					'edd-slack-multi-select',
-					'regular-text',
-				),
-				'chosen' => true,
-				'options' => $this->get_public_channels(),
-				'placeholder' => sprintf( _x( 'Just #%s', 'Just #general Channel Invite', 'edd-slack' ), $this->general_channel ),
-				'std' => array(),
-				'desc' => sprintf( _x( 'The <code>#%s</code> Channel is always granted by default. Choose any other additional Channels you would like to auto-invite %s to.', 'Channels for Vendors Description Text', 'edd-slack' ), $this->general_channel, EDD_FES()->helper->get_vendor_constant_name( true, true ) )
-			),
-		);
+		) );
 		
 		$settings = array_merge( $settings, $oauth_settings );
 		
@@ -472,66 +438,6 @@ class EDD_Slack_OAUTH_Settings {
 		// Clear out Notices
 		$this->admin_notices = array();
 		
-	}
-	
-	/**
-	 * Returns all Public Slack Channels from the Slack API
-	 * 
-	 * @access		public
-	 * @since		1.1.0
-	 * @return		array Slack Channels
-	 */
-	public function get_public_channels() {
-		
-		// Don't bother if we aren't granting Client Scope
-		if ( ! edd_get_option( 'slack_app_has_client_scope' ) ) return array();
-		
-		if ( ! $channels_array = maybe_unserialize( get_transient( 'edd_slack_channels_list' ) ) ) {
-		
-			$result = EDDSLACK()->slack_api->get( 'channels.list' );
-
-			$channels = $result->channels;
-
-			$channels_array = array();
-			foreach ( $channels as $channel ) {
-
-				if ( $channel->is_general ) {
-
-					// If necessary, update our General Channel
-					$this->general_channel = ( $channel->name !== $this->general_channel ) ? $channel->name : $this->general_channel;
-
-					continue; // Skip
-
-				}
-
-				$channels_array[ $channel->id ] = '#' . $channel->name;
-
-			}
-			
-			set_transient( 'edd_slack_channels_list', $channels_array, DAY_IN_SECONDS );
-			
-		}
-		
-		return $channels_array;
-		
-	}
-	
-	/**
-	 * If a Multiselect is previously saved, it is not normally possible to clear them out
-	 * 
-	 * @param		array  $value Array value of the Multi-select
-	 * @param		string $key   EDD Field ID
-	 *                                 
-	 * @access		public
-	 * @since		1.1.0
-	 * @return		array  Sanitized Array value of the Multi-select
-	 */
-	public function clear_multiselect( $value, $key ) {
-	
-		if ( empty( $_POST['edd_settings'][ $key ] ) ) $value = array();
-
-		return $value;
-
 	}
 	
 	public function test_invite() {

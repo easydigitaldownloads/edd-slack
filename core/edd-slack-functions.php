@@ -67,3 +67,21 @@ function edd_rbm_multi_select_callback( $args ) {
 	echo apply_filters( 'edd_after_setting_output', $html, $args );
 	
 }
+	
+/**
+ * If a Multiselect is previously saved, it is not normally possible to clear them out
+ * 
+ * @param		array  $value Array value of the Multi-select
+ * @param		string $key   EDD Field ID
+ *                    
+ * @since		1.1.0
+ * @return		array  Sanitized Array value of the Multi-select
+ */
+function edd_settings_sanitize_rbm_multi_select( $value, $key ) {
+
+	if ( empty( $_POST['edd_settings'][ $key ] ) ) $value = array();
+
+	return $value;
+
+}
+add_filter( 'edd_settings_sanitize_rbm_multi_select', 'edd_settings_sanitize_rbm_multi_select', 10, 2 );

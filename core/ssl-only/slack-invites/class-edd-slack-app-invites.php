@@ -35,7 +35,9 @@ class EDD_Slack_Invites {
 		   edd_get_option( 'slack_app_team_invites_vendor', false ) ) {
 
 			// Adds a Checkbox to the Vendor Submission Form for Vendors to be added to the Slack Team
-
+			//add_filter( 'fes_render_registration_form_frontend_fields', array( $this, 'vendors_slack_invite_checkbox' ), 10, 4 );
+			add_filter( 'fes_load_registration_form_fields', array( $this, 'vendors_slack_invite_checkbox' ), 10, 2 );
+			
 			// Checks if a Vendor should be added to a Slack Team
 
 		}
@@ -92,6 +94,42 @@ class EDD_Slack_Invites {
 			$this->send_invite( $email, $channels, $first_name, $last_name );
 			
 		}
+		
+	}
+	
+	/**
+	 * Adds our own Checkbox to the EDD FES Registration Form to send out Slack Team Invites to new Vendors
+	 * 
+	 * @param		array  $fields Array of EDD FES Field Objects
+	 * @param		object $form   EDD FES Registration Form Object
+	 *                                                  
+	 * @access		public
+	 * @since		1.1.0
+	 * @return		array  Modified Field Object Array
+	 */
+	public function vendors_slack_invite_checkbox( $fields, $form ) {
+		
+		$checkbox = new FES_Checkbox_Field( 'edd_slack_send_vendor_team_invite', 'registration' );
+		
+		// Grab all default Characteristics so we can set them
+		$characteristics = $checkbox->get_characteristics();
+		
+		// Name Attribute
+		$characteristics['name'] = 'edd_slack_send_vendor_team_invite';
+		
+		// Checkbox Options
+		$characteristics['options'] = array(
+			'test'
+		);
+		
+		// Give this an empty Array if you want it to default to being unselected
+		$characteristics['selected'] = apply_filters( 'slack_app_team_invites_vendor_default', array( 'test' ) );
+		
+		$checkbox->set_characteristics( $characteristics );
+		
+		$fields['edd_slack_send_vendor_team_invite'] = $checkbox;
+		
+		return $fields;
 		
 	}
 	

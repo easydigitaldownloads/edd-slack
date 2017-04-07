@@ -18,25 +18,26 @@ class EDD_Slack_Invites {
 	 * @since 1.0.0
 	 */
 	function __construct() {
-		
-		// Check for Client Scope
-		if ( edd_get_option( 'slack_app_has_client_scope', false ) ) {
 			
-			// Check to see if Customer Invites are enabled
-			if ( edd_get_option( 'slack_app_team_invites_customer', false ) ) {
-		
-				// Adds a Checkbox to the Purchase Form for Customers to be added to the Slack Team
-				add_action( 'edd_purchase_form_before_submit', array( $this, 'customers_slack_invite_checkbox' ) );
+		// Check to see if Customer Invites are enabled
+		if ( edd_get_option( 'slack_app_team_invites_customer', false ) ) {
 
-				// Checks if a Customer should be added to a Slack Team, then sends off the Invite
-				add_action( 'edd_complete_purchase', array( $this, 'add_customer_to_slack_team' ) );
-				
-			}
-			
+			// Adds a Checkbox to the Purchase Form for Customers to be added to the Slack Team
+			add_action( 'edd_purchase_form_before_submit', array( $this, 'customers_slack_invite_checkbox' ) );
+
+			// Checks if a Customer should be added to a Slack Team, then sends off the Invite
+			add_action( 'edd_complete_purchase', array( $this, 'add_customer_to_slack_team' ) );
+
+		}
+
+		// Check to see if Vendor Invites are enabled
+		if ( class_exists( 'EDD_Front_End_Submissions' ) &&
+		   edd_get_option( 'slack_app_team_invites_vendor', false ) ) {
+
 			// Adds a Checkbox to the Vendor Submission Form for Vendors to be added to the Slack Team
-		
+
 			// Checks if a Vendor should be added to a Slack Team
-			
+
 		}
 		
 	}

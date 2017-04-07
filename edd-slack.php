@@ -402,7 +402,7 @@ if ( ! class_exists( 'EDD_Slack' ) ) {
 				}
 				
 				// If we've been granted Client Scope
-				if ( edd_get_option( 'slack_app_has_client_scope' ) ) {
+				if ( edd_get_option( 'slack_app_has_client_scope', false ) ) {
 				
 					// This file does mostly things on the Admin-side, but it runs Filters that need access to the Frontend based on results from the Admin-side
 					// Primarily, replacing `#general` as appropriate

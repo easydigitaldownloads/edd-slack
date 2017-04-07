@@ -58,13 +58,14 @@ class EDD_Slack_Invites_Settings {
 			),
 		);
 		
+		// Add settings for Vendors
 		if ( class_exists( 'EDD_Front_End_Submissions' ) ) {
 			
 			$slack_invites_settings[] = array(
 				'type' => 'checkbox',
 				'name' => sprintf( _x( 'Enable Slack Team Invites for new %s', 'Vendor Slack Invite Checkbox Label', 'edd-slack' ), EDD_FES()->helper->get_vendor_constant_name( true, true ) ),
 				'id' => 'slack_app_team_invites_vendor',
-				'desc' => sprintf( _x( 'This will add a checkbox to the end of the Purchase Form for %s to be added to your Slack Team', 'Vendor Slack Invite Description' ), EDD_FES()->helper->get_vendor_constant_name( true, true ) ),
+				'desc' => sprintf( _x( 'This will add a checkbox to the end of the %s Submission Form for %s to be added to your Slack Team', 'Vendor Slack Invite Description' ), EDD_FES()->helper->get_vendor_constant_name( false, true ), EDD_FES()->helper->get_vendor_constant_name( true, true ) ),
 			);
 			
 			$slack_invites_settings[] = array(

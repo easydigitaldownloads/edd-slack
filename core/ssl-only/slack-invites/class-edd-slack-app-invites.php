@@ -146,7 +146,7 @@ class EDD_Slack_Invites {
 	public function add_vendor_to_slack_team_via_form( $insert_id, $args ) {
 		
 		// If they've Opted-in to being added to the Slack Team
-		if ( ! empty( $_POST['edd_slack_send_customer_team_invite'] ) ) {
+		if ( ! empty( $_POST['edd_slack_send_vendor_team_invite'] ) ) {
 		
 			$email = $args['email'];
 			$first_name = $_POST['first_name'];

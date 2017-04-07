@@ -146,7 +146,7 @@ class EDD_Slack_OAUTH_Settings {
 			),
 			array(
 				'type' => 'rbm_multi_select',
-				'name' => 'Channels for Customers',
+				'name' => _x( 'Channels for Customers', 'Channels for Customers Label', 'edd-slack' ),
 				'id' => 'slack_app_team_invites_customer_channels',
 				'field_class' => array(
 					'edd-slack-multi-select',
@@ -157,10 +157,11 @@ class EDD_Slack_OAUTH_Settings {
 				'options' => $this->get_public_channels(),
 				'placeholder' => sprintf( _x( 'Just #%s', 'Just #general Channel Invite', 'edd-slack' ), $this->general_channel ),
 				'std' => array(),
+				'desc' => sprintf( _x( 'The <code>#%s</code> Channel is always granted by default. Choose any other additional Channels you would like to auto-invite Customers to.', 'Channels for Customers Description Text', 'edd-slack' ), $this->general_channel )
 			),
 			array(
 				'type' => 'rbm_multi_select',
-				'name' => 'Channels for Vendors',
+				'name' => sprintf( _x( 'Channels for %s', 'Channels for Vendors label', 'edd-slack' ), EDD_FES()->helper->get_vendor_constant_name( true, true ) ),
 				'id' => 'slack_app_team_invites_vendor_channels',
 				'field_class' => array(
 					'edd-slack-multi-select',
@@ -170,6 +171,7 @@ class EDD_Slack_OAUTH_Settings {
 				'options' => $this->get_public_channels(),
 				'placeholder' => sprintf( _x( 'Just #%s', 'Just #general Channel Invite', 'edd-slack' ), $this->general_channel ),
 				'std' => array(),
+				'desc' => sprintf( _x( 'The <code>#%s</code> Channel is always granted by default. Choose any other additional Channels you would like to auto-invite %s to.', 'Channels for Vendors Description Text', 'edd-slack' ), $this->general_channel, EDD_FES()->helper->get_vendor_constant_name( true, true ) )
 			),
 		);
 		

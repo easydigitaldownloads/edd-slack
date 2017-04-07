@@ -45,8 +45,8 @@ class EDD_Slack_Invites {
 		
 		if ( edd_get_option( 'slack_app_team_invites_customer', false ) ) : ?>
 		
-			<fieldset id="edd_terms_agreement">
-				<div class="edd-terms-agreement">
+			<fieldset id="edd_slack_send_customer_team_invite_fieldset">
+				<div class="edd-slack-send-customer-team-invite">
 					<input name="edd_slack_send_customer_team_invite" type="checkbox" id="edd_slack_send_customer_team_invite" value="1" <?php checked( $checked, 1, true ); ?>/>
 					<label for="edd_slack_send_customer_team_invite">
 						test

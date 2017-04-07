@@ -19,15 +19,25 @@ class EDD_Slack_Invites {
 	 */
 	function __construct() {
 		
-		// Adds a Checkbox to the Purchase Form for Customers to be added to the Slack Team
-		add_action( 'edd_purchase_form_before_submit', array( $this, 'customers_slack_invite_checkbox' ) );
+		// Check for Client Scope
+		if ( edd_get_option( 'slack_app_has_client_scope', false ) ) {
+			
+			// Check to see if Customer Invites are enabled
+			if ( edd_get_option( 'slack_app_team_invites_customer', false ) ) {
 		
-		// Adds a Checkbox to the Vendor Submission Form for Vendors to be added to the Slack Team
+				// Adds a Checkbox to the Purchase Form for Customers to be added to the Slack Team
+				add_action( 'edd_purchase_form_before_submit', array( $this, 'customers_slack_invite_checkbox' ) );
+
+				// Checks if a Customer should be added to a Slack Team, then sends off the Invite
+				add_action( 'edd_complete_purchase', array( $this, 'add_customer_to_slack_team' ) );
+				
+			}
+			
+			// Adds a Checkbox to the Vendor Submission Form for Vendors to be added to the Slack Team
 		
-		// Checks if a Customer should be added to a Slack Team
-		// add_action();
-		
-		// Checks if a Vendor should be added to a Slack Team
+			// Checks if a Vendor should be added to a Slack Team
+			
+		}
 		
 	}
 	
@@ -43,18 +53,44 @@ class EDD_Slack_Invites {
 		// Defaults to having the checkbox "checked". Allows altering the functionality to be Opt-in rather than Opt-out
 		$checked = apply_filters( 'slack_app_team_invites_customer_default', 1 );
 		
-		if ( edd_get_option( 'slack_app_team_invites_customer', false ) ) : ?>
+		?>
 		
-			<fieldset id="edd_slack_send_customer_team_invite_fieldset">
-				<div class="edd-slack-send-customer-team-invite">
-					<input name="edd_slack_send_customer_team_invite" type="checkbox" id="edd_slack_send_customer_team_invite" value="1" <?php checked( $checked, 1, true ); ?>/>
-					<label for="edd_slack_send_customer_team_invite">
-						test
-					</label>
-				</div>
-			</fieldset>
+		<fieldset id="edd_slack_send_customer_team_invite_fieldset">
+			<div class="edd-slack-send-customer-team-invite">
+				<input name="edd_slack_send_customer_team_invite" type="checkbox" id="edd_slack_send_customer_team_invite" value="1" <?php checked( $checked, 1, true ); ?>/>
+				<label for="edd_slack_send_customer_team_invite">
+					test
+				</label>
+			</div>
+		</fieldset>
 
-	<?php endif;
+	<?php
+		
+	}
+	
+	/**
+	 * Sends a Slack Team Invite to Customers if they've Opted-in
+	 * 
+	 * @param		integer $payment_id Payment ID
+	 *                                     
+	 * @access		public
+	 * @since		1.1.0
+	 * @return		void
+	 */
+	public function add_customer_to_slack_team( $payment_id ) {
+		
+		// If they've Opted-in to being added to the Slack Team
+		if ( ! empty( $_POST['edd_slack_send_customer_team_invite'] ) ) {
+		
+			$email = $_POST['edd_email'];
+			$first_name = $_POST['edd_first'];
+			$last_name = $_POST['edd_last'];
+
+			$channels = implode( ',', edd_get_option( 'slack_app_team_invites_customer_channels', array() ) );
+			
+			$this->send_invite( $email, $channels, $first_name, $last_name );
+			
+		}
 		
 	}
 	
@@ -66,11 +102,11 @@ class EDD_Slack_Invites {
 	 * @param		string $first_name First Name (Pre-populates the Sign-up Form in Slack)
 	 * @param		string $last_name  Last Name (Pre-populates the Sign-up Form in Slack)
 	 *                                                                         
-	 * @access		public
+	 * @access		private
 	 * @since		1.1.0
 	 * @return		void
 	 */
-	public function send_invite( $email, $channels = '', $first_name = '', $last_name = '' ) {
+	private function send_invite( $email, $channels = '', $first_name = '', $last_name = '' ) {
 			
 		$args = array(
 			'email' => $email,

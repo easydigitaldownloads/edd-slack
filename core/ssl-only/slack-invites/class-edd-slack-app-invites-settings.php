@@ -115,7 +115,7 @@ class EDD_Slack_Invites_Settings {
 	public function get_public_channels() {
 		
 		// Don't bother if we aren't granting Client Scope
-		if ( ! edd_get_option( 'slack_app_has_client_scope' ) ) return array();
+		if ( ! edd_get_option( 'slack_app_has_client_scope', false ) ) return array();
 		
 		if ( ! $channels_array = maybe_unserialize( get_transient( 'edd_slack_channels_list' ) ) ) {
 		

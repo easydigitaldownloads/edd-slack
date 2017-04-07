@@ -26,7 +26,7 @@ class EDD_Slack_Invites {
 			add_action( 'edd_purchase_form_before_submit', array( $this, 'customers_slack_invite_checkbox' ) );
 
 			// Checks if a Customer should be added to a Slack Team, then sends off the Invite
-			add_action( 'edd_complete_purchase', array( $this, 'add_customer_to_slack_team' ) );
+			add_action( 'edd_complete_purchase', array( $this, 'add_customer_to_slack_team_via_form' ) );
 
 		}
 
@@ -39,6 +39,7 @@ class EDD_Slack_Invites {
 			add_filter( 'fes_load_registration_form_fields', array( $this, 'vendors_slack_invite_checkbox' ), 10, 2 );
 			
 			// Checks if a Vendor should be added to a Slack Team
+			add_action( 'edd_post_insert_vendor', array( $this, 'add_vendor_to_slack_team_via_form' ), 10, 2 );
 
 		}
 		
@@ -80,7 +81,7 @@ class EDD_Slack_Invites {
 	 * @since		1.1.0
 	 * @return		void
 	 */
-	public function add_customer_to_slack_team( $payment_id ) {
+	public function add_customer_to_slack_team_via_form( $payment_id ) {
 		
 		// If they've Opted-in to being added to the Slack Team
 		if ( ! empty( $_POST['edd_slack_send_customer_team_invite'] ) ) {
@@ -130,6 +131,33 @@ class EDD_Slack_Invites {
 		$fields['edd_slack_send_vendor_team_invite'] = $checkbox;
 		
 		return $fields;
+		
+	}
+	
+	/**
+	 * Sends a Slack Team Invite to Vendors if they've Opted-in
+	 * 
+	 * @param	  integer $insert_id $wpdb Insert ID
+	 * @param	  array   $args		 $wpdb Column Key/Value Pairs
+	 *														
+	 * @access	  public
+	 * @since	  1.1.0
+	 * @return	  void
+	 */
+	public function add_vendor_to_slack_team_via_form( $insert_id, $args ) {
+		
+		// If they've Opted-in to being added to the Slack Team
+		if ( ! empty( $_POST['edd_slack_send_customer_team_invite'] ) ) {
+		
+			$email = $args['email'];
+			$first_name = $_POST['first_name'];
+			$last_name = $_POST['last_name'];
+
+			$channels = implode( ',', edd_get_option( 'slack_app_team_invites_vendor_channels', array() ) );
+			
+			$this->send_invite( $email, $channels, $first_name, $last_name );
+			
+		}
 		
 	}
 	

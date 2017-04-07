@@ -145,17 +145,25 @@ class EDD_Slack_OAUTH_Settings {
 				'type' => 'select',
 				'name' => 'Channels for Customers',
 				'id' => 'slack_app_team_invites_customer_channels',
-				'options' => array(
-					'' => sprintf( _x( 'Just #%s', 'Just #general Channel Invite', 'edd-slack' ), $this->general_channel ),
-				) + $this->get_public_channels(),
+				'field_class' => array(
+					'edd-slack-multi-select',
+					'regular-text',
+				),
+				'chosen' => true,
+				'options' => $this->get_public_channels(),
+				'placeholder' => sprintf( _x( 'Just #%s', 'Just #general Channel Invite', 'edd-slack' ), $this->general_channel ),
 			),
 			array(
 				'type' => 'select',
 				'name' => 'Channels for Vendors',
 				'id' => 'slack_app_team_invites_vendor_channels',
-				'options' => array(
-					'' => sprintf( _x( 'Just #%s', 'Just #general Channel Invite', 'edd-slack' ), $this->general_channel ),
-				) + $this->get_public_channels(),
+				'field_class' => array(
+					'edd-slack-multi-select',
+					'regular-text',
+				),
+				'chosen' => true,
+				'options' => $this->get_public_channels(),
+				'placeholder' => sprintf( _x( 'Just #%s', 'Just #general Channel Invite', 'edd-slack' ), $this->general_channel ),
 			),
 		);
 		

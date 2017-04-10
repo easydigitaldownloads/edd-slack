@@ -70,7 +70,9 @@ class EDD_Slack_Invites {
 			
 			$customer = new EDD_Customer( get_current_user_id() );
 			
-			if ( ! $customer->get_meta( 'edd_slack_app_invite_sent', true ) ) {
+			// We also have to check User Meta in case they are a Vendor
+			if ( ! $customer->get_meta( 'edd_slack_app_invite_sent', true ) &&
+			   ! get_user_meta( get_current_user_id(), 'edd_slack_app_invite_sent', true ) ) {
 				$show_checkbox = true;
 			}
 			
@@ -111,7 +113,8 @@ class EDD_Slack_Invites {
 			// If an invite has not been sent for this customer
 			// This is an important distinction since we cannot know "who" a Customer is until they've filled out the Form
 			// If they're logged in as a USER, then we can know. But Customers don't necessarily need to be logged in
-			if ( ! $customer->get_meta( 'edd_slack_app_invite_sent', true ) ) {
+			if ( ! $customer->get_meta( 'edd_slack_app_invite_sent', true ) &&
+			   ! get_user_meta( $customer->user_id, 'edd_slack_app_invite_sent', true ) ) {
 		
 				$email = $_POST['edd_email'];
 				$first_name = $_POST['edd_first'];
@@ -152,7 +155,11 @@ class EDD_Slack_Invites {
 		}
 		else {
 			
-			if ( get_user_meta( get_current_user_id(), 'edd_slack_app_invite_sent', true ) ) {
+			$customer = new EDD_Customer( get_current_user_id(), true );
+			
+			// We need to check Customer Meta in case they were a Customer in the past
+			if ( ! get_user_meta( get_current_user_id(), 'edd_slack_app_invite_sent', true ) &&
+			   ! $customer->get_meta( 'edd_slack_app_invite_sent', true ) ) {
 				$show_checkbox = true;
 			}
 			
@@ -205,8 +212,13 @@ class EDD_Slack_Invites {
 		// If they've Opted-in to being added to the Slack Team
 		if ( ! empty( $_POST['edd_slack_send_vendor_team_invite'] ) ) {
 			
+			$vendor = new FES_Vendor( $vendor_id );
+			$customer = new EDD_Customer( $vendor->user_id, true );
+			
 			// If this User has not been invited to the Slack Team yet
-			if ( ! get_user_meta( $vendor_id, 'edd_slack_app_invite_sent', true ) ) {
+			// We need to check Customer Meta in case they were a Customer in the past
+			if ( ! get_user_meta( $vendor_id, 'edd_slack_app_invite_sent', true ) &&
+			   ! $customer->get_meta( 'edd_slack_app_invite_sent', true ) ) {
 		
 				$email = $args['email'];
 				$first_name = $_POST['first_name'];

@@ -34,6 +34,12 @@ class EDD_Slack_Invites_Settings {
 		// Updates #general Channel in other places
 		add_filter( 'edd_slack_general_channel', array( $this, 'update_general_channel' ) );
 		
+		// Adds CSS/JS
+		add_action( 'edd_customer_tools_top', array( $this, 'enqueue_scripts' ) );
+		
+		// Adds manual Slack Team Invitation buttons to the Customer Tools screen
+		add_action( 'edd_customer_tools_bottom', array( $this, 'add_slack_team_customer_invite_button' ) );
+		
 	}
 	
 	/**
@@ -167,6 +173,65 @@ class EDD_Slack_Invites_Settings {
 	public function update_general_channel( $general_channel ) {
 		
 		return $this->general_channel;
+		
+	}
+	
+	/**
+	 * Add our CSS/JS as needed
+	 * 
+	 * @access		public
+	 * @since		1.1.0
+	 * @return		void
+	 */
+	public function enqueue_scripts() {
+		
+		wp_enqueue_script( 'edd-slack-admin' );
+		
+	}
+	
+	/**
+	 * Adds an "Add to Slack Team" button to manually add the Customer to the Slack Team
+	 * 
+	 * @param		object $customer EDD_Customer Object
+	 *                                       
+	 * @access		public
+	 * @since		1.1.0
+	 * @return		void
+	 */
+	public function add_slack_team_customer_invite_button( $customer ) {
+		
+		?>
+		<div class="edd-item-info customer-info">
+			
+			<h4><?php echo EDDSLACK()->plugin_data['Name']; ?></h4>
+			
+			<p class="edd-item-description">
+				<?php echo _x( 'Manually Invite this Customer to your Slack Team', 'Manually Invite to Slack Team Label', 'edd-slack' ); ?>
+			</p>
+			
+			<?php if ( ! $customer->get_meta( 'edd_slack_app_invite_sent', true ) ) : ?>
+			
+				<form method="post" id="edd_slack_team_customer_invite_form" class="edd-slack-team-customer-invite-form">
+					<span>
+						<?php wp_nonce_field( 'edd_slack_team_customer_invite', 'edd_slack_team_customer_invite' ); ?>
+
+						<input type="submit" id="edd_slack_app_invite" value="<?php echo _x( 'Invite this Customer to your Slack Team', 'Slack Team Invite Button Text', 'edd-slack' ); ?>" class="button-secondary"/>
+						<span class="spinner"></span>
+
+					</span>
+				</form>
+			
+			<?php else : ?>
+			
+				<p class="description">
+					<?php echo _x( 'This Customer has already been sent an invite to your Slack Team', 'Slack Team invite already sent to Customer', 'edd-slack' ); ?>
+				</p>
+			
+			<?php endif; ?>
+
+		</div>
+
+		<?php
 		
 	}
 	

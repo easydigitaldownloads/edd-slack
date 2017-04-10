@@ -295,7 +295,7 @@ class EDD_Slack_Invites {
 	public function add_slack_team_vendor_invite_button( $vendor ) {
 		
 		?>
-		<div id="edd_slack_vendor_wrapper" class="vendor-section">
+		<div id="edd_slack_vendor_wrapper" class="vendor-section" style="padding-bottom: 10px;">
 			
 			<?php if ( ! get_user_meta( $vendor->user_id, 'edd_slack_app_invite_sent', true ) ) : ?>
 			
@@ -331,8 +331,6 @@ class EDD_Slack_Invites {
 	 * @return		void
 	 */
 	public function enqueue_scripts() {
-		
-		wp_enqueue_style( 'edd-slack-admin' );
 		
 		wp_enqueue_script( 'edd-slack-admin' );
 		

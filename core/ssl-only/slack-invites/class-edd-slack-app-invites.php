@@ -142,29 +142,49 @@ class EDD_Slack_Invites {
 	 */
 	public function vendors_slack_invite_checkbox( $fields, $form ) {
 		
-		$checkbox = new FES_Checkbox_Field( 'edd_slack_send_vendor_team_invite', 'registration' );
+		$show_checkbox = false;
 		
-		// Grab all default Characteristics so we can set them
-		$characteristics = $checkbox->get_characteristics();
+		// Determine whether we should show the Checkbox
+		// Vendors always have a User Account, but if they don't have an account yet, we should still show the Checkbox
+		// For logged in Users, we will know before hand if they have already been added as a Customer or something
+		if ( ! is_user_logged_in() ) {
+			$show_checkbox = true;
+		}
+		else {
+			
+			if ( get_user_meta( get_current_user_id(), 'edd_slack_app_invite_sent', true ) ) {
+				$show_checkbox = true;
+			}
+			
+		}
 		
-		// Name Attribute
-		$characteristics['name'] = 'edd_slack_send_vendor_team_invite';
+		if ( $show_checkbox ) {
 		
-		$label = edd_get_option( 'slack_app_join_team_team_text', apply_filters( 'edd_slack_app_join_slack_team_default_text', _x( 'Join our Slack Team?', 'Join Slack Team Text Default', 'edd-slack' ) ) );
-		
-		// Checkbox Options
-		$characteristics['options'] = array(
-			$label,
-		);
-		
-		// Give this an empty Array if you want it to default to being unselected
-		$characteristics['selected'] = apply_filters( 'slack_app_team_invites_vendor_default', array( 
-			$label,
-		) );
-		
-		$checkbox->set_characteristics( $characteristics );
-		
-		$fields['edd_slack_send_vendor_team_invite'] = $checkbox;
+			$checkbox = new FES_Checkbox_Field( 'edd_slack_send_vendor_team_invite', 'registration' );
+
+			// Grab all default Characteristics so we can set them
+			$characteristics = $checkbox->get_characteristics();
+
+			// Name Attribute
+			$characteristics['name'] = 'edd_slack_send_vendor_team_invite';
+
+			$label = edd_get_option( 'slack_app_join_team_team_text', apply_filters( 'edd_slack_app_join_slack_team_default_text', _x( 'Join our Slack Team?', 'Join Slack Team Text Default', 'edd-slack' ) ) );
+
+			// Checkbox Options
+			$characteristics['options'] = array(
+				$label,
+			);
+
+			// Give this an empty Array if you want it to default to being unselected
+			$characteristics['selected'] = apply_filters( 'slack_app_team_invites_vendor_default', array( 
+				$label,
+			) );
+
+			$checkbox->set_characteristics( $characteristics );
+
+			$fields['edd_slack_send_vendor_team_invite'] = $checkbox;
+			
+		}
 		
 		return $fields;
 		
@@ -173,25 +193,30 @@ class EDD_Slack_Invites {
 	/**
 	 * Sends a Slack Team Invite to Vendors if they've Opted-in
 	 * 
-	 * @param	  integer $insert_id $wpdb Insert ID
+	 * @param	  integer $vendor_id $wpdb Insert ID, in this case, the Vendor ID
 	 * @param	  array   $args		 $wpdb Column Key/Value Pairs
 	 *														
 	 * @access	  public
 	 * @since	  1.1.0
 	 * @return	  void
 	 */
-	public function add_vendor_to_slack_team_via_form( $insert_id, $args ) {
+	public function add_vendor_to_slack_team_via_form( $vendor_id, $args ) {
 		
 		// If they've Opted-in to being added to the Slack Team
 		if ( ! empty( $_POST['edd_slack_send_vendor_team_invite'] ) ) {
-		
-			$email = $args['email'];
-			$first_name = $_POST['first_name'];
-			$last_name = $_POST['last_name'];
-
-			$channels = implode( ',', edd_get_option( 'slack_app_team_invites_vendor_channels', array() ) );
 			
-			$this->send_invite( $email, $channels, $first_name, $last_name );
+			// If this User has not been invited to the Slack Team yet
+			if ( ! get_user_meta( $vendor_id, 'edd_slack_app_invite_sent', true ) ) {
+		
+				$email = $args['email'];
+				$first_name = $_POST['first_name'];
+				$last_name = $_POST['last_name'];
+
+				$channels = implode( ',', edd_get_option( 'slack_app_team_invites_vendor_channels', array() ) );
+
+				$this->send_invite( $email, $channels, $first_name, $last_name );
+				
+			}
 			
 		}
 		

@@ -3,6 +3,10 @@
 @include foundation-reveal;
 @include foundation-close-button;
 
-@import "base.scss";
-@import "repeater.scss";
-@import "replacements.scss"
+@import "base";
+@import "repeater";
+@import "replacements";
+	
+.edd-fes_page_fes-vendors {
+	@import "vendor";
+}

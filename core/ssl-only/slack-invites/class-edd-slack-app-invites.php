@@ -30,6 +30,12 @@ class EDD_Slack_Invites {
 
 		}
 
+		// Adds CSS/JS to the Customer Tools View
+		add_action( 'edd_customer_tools_top', array( $this, 'enqueue_scripts' ) );
+		
+		// Adds manual Slack Team Invitation button to the Customer Tools screen
+		add_action( 'edd_customer_tools_bottom', array( $this, 'add_slack_team_customer_invite_button' ) );
+
 		// Check to see if Vendor Invites are enabled
 		if ( class_exists( 'EDD_Front_End_Submissions' ) &&
 		   edd_get_option( 'slack_app_team_invites_vendor', false ) ) {
@@ -39,6 +45,12 @@ class EDD_Slack_Invites {
 			
 			// Checks if a Vendor should be added to a Slack Team
 			add_action( 'edd_post_insert_vendor', array( $this, 'add_vendor_to_slack_team_via_form' ), 10, 2 );
+			
+			// Adds CSS/JS to the Vendor screen
+			add_action( 'fes_vendor_card_top', array( $this, 'enqueue_scripts' ) );
+			
+			// Adds manual Slack Team Invitation button to the Vendor screen
+			add_action( 'fes_vendor_before_stats', array( $this, 'add_slack_team_vendor_invite_button' ) );
 
 		}
 		
@@ -231,6 +243,98 @@ class EDD_Slack_Invites {
 			}
 			
 		}
+		
+	}
+	
+	/**
+	 * Adds an "Add to Slack Team" button to manually add the Customer to the Slack Team
+	 * 
+	 * @param		object $customer EDD_Customer Object
+	 *                                       
+	 * @access		public
+	 * @since		1.1.0
+	 * @return		void
+	 */
+	public function add_slack_team_customer_invite_button( $customer ) {
+		
+		?>
+		<div class="edd-item-info customer-info">
+			
+			<h4><?php echo EDDSLACK()->plugin_data['Name']; ?></h4>
+			
+			<p class="edd-item-description">
+				<?php echo _x( 'Manually Invite this Customer to your Slack Team', 'Manually Invite to Slack Team Label', 'edd-slack' ); ?>
+			</p>
+			
+			<?php if ( ! $customer->get_meta( 'edd_slack_app_invite_sent', true ) ) : ?>
+			
+				<form method="post" id="edd_slack_team_customer_invite_form" class="edd-slack-team-customer-invite-form">
+					<span>
+						<?php wp_nonce_field( 'edd_slack_team_invite', 'edd_slack_team_invite' ); ?>
+
+						<input type="submit" id="edd_slack_app_invite" value="<?php echo _x( 'Invite this Customer to your Slack Team', 'Slack Team Invite Button Text', 'edd-slack' ); ?>" class="button-secondary"/>
+						<span class="spinner"></span>
+
+					</span>
+				</form>
+			
+			<?php else : ?>
+			
+				<p class="description">
+					<?php echo _x( 'This Customer has already been sent an invite to your Slack Team', 'Slack Team invite already sent to Customer', 'edd-slack' ); ?>
+				</p>
+			
+			<?php endif; ?>
+
+		</div>
+
+		<?php
+		
+	}
+	
+	public function add_slack_team_vendor_invite_button( $vendor ) {
+		
+		?>
+		<div id="edd_slack_vendor_wrapper" class="vendor-section">
+			
+			<?php if ( ! get_user_meta( $vendor->user_id, 'edd_slack_app_invite_sent', true ) ) : ?>
+			
+				<form method="post" id="edd_slack_team_vendor_invite_form" class="edd-slack-team-vendor-invite-form">
+					<span>
+						<?php wp_nonce_field( 'edd_slack_team_invite', 'edd_slack_team_invite' ); ?>
+
+						<input type="submit" id="edd_slack_app_invite" value="<?php echo sprintf( _x( 'Invite this %s to your Slack Team', 'Slack Team Invite Button Text', 'edd-slack' ), EDD_FES()->helper->get_vendor_constant_name( false, true ) ); ?>" class="button-secondary"/>
+						<span class="spinner"></span>
+
+					</span>
+				</form>
+			
+			<?php else : ?>
+			
+				<p class="description">
+					<?php echo sprintf( _x( 'This %s has already been sent an invite to your Slack Team', 'Slack Team invite already sent to Vendor', 'edd-slack' ), EDD_FES()->helper->get_vendor_constant_name( false, true ) ); ?>
+				</p>
+			
+			<?php endif; ?>
+
+		</div>
+
+		<?php
+		
+	}
+	
+	/**
+	 * Add our CSS/JS as needed
+	 * 
+	 * @access		public
+	 * @since		1.1.0
+	 * @return		void
+	 */
+	public function enqueue_scripts() {
+		
+		wp_enqueue_style( 'edd-slack-admin' );
+		
+		wp_enqueue_script( 'edd-slack-admin' );
 		
 	}
 	

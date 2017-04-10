@@ -56,13 +56,15 @@ class EDD_Slack_Invites {
 		// Defaults to having the checkbox "checked". Allows altering the functionality to be Opt-in rather than Opt-out
 		$checked = apply_filters( 'slack_app_team_invites_customer_default', 1 );
 		
+		$label = edd_get_option( 'slack_app_join_team_team_text', apply_filters( 'edd_slack_app_join_slack_team_default_text', _x( 'Join our Slack Team?', 'Join Slack Team Text Default', 'edd-slack' ) ) );
+		
 		?>
 		
 		<fieldset id="edd_slack_send_customer_team_invite_fieldset">
 			<div class="edd-slack-send-customer-team-invite">
 				<input name="edd_slack_send_customer_team_invite" type="checkbox" id="edd_slack_send_customer_team_invite" value="1" <?php checked( $checked, 1, true ); ?>/>
 				<label for="edd_slack_send_customer_team_invite">
-					test
+					<?php echo apply_filters( 'edd_slack_app_join_slack_team_default_text', _x( 'Join our Slack Team?', 'Join Slack Team Text Default', 'edd-slack' ) ); ?>
 				</label>
 			</div>
 		</fieldset>
@@ -117,13 +119,17 @@ class EDD_Slack_Invites {
 		// Name Attribute
 		$characteristics['name'] = 'edd_slack_send_vendor_team_invite';
 		
+		$label = edd_get_option( 'slack_app_join_team_team_text', apply_filters( 'edd_slack_app_join_slack_team_default_text', _x( 'Join our Slack Team?', 'Join Slack Team Text Default', 'edd-slack' ) ) );
+		
 		// Checkbox Options
 		$characteristics['options'] = array(
-			'test'
+			$label,
 		);
 		
 		// Give this an empty Array if you want it to default to being unselected
-		$characteristics['selected'] = apply_filters( 'slack_app_team_invites_vendor_default', array( 'test' ) );
+		$characteristics['selected'] = apply_filters( 'slack_app_team_invites_vendor_default', array( 
+			$label,
+		) );
 		
 		$checkbox->set_characteristics( $characteristics );
 		

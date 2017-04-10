@@ -49,6 +49,13 @@ class EDD_Slack_Invites_Settings {
 		
 		$slack_invites_settings = array(
 			array(
+				'type' => 'textarea',
+				'name' => 'Join Slack Team Text',
+				'id' => 'slack_app_join_team_team_text',
+				'std' => apply_filters( 'edd_slack_app_join_slack_team_default_text', _x( 'Join our Slack Team?', 'Join Slack Team Text Default', 'edd-slack' ) ),
+				'desc' => _x( 'This text is used as the label for the checkbox when someone chooses to join your Slack Team.', 'Join Slack Team Text Description', 'edd-slack' ),
+			),
+			array(
 				'type' => 'checkbox',
 				'name' => _x( 'Enable Slack Team Invites for new Customers', 'Customer Slack Invite Checkbox Label', 'edd-slack' ),
 				'id' => 'slack_app_team_invites_customer',

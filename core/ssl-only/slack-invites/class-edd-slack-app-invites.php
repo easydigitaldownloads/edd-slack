@@ -292,6 +292,15 @@ class EDD_Slack_Invites {
 		
 	}
 	
+	/**
+	 * Adds an "Add to Slack" button to the Vendor Page
+	 * 
+	 * @param		object $vendor FES_Vendor Object
+	 *                                   
+	 * @access		public
+	 * @since		1.1.0
+	 * @return		void
+	 */
 	public function add_slack_team_vendor_invite_button( $vendor ) {
 		
 		?>

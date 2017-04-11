@@ -35,6 +35,9 @@ class EDD_Slack_Invites {
 		
 		// Adds manual Slack Team Invitation button to the Customer Tools screen
 		add_action( 'edd_customer_tools_bottom', array( $this, 'add_slack_team_customer_invite_button' ) );
+		
+		// Localize the admin.js
+		add_filter( 'edd_slack_localize_admin_script', array( $this, 'localize_script' ) );
 
 		// Check to see if Vendor Invites are enabled
 		if ( class_exists( 'EDD_Front_End_Submissions' ) &&
@@ -270,7 +273,7 @@ class EDD_Slack_Invites {
 			
 				<form method="post" id="edd_slack_team_customer_invite_form" class="edd-slack-team-customer-invite-form">
 					<span>
-						<?php wp_nonce_field( 'edd_slack_team_invite', 'edd_slack_team_invite' ); ?>
+						<?php wp_nonce_field( 'edd_slack_team_invite_nonce', 'edd_slack_team_invite_nonce' ); ?>
 
 						<input type="submit" id="edd_slack_app_invite" value="<?php echo _x( 'Invite this Customer to your Slack Team', 'Slack Team Invite Button Text', 'edd-slack' ); ?>" class="button-secondary"/>
 						<span class="spinner"></span>
@@ -310,7 +313,7 @@ class EDD_Slack_Invites {
 			
 				<form method="post" id="edd_slack_team_vendor_invite_form" class="edd-slack-team-vendor-invite-form">
 					<span>
-						<?php wp_nonce_field( 'edd_slack_team_invite', 'edd_slack_team_invite' ); ?>
+						<?php wp_nonce_field( 'edd_slack_team_invite_nonce', 'edd_slack_team_invite_nonce' ); ?>
 
 						<input type="submit" id="edd_slack_app_invite" value="<?php echo sprintf( _x( 'Invite this %s to your Slack Team', 'Slack Team Invite Button Text', 'edd-slack' ), EDD_FES()->helper->get_vendor_constant_name( false, true ) ); ?>" class="button-secondary"/>
 						<span class="spinner"></span>
@@ -346,6 +349,36 @@ class EDD_Slack_Invites {
 	}
 	
 	/**
+	 * Localize the Admin.js with some values from PHP-land
+	 * 
+	 * @param	  array $localization Array holding all our Localizations
+	 *														
+	 * @access	  public
+	 * @since	  1.0.0
+	 * @return	  array Modified Array
+	 */
+	public function localize_script( $localization ) {
+		
+		$localization['i18n']['slackInvite'] = array(
+			'channel_not_found' => _x( 'The selected Public Channels were not found. Do they still exist?', 'Channel not found Slack Invite error', 'edd-slack' ),
+			'no_perms' => _x( 'The Slack User authenticated the Slack App did not have permissions to Invite Users to the Team. This is often reserved for Slack Team Admins.', 'Lacks Permission to Invite Users error', 'edd-slack' ),
+			'already_in_team' => _x( 'This email already belongs to a Slack User in your Team.', 'Email already in use by Slack User error', 'edd-slack' ),
+			'customer_invite_successful' => _x( 'Customer invited to your Slack Team successfully.', 'Customer Team Invite Successful', 'edd-slack' ),
+		);
+		
+		if ( class_exists( 'EDD_Front_End_Submissions' ) ) {
+			
+			$localization['i18n']['slackInvite']['vendor_invite_successful'] = sprintf( _x( '%s invited to your Slack Team successfully.', 'Vendor Team Invite Successful', 'edd-slack' ), EDD_FES()->helper->get_vendor_constant_name( false, true ) );
+			
+		}
+		
+		$localization['ajax'] = admin_url( 'admin-ajax.php' );
+		
+		return $localization;
+		
+	}
+	
+	/**
 	 * Sends a Slack Team Invite via Email
 	 * 
 	 * @param		string $email      Email Address (Required)
@@ -375,6 +408,97 @@ class EDD_Slack_Invites {
 		
 	}
 	
+	/**
+	 * Generic AJAX Callback for sending Slack Team Invites
+	 * 
+	 * @param		integer $id   Either an EDD_Customer ID or a FES_Vendor ID
+	 * @param		string  $type 'customer' or 'vendor'. Determines the Channel List used.
+	 *                                                              
+	 * @access		public
+	 * @since		1.1.0
+	 * @return		string JSON
+	 */
+	public static function ajax_send_invite() {
+		
+		check_ajax_referer( 'edd_slack_team_invite_nonce', 'edd_slack_team_invite_nonce' );
+		
+		$args = array(
+			'email' => '',
+			'channels' => array(),
+			'first_name' => '',
+			'last_name' => '',
+		);
+		
+		$id = $_POST['id'];
+		$type = $_POST['type'];
+		
+		// Determine which Channels list to use and where to grab the necessary data from
+		if ( strtolower( trim( $type ) ) == 'customer' ) {
+			
+			$args['channels'] = implode( ',', edd_get_option( 'slack_app_team_invites_customer_channels', array() ) );
+			
+			// We need a Payment from the Customer in order to get details like First/Last Name.
+			// This is because it is stored as a single string in the EDD_Customer Object unlike how it is handled in EDD_Payment Meta or even the WP_User object
+			// We cannot reliably split on a Space since we don't know how many spaces may be in a User's actual name
+			$customer = new EDD_Customer( $id );
+			
+			// Grab the most recent Payment, as this should hold the most recent data
+			$payment_ids = explode( ',', $customer->payment_ids );
+			$payment_id = $payment_ids[ count( $payment_ids ) - 1 ];
+			
+			$payment_meta = edd_get_payment_meta( $payment_id );
+			
+			$args['first_name'] = $payment_meta['user_info']['first_name'];
+			$args['last_name'] = $payment_meta['user_info']['last_name'];
+			$args['email'] = $payment_meta['user_info']['email'];
+			
+		}
+		else {
+			
+			$args['channels'] = implode( ',', edd_get_option( 'slack_app_team_invites_vendor_channels', array() ) );
+			
+			// Vendors are a lot easier since we know their User ID
+			$vendor = new FES_Vendor( $id );
+			
+			$userdata = get_userdata( $vendor->user_id );
+			
+			$args['first_name'] = $userdata->first_name;
+			$args['last_name'] = $userdata->last_name;
+			$args['email'] = $vendor->email;
+			
+		}
+		
+		$invite = EDDSLACK()->slack_api->post( 
+			'users.admin.invite',
+			array(
+				'body' => $args
+			)
+		);
+		
+		// If it was successful, add the necessary Customer/User Meta to indicate it
+		if ( property_exists( $invite, 'ok' ) &&
+			$invite->ok ) {
+			
+			if ( strtolower( trim( $type ) ) == 'customer' ) {
+				
+				$customer->add_meta( 'edd_slack_app_invite_sent', true, true );
+				
+			}
+			else {
+				
+				update_user_meta( $vendor->user_id, 'edd_slack_app_invite_sent', true );
+				
+			}
+			
+		}
+		
+		wp_send_json( $invite );
+		
+	}
+	
 }
 
 $integrate = new EDD_Slack_Invites();
+
+// Add AJAX Callback hook
+add_action( 'wp_ajax_edd_slack_app_team_invite', array( 'EDD_Slack_Invites', 'ajax_send_invite' ) );

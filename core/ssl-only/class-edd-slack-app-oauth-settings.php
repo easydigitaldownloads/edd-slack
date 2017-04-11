@@ -398,6 +398,8 @@ class EDD_Slack_OAUTH_Settings {
 				EDDSLACK()->slack_api->revoke_oauth_token();
 				
 				$revoked_client_scope = edd_delete_option( 'slack_app_has_client_scope' );
+				
+				delete_transient( 'edd_slack_channels_list' );
 
 				$this->admin_notices[] = array(
 					'edd-notices',

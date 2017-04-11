@@ -110,6 +110,7 @@ class EDD_Slack_Software_Licensing {
 			'user_id' => $customer->user_id, // If the User isn't a proper WP User, this will be 0
 			'name' => $customer->name,
 			'email' => $customer->email,
+			'license_id' => $license_id,
 			'license_key' => edd_software_licensing()->get_license_key( $license_id ),
 			'download_id' => $download_id,
 			'price_id' => edd_software_licensing()->get_price_id( $license_id ),
@@ -142,10 +143,12 @@ class EDD_Slack_Software_Licensing {
 			'user_id' => $customer->user_id, // If the User isn't a proper WP User, this will be 0
 			'name' => $customer->name,
 			'email' => $customer->email,
+			'license_id' => $license_id,
 			'license_key' => edd_software_licensing()->get_license_key( $license_id ),
 			'download_id' => $download_id,
 			'price_id' => edd_software_licensing()->get_price_id( $license_id ),
 			'expiration' => get_post_meta( $license_id, '_edd_sl_expiration', true ),
+			'active_site' => $_GET['url'], // EDD_SL_License has some methods to get this, but they are private and have the potential of giving us invalid data if URLs get filtered out. This ensures the shown URL is the one being activated, not just the last one in the stack
 			'site_count' => edd_software_licensing()->get_site_count( $license_id ),
 			'license_limit' => edd_software_licensing()->license_limit( $license_id ),
 		) );
@@ -175,10 +178,12 @@ class EDD_Slack_Software_Licensing {
 			'user_id' => $customer->user_id, // If the User isn't a proper WP User, this will be 0
 			'name' => $customer->name,
 			'email' => $customer->email,
+			'license_id' => $license_id,
 			'license_key' => edd_software_licensing()->get_license_key( $license_id ),
 			'download_id' => $download_id,
 			'price_id' => edd_software_licensing()->get_price_id( $license_id ),
 			'expiration' => get_post_meta( $license_id, '_edd_sl_expiration', true ),
+			'active_site' => $_GET['url'], // EDD_SL_License has some methods to get this, but they are private and have the potential of giving us invalid data if URLs get filtered out. This ensures the shown URL is the one being deactivated, not just the last one in the stack
 			'site_count' => edd_software_licensing()->get_site_count( $license_id ),
 			'license_limit' => edd_software_licensing()->license_limit( $license_id ),
 		) );
@@ -205,6 +210,7 @@ class EDD_Slack_Software_Licensing {
 			'user_id' => $customer->user_id, // If the User isn't a proper WP User, this will be 0
 			'name' => $customer->name,
 			'email' => $customer->email,
+			'license_id' => $license_id,
 			'license_key' => edd_software_licensing()->get_license_key( $license_id ),
 			'download_id' => $args['download_id'],
 			'upgrade_price_id' => $args['upgrade_price_id'], // Variable Download ID for the Upgrade
@@ -298,9 +304,24 @@ class EDD_Slack_Software_Licensing {
 					$replacements['%expiration%'] = date_i18n( get_option( 'date_format', 'F j, Y' ), $args['expiration'] );
 					$replacements['%license_limit%'] = $args['license_limit'];
 					
+					if ( $trigger !== 'edd_sl_store_license' ) {
+						
+						$replacements['%license_link%'] = '<' . admin_url( 'edit.php?post_type=download&page=edd-licenses&view=overview&license=' . $args['license_id'] ) . '|' . _x( 'View this License', 'View this License Link Text', 'edd-slack' ) . '>';
+						
+					}
+					
 					if ( $trigger == 'edd_sl_activate_license' ||
 					  $trigger == 'edd_sl_deactivate_license' ) {
-						$replacements['%site_count%'] = $args['site_count']; // This doesn't make sense for the other Triggers
+						
+						// These don't make sense for the other Triggers
+						
+						$replacements['%site_count%'] = $args['site_count'];
+						
+						// In case there is no protocol, add one
+						$link = ( preg_match( '/http(s)?:\/\/', $args['active_site'] ) == 0 ) ? 'http://' . $args['active_site'] : $active_site;
+						
+						$replacements['%active_site%'] = '<' . $link . '|' . $args['active_site'] . '>';
+						
 					}
 					
 					if ( $trigger !== 'edd_sl_license_upgraded' ) {
@@ -351,6 +372,7 @@ class EDD_Slack_Software_Licensing {
 			'%download%' => sprintf( _x( 'The %s the License Key is for', '%download% Hint Text', 'edd-slack' ), edd_get_label_singular() ),
 			'%expiration%' => _x( 'The date when the License expires', '%expiration% Hint Text', 'edd-slack' ),
 			'%license_limit%' => _x( 'The number of sites the License can be active on', '%license_limit% Hint Text', 'edd-slack' ),
+			'%license_link%' => _x( 'A link to the License', '%license_link% Hint Text', 'edd-slack' ),
 		);
 		
 		$hints['edd_sl_store_license'] = array_merge( $user_hints, $licensing_hints );
@@ -360,10 +382,15 @@ class EDD_Slack_Software_Licensing {
 		
 		// Similarly here, we're going to have some interior conditionals for the small differences to avoid repeating ourselves
 		
+		$hints['edd_sl_activate_license']['%active_site%'] = _x( 'The Site URL this License was just activated on', '%active_site% Hint Text', 'edd-slack' );
+		$hints['edd_sl_deactivate_license']['%active_site%'] = _x( 'The Site URL this License was deactivated from', '%active_site% Hint Text', 'edd-slack' );
+		
 		unset( $hints['edd_sl_store_license']['%site_count%'] ); // This one doesn't make sense in this context
 		unset( $hints['edd_sl_license_upgraded']['%site_count%'] ); // This one doesn't make sense in this context
 		
 		unset( $hints['edd_sl_license_upgraded']['%download%'] );
+		
+		unset( $hints['edd_sl_store_license']['%license_link%'] ); // Not applicable
 		
 		$hints['edd_sl_license_upgraded']['%old_download%'] = sprintf( _x( 'The %s being upgraded from', '%old_download% Hint Text', 'edd-slack' ), edd_get_label_singular() );
 		$hints['edd_sl_license_upgraded']['%new_download%'] = sprintf( _x( 'The %s being upgraded to', '%new_download% Hint Text', 'edd-slack' ), edd_get_label_singular() );

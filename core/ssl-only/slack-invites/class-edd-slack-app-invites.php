@@ -40,14 +40,17 @@ class EDD_Slack_Invites {
 		add_filter( 'edd_slack_localize_admin_script', array( $this, 'localize_script' ) );
 
 		// Check to see if Vendor Invites are enabled
-		if ( class_exists( 'EDD_Front_End_Submissions' ) &&
-		   edd_get_option( 'slack_app_team_invites_vendor', false ) ) {
-
-			// Adds a Checkbox to the Vendor Submission Form for Vendors to be added to the Slack Team
-			add_filter( 'fes_load_registration_form_fields', array( $this, 'vendors_slack_invite_checkbox' ), 10, 2 );
+		if ( class_exists( 'EDD_Front_End_Submissions' ) ) {
 			
-			// Checks if a Vendor should be added to a Slack Team
-			add_action( 'edd_post_insert_vendor', array( $this, 'add_vendor_to_slack_team_via_form' ), 10, 2 );
+		   if ( edd_get_option( 'slack_app_team_invites_vendor', false ) ) {
+
+			   // Adds a Checkbox to the Vendor Submission Form for Vendors to be added to the Slack Team
+			   add_filter( 'fes_load_registration_form_fields', array( $this, 'vendors_slack_invite_checkbox' ), 10, 2 );
+			
+			   // Checks if a Vendor should be added to a Slack Team
+			   add_action( 'edd_post_insert_vendor', array( $this, 'add_vendor_to_slack_team_via_form' ), 10, 2 );
+			   
+		   }
 			
 			// Adds CSS/JS to the Vendor screen
 			add_action( 'fes_vendor_card_top', array( $this, 'enqueue_scripts' ) );

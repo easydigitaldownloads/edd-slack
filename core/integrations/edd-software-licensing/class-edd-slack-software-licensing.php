@@ -183,6 +183,7 @@ class EDD_Slack_Software_Licensing {
 			'download_id' => $download_id,
 			'price_id' => edd_software_licensing()->get_price_id( $license_id ),
 			'expiration' => get_post_meta( $license_id, '_edd_sl_expiration', true ),
+			'active_site' => $_GET['url'], // EDD_SL_License has some methods to get this, but they are private and have the potential of giving us invalid data if URLs get filtered out. This ensures the shown URL is the one being deactivated, not just the last one in the stack
 			'site_count' => edd_software_licensing()->get_site_count( $license_id ),
 			'license_limit' => edd_software_licensing()->license_limit( $license_id ),
 		) );
@@ -309,18 +310,18 @@ class EDD_Slack_Software_Licensing {
 						
 					}
 					
-					if ( $trigger == 'edd_sl_activate_license' ) {
+					if ( $trigger == 'edd_sl_activate_license' ||
+					  $trigger == 'edd_sl_deactivate_license' ) {
+						
+						// These don't make sense for the other Triggers
+						
+						$replacements['%site_count%'] = $args['site_count'];
 						
 						// In case there is no protocol, add one
 						$link = ( preg_match( '/http(s)?:\/\/', $args['active_site'] ) == 0 ) ? 'http://' . $args['active_site'] : $active_site;
 						
 						$replacements['%active_site%'] = '<' . $link . '|' . $args['active_site'] . '>';
 						
-					}
-					
-					if ( $trigger == 'edd_sl_activate_license' ||
-					  $trigger == 'edd_sl_deactivate_license' ) {
-						$replacements['%site_count%'] = $args['site_count']; // This doesn't make sense for the other Triggers
 					}
 					
 					if ( $trigger !== 'edd_sl_license_upgraded' ) {
@@ -382,6 +383,7 @@ class EDD_Slack_Software_Licensing {
 		// Similarly here, we're going to have some interior conditionals for the small differences to avoid repeating ourselves
 		
 		$hints['edd_sl_activate_license']['%active_site%'] = _x( 'The Site URL this License was just activated on', '%active_site% Hint Text', 'edd-slack' );
+		$hints['edd_sl_deactivate_license']['%active_site%'] = _x( 'The Site URL this License was deactivated from', '%active_site% Hint Text', 'edd-slack' );
 		
 		unset( $hints['edd_sl_store_license']['%site_count%'] ); // This one doesn't make sense in this context
 		unset( $hints['edd_sl_license_upgraded']['%site_count%'] ); // This one doesn't make sense in this context

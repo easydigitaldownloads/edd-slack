@@ -361,7 +361,7 @@ class EDD_Slack_Invites {
 		
 		$localization['i18n']['slackInvite'] = array(
 			'channel_not_found' => _x( 'The selected Public Channels were not found. Do they still exist?', 'Channel not found Slack Invite error', 'edd-slack' ),
-			'no_perms' => _x( 'The Slack User authenticated the Slack App did not have permissions to Invite Users to the Team. This is often reserved for Slack Team Admins.', 'Lacks Permission to Invite Users error', 'edd-slack' ),
+			'no_perms' => _x( 'The Slack User who authenticated the Slack App did not have permissions to Invite Users to the Team. This is often reserved for Slack Team Admins.', 'Lacks Permission to Invite Users error', 'edd-slack' ),
 			'already_in_team' => _x( 'This email already belongs to a Slack User in your Team.', 'Email already in use by Slack User error', 'edd-slack' ),
 			'customer_invite_successful' => _x( 'Customer invited to your Slack Team successfully.', 'Customer Team Invite Successful', 'edd-slack' ),
 		);

@@ -24,6 +24,13 @@
 			// Normally HTML doesn't like us having nested Forms, so we force it like this
 			// By the time the Modal opens and this code runs, the Form isn't nested anymore
 			$form.submit( function( event ) {
+				
+				// This captures the Submit button
+				// activeElement ensures it is the correct one in the event more Submit Buttons get added for some reason
+				var $submitButton = $( document.activeElement ),
+					submitText = $submitButton.val();
+				
+				$submitButton.val( $submitButton.data( 'saving_text' ) ).attr( 'disabled', true );
 
 				event.preventDefault(); // Don't submit the form via PHP
 				
@@ -73,6 +80,8 @@
 							$form.find( '.edd-slack-post-id' ).val( response.data.post_id );
 							
 							closeModal( uuid );
+							
+							$submitButton.val( submitText ).attr( 'disabled', false );
 							
 							// Highlight Green
 							$row.effect( 'highlight', { color : '#DFF2BF' }, 1000 );

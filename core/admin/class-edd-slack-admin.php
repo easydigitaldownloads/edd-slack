@@ -132,6 +132,7 @@ class EDD_Slack_Admin {
 				'add_item_text' => _x( 'Add Slack Notification', 'Add Slack Notification Button', 'edd-slack' ),
 				'edit_item_text' => _x( 'Edit Slack Notification', 'Edit Slack Notification Button', 'edd-slack' ),
 				'save_item_text' => _x( 'Save Slack Notification', 'Save Slack Notification Button', 'edd-slack' ),
+				'saving_item_text' => _x( 'Saving...', 'Saving Slack Notification Text', 'learndash-slack' ),
 				'delete_item_text' => _x( 'Delete Slack Notification', 'Delete Slack Notification Button', 'edd-slack' ),
 				'default_title' => _x( 'New Slack Notification', 'New Slack Notification Header', 'edd-slack' ),
 				'fields' => $fields,
@@ -158,6 +159,7 @@ class EDD_Slack_Admin {
 			'add_item_text' => __( 'Add Row', 'edd-slack' ),
 			'edit_item_text' => __( 'Edit Row', 'edd-slack' ),
 			'save_item_text' => __( 'Save Row', 'edd-slack' ),
+			'saving_item_text' => __( 'Saving...', 'learndash-slack' ),
 			'delete_item_text' => __( 'Delete Row', 'edd-slack' ),
 			'default_title' => __( 'New Row', 'edd-slack' ),
 			'input_name' => false,
@@ -271,7 +273,7 @@ class EDD_Slack_Admin {
 
 									</table>
 									
-									<input type="submit" class="button button-primary alignright" value="<?php echo $args['save_item_text']; ?>" />
+									<input type="submit" class="button button-primary alignright" value="<?php echo $args['save_item_text']; ?>" data-saving_text="<?php echo $args['saving_item_text']; ?>" />
 								  
 								</div>
 								

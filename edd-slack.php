@@ -239,12 +239,12 @@ if ( ! class_exists( 'EDD_Slack' ) ) {
 				require_once EDD_Slack_DIR . '/core/admin/class-edd-slack-admin.php';
 				$this->admin = new EDD_Slack_Admin();
 				
-				if ( is_ssl() ) {
+				//if ( is_ssl() ) {
 					
 					require_once EDD_Slack_DIR . '/core/ssl-only/class-edd-slack-app-oauth-settings.php';
 					$this->oauth_settings = new EDD_Slack_OAUTH_Settings();
 					
-				}
+				//}
 				
 			}
 			
@@ -391,12 +391,25 @@ if ( ! class_exists( 'EDD_Slack' ) ) {
 			}
 			
 			// SSL anywhere, not just Admin
-			if ( is_ssl() ) {
+			//if ( is_ssl() ) {
 			
 				// If we've got a linked Slack App
 				if ( edd_get_option( 'slack_app_oauth_token' ) ) {
 					require_once EDD_Slack_DIR . '/core/ssl-only/class-edd-slack-ssl-rest.php';
 					$this->slack_rest_api = new EDD_Slack_SSL_REST();
+				}
+				
+				// If we've been granted Client Scope
+				if ( edd_get_option( 'slack_app_has_client_scope', false ) ) {
+				
+					// This file does mostly things on the Admin-side, but it runs Filters that need access to the Frontend based on results from the Admin-side
+					// Primarily, replacing `#general` as appropriate
+					// Since this is done within Interactive Notifications, we need the file to be loaded here
+					require_once EDD_Slack_DIR . '/core/ssl-only/slack-invites/class-edd-slack-app-invites-settings.php';
+					
+					// Here we actually send out the Invites if appropriate
+					require_once EDD_Slack_DIR . '/core/ssl-only/slack-invites/class-edd-slack-app-invites.php';
+
 				}
 				
 				// If Comments are Enabled for Downloads
@@ -414,7 +427,7 @@ if ( ! class_exists( 'EDD_Slack' ) ) {
 					require_once EDD_Slack_DIR . '/core/ssl-only/integrations/edd-fraud-monitor/class-edd-slack-app-fraud-monitor.php';
 				}
 				
-			}
+			//}
 			
 		}
 		

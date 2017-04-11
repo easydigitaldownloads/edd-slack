@@ -34,6 +34,9 @@ class EDD_Slack_OAUTH_Settings {
 		// Add the OAUTH Registration Button
 		add_action( 'edd_slack_oauth_register', array( $this, 'add_oauth_registration_button' ) );
 		
+		// Add the OAUTH Registration Button for Slack Team Invites
+		add_action( 'edd_slack_invites_oauth_register', array( $this, 'add_slack_invites_oauth_register' ) );
+		
 		// Grab the OAUTH Key as part of the handshake process
 		add_action( 'admin_init', array( $this, 'store_oauth_token' ) );
 		
@@ -42,6 +45,8 @@ class EDD_Slack_OAUTH_Settings {
 		
 		// Display Admin Notices
 		add_action( 'admin_init', array( $this, 'display_admin_notices' ) );
+		
+		//add_action( 'admin_init', array( $this, 'test_invite' ) );
 		
 	}
 	
@@ -56,10 +61,10 @@ class EDD_Slack_OAUTH_Settings {
 	 */
 	public function add_oauth_settings( $settings ) {
 		
-		$oauth_settings = array(
+		$oauth_settings = apply_filters( 'edd_slack_oauth_settings', array(
 			array(
 				'type' => 'header',
-				'name' => '<h3>' . _x( 'Enable Interactive Notifications and Slash Commands', 'SSL-Only Settings Header', 'edd-slack' ),
+				'name' => '<h3>' . _x( 'Enable Interactive Notifications and Slash Commands', 'Interactive Notifications Settings Header', 'edd-slack' ),
 				'id' => 'edd-slack-ssl-only-header',
 			),
 			array(
@@ -104,8 +109,8 @@ class EDD_Slack_OAUTH_Settings {
 				'type' => 'text',
 				'name' => _x( 'Default Channel for Interactive Notifications', 'Default Channel for Interactive Notifications Label', 'edd-slack' ),
 				'id' => 'slack_app_channel_default',
-				'desc' => _x( "Interactive Notifications don't use the Default Webhook URL, so they need to know which Channel they should default to if one for the Notification isn't defined. If this is left blank, it will default to <code>#general</code>.", 'Default Channel for Interactive Notifications Help Text', 'edd-slack' ),
-				'placeholder' => '#general',
+				'desc' => sprintf( _x( "Interactive Notifications don't use the Default Webhook URL, so they need to know which Channel they should default to if one for the Notification isn't defined. If this is left blank, it will default to <code>#%s</code>.", 'Default Channel for Interactive Notifications Help Text', 'edd-slack' ), apply_filters( 'edd_slack_general_channel', 'general' ) ),
+				'placeholder' => sprintf( '#%s', apply_filters( 'edd_slack_general_channel', 'general' ) ),
 			),
 			array(
 				'type' => 'text',
@@ -113,7 +118,21 @@ class EDD_Slack_OAUTH_Settings {
 				'id' => 'slack_app_icon_default',
 				'desc' => _x( "Interactive Notifications don't use the Default Webhook URL, so they can't utilize the Default Icon Emoji or Image URL you set for the Webhook URL if one for the Notification isn't defined. If this is left blank, it will use the Icon added to your Slack App if one exists.", 'Default Icon Emoji or Image URL for Interactive Notifications Help Text', 'edd-slack' ),
 			),
-		);
+			array(
+				'type' => 'header',
+				'name' => '<h3>' . _x( 'Enable Auto-Inviting Users to your Slack Team', 'Slack Team Invite Settings Header', 'edd-slack' ),
+				'id' => 'edd-slack-slack-team-invite-header',
+				'desc' => _x( 'This uses the same Client ID, Client Secret, and Verification Code above, but a different OAUTH Token. This is because it needs special permissions.', 'Slack Team Invite Description', 'edd-slack' ),
+			),
+			array(
+				'type' => 'hook',
+				'id' => 'slack_invites_oauth_register',
+			),
+			array(
+				'type' => 'hook',
+				'id' => 'slack_invites_oauth_register',
+			),
+		) );
 		
 		$settings = array_merge( $settings, $oauth_settings );
 		
@@ -207,13 +226,73 @@ class EDD_Slack_OAUTH_Settings {
 
 			if ( ! $oauth_token ) : ?>
 			
-				<a href="//slack.com/oauth/authorize?client_id=<?php echo $client_id; ?>&scope=<?php echo $scope; ?>&redirect_uri=<?php echo $redirect_uri; ?>" target="_self" class="edd-slack-app-auth button button-primary">
+				<a href="//slack.com/oauth/authorize?client_id=<?php echo $client_id; ?>&scope=<?php echo $scope; ?>&redirect_uri=<?php echo $redirect_uri; ?>" target="_self" class="edd-slack-app-auth button button-primary" data-token_type="main">
 					<?php echo _x( 'Link Slack App', 'OAUTH Register Buton Label', 'edd-slack' ); ?>
 				</a>
 
 			<?php else : ?>
 
-				<input type="submit" name="edd_slack_app_deauth" class="button" value="<?php echo _x( 'Unlink Slack App', 'OAUTH Deregister Button Label', 'edd-slack' ); ?>"/>
+				<input type="submit" name="edd_slack_app_deauth" class="button" value="<?php echo _x( 'Unlink Slack App', 'OAUTH Deregister Button Label', 'edd-slack' ); ?>" data-token_type="main" />
+
+			<?php endif; ?>
+			
+		<?php else : ?>
+
+			<p class="description">
+				<?php echo _x( 'Fill out the above fields and Save the Settings to Connect your Slack App to your site.', 'OAUTH Registration Help Text', 'edd-slack' ); ?>
+			</p>
+		
+		<?php endif;
+		
+	}
+	
+	/**
+	 * Adds our Button Link to Authorize/Deauthorize the Slack App for Inviting Users to the Team
+	 * 
+	 * @param	  array $args EDD Settings API $args
+	 *										  
+	 * @access	  public
+	 * @since	  1.1.0
+	 * @return	  void
+	 */
+	public function add_slack_invites_oauth_register( $args ) {
+		
+		$client_id = edd_get_option( 'slack_app_client_id' );
+		$client_secret = edd_get_option( 'slack_app_client_secret' );
+		
+		/**
+		 * Most other scopes are not compatible with "client", but just in case
+		 *
+		 * @since 1.01.0
+		 */
+		$scope = apply_filters( 'edd_slack_app_team_invites_scope', array(
+			'client',
+		) );
+		
+		$scope = implode( ',', $scope );
+		
+		$redirect_uri = urlencode_deep( admin_url( 'edit.php?post_type=download&page=edd-settings&tab=extensions&section=edd-slack-settings' ) );
+		
+		$oauth_token = edd_get_option( 'slack_app_oauth_token' );
+		$granted_client_scope = edd_get_option( 'slack_app_has_client_scope' );
+		
+		if ( $client_id && $client_secret ) : 
+
+			if ( ! $oauth_token ) : ?>
+
+				<p class="description">
+					<?php echo _x( 'You need to link your Slack App above to enable this feature.', 'Slack App not linked Error.', 'edd-slack' ); ?>
+				</p>
+
+			<?php elseif ( ! $granted_client_scope ) : ?>
+			
+				<a href="//slack.com/oauth/authorize?client_id=<?php echo $client_id; ?>&scope=<?php echo $scope; ?>&redirect_uri=<?php echo $redirect_uri; ?>" target="_self" class="edd-slack-app-auth button button-primary" data-token_type="team_invites">
+					<?php echo _x( 'Allow Slack App to Invite Users to your Team', 'OAUTH Register Team Invites Buton Label', 'edd-slack' ); ?>
+				</a>
+
+			<?php else : ?>
+
+				<input type="submit" name="edd_slack_app_deauth" class="button" value="<?php echo _x( 'Unlink Slack App', 'OAUTH Deregister Button Label', 'edd-slack' ); ?>" data-token_type="team_invites" />
 
 			<?php endif; ?>
 			
@@ -242,9 +321,11 @@ class EDD_Slack_OAUTH_Settings {
 		if ( isset( $_GET['code'] ) && 
 			isset( $_GET['state'] ) && 
 			$_GET['state'] == 'saving' && 
+			isset( $_GET['token_type'] ) &&
 			isset( $_GET['section'] ) && 
 			$_GET['section'] == 'edd-slack-settings' && 
-			! edd_get_option( 'slack_app_oauth_token' ) ) {
+			( ! edd_get_option( 'slack_app_oauth_token' ) && $_GET['token_type'] == 'main' || 
+			 ! edd_get_option( 'slack_app_has_client_scope' ) && $_GET['token_type'] == 'team_invites' ) ) {
 			
 			$client_id = edd_get_option( 'slack_app_client_id' );
 			$client_secret = edd_get_option( 'slack_app_client_secret' );
@@ -270,12 +351,28 @@ class EDD_Slack_OAUTH_Settings {
 				$oauth_token = $oauth_request->access_token;
 				EDDSLACK()->slack_api->set_oauth_token( $oauth_token );
 				
-				$this->admin_notices[] = array(
-					'edd-notices',
-					'edd_slack_app_auth',
-					_x( 'Slack App Linked Successfully.', 'EDD Slack App Auth Successful', 'edd-slack' ),
-					'updated'
-				);
+				if ( $_GET['token_type'] == 'main' ) {
+				
+					$this->admin_notices[] = array(
+						'edd-notices',
+						'edd_slack_app_auth',
+						_x( 'Slack App Linked Successfully.', 'EDD Slack App Auth Successful', 'edd-slack' ),
+						'updated'
+					);
+					
+				}
+				else if ( $_GET['token_type'] == 'team_invites' ) {
+					
+					$granted_client_scope = edd_update_option( 'slack_app_has_client_scope', true );
+					
+					$this->admin_notices[] = array(
+						'edd-notices',
+						'edd_slack_app_team_invites_auth',
+						_x( 'Slack App Team Invites Enabled Successfully.', 'EDD Slack App Team Invites Auth Successful', 'edd-slack' ),
+						'updated'
+					);
+					
+				}
 				
 			}
 			
@@ -295,11 +392,14 @@ class EDD_Slack_OAUTH_Settings {
 		// For some reason we can't hook into admin_init within a production environment. Yeah, I have no idea either
 		// It only effects DELETING things from wp_options. Storing works just fine.
 		if ( is_admin() ) {
-		
-			// If we're deauth-ing
+			
 			if ( isset( $_POST['edd_slack_app_deauth'] ) ) {
 
 				EDDSLACK()->slack_api->revoke_oauth_token();
+				
+				$revoked_client_scope = edd_delete_option( 'slack_app_has_client_scope' );
+				
+				delete_transient( 'edd_slack_channels_list' );
 
 				$this->admin_notices[] = array(
 					'edd-notices',

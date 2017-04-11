@@ -880,7 +880,7 @@ msgctxt "Vendor Product Edit Denied Response Text"
 msgid "%s has Trashed %s's Product titled \"%s\""
 msgstr ""
 
-#: core/ssl-only/slack-invites/class-edd-slack-app-invites-settings.php:55, core/ssl-only/slack-invites/class-edd-slack-app-invites.php:74, core/ssl-only/slack-invites/class-edd-slack-app-invites.php:102, core/ssl-only/slack-invites/class-edd-slack-app-invites.php:193
+#: core/ssl-only/slack-invites/class-edd-slack-app-invites-settings.php:55, core/ssl-only/slack-invites/class-edd-slack-app-invites.php:77, core/ssl-only/slack-invites/class-edd-slack-app-invites.php:105, core/ssl-only/slack-invites/class-edd-slack-app-invites.php:196
 msgctxt "Join Slack Team Text Default"
 msgid "Join our Slack Team?"
 msgstr ""
@@ -925,52 +925,52 @@ msgctxt "Channels for Vendors Description Text"
 msgid "The <code>#%s</code> Channel is always granted by default. Choose any other additional Channels you would like to auto-invite %s to."
 msgstr ""
 
-#: core/ssl-only/slack-invites/class-edd-slack-app-invites.php:269
+#: core/ssl-only/slack-invites/class-edd-slack-app-invites.php:272
 msgctxt "Manually Invite to Slack Team Label"
 msgid "Manually Invite this Customer to your Slack Team"
 msgstr ""
 
-#: core/ssl-only/slack-invites/class-edd-slack-app-invites.php:278
+#: core/ssl-only/slack-invites/class-edd-slack-app-invites.php:281
 msgctxt "Slack Team Invite Button Text"
 msgid "Invite this Customer to your Slack Team"
 msgstr ""
 
-#: core/ssl-only/slack-invites/class-edd-slack-app-invites.php:287
+#: core/ssl-only/slack-invites/class-edd-slack-app-invites.php:290
 msgctxt "Slack Team invite already sent to Customer"
 msgid "This Customer has already been sent an invite to your Slack Team"
 msgstr ""
 
-#: core/ssl-only/slack-invites/class-edd-slack-app-invites.php:318
+#: core/ssl-only/slack-invites/class-edd-slack-app-invites.php:321
 msgctxt "Slack Team Invite Button Text"
 msgid "Invite this %s to your Slack Team"
 msgstr ""
 
-#: core/ssl-only/slack-invites/class-edd-slack-app-invites.php:327
+#: core/ssl-only/slack-invites/class-edd-slack-app-invites.php:330
 msgctxt "Slack Team invite already sent to Vendor"
 msgid "This %s has already been sent an invite to your Slack Team"
 msgstr ""
 
-#: core/ssl-only/slack-invites/class-edd-slack-app-invites.php:363
+#: core/ssl-only/slack-invites/class-edd-slack-app-invites.php:366
 msgctxt "Channel not found Slack Invite error"
 msgid "The selected Public Channels were not found. Do they still exist?"
 msgstr ""
 
-#: core/ssl-only/slack-invites/class-edd-slack-app-invites.php:364
+#: core/ssl-only/slack-invites/class-edd-slack-app-invites.php:367
 msgctxt "Lacks Permission to Invite Users error"
 msgid "The Slack User who authenticated the Slack App did not have permissions to Invite Users to the Team. This is often reserved for Slack Team Admins."
 msgstr ""
 
-#: core/ssl-only/slack-invites/class-edd-slack-app-invites.php:365
+#: core/ssl-only/slack-invites/class-edd-slack-app-invites.php:368
 msgctxt "Email already in use by Slack User error"
 msgid "This email already belongs to a Slack User in your Team."
 msgstr ""
 
-#: core/ssl-only/slack-invites/class-edd-slack-app-invites.php:366
+#: core/ssl-only/slack-invites/class-edd-slack-app-invites.php:369
 msgctxt "Customer Team Invite Successful"
 msgid "Customer invited to your Slack Team successfully."
 msgstr ""
 
-#: core/ssl-only/slack-invites/class-edd-slack-app-invites.php:371
+#: core/ssl-only/slack-invites/class-edd-slack-app-invites.php:374
 msgctxt "Vendor Team Invite Successful"
 msgid "%s invited to your Slack Team successfully."
 msgstr ""

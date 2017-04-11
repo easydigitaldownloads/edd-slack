@@ -239,12 +239,12 @@ if ( ! class_exists( 'EDD_Slack' ) ) {
 				require_once EDD_Slack_DIR . '/core/admin/class-edd-slack-admin.php';
 				$this->admin = new EDD_Slack_Admin();
 				
-				//if ( is_ssl() ) {
+				if ( is_ssl() ) {
 					
 					require_once EDD_Slack_DIR . '/core/ssl-only/class-edd-slack-app-oauth-settings.php';
 					$this->oauth_settings = new EDD_Slack_OAUTH_Settings();
 					
-				//}
+				}
 				
 			}
 			
@@ -391,7 +391,7 @@ if ( ! class_exists( 'EDD_Slack' ) ) {
 			}
 			
 			// SSL anywhere, not just Admin
-			//if ( is_ssl() ) {
+			if ( is_ssl() ) {
 			
 				// If we've got a linked Slack App
 				if ( edd_get_option( 'slack_app_oauth_token' ) ) {
@@ -427,7 +427,7 @@ if ( ! class_exists( 'EDD_Slack' ) ) {
 					require_once EDD_Slack_DIR . '/core/ssl-only/integrations/edd-fraud-monitor/class-edd-slack-app-fraud-monitor.php';
 				}
 				
-			//}
+			}
 			
 		}
 		

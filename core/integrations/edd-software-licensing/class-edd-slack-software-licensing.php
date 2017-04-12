@@ -318,7 +318,7 @@ class EDD_Slack_Software_Licensing {
 						$replacements['%site_count%'] = $args['site_count'];
 						
 						// In case there is no protocol, add one
-						$link = ( preg_match( '/^http/', $args['active_site'] ) == 0 ) ? 'http://' . $args['active_site'] : $active_site;
+						$link = ( preg_match( '/^http/', $args['active_site'] ) == 0 ) ? 'http://' . $args['active_site'] : $args['active_site'];
 						
 						$replacements['%active_site%'] = '<' . $link . '|' . $args['active_site'] . '>';
 						

@@ -38,15 +38,13 @@ class EDD_Slack_OAUTH_Settings {
 		add_action( 'edd_slack_invites_oauth_register', array( $this, 'add_slack_invites_oauth_register' ) );
 		
 		// Grab the OAUTH Key as part of the handshake process
-		add_action( 'admin_init', array( $this, 'store_oauth_token' ) );
+		add_action( 'init', array( $this, 'store_oauth_token' ) );
 		
 		// Delete the OAUTH Key
 		add_action( 'init', array( $this, 'delete_oauth_token' ) );
 		
 		// Display Admin Notices
 		add_action( 'admin_init', array( $this, 'display_admin_notices' ) );
-		
-		//add_action( 'admin_init', array( $this, 'test_invite' ) );
 		
 	}
 	
@@ -314,6 +312,8 @@ class EDD_Slack_OAUTH_Settings {
 	 * @return		  void
 	 */
 	public function store_oauth_token() {
+		
+		if ( ! is_admin() ) return false;
 		
 		// If we need to get an OAUTH Token
 		// $_GET['state'] is set by the JavaScript for the OAUTH2 Popup

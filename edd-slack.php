@@ -399,8 +399,10 @@ if ( ! class_exists( 'EDD_Slack' ) ) {
 					$this->slack_rest_api = new EDD_Slack_SSL_REST();
 				}
 				
-				// If we've been granted Client Scope
-				if ( edd_get_option( 'slack_app_has_client_scope', false ) ) {
+				// If we've been granted Client Scope previously or just now
+				// This file is loaded at `plugins_loaded` and the data is saved at `init`, so we can't reliably check on that first load
+				if ( edd_get_option( 'slack_app_has_client_scope', false ) ||
+				   ( ! isset( $_GET['error'] ) && $_GET['token_type'] == 'team_invites' ) ) {
 				
 					// This file does mostly things on the Admin-side, but it runs Filters that need access to the Frontend based on results from the Admin-side
 					// Primarily, replacing `#general` as appropriate

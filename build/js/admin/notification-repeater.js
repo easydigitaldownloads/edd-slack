@@ -28,7 +28,7 @@
 				
 				$( select ).val( 0 );
 				
-				if ( $( select ).hasClass( 'edd-select-chosen' ) ) {
+				if ( $( select ).hasClass( 'edd-slack-chosen' ) ) {
 					$( select ).trigger( 'chosen:updated' );
 				}
 				
@@ -58,7 +58,7 @@
 				
 			}
 				
-			if ( $download.hasClass( 'edd-select-chosen' ) ) {
+			if ( $download.hasClass( 'edd-slack-chosen' ) ) {
 				$download.trigger( 'chosen:updated' );
 			}
 
@@ -81,7 +81,7 @@
 			}
 			
 			// Fix Tab Ordering Bug 
-			if ( $( field ).is( 'select' ) && $( field ).hasClass( 'edd-select-chosen' ) ) {
+			if ( $( field ).hasClass( 'edd-slack-chosen' ) ) {
 				
 				// Ensure the Chosen Container has been built
 				$( field ).chosen();
@@ -143,7 +143,7 @@
 			
 			// Ensure Required Fields are Filled Out
 			// This should only apply to Non-Saved Notifications, but if someone gets cheeky and attempts to get around my form validation this will tell them that they dun goof'd
-			$modal.find( '.required:not( .chosen-container )' ).each( function( valueIndex, field ) {
+			$modal.find( '.required' ).each( function( valueIndex, field ) {
 				
 				if ( ! $( field ).closest( 'td' ).hasClass( 'hidden' ) && 
 					$( field ).val() === null ) {

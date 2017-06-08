@@ -125,7 +125,7 @@ class EDD_Slack_Reviews {
 					'type' => 'select',
 					'desc' => EDD_FES()->helper->get_vendor_constant_name( false, true ),
 					'field_class' => array(
-						'edd-select-chosen',
+						'edd-slack-chosen',
 						'edd-slack-field',
 						'edd-slack-vendor',
 						'edd-slack-conditional',
@@ -138,7 +138,6 @@ class EDD_Slack_Reviews {
 						'all' => sprintf( _x( 'Any %s', 'All Vendor in a Select Field', 'edd-slack' ), EDD_FES()->helper->get_vendor_constant_name( false, true ) ),
 					) + $vendors_array,
 					'placeholder' => sprintf( _x( '-- Select %s --', 'Select Field Default', 'edd-slack' ), EDD_FES()->helper->get_vendor_constant_name( false, true ) ),
-					'chosen' => true,
 					'multiple' => false,
 				),
 			);

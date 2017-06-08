@@ -30,16 +30,10 @@ function init_edd_repeater_colorpickers( modal ) {
 function init_edd_repeater_chosen( modal ) {
 
 	// Only try to run if there are any Chosen Fields within an EDD Repeater
-	if ( jQuery( modal ).find( 'select.edd-select-chosen' ).length ) {
+	if ( jQuery( modal ).find( 'select.edd-slack-chosen' ).length ) {
 
 		// Init Chosen Fields as a Glob per-row
-		jQuery( modal ).find( 'select.edd-select-chosen' ).each( function( index, select ) {
-			
-			var value = jQuery( select ).find( 'option[selected]' ).val();
-			
-			jQuery( select ).val( value ).trigger( 'change' ).chosen().trigger( 'chosen:updated' );
-			
-		} );
+		jQuery( modal ).find( '.edd-slack-chosen' ).chosen();
 
 	}
 

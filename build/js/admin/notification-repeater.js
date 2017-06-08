@@ -81,7 +81,7 @@
 			}
 			
 			// Fix Tab Ordering Bug 
-			if ( $( field ).hasClass( 'edd-select-chosen' ) ) {
+			if ( $( field ).is( 'select' ) && $( field ).hasClass( 'edd-select-chosen' ) ) {
 				
 				// Ensure the Chosen Container has been built
 				$( field ).chosen();

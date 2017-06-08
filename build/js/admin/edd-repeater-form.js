@@ -43,7 +43,7 @@
 						regex = new RegExp( repeaterList.replace( /[-\/\\^$*+?.()|[\]{}]/g, '\\$&' ) + '\\[\\d\\]\\[(.*)\\]', 'gi' ),
 						data = {};
 
-					$( this ).find( '.edd-slack-field' ).each( function( index, field ) {
+					$( this ).find( '.edd-slack-field:not( .chosen-container )' ).each( function( index, field ) {
 
 						if ( $( field ).parent().hasClass( 'hidden' ) ) return true;
 

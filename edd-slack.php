@@ -404,9 +404,16 @@ if ( ! class_exists( 'EDD_Slack' ) ) {
 				// If we've linked our Slack App previously or just now
 				// This file is loaded at `plugins_loaded` and the data is saved at `init`, so we can't reliably check on that first load
 				if ( edd_get_option( 'slack_app_oauth_token', false ) ||
-			   ( ! isset( $_GET['error'] ) && isset( $_GET['token_type'] ) && $_GET['token_type'] == 'main' ) ) {
+			   ( ! isset( $_GET['error'] ) && isset( $_GET['token_type'] ) ) ) {
 
+					require_once EDD_Slack_DIR . '/core/ssl-only/class-edd-slack-app-interactive-notification-settings.php';
+					
 					require_once EDD_Slack_DIR . '/core/ssl-only/class-edd-slack-app-slash-command-settings.php';
+					
+					// This file does mostly things on the Admin-side, but it runs Filters that need access to the Frontend based on results from the Admin-side
+					// Primarily, replacing `#general` as appropriate
+					// Since this is done within Interactive Notifications, we need the file to be loaded here
+					require_once EDD_Slack_DIR . '/core/ssl-only/slack-invites/class-edd-slack-app-invites-settings.php';
 
 				}
 				
@@ -414,11 +421,6 @@ if ( ! class_exists( 'EDD_Slack' ) ) {
 				// This file is loaded at `plugins_loaded` and the data is saved at `init`, so we can't reliably check on that first load
 				if ( edd_get_option( 'slack_app_has_client_scope', false ) ||
 				   ( ! isset( $_GET['error'] ) && isset( $_GET['token_type'] ) && $_GET['token_type'] == 'team_invites' ) ) {
-				
-					// This file does mostly things on the Admin-side, but it runs Filters that need access to the Frontend based on results from the Admin-side
-					// Primarily, replacing `#general` as appropriate
-					// Since this is done within Interactive Notifications, we need the file to be loaded here
-					require_once EDD_Slack_DIR . '/core/ssl-only/slack-invites/class-edd-slack-app-invites-settings.php';
 					
 					// Here we actually send out the Invites if appropriate
 					require_once EDD_Slack_DIR . '/core/ssl-only/slack-invites/class-edd-slack-app-invites.php';

@@ -19,7 +19,7 @@ class EDD_Slack_Slash_Commands_Settings {
 	 */
 	function __construct() {
 		
-		// Updates our $general_channel and sets/updates our Transient
+		// Updates our Slack Users List and sets/updates our Transient
 		add_action( 'admin_init', array( $this, 'get_users' ) );
 		
 		// Adds our Slash Command Settings
@@ -61,18 +61,7 @@ class EDD_Slack_Slash_Commands_Settings {
 			),
 		);
 		
-		// Inject these settings just above the Slack Team Invite Settings
-		// The Header/Button for Slack Team Invites to enable them are in the regular Settings Array, so no level of priority changes can insert it where we want without doing this
-		$index = 0;
-		foreach ( $oauth_settings as $setting ) {
-			
-			if ( $setting['id'] == 'edd-slack-slack-team-invite-header' ) break;
-			
-			$index++;
-			
-		}
-		
-		EDDSLACK()->array_insert( $oauth_settings, $index, $slack_slash_commands_settings );
+		$oauth_settings = array_merge( $oauth_settings, $slack_slash_commands_settings );
 		
 		return $oauth_settings;
 		

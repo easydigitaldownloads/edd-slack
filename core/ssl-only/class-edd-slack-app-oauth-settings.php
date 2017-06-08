@@ -103,29 +103,6 @@ class EDD_Slack_OAUTH_Settings {
 					'</a>'
 				)
 			),
-			array(
-				'type' => 'text',
-				'name' => _x( 'Default Channel for Interactive Notifications', 'Default Channel for Interactive Notifications Label', 'edd-slack' ),
-				'id' => 'slack_app_channel_default',
-				'desc' => sprintf( _x( "Interactive Notifications don't use the Default Webhook URL, so they need to know which Channel they should default to if one for the Notification isn't defined. If this is left blank, it will default to <code>#%s</code>.", 'Default Channel for Interactive Notifications Help Text', 'edd-slack' ), apply_filters( 'edd_slack_general_channel', 'general' ) ),
-				'placeholder' => sprintf( '#%s', apply_filters( 'edd_slack_general_channel', 'general' ) ),
-			),
-			array(
-				'type' => 'text',
-				'name' => _x( 'Default Icon Emoji or Image URL for Interactive Notifications', 'Default Icon Emoji or Image URL for Interactive Notifications Label', 'edd-slack' ),
-				'id' => 'slack_app_icon_default',
-				'desc' => _x( "Interactive Notifications don't use the Default Webhook URL, so they can't utilize the Default Icon Emoji or Image URL you set for the Webhook URL if one for the Notification isn't defined. If this is left blank, it will use the Icon added to your Slack App if one exists.", 'Default Icon Emoji or Image URL for Interactive Notifications Help Text', 'edd-slack' ),
-			),
-			array(
-				'type' => 'header',
-				'name' => '<h3>' . _x( 'Enable Auto-Inviting Users to your Slack Team', 'Slack Team Invite Settings Header', 'edd-slack' ),
-				'id' => 'edd-slack-slack-team-invite-header',
-				'desc' => _x( 'This uses the same Client ID, Client Secret, and Verification Code above, but a different OAUTH Token. This is because it needs special permissions.', 'Slack Team Invite Description', 'edd-slack' ),
-			),
-			array(
-				'type' => 'hook',
-				'id' => 'slack_invites_oauth_register',
-			),
 		) );
 		
 		$settings = array_merge( $settings, $oauth_settings );

@@ -49,19 +49,35 @@ class EDD_Slack_Invites_Settings {
 		
 		$slack_invites_settings = array(
 			array(
+				'type' => 'header',
+				'name' => '<h3>' . _x( 'Enable Auto-Inviting Users to your Slack Team', 'Slack Team Invite Settings Header', 'edd-slack' ),
+				'id' => 'edd-slack-slack-team-invite-header',
+				'desc' => _x( 'This uses the same Client ID, Client Secret, and Verification Code above. It just needs special permissions, so you will need to authorize it a second time.', 'Slack Team Invite Description', 'edd-slack' ),
+			),
+			array(
+				'type' => 'hook',
+				'id' => 'slack_invites_oauth_register',
+			),
+		);
+		
+		if ( edd_get_option( 'slack_app_has_client_scope', false ) ) {
+		
+			$slack_invites_settings[] = array(
 				'type' => 'textarea',
 				'name' => 'Join Slack Team Text',
 				'id' => 'slack_app_join_team_team_text',
 				'std' => apply_filters( 'edd_slack_app_join_slack_team_default_text', _x( 'Join our Slack Team?', 'Join Slack Team Text Default', 'edd-slack' ) ),
 				'desc' => _x( 'This text is used as the label for the checkbox when someone chooses to join your Slack Team.', 'Join Slack Team Text Description', 'edd-slack' ),
-			),
-			array(
+			);
+			
+			$slack_invites_settings[] = array(
 				'type' => 'checkbox',
 				'name' => _x( 'Enable Slack Team Invites for new Customers', 'Customer Slack Invite Checkbox Label', 'edd-slack' ),
 				'id' => 'slack_app_team_invites_customer',
 				'desc' => _x( 'This will add a checkbox to the end of the Purchase Form for Customers to be added to your Slack Team', 'Customer Slack Invite Description' ),
-			),
-			array(
+			);
+			
+			$slack_invites_settings[] = array(
 				'type' => 'rbm_multi_select',
 				'name' => _x( 'Channels for Customers', 'Channels for Customers Label', 'edd-slack' ),
 				'id' => 'slack_app_team_invites_customer_channels',
@@ -75,34 +91,35 @@ class EDD_Slack_Invites_Settings {
 				'placeholder' => sprintf( _x( 'Just #%s', 'Just #general Channel Invite', 'edd-slack' ), $this->general_channel ),
 				'std' => array(),
 				'desc' => sprintf( _x( 'The <code>#%s</code> Channel is always granted by default. Choose any other additional Channels you would like to auto-invite Customers to.', 'Channels for Customers Description Text', 'edd-slack' ), $this->general_channel ),
-			),
-		);
-		
-		// Add settings for Vendors
-		if ( class_exists( 'EDD_Front_End_Submissions' ) ) {
-			
-			$slack_invites_settings[] = array(
-				'type' => 'checkbox',
-				'name' => sprintf( _x( 'Enable Slack Team Invites for new %s', 'Vendor Slack Invite Checkbox Label', 'edd-slack' ), EDD_FES()->helper->get_vendor_constant_name( true, true ) ),
-				'id' => 'slack_app_team_invites_vendor',
-				'desc' => sprintf( _x( 'This will add a checkbox to the end of the %s Submission Form for %s to be added to your Slack Team', 'Vendor Slack Invite Description' ), EDD_FES()->helper->get_vendor_constant_name( false, true ), EDD_FES()->helper->get_vendor_constant_name( true, true ) ),
 			);
-			
-			$slack_invites_settings[] = array(
-				'type' => 'rbm_multi_select',
-				'name' => sprintf( _x( 'Channels for %s', 'Channels for Vendors label', 'edd-slack' ), EDD_FES()->helper->get_vendor_constant_name( true, true ) ),
-				'id' => 'slack_app_team_invites_vendor_channels',
-				'field_class' => array(
-					'edd-slack-multi-select',
-					'regular-text',
-					'edd-slack-vendor-channels',
-				),
-				'chosen' => true,
-				'options' => $this->get_public_channels(),
-				'placeholder' => sprintf( _x( 'Just #%s', 'Just #general Channel Invite', 'edd-slack' ), $this->general_channel ),
-				'std' => array(),
-				'desc' => sprintf( _x( 'The <code>#%s</code> Channel is always granted by default. Choose any other additional Channels you would like to auto-invite %s to.', 'Channels for Vendors Description Text', 'edd-slack' ), $this->general_channel, EDD_FES()->helper->get_vendor_constant_name( true, true ) )
-			);
+
+			// Add settings for Vendors
+			if ( class_exists( 'EDD_Front_End_Submissions' ) ) {
+
+				$slack_invites_settings[] = array(
+					'type' => 'checkbox',
+					'name' => sprintf( _x( 'Enable Slack Team Invites for new %s', 'Vendor Slack Invite Checkbox Label', 'edd-slack' ), EDD_FES()->helper->get_vendor_constant_name( true, true ) ),
+					'id' => 'slack_app_team_invites_vendor',
+					'desc' => sprintf( _x( 'This will add a checkbox to the end of the %s Submission Form for %s to be added to your Slack Team', 'Vendor Slack Invite Description' ), EDD_FES()->helper->get_vendor_constant_name( false, true ), EDD_FES()->helper->get_vendor_constant_name( true, true ) ),
+				);
+
+				$slack_invites_settings[] = array(
+					'type' => 'rbm_multi_select',
+					'name' => sprintf( _x( 'Channels for %s', 'Channels for Vendors label', 'edd-slack' ), EDD_FES()->helper->get_vendor_constant_name( true, true ) ),
+					'id' => 'slack_app_team_invites_vendor_channels',
+					'field_class' => array(
+						'edd-slack-multi-select',
+						'regular-text',
+						'edd-slack-vendor-channels',
+					),
+					'chosen' => true,
+					'options' => $this->get_public_channels(),
+					'placeholder' => sprintf( _x( 'Just #%s', 'Just #general Channel Invite', 'edd-slack' ), $this->general_channel ),
+					'std' => array(),
+					'desc' => sprintf( _x( 'The <code>#%s</code> Channel is always granted by default. Choose any other additional Channels you would like to auto-invite %s to.', 'Channels for Vendors Description Text', 'edd-slack' ), $this->general_channel, EDD_FES()->helper->get_vendor_constant_name( true, true ) )
+				);
+
+			}
 			
 		}
 		

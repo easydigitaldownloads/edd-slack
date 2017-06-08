@@ -239,12 +239,12 @@ if ( ! class_exists( 'EDD_Slack' ) ) {
 				require_once EDD_Slack_DIR . '/core/admin/class-edd-slack-admin.php';
 				$this->admin = new EDD_Slack_Admin();
 				
-				if ( is_ssl() ) {
+				//if ( is_ssl() ) {
 					
 					require_once EDD_Slack_DIR . '/core/ssl-only/class-edd-slack-app-oauth-settings.php';
 					$this->oauth_settings = new EDD_Slack_OAUTH_Settings();
 					
-				}
+				//}
 				
 			}
 			
@@ -391,12 +391,23 @@ if ( ! class_exists( 'EDD_Slack' ) ) {
 			}
 			
 			// SSL anywhere, not just Admin
-			if ( is_ssl() ) {
+			//if ( is_ssl() ) {
 			
 				// If we've got a linked Slack App
 				if ( edd_get_option( 'slack_app_oauth_token' ) ) {
+					
 					require_once EDD_Slack_DIR . '/core/ssl-only/class-edd-slack-ssl-rest.php';
 					$this->slack_rest_api = new EDD_Slack_SSL_REST();
+					
+				}
+				
+				// If we've linked our Slack App previously or just now
+				// This file is loaded at `plugins_loaded` and the data is saved at `init`, so we can't reliably check on that first load
+				if ( edd_get_option( 'slack_app_oauth_token', false ) ||
+			   ( ! isset( $_GET['error'] ) && isset( $_GET['token_type'] ) && $_GET['token_type'] == 'main' ) ) {
+
+					require_once EDD_Slack_DIR . '/core/ssl-only/class-edd-slack-app-slash-command-settings.php';
+
 				}
 				
 				// If we've been granted Client Scope previously or just now
@@ -429,7 +440,7 @@ if ( ! class_exists( 'EDD_Slack' ) ) {
 					require_once EDD_Slack_DIR . '/core/ssl-only/integrations/edd-fraud-monitor/class-edd-slack-app-fraud-monitor.php';
 				}
 				
-			}
+			//}
 			
 		}
 		

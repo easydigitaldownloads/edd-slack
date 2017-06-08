@@ -126,10 +126,6 @@ class EDD_Slack_OAUTH_Settings {
 				'type' => 'hook',
 				'id' => 'slack_invites_oauth_register',
 			),
-			array(
-				'type' => 'hook',
-				'id' => 'slack_invites_oauth_register',
-			),
 		) );
 		
 		$settings = array_merge( $settings, $oauth_settings );
@@ -211,6 +207,7 @@ class EDD_Slack_OAUTH_Settings {
 		 */
 		$scope = apply_filters( 'edd_slack_app_scope', array(
 			'chat:write:bot',
+			'users:read',
 			'commands',
 		) );
 		

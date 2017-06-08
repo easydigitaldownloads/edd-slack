@@ -406,9 +406,9 @@ if ( ! class_exists( 'EDD_Slack' ) ) {
 				if ( edd_get_option( 'slack_app_oauth_token', false ) ||
 			   ( ! isset( $_GET['error'] ) && isset( $_GET['token_type'] ) ) ) {
 
-					require_once EDD_Slack_DIR . '/core/ssl-only/class-edd-slack-app-interactive-notification-settings.php';
+					require_once EDD_Slack_DIR . '/core/ssl-only/interactive-notifications/class-edd-slack-app-interactive-notification-settings.php';
 					
-					require_once EDD_Slack_DIR . '/core/ssl-only/class-edd-slack-app-slash-command-settings.php';
+					require_once EDD_Slack_DIR . '/core/ssl-only/slash-commands/class-edd-slack-app-slash-command-settings.php';
 					
 					// This file does mostly things on the Admin-side, but it runs Filters that need access to the Frontend based on results from the Admin-side
 					// Primarily, replacing `#general` as appropriate

@@ -11,7 +11,7 @@
 defined( 'ABSPATH' ) || die();
 
 // Slash Commands in another file
-require_once EDD_Slack_DIR . '/core/ssl-only/edd-slack-slash-commands.php';
+require_once EDD_Slack_DIR . '/core/ssl-only/slash-commands/edd-slack-slash-commands.php';
 
 class EDD_Slack_SSL_REST {
 

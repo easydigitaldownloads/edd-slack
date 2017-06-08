@@ -143,7 +143,7 @@
 			
 			// Ensure Required Fields are Filled Out
 			// This should only apply to Non-Saved Notifications, but if someone gets cheeky and attempts to get around my form validation this will tell them that they dun goof'd
-			$modal.find( '.required' ).each( function( valueIndex, field ) {
+			$modal.find( '.required:not( .chosen-container )' ).each( function( valueIndex, field ) {
 				
 				if ( ! $( field ).closest( 'td' ).hasClass( 'hidden' ) && 
 					$( field ).val() === null ) {
@@ -212,6 +212,18 @@
 		// Handle conditional fields on Page Load
 		$( '.edd-slack-trigger' ).each( function( index, trigger ) {
 			edd_slack_conditional_fields( trigger, $( trigger ).val() );
+		} );
+		
+		$( '.repeater-header div[data-repeater-default-title]' ).each( function( index, header ) {
+			
+			var active = true,
+				$repeaterItem = $( header ).closest( 'div[data-repeater-item]' ),
+				uuid = $repeaterItem.find( '[data-repeater-edit]' ).data( 'open' ),
+				$modal = $( '[data-reveal="' + uuid + '"]' );
+		
+				init_edd_repeater_colorpickers( $modal );
+				init_edd_repeater_chosen( $modal );
+			
 		} );
 		
 		eddSlackNotificationIndicators();

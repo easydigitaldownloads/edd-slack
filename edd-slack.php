@@ -542,7 +542,9 @@ if ( ! class_exists( 'EDD_Slack' ) ) {
 					'desc' => __( 'Slack Trigger', 'edd-slack' ),
 					'type' => 'select',
 					'chosen' => true,
+					'multiple' => false,
 					'field_class' => array( 
+						'edd-select-chosen',
 						'edd-slack-field',
 						'edd-slack-trigger',
 						'required',
@@ -557,7 +559,9 @@ if ( ! class_exists( 'EDD_Slack' ) ) {
 					'desc' => edd_get_label_singular(),
 					'type' => 'select',
 					'chosen' => true,
+					'multiple' => false,
 					'field_class' => array(
+						'edd-select-chosen',
 						'edd-slack-field',
 						'edd-slack-download',
 						'edd-slack-conditional',
@@ -577,7 +581,9 @@ if ( ! class_exists( 'EDD_Slack' ) ) {
 					'desc' => _x( 'Discount Code', 'Discount Code Field Label', 'edd-slack' ),
 					'type' => 'select',
 					'chosen' => true,
+					'multiple' => false,
 					'field_class' => array(
+						'edd-select-chosen',
 						'edd-slack-field',
 						'edd-slack-download',
 						'edd-slack-conditional',

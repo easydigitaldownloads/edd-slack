@@ -50,7 +50,7 @@ function edd_rbm_multi_select_callback( $args ) {
 	$class = edd_sanitize_html_class( $args['field_class'] );
 
 	if ( isset( $args['chosen'] ) ) {
-		$class .= ' edd-chosen';
+		$class .= ' edd-select-chosen';
 	}
 
 	$html = '<select id="edd_settings[' . edd_sanitize_key( $args['id'] ) . ']" name="edd_settings[' . esc_attr( $args['id'] ) . '][]" class="' . $class . '" data-placeholder="' . esc_html( $placeholder ) . '" multiple="true" />';

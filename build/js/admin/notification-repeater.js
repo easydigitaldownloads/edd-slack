@@ -28,7 +28,7 @@
 				
 				$( select ).val( 0 );
 				
-				if ( $( select ).hasClass( 'edd-chosen' ) ) {
+				if ( $( select ).hasClass( 'edd-select-chosen' ) ) {
 					$( select ).trigger( 'chosen:updated' );
 				}
 				
@@ -58,7 +58,7 @@
 				
 			}
 				
-			if ( $download.hasClass( 'edd-chosen' ) ) {
+			if ( $download.hasClass( 'edd-select-chosen' ) ) {
 				$download.trigger( 'chosen:updated' );
 			}
 
@@ -81,7 +81,7 @@
 			}
 			
 			// Fix Tab Ordering Bug 
-			if ( $( field ).hasClass( 'edd-chosen' ) ) {
+			if ( $( field ).hasClass( 'edd-select-chosen' ) ) {
 				
 				// Ensure the Chosen Container has been built
 				$( field ).chosen();

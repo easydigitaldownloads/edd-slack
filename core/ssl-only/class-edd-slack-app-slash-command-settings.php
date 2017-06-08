@@ -20,7 +20,7 @@ class EDD_Slack_Slash_Commands_Settings {
 	function __construct() {
 		
 		// Updates our Slack Users List and sets/updates our Transient
-		add_action( 'admin_init', array( $this, 'get_users' ) );
+		add_action( 'admin_init', 'edd_slack_get_users' );
 		
 		// Adds our Slash Command Settings
 		add_filter( 'edd_slack_oauth_settings', array( $this, 'add_slack_slash_commands_settings' ) );
@@ -54,7 +54,7 @@ class EDD_Slack_Slash_Commands_Settings {
 					'edd-slack-slash-command-users',
 				),
 				'chosen' => true,
-				'options' => $this->get_users(),
+				'options' => edd_slack_get_users(),
 				'placeholder' => _x( 'All Slack Team Admins', 'All Slack Team Admins Slash Commands', 'edd-slack' ),
 				'std' => array(),
 				'desc' => _x( 'If left empty, all Slack Team Admins have access to Slash Commands. Use this field to restrict it to specific Slack Users.', 'Slack Slash Commands Users Description', 'edd-slack' ),
@@ -64,49 +64,6 @@ class EDD_Slack_Slash_Commands_Settings {
 		$oauth_settings = array_merge( $oauth_settings, $slack_slash_commands_settings );
 		
 		return $oauth_settings;
-		
-	}
-	
-	/**
-	 * Returns all Users from the Slack API
-	 * 
-	 * @access		public
-	 * @since		1.1.0
-	 * @return		array Slack Users
-	 */
-	public function get_users() {
-		
-		// Don't bother if we don't have an OAUTH Token
-		if ( ! edd_get_option( 'slack_app_oauth_token', false ) ) return array();
-		
-		if ( ! $users_array = maybe_unserialize( get_transient( 'edd_slack_users' ) ) ) {
-		
-			$result = EDDSLACK()->slack_api->get( 'users.list' );
-
-			$users = $result->members;
-
-			$users_array = array();
-			foreach ( $users as $user ) {
-				
-				// Let's not bother with Deleted Users
-				if ( $user->deleted ) continue;
-				
-				// No need for Slackbot to be in the list
-				if ( $user->id == 'USLACKBOT' ) continue;
-
-				$users_array[ $user->id ] = '@' . $user->name . ' (' . $user->real_name . ')';
-				
-				if ( $user->is_admin ) {
-					$users_array[ $user->id ] .= ' - ' . __( 'Admin', 'edd-slack' );
-				}
-
-			}
-			
-			set_transient( 'edd_slack_users', $users_array, DAY_IN_SECONDS );
-			
-		}
-		
-		return $users_array;
 		
 	}
 	

@@ -130,6 +130,18 @@ class EDD_Slack_SSL_REST {
 			$parameter = trim( implode( ' ', $passed_text ) );
 			
 		}
+		
+		$authorized_slash_command_users = edd_get_option( 'slack_app_slash_command_users', array() );
+		
+		// Check to see if the User is Authorized for Slash Commands
+		// If no Authorized Users are set, only Slack Team Admins are allowed
+		if ( ( empty( $authorized_slash_command_users ) && ! edd_slack_is_slack_admin( $request_body['user_id'] ) ) ||
+			 ( ! empty( $authorized_slash_command_users ) && ! in_array( $request_body['user_id'], $authorized_slash_command_users ) ) ) {
+			
+			edd_slack_slash_command_access_denied( $parameter, $request_body['response_url'], $request_body );
+			die();
+			
+		}
 
 		// Construct the callback function
 		if ( empty( $command ) ) $command = 'help';
@@ -673,6 +685,32 @@ if ( ! function_exists( 'edd_slack_slash_command_missing' ) ) {
 			$response_url,
 			array(
 				'text' => sprintf( _x( 'The Callback Function `edd_slack_slash_command_%s()` is missing!', 'Slash Command Callback Function Missing Error', 'edd-slack' ), $command ),
+			)
+		);
+
+	}
+	
+}
+
+if ( ! function_exists( 'edd_slack_slash_command_access_denied' ) ) {
+	
+	/**
+	 * EDD Slack Rest Slash Command Access Denied
+	 * 
+	 * @param	  string $parameter	The remainder of the Text Passed as part of the Slash Command (Not the First Word)
+	 * @param	  string $response_url Webhook to send the Response Message to
+	 * @param	  array  $request_body POST'd data from the Slack Client
+	 *														
+	 * @since	  1.1.0
+	 * @return	  void
+	 */
+	function edd_slack_slash_command_access_denied( $parameter, $response_url, $request_body ) {
+
+		// Response URLs are Incoming Webhooks
+		$response_message = EDDSLACK()->slack_api->push_incoming_webhook(
+			$response_url,
+			array(
+				'text' => _x( 'You do not have permission to use this Slash Command.', 'Slash Command Access Denied Message', 'edd-slack' ),
 			)
 		);
 

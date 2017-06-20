@@ -138,6 +138,23 @@ class EDD_Slack_Admin {
 				'fields' => $fields,
 			),
 		) );
+		
+		// If site does not have SSL, put a note about extra Features being available for SSL-only
+		if ( ! is_ssl() ) {
+			
+			$edd_slack_settings[] = array(
+				'type' => 'header',
+				'name' => _x( 'Non-SSL Site Detected', 'No SSL Settings Header', 'edd-slack' ),
+				'id' => 'edd-slack-no-ssl-header',
+			);
+			
+			$edd_slack_settings[] = array(
+				'type' => 'descriptive_text',
+				'id' => 'edd-slack-no-ssl-text',
+				'desc' => _x( 'Some extra functionality is available only for SSL-enabled sites. Please see the <a href="//docs.easydigitaldownloads.com/article/1727-edd-slack-setting-up-a-slack-app" target="_blank">Documentation</a> for more details.', 'No SSL Settings Description', 'edd-slack' ),
+			);
+			
+		}
 
 		// If EDD is at version 2.5 or later...
 		if ( version_compare( EDD_VERSION, 2.5, '>=' ) ) {

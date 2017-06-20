@@ -97,6 +97,8 @@ class EDD_Slack_Purchase_Limit {
 		
 		foreach ( $cart_items as $item ) {
 			
+			if ( ! isset( $item['item_number']['options']['price_id'] ) ) $item['item_number']['options']['price_id'] = null;
+			
 			// Gives us access to the public methods for the EDD_Download class
 			$download = new EDD_Download( $item['id'] );
 			

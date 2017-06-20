@@ -92,6 +92,11 @@
 					} );
 					
 				}
+				else {
+				
+					$submitButton.val( submitText ).attr( 'disabled', false );
+					
+				}
 
 			} );
 			

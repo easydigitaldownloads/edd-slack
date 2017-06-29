@@ -45,14 +45,14 @@ class EDD_Slack_Slash_Commands_Settings {
 				'id' => 'edd-slack-slash-commands-header',
 			),
 			array(
-				'type' => 'rbm_multi_select',
+				'type' => 'select',
 				'name' => _x( 'Restrict Slash Command Usage To:', 'Slash Command Users Label', 'edd-slack' ),
 				'id' => 'slack_app_slash_command_users',
 				'field_class' => array(
-					'edd-slack-multi-select',
 					'regular-text',
 					'edd-slack-slash-command-users',
 				),
+				'multiple' => true,
 				'chosen' => true,
 				'options' => edd_slack_get_users(),
 				'placeholder' => _x( 'All Slack Team Admins', 'All Slack Team Admins Slash Commands', 'edd-slack' ),

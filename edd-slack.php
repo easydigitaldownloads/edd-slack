@@ -132,9 +132,9 @@ if ( ! class_exists( 'EDD_Slack' ) ) {
 			}
 			
 			if ( defined( 'EDD_VERSION' ) 
-				&& ( version_compare( EDD_VERSION, '2.6.11' ) < 0 ) ) {
+				&& ( version_compare( EDD_VERSION, '2.8' ) < 0 ) ) {
 				
-				$this->admin_errors[] = sprintf( _x( '%s requires v%s of %s or higher to be installed!', 'Outdated Dependency Error', 'edd-slack' ), '<strong>' . $this->plugin_data['Name'] . '</strong>', '2.6.11', '<a href="//wordpress.org/plugins/easy-digital-downloads/" target="_blank"><strong>Easy Digital Downloads</strong></a>' );
+				$this->admin_errors[] = sprintf( _x( '%s requires v%s of %s or higher to be installed!', 'Outdated Dependency Error', 'edd-slack' ), '<strong>' . $this->plugin_data['Name'] . '</strong>', '2.8', '<a href="//wordpress.org/plugins/easy-digital-downloads/" target="_blank"><strong>Easy Digital Downloads</strong></a>' );
 				
 				if ( ! has_action( 'admin_notices', array( $this, 'admin_errors' ) ) ) {
 					add_action( 'admin_notices', array( $this, 'admin_errors' ) );

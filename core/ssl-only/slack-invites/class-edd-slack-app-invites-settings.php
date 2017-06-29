@@ -78,15 +78,15 @@ class EDD_Slack_Invites_Settings {
 			);
 			
 			$slack_invites_settings[] = array(
-				'type' => 'rbm_multi_select',
+				'type' => 'select',
 				'name' => _x( 'Channels for Customers', 'Channels for Customers Label', 'edd-slack' ),
 				'id' => 'slack_app_team_invites_customer_channels',
 				'field_class' => array(
-					'edd-slack-multi-select',
 					'regular-text',
 					'edd-slack-customer-channels',
 				),
 				'chosen' => true,
+				'multiple' => true,
 				'options' => $this->get_public_channels(),
 				'placeholder' => sprintf( _x( 'Just #%s', 'Just #general Channel Invite', 'edd-slack' ), $this->general_channel ),
 				'std' => array(),
@@ -104,14 +104,14 @@ class EDD_Slack_Invites_Settings {
 				);
 
 				$slack_invites_settings[] = array(
-					'type' => 'rbm_multi_select',
+					'type' => 'select',
 					'name' => sprintf( _x( 'Channels for %s', 'Channels for Vendors label', 'edd-slack' ), EDD_FES()->helper->get_vendor_constant_name( true, true ) ),
 					'id' => 'slack_app_team_invites_vendor_channels',
 					'field_class' => array(
-						'edd-slack-multi-select',
 						'regular-text',
 						'edd-slack-vendor-channels',
 					),
+					'multiple' => true,
 					'chosen' => true,
 					'options' => $this->get_public_channels(),
 					'placeholder' => sprintf( _x( 'Just #%s', 'Just #general Channel Invite', 'edd-slack' ), $this->general_channel ),

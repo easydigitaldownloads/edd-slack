@@ -15,6 +15,8 @@
 				th {
 
 					display: inline-block;
+					max-width: none !important; // Plz no, EDD
+					overflow: visible;
 
 					div {
 
@@ -26,7 +28,24 @@
 				}
 
 				.edd-rbm-repeater-controls {
+					
 					text-align: right;
+					
+					@media #{$small-only} {
+						
+						margin-top: 0.5em;
+						
+						.button {
+							float: right;
+						}
+						
+					}
+					
+					@media #{$medium-up} {
+						float: right; // No floating on small screens, we use text-align instead
+						text-align: center;
+					}
+					
 				}
 
 			}

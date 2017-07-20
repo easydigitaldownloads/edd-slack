@@ -55,9 +55,15 @@
 	}
 
 	.button.button-danger {
+		
 		background: #ff7151;
 		border-color: #c6573e;
 		color: #fff;
+		
+		&:hover {
+			border-color: darken( #c6573e, 15% );
+		}
+		
 	}
 
 	.edd-rbm-repeater-list {
@@ -185,6 +191,167 @@
 			padding: 2px;
 		}
 
+	}
+	
+}
+
+// Default Admin Color
+.admin-color-fresh {
+	
+	.edd-rbm-repeater {
+	
+		.button.button-danger {
+			
+			background: #d54e21;
+			border-color: darken( #d54e21, 15% );
+			color: #fff;
+			
+			&:hover {
+				border-color: lighten( darken( #d54e21, 15% ), 15% );
+			}
+			
+		}
+		
+	}
+	
+}
+
+.admin-color-light {
+	
+	.edd-rbm-repeater {
+	
+		.button.button-danger {
+			
+			background: #d64e07;
+			border-color: darken( #d64e07, 15% );
+			color: #fff;
+			
+			&:hover {
+				border-color: lighten( darken( #d64e07, 15% ), 15% );
+			}
+			
+		}
+		
+	}
+	
+}
+
+.admin-color-blue {
+	
+	.edd-rbm-repeater {
+	
+		.button.button-danger {
+			
+			background: #e1a948;
+			border-color: darken( #e1a948, 15% );
+			color: #fff;
+			
+			&:hover {
+				border-color: lighten( darken( #e1a948, 15% ), 15% );
+			}
+			
+		}
+		
+	}
+	
+}
+
+.admin-color-coffee {
+	
+	.edd-rbm-repeater {
+	
+		.button.button-danger {
+			
+			background: #9ea476;
+			border-color: darken( #9ea476, 15% );
+			color: #fff;
+			
+			&:hover {
+				border-color: lighten( darken( #9ea476, 15% ), 15% );
+			}
+			
+		}
+		
+	}
+	
+}
+
+.admin-color-ectoplasm {
+	
+	.edd-rbm-repeater {
+	
+		.button.button-danger {
+			
+			background: #d46f15;
+			border-color: darken( #d46f15, 15% );
+			color: #fff;
+			
+			&:hover {
+				border-color: lighten( darken( #d46f15, 15% ), 15% );
+			}
+			
+		}
+		
+	}
+	
+}
+
+.admin-color-midnight {
+	
+	.edd-rbm-repeater {
+	
+		.button.button-danger {
+			
+			background: #69a8bb;
+			border-color: darken( #69a8bb, 15% );
+			color: #fff;
+			
+			&:hover {
+				border-color: lighten( darken( #69a8bb, 15% ), 15% );
+			}
+			
+		}
+		
+	}
+	
+}
+
+.admin-color-ocean {
+	
+	.edd-rbm-repeater {
+	
+		.button.button-danger {
+			
+			background: #aa9d88;
+			border-color: darken( #aa9d88, 15% );
+			color: #fff;
+			
+			&:hover {
+				border-color: lighten( darken( #aa9d88, 15% ), 15% );
+			}
+			
+		}
+		
+	}
+	
+}
+
+.admin-color-sunrise {
+	
+	.edd-rbm-repeater {
+	
+		.button.button-danger {
+			
+			background: #ccaf0b;
+			border-color: darken( #ccaf0b, 15% );
+			color: #fff;
+			
+			&:hover {
+				border-color: lighten( darken( #ccaf0b, 15% ), 15% );
+			}
+			
+		}
+		
 	}
 	
 }

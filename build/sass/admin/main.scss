@@ -3,6 +3,8 @@
 @include foundation-reveal;
 @include foundation-close-button;
 
+@import "../media-queries";
+
 @import "base";
 @import "repeater";
 @import "replacements";

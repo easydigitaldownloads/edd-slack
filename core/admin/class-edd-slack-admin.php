@@ -269,7 +269,7 @@ class EDD_Slack_Admin {
 
 															<td>
 																
-																<label for="<?php echo $field['id']; ?>">
+																<label for="edd_settings[<?php echo $field['id']; ?>]">
 																	<?php echo wp_kses_post( $field['label'] ); ?>
 																</label>
 																

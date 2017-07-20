@@ -268,6 +268,17 @@ class EDD_Slack_Admin {
 														if ( $field['type'] !== 'hook' ) : ?>
 
 															<td>
+																
+																<label for="<?php echo $field['id']; ?>">
+																	<?php echo wp_kses_post( $field['label'] ); ?>
+																</label>
+																
+																<?php if ( ! empty( $field['label_tooltip_title'] ) &&
+																		  ! empty( $field['label_tooltip_desc'] ) ) : ?>
+																
+																	<span alt="f223" class="edd-help-tip dashicons dashicons-editor-help" title="<strong><?php echo $field['label_tooltip_title']; ?></strong>: <?php echo $field['label_tooltip_desc']; ?>"></span>
+																
+																<?php endif; ?>
 
 																<?php call_user_func( "edd_{$field['type']}_callback", $field ); ?>
 

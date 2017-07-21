@@ -219,29 +219,76 @@ if ( ! function_exists( 'edd_slack_slash_command_version' ) ) {
 	 */
 	function edd_slack_slash_command_version( $change, $response_url, $request_body ) {
 		
-		$attachments = array(
-			array(
-				'title' => _x( 'EDD Version', 'Title for /edd version', 'edd-slack' ),
-				'text' => _x( 'v', '"v" prefix for /edd version', 'edd-slack' ) . EDD_VERSION,
+		$general_channel = '#' . apply_filters( 'edd_slack_general_channel', 'general' );
+			
+		$default_channel = edd_get_option( 'slack_app_channel_default' );
+		$default_channel = ( empty( $default_channel ) ) ? $general_channel : $default_channel; // Since it can be saved as an empty value
+		
+		$args = array(
+			'channel' => '#public',
+			'as_user' => 'false', // Posts as a "Bot" which allows customization of the Username and Icon
+			'text' => '', // We are defining Text as an Attachment, but the API requires SOMETHING here
+			'icon_emoji' => '',
+			'icon_url' => '',
+			'attachments' => array(
+				array(
+					'title' => _x( 'EDD Version', 'Title for /edd version', 'edd-slack' ),
+					'text' => _x( 'v', '"v" prefix for /edd version', 'edd-slack' ) . EDD_VERSION,
+				),
 			),
 		);
 		
-		$edd_versions = EDDSLACK()->slack_rest_api->get_edd_versions();
+		$change = true;
+		
+		//if ( $change ) {
+			
+			// If we are changing EDD Version, this Slash Command triggers an Interactive Message
+		
+			$edd_versions = EDDSLACK()->slack_rest_api->get_edd_versions();
+
+			$edd_versions_array = array();
+
+			foreach ( $edd_versions as $version => $download_url ) {
+				$edd_versions_array[] = array(
+					'text' => $version,
+					'value' => $version,
+				);
+			}
+			
+			$args['attachments'][0]['actions'] = array(
+				'name' => 'versions_list',
+				'text' => _x( 'Pick a version...', 'Pick a EDD Version Text', 'edd-slack' ),
+				'type' => 'select',
+				'callback_id' => 'edd_version',
+				"fallback" => "If you could read this message, you'd be choosing something fun to do right now.",
+         		"color" => "#3AA3E3",
+         		"attachment_type" => "default",
+				'options' => $edd_versions_array
+			);
+			
+		//}
+		
+		// Construct the URL using the $args from the Notification that have been filtered
+		$message_url = add_query_arg( 
+			EDDSLACK()->slack_api->encode_arguments( $args ),
+			'chat.postMessage'
+		);
+
+		// Doing it this way also automagically includes our OAUTH Token
+		$message = EDDSLACK()->slack_api->post(
+			$message_url
+		);
 		
 		ob_start();
-		var_dump( $edd_versions );
+		var_dump( json_encode( $message ) );
 		$test = ob_get_clean();
 		
-		$attachments[0]['text'] .= "\n" . $test;
+		$args['attachments'][0]['text'] .= $test;
 		
 		// Response URLs are Incoming Webhooks
 		$response_message = EDDSLACK()->slack_api->push_incoming_webhook(
 			$response_url,
-			array(
-				'username' => get_bloginfo( 'name' ),
-				'icon' => function_exists( 'has_site_icon' ) && has_site_icon() ? get_site_icon_url( 270 ) : '',
-				'attachments' => $attachments,
-			)
+			$args
 		);
 		
 	}

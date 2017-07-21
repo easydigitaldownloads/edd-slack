@@ -633,6 +633,45 @@ class EDD_Slack_SSL_REST {
 		);
 
 	}
+	
+	/**
+	 * Retrieves all publically released EDD Versions from the WP.org Repo with download URLs
+	 * 
+	 * @access		public
+	 * @since		1.1.0
+	 * @return		array EDD Versions
+	 */
+	public function get_edd_versions() {
+		
+		if ( ! $edd_versions = maybe_unserialize( get_transient( 'edd_slack_edd_versions' ) ) ) {
+		
+			// Ensure we have access to this function
+			if ( ! function_exists( 'plugins_api' ) ) {
+				require_once ABSPATH . '/wp-admin/includes/plugin-install.php';
+			}
+
+			$plugin_info = plugins_api( 'plugin_information', array(
+				'slug' => 'easy-digital-downloads', // Regardless of what the Folder Name is locally, this is the Slug remotely
+				'fields' => array(
+					'versions' => true,
+				),
+			) );
+
+			$edd_versions = $plugin_info->versions;
+			
+			// Sort Version Numbers in a easily digestable manor with newest first
+			uksort( $edd_versions, 'version_compare' );
+			$edd_versions = array_reverse( $edd_versions );
+			
+			unset( $edd_versions['trunk'] );
+			
+			set_transient( 'edd_slack_edd_versions', $edd_versions, DAY_IN_SECONDS );
+			
+		}
+		
+		return $edd_versions;
+		
+	}
 
 }
 

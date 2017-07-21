@@ -49,6 +49,12 @@ if ( ! function_exists( 'edd_slack_slash_command_help' ) ) {
 				),				 
 				'default' => 'this_month',
 			),
+			'version' => array(
+				'description' => _x( 'Outputs the current version of Easy Digital Downloads. Alternatively, allows you to change the version of Easy Digital Downloads', '/edd version Description', 'edd-slack' ),
+				'options' => array(
+					'change'
+				),
+			),
 		) );
 		
 		$commands['help'] = array(
@@ -194,6 +200,50 @@ if ( ! function_exists( 'edd_slack_slash_command_sales' ) ) {
 			)
 		);
 
+	}
+	
+}
+
+if ( ! function_exists( 'edd_slack_slash_command_version' ) ) {
+
+	/**
+	 * Return the version of EDD via /edd version
+	 * Alternatively, provide "change" as a parameter to allow changing the version of EDD
+	 * 
+	 * @param	  string $change	   The Date range to return Earnings for
+	 * @param	  string $response_url Webhook to send the Response Message to
+	 * @param	  array  $request_body POST'd data from the Slack Client
+	 *															  
+	 * @since	  1.0.0
+	 * @return	  void
+	 */
+	function edd_slack_slash_command_version( $change, $response_url, $request_body ) {
+		
+		$attachments = array(
+			array(
+				'title' => _x( 'EDD Version', 'Title for /edd version', 'edd-slack' ),
+				'text' => _x( 'v', '"v" prefix for /edd version', 'edd-slack' ) . EDD_VERSION,
+			),
+		);
+		
+		$edd_versions = EDDSLACK()->slack_rest_api->get_edd_versions();
+		
+		ob_start();
+		var_dump( $edd_versions );
+		$test = ob_get_clean();
+		
+		$attachments[0]['text'] .= "\n" . $test;
+		
+		// Response URLs are Incoming Webhooks
+		$response_message = EDDSLACK()->slack_api->push_incoming_webhook(
+			$response_url,
+			array(
+				'username' => get_bloginfo( 'name' ),
+				'icon' => function_exists( 'has_site_icon' ) && has_site_icon() ? get_site_icon_url( 270 ) : '',
+				'attachments' => $attachments,
+			)
+		);
+		
 	}
 	
 }

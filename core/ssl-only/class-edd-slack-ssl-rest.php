@@ -13,6 +13,9 @@ defined( 'ABSPATH' ) || die();
 // Slash Commands in another file
 require_once EDD_Slack_DIR . '/core/ssl-only/slash-commands/edd-slack-slash-commands.php';
 
+// Non-Integration Dependent Interactive Messages
+require_once EDD_Slack_DIR . '/core/ssl-only/interactive-notifications/edd-slack-interactive-messages.php';
+
 class EDD_Slack_SSL_REST {
 
 	/**

@@ -5,7 +5,7 @@
  * @since	  1.0.0
  *
  * @package	EDD_Slack
- * @subpackage EDD_Slack/core/ssl-only
+ * @subpackage EDD_Slack/core/ssl-only/slash-commands
  */
 if ( ! defined( 'ABSPATH' ) ) {
 	die;
@@ -214,7 +214,7 @@ if ( ! function_exists( 'edd_slack_slash_command_version' ) ) {
 	 * @param	  string $response_url Webhook to send the Response Message to
 	 * @param	  array  $request_body POST'd data from the Slack Client
 	 *															  
-	 * @since	  1.0.0
+	 * @since	  1.1.0
 	 * @return	  void
 	 */
 	function edd_slack_slash_command_version( $change, $response_url, $request_body ) {

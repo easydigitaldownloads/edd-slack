@@ -210,7 +210,7 @@ if ( ! function_exists( 'edd_slack_slash_command_version' ) ) {
 	 * Return the version of EDD via /edd version
 	 * Alternatively, provide "change" as a parameter to allow changing the version of EDD
 	 * 
-	 * @param	  string $change	   The Date range to return Earnings for
+	 * @param	  string $change	   If this String is non-empty, we're changing the Version
 	 * @param	  string $response_url Webhook to send the Response Message to
 	 * @param	  array  $request_body POST'd data from the Slack Client
 	 *															  
@@ -219,36 +219,16 @@ if ( ! function_exists( 'edd_slack_slash_command_version' ) ) {
 	 */
 	function edd_slack_slash_command_version( $change, $response_url, $request_body ) {
 		
-		$general_channel = '#' . apply_filters( 'edd_slack_general_channel', 'general' );
-			
-		$default_channel = edd_get_option( 'slack_app_channel_default' );
-		$default_channel = ( empty( $default_channel ) ) ? $general_channel : $default_channel; // Since it can be saved as an empty value
-		
-		$notification_args = array(
-			'as_user' => 'false', // Posts as a "Bot" which allows customization of the Username and Icon
-			'text' => '', // We are defining Text as an Attachment, but the API requires SOMETHING here
-			'icon_emoji' => '',
-			'icon_url' => '',
-			'attachments' => array(
-				array(
-					'title' => _x( 'EDD Version', 'Title for /edd version', 'edd-slack' ),
-					'text' => _x( 'v', '"v" prefix for /edd version', 'edd-slack' ) . EDD_VERSION,
-					'callback_id' => 'edd_version',
-					"fallback" => "If you could read this message, you'd be choosing something fun to do right now.",
-					"color" => "#3AA3E3",
-					"attachment_type" => "default",
-				),
+		$attachments = array(
+			array(
+				'title' => _x( 'EDD Version', 'Title for /edd version', 'edd-slack' ),
+				'text' => _x( 'EDD is currently at v', '"v" prefix for /edd version', 'edd-slack' ) . EDD_VERSION,
 			),
 		);
 		
-		$change = true;
-		
-		//if ( $change ) {
-			
-			// If we are changing EDD Version, this Slash Command triggers an Interactive Message
+		if ( ! empty( $change ) ) { // "Change" is just passed as a string. Since there is only one parameter for this Slash Command, we can just assume any extra parameter means we're changing the Version
 		
 			$edd_versions = EDDSLACK()->slack_rest_api->get_edd_versions();
-
 			$edd_versions_array = array();
 
 			foreach ( $edd_versions as $version => $download_url ) {
@@ -258,7 +238,10 @@ if ( ! function_exists( 'edd_slack_slash_command_version' ) ) {
 				);
 			}
 			
-			$notification_args['attachments'][0]['actions'] = array(
+			$attachments[0]['callback_id'] = 'edd_version';
+			$attachments[0]['fallback'] = $attachments[0]['title'];
+			
+			$attachments[0]['actions'] = array(
 				array(
 					'name' => 'versions_list',
 					'text' => _x( 'Pick a version...', 'Pick a EDD Version Text', 'edd-slack' ),
@@ -267,12 +250,16 @@ if ( ! function_exists( 'edd_slack_slash_command_version' ) ) {
 				),
 			);
 			
-		//}
+		}
 		
 		// Response URLs are Incoming Webhooks
 		$response_message = EDDSLACK()->slack_api->push_incoming_webhook(
 			$response_url,
-			$notification_args
+			array(
+				'username' => get_bloginfo( 'name' ),
+				'icon' => function_exists( 'has_site_icon' ) && has_site_icon() ? get_site_icon_url( 270 ) : '',
+				'attachments' => $attachments,
+			)
 		);
 		
 	}

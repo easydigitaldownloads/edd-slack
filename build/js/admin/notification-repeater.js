@@ -58,6 +58,7 @@
 				
 			}
 				
+			$download.trigger( 'change' );
 			if ( $download.hasClass( 'edd-slack-chosen' ) ) {
 				$download.trigger( 'chosen:updated' );
 			}
@@ -231,6 +232,32 @@
 		// And toggle them on Change
 		$( document ).on( 'change', '.edd-slack-trigger', function() {
 			edd_slack_conditional_fields( $( this ), $( this ).val() );
+		} );
+		
+		// Conditionally hide/show the Downloads Exclusion Field.
+		// This also ensures if All Downloads is chosen, that ONLY All Downloads can be chosen
+		$( document ).on( 'change', '.edd-slack-download', function() {
+			
+			var value = $( this ).val();
+			
+			if ( value !== null && 
+				value.indexOf( 'all' ) > -1 ) {
+				
+				$( this ).val( 'all' );
+				
+				if ( $( this ).hasClass( 'edd-slack-chosen' ) ) {
+					$( this ).trigger( 'chosen:updated' );
+				}
+				
+			}
+			
+			if ( $( this ).val() == 'all' ) {
+				$( '.edd-slack-exclude-download' ).closest( 'td' ).addClass( 'hidden' );
+			}
+			else {
+				$( '.edd-slack-exclude-download' ).closest( 'td' ).removeClass( 'hidden' );
+			}
+			
 		} );
 		
 	} );

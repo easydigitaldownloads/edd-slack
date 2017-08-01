@@ -106,7 +106,7 @@ class EDD_Slack_Fraud_Monitor {
 				'email' => $customer->email,
 				'discount_code' => $payment_data['user_info']['discount'],
 				'ip_address' => get_post_meta( $payment_id, '_edd_payment_user_ip', true ),
-				'cart' => wp_list_pluck( $cart_items, 'item_number', 'id' ),
+				'cart' => $cart_items,
 				'subtotal' => edd_get_payment_subtotal( $payment_id ),
 				'total' => edd_get_payment_amount( $payment_id ),
 			) );

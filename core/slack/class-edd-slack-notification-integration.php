@@ -153,23 +153,68 @@ class EDD_Slack_Notification_Integration {
 				$trigger == 'edd_failed_purchase' ||
 			  $trigger == 'edd_discount_code_applied' ) {
 				
-				$download = $this->check_for_price_id( $fields['download'] );
+				// Support for EDD Slack v1.0.X
+				if ( ! is_array( $fields['download'] ) ) $fields['download'] = array( $fields['download'] );
 				
-				$download_id = $download['download_id'];
-				$price_id = $download['price_id'];
-				
-				// Cart doesn't match have our Download ID, bail
-				if ( $download_id !== 'all' && ! array_key_exists( $download_id, $args['cart'] ) ) {
-					$args['bail'] = true;
-					return false;
+				// Make Array of Download ID => Price ID for each Selection in the Notification
+				$downloads_array = array();
+				foreach ( $fields['download'] as $item ) {
+
+					$item = $this->check_for_price_id( $item );
+					
+					if ( ! isset( $downloads_array[ $item['download_id'] ] ) ) $downloads_array[ $item['download_id'] ] = array();
+					
+					if ( $item['price_id'] === null ) {
+						$item['price_id'] = 0; // Match output from the Cart
+					}
+					
+					$downloads_array[ $item['download_id'] ][] = $item['price_id'];
+					
 				}
 				
-				// Cart doesn't have our Price ID, bail
-				if ( $price_id !== null ) {
+				// We don't care about the number of each item in the cart, we only care about the Download and Price IDs
+				$cart_contents = array();
+				foreach ( $args['cart'] as $item ) {
 					
-					if ( $price_id !== $args['cart'][ $download_id ]['options']['price_id'] ) {
+					if ( ! isset( $cart_contents[ $item['id'] ] ) ) $cart_contents[ $item['id'] ] = array();
+					
+					$cart_contents[ $item['id'] ][] = (int) $item['item_number']['options']['price_id'];
+					
+				}
+
+				// If all are allowed, it doesn't matter what the other settings are
+				if ( $fields['download'][0] !== 'all' ) {
+					
+					// Cart doesn't have our Download ID, bail
+					if ( empty( array_intersect_key( $downloads_array, $cart_contents ) ) ) {
 						$args['bail'] = true;
 						return false;
+					}
+					
+					// While it is discouraged through how the Checkout Process works, it IS POSSIBLE to have two Variants of the same Download in your Cart at once
+					// I have had a hard time reproducing it, but I did manage it once. This code takes into account the possiblity of that happening
+
+					// Cart doesn't have our Price ID, bail
+					// This can't be done as fancily as the Download ID
+					$price_id_exists = false;
+					foreach ( $downloads_array as $download_id => $price_ids ) {
+						
+						if ( isset( $cart_contents[ $download_id ] ) ) {
+							
+							// If there's a difference between the two arrays of Price IDs, then we know it exists in the Cart
+							if ( $price_ids !== array_diff( $price_ids, $cart_contents[ $download_id ] ) ) {
+								$price_id_exists = true;
+							}
+							
+						}
+
+					}
+					
+					if ( ! $price_id_exists ) {
+						
+						$args['bail'] = true;
+						return false;
+						
 					}
 					
 				}

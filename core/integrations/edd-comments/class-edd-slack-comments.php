@@ -73,13 +73,12 @@ class EDD_Slack_Comments {
 		
 		// Make the Download Field Conditionally shown for the Comment Trigger
 		$repeater_fields['download']['field_class'][] = 'comment_post';
-		$repeater_fields['exclude_download']['field_class'][] = 'comment_post';
 		
 		$index = 0;
 		foreach ( $repeater_fields as $key => $value ) {
 			
-			// Find the Numeric Index of the Download Select Field
-			if ( $key == 'download' ) {
+			// Find the Numeric Index of the Exclude Download Select Field
+			if ( $key == 'exclude_download' ) {
 				break;
 			}
 			

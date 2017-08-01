@@ -68,7 +68,6 @@ class EDD_Slack_Purchase_Limit {
 		
 		// Make the Download Field Conditionally shown for our Triggers
 		$repeater_fields['download']['field_class'][] = 'edd_purchase_limit';
-		$repeater_fields['exclude_download']['field_class'][] = 'edd_purchase_limit';
 		
 		return $repeater_fields;
 		

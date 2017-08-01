@@ -72,7 +72,6 @@ class EDD_Slack_Commissions {
 		
 		// Make the Download Field Conditionally shown for our Triggers
 		$repeater_fields['download']['field_class'][] = 'eddc_insert_commission';
-		$repeater_fields['exclude_download']['field_class'][] = 'eddc_insert_commission';
 		
 		return $repeater_fields;
 		

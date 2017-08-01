@@ -97,12 +97,10 @@ class EDD_Slack_Reviews {
 	public function add_extra_fields( $repeater_fields ) {
 		
 		$repeater_fields['download']['field_class'][] = 'edd_insert_review';
-		$repeater_fields['exclude_download']['field_class'][] = 'edd_insert_review';
 		
 		if ( $this->support_fes ) {
 			
 			$repeater_fields['download']['field_class'][] = 'edd_vendor_feedback';
-			$repeater_fields['exclude_download']['field_class'][] = 'edd_vendor_feedback';
 			
 			$index = 0;
 			foreach ( $repeater_fields as $key => $value ) {

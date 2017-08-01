@@ -106,6 +106,7 @@ class EDD_Slack_Admin {
 					if ( $field['type'] == 'select' &&
 					   $field['multiple'] === true ) {
 						
+						// Support for EDD Slack v1.0.X
 						$value[ $field_id ] = ( ! is_array( $value[ $field_id ] ) ) ? array( $value[ $field_id ] ) : $value[ $field_id ];
 						
 					}

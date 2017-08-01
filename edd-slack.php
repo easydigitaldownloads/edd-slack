@@ -586,9 +586,6 @@ if ( ! class_exists( 'EDD_Slack' ) ) {
 						'edd-slack-chosen',
 						'edd-slack-field',
 						'edd-slack-conditional',
-						'edd_complete_purchase',
-						'edd_discount_code_applied',
-						'edd_failed_purchase',
 						'edd-slack-exclude-download', // This is a conditional field, but not in the same way as others. It will be hidden/shown based on the value of .edd-slack-download
 					),
 					'options' => $downloads_array,

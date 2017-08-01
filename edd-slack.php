@@ -558,9 +558,9 @@ if ( ! class_exists( 'EDD_Slack' ) ) {
 				),
 				'download' => array(
 					'desc' => '',
-					'label' => edd_get_label_singular(),
+					'label' => edd_get_label_plural(),
 					'type' => 'select',
-					'multiple' => false,
+					'multiple' => true,
 					'field_class' => array(
 						'edd-slack-chosen',
 						'edd-slack-field',
@@ -572,10 +572,27 @@ if ( ! class_exists( 'EDD_Slack' ) ) {
 						'required',
 					),
 					'options' => array(
-						'' => sprintf( _x( '-- Select %s --', 'Select Field Default', 'edd-slack' ), edd_get_label_singular() ),
 						'all' => sprintf( _x( 'All %s', 'All items in a Select Field', 'edd-slack' ), edd_get_label_plural() ),
 					) + $downloads_array,
-					'placeholder' => sprintf( _x( '-- Select %s --', 'Select Field Default', 'edd-slack' ), edd_get_label_singular() ),
+					'placeholder' => sprintf( _x( '-- Select %s --', 'Select Field Default', 'edd-slack' ), edd_get_label_plural() ),
+					'std' => '',
+				),
+				'exclude_download' => array(
+					'desc' => '',
+					'label' => sprintf( __( 'Exclude %s (Optional)', 'edd-slack' ), edd_get_label_plural() ),
+					'type' => 'select',
+					'multiple' => true,
+					'field_class' => array(
+						'edd-slack-chosen',
+						'edd-slack-field',
+						'edd-slack-conditional',
+						'edd_complete_purchase',
+						'edd_discount_code_applied',
+						'edd_failed_purchase',
+						'edd-slack-exclude-download', // This is a conditional field, but not in the same way as others. It will be hidden/shown based on the value of .edd-slack-download
+					),
+					'options' => $downloads_array,
+					'placeholder' => sprintf( _x( '-- Select %s --', 'Select Field Default', 'edd-slack' ), edd_get_label_plural() ),
 					'std' => '',
 				),
 				'discount_code' => array(

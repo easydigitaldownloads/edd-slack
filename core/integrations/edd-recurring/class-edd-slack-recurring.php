@@ -74,6 +74,9 @@ class EDD_Slack_Recurring {
 		$repeater_fields['download']['field_class'][] = 'edd_subscription_post_create';
 		$repeater_fields['download']['field_class'][] = 'edd_subscription_cancelled';
 		
+		$repeater_fields['exclude_download']['field_class'][] = 'edd_subscription_post_create';
+		$repeater_fields['exclude_download']['field_class'][] = 'edd_subscription_cancelled';
+		
 		return $repeater_fields;
 		
 	}

@@ -68,6 +68,7 @@ class EDD_Slack_Fraud_Monitor {
 	public function add_extra_fields( $repeater_fields ) {
 		
 		$repeater_fields['download']['field_class'][] = 'edd_fraud_purchase';
+		$repeater_fields['exclude_download']['field_class'][] = 'edd_fraud_purchase';
 		
 		return $repeater_fields;
 		

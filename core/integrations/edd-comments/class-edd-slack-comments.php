@@ -73,6 +73,7 @@ class EDD_Slack_Comments {
 		
 		// Make the Download Field Conditionally shown for the Comment Trigger
 		$repeater_fields['download']['field_class'][] = 'comment_post';
+		$repeater_fields['exclude_download']['field_class'][] = 'comment_post';
 		
 		$index = 0;
 		foreach ( $repeater_fields as $key => $value ) {
@@ -98,6 +99,7 @@ class EDD_Slack_Comments {
 					'comment_post',
 				),
 				'std' => 1,
+				'label' => '',
 			),
 		);
 		

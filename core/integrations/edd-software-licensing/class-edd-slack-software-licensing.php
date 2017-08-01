@@ -84,6 +84,10 @@ class EDD_Slack_Software_Licensing {
 		$repeater_fields['download']['field_class'][] = 'edd_sl_activate_license';
 		$repeater_fields['download']['field_class'][] = 'edd_sl_deactivate_license';
 		
+		$repeater_fields['exclude_download']['field_class'][] = 'edd_sl_store_license';
+		$repeater_fields['exclude_download']['field_class'][] = 'edd_sl_activate_license';
+		$repeater_fields['exclude_download']['field_class'][] = 'edd_sl_deactivate_license';
+		
 		return $repeater_fields;
 		
 	}

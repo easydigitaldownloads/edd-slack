@@ -153,6 +153,16 @@ class EDD_Slack_Notification_Integration {
 				$trigger == 'edd_failed_purchase' ||
 			  $trigger == 'edd_discount_code_applied' ) {
 				
+				// We don't care about the number of each item in the cart, we only care about the Download and Price IDs
+				$cart_contents = array();
+				foreach ( $args['cart'] as $item ) {
+
+					if ( ! isset( $cart_contents[ $item['id'] ] ) ) $cart_contents[ $item['id'] ] = array();
+
+					$cart_contents[ $item['id'] ][] = (int) $item['item_number']['options']['price_id'];
+
+				}
+				
 				// Support for EDD Slack v1.0.X
 				if ( ! is_array( $fields['download'] ) ) $fields['download'] = array( $fields['download'] );
 
@@ -172,32 +182,6 @@ class EDD_Slack_Notification_Integration {
 						}
 
 						$downloads_array[ $item['download_id'] ][] = $item['price_id'];
-
-					}
-
-					// Make Array of Download ID => Price ID for each Exclusion for the Notification
-					$exclude_downloads_array = array();
-					foreach ( $fields['exclude_download'] as $item ) {
-
-						$item = $this->check_for_price_id( $item );
-
-						if ( ! isset( $exclude_downloads_array[ $item['download_id'] ] ) ) $exclude_downloads_array[ $item['download_id'] ] = array();
-
-						if ( $item['price_id'] === null ) {
-							$item['price_id'] = 0; // Match output from the Cart
-						}
-
-						$exclude_downloads_array[ $item['download_id'] ][] = $item['price_id'];
-
-					}
-
-					// We don't care about the number of each item in the cart, we only care about the Download and Price IDs
-					$cart_contents = array();
-					foreach ( $args['cart'] as $item ) {
-
-						if ( ! isset( $cart_contents[ $item['id'] ] ) ) $cart_contents[ $item['id'] ] = array();
-
-						$cart_contents[ $item['id'] ][] = (int) $item['item_number']['options']['price_id'];
 
 					}
 					
@@ -220,6 +204,7 @@ class EDD_Slack_Notification_Integration {
 							// If there's a difference between the two arrays of Price IDs, then we know it exists in the Cart
 							if ( $price_ids !== array_diff( $price_ids, $cart_contents[ $download_id ] ) ) {
 								$price_id_bail = false;
+								break;
 							}
 							
 						}
@@ -227,6 +212,50 @@ class EDD_Slack_Notification_Integration {
 					}
 					
 					if ( $price_id_bail ) {
+						
+						$args['bail'] = true;
+						return false;
+						
+					}
+					
+				}
+				else {
+					
+					// Support for EDD Slack v1.0.X
+					if ( ! isset( $fields['exclude_download'] ) ) $fields['exclude_download'] = array();
+					
+					// Make Array of Download ID => Price ID for each Exclusion for the Notification
+					$exclude_downloads_array = array();
+					foreach ( $fields['exclude_download'] as $item ) {
+
+						$item = $this->check_for_price_id( $item );
+
+						if ( ! isset( $exclude_downloads_array[ $item['download_id'] ] ) ) $exclude_downloads_array[ $item['download_id'] ] = array();
+
+						if ( $item['price_id'] === null ) {
+							$item['price_id'] = 0; // Match output from the Cart
+						}
+
+						$exclude_downloads_array[ $item['download_id'] ][] = $item['price_id'];
+
+					}
+					
+					$exclusion_bail = false;
+					foreach( $exclude_downloads_array as $download_id => $price_ids ) {
+						
+						if ( isset( $cart_contents[ $download_id ] ) ) {
+							
+							// If there's a difference between the two arrays of Price IDs, then we have hit an exclusion
+							if ( $price_ids !== array_diff( $price_ids, $cart_contents[ $download_id ] ) ) {
+								$exclusion_bail = true;
+								break;
+							}
+							
+						}
+						
+					}
+					
+					if ( $exclusion_bail ) {
 						
 						$args['bail'] = true;
 						return false;

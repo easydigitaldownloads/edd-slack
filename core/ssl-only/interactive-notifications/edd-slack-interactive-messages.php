@@ -66,12 +66,20 @@ if ( ! function_exists( 'edd_slack_interactive_message_edd_version' ) ) {
 		
 		$upgrader = new WP_Upgrader();
 		
+		$directory_name = rtrim( EDD_PLUGIN_DIR, '//' );
+		$directory_name = substr( $directory_name, strrpos( $directory_name, '/' ) + 1 );
+		
 		$test = $upgrader->run( array(
 			'package' => $download_url,
-			'destination' => EDD_PLUGIN_DIR, // This allows us to change the version of EDD even if it wasn't installed from the WP Repo
+			'destination' => WP_PLUGIN_DIR,
 			'clear_destination' => true, // Overwrite directory
 			'abort_if_destination_exists' => false, // Do not abort, we're overwriting
 			'clear_working' => false,
+			'hook_extra' => array(
+				'plugin' => $directory_name, // This allows us to change the version of EDD even if it wasn't installed from the WP Repo
+				'type' => 'plugin',
+				'action' => 'update',
+			),
 		) );
 		
 		$message = '';

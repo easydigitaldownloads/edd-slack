@@ -585,7 +585,6 @@ if ( ! class_exists( 'EDD_Slack' ) ) {
 					'field_class' => array(
 						'edd-slack-chosen',
 						'edd-slack-field',
-						'edd-slack-conditional',
 						'edd-slack-exclude-download', // This is a conditional field, but not in the same way as others. It will be hidden/shown based on the value of .edd-slack-download
 					),
 					'options' => $downloads_array,

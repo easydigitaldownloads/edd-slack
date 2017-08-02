@@ -50,9 +50,6 @@
 				if ( $download.val() !== null &&
 					$download.val().indexOf( '-' ) > -1 ) $download.val( 0 );
 				
-				console.log( $downloadExclusions.val() );
-				console.log( $downloadExclusions.val().indexOf( '-' ) );
-				
 				if ( $downloadExclusions.val() !== null &&
 					$downloadExclusions.val().indexOf( '-' ) > -1 ) $downloadExclusions.val( 0 );
 				
@@ -66,13 +63,11 @@
 				$downloadExclusions.find( 'option[value*="-"]' ).show();
 				
 			}
-				
-			$download.trigger( 'change' );
+
 			if ( $download.hasClass( 'edd-slack-chosen' ) ) {
 				$download.trigger( 'chosen:updated' );
 			}
 			
-			$downloadExclusions.trigger( 'change' );
 			if ( $downloadExclusions.hasClass( 'edd-slack-chosen' ) ) {
 				$downloadExclusions.trigger( 'chosen:updated' );
 			}
@@ -138,6 +133,8 @@
 			} );
 			
 		} );
+		
+		$( document ).trigger( 'edd-slack-conditional-fields-set', row );
 
 	}
 	
@@ -153,21 +150,25 @@
 	var edd_slack_exclusion_toggle = function( row, value = false ) {
 		
 		// Handle newly created Rows
-		if ( row.type == 'edd-rbm-repeater-add' ) {
+		if ( row.type == 'edd-rbm-repeater-add' || 
+		   row.type == 'edd-slack-conditional-fields-set' ) {
 			row = value;
+			value = false;
 		}
 		else {
 			
 			row = $( row ).closest( '.edd-rbm-repeater-content' );
 			
-			if ( value === false ) {
-				var $download = $( row ).find( '.edd-slack-download' );
-				value = $download.val();
-			}
-			
 		}
 		
-		if ( value !== null &&
+		var $download = $( row ).find( '.edd-slack-download' );
+			
+		if ( value === false ) {
+			value = $download.val();
+		}
+		
+		if ( ! $( $download.closest( 'td' )[0] ).hasClass( 'hidden' ) &&
+			value !== null &&
 			value.indexOf( 'all' ) > -1 ) {
 			
 			$( row ).find( '.edd-slack-exclude-download' ).closest( 'td' ).removeClass( 'hidden' );
@@ -272,11 +273,6 @@
 			edd_slack_conditional_fields( trigger, $( trigger ).val() );
 		} );
 		
-		// Handle conditionally hiding/showing Exclusion Field on Page Load
-		$( '.edd-slack-exclude-download' ).each( function( index, exclusion ) {
-			edd_slack_exclusion_toggle( exclusion );
-		} );
-		
 		$( '.repeater-header div[data-repeater-default-title]' ).each( function( index, header ) {
 			
 			var active = true,
@@ -293,7 +289,9 @@
 		
 		// And toggle them on Change
 		$( document ).on( 'change', '.edd-slack-trigger', function() {
+			
 			edd_slack_conditional_fields( $( this ), $( this ).val() );
+			
 		} );
 		
 		// Conditionally hide/show the Downloads Exclusion Field.
@@ -314,6 +312,12 @@
 			}
 			
 			edd_slack_exclusion_toggle( $( this ), $( this ).val() );
+			
+		} );
+		
+		$( document ).on( 'edd-slack-conditional-fields-set', function( event, row ) {
+			
+			edd_slack_exclusion_toggle( event, row );
 			
 		} );
 		

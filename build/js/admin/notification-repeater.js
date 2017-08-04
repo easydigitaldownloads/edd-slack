@@ -1,3 +1,11 @@
+/**
+ * Global, overwritten on Modal open. This allows us to reliably determine the most recently selected <option>
+ * Oddly there's no good way to do this
+ *									 
+ * @since	  1.1.0
+ */
+var selectedDownloads = [];
+
 ( function( $ ) {
 	'use strict';
 	
@@ -298,12 +306,42 @@
 		// This also ensures if All Downloads is chosen, that ONLY All Downloads can be chosen
 		$( document ).on( 'change', '.edd-slack-download', function() {
 			
-			var value = $( this ).val();
+			var value = $( this ).val(),
+				justAdded = '';
 			
-			if ( value !== null && 
-				value.indexOf( 'all' ) > -1 ) {
+			if ( value !== null ) {
+				
+				// Array Diff
+				justAdded = value.filter( function( index ) {
+					return selectedDownloads.indexOf( index ) < 0;
+				} );
+				
+				// Update Selected Downloads
+				selectedDownloads = value;
+				
+			}
+			
+			if ( justAdded == 'all' ) {
 				
 				$( this ).val( 'all' );
+				
+				if ( $( this ).hasClass( 'edd-slack-chosen' ) ) {
+					$( this ).trigger( 'chosen:updated' );
+				}
+				
+			}
+			else if ( value !== null &&
+					 value.length > 1 &&
+					value.indexOf( 'all' ) > -1 ) {
+				
+				// Unset "All" from the Value
+				for ( var key in value ) {
+					if ( value[ key ] == 'all' ) {
+						value.splice( key, 1 );
+					}
+				}
+				
+				$( this ).val( value );
 				
 				if ( $( this ).hasClass( 'edd-slack-chosen' ) ) {
 					$( this ).trigger( 'chosen:updated' );

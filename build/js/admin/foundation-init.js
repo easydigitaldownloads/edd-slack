@@ -46,6 +46,9 @@ function openModal( uuid, row = undefined ) {
 	}
 
 	var $modal = jQuery( '[data-reveal="' + uuid + '"]' );
+	
+	// Set the Selected Downloads Array to the value of the Downloads Field within the now open Modal
+	selectedDownloads = $modal.find( '.edd-slack-download' ).val();
 
 	$modal.foundation( 'open' );
 

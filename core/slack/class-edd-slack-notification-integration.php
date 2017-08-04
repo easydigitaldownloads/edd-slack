@@ -95,6 +95,9 @@ class EDD_Slack_Notification_Integration {
 		// This allows the chance to possibly alter $args if needed
 		do_action_ref_array( 'edd_slack_before_replacements', array( $post, $fields, $trigger, $notification_id, &$args ) );
 		
+		var_dump( $args['bail'] );
+		die();
+		
 		/**
 		 * Allows Notification Sending to properly Bail
 		 *
@@ -246,7 +249,7 @@ class EDD_Slack_Notification_Integration {
 						if ( isset( $cart_contents[ $download_id ] ) ) {
 							
 							// If there's a difference between the two arrays of Price IDs, then we have hit an exclusion
-							if ( $price_ids !== array_diff( $price_ids, $cart_contents[ $download_id ] ) ) {
+							if ( $cart_contents[ $download_id ] !== array_diff( $price_ids, $cart_contents[ $download_id ] ) ) {
 								$exclusion_bail = true;
 								break;
 							}

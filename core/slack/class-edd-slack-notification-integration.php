@@ -170,7 +170,7 @@ class EDD_Slack_Notification_Integration {
 				if ( ! is_array( $fields['download'] ) ) $fields['download'] = array( $fields['download'] );
 
 				// If all are allowed, it doesn't matter what the other settings are
-				if ( $fields['download'][0] !== 'all' ) {
+				if ( ! in_array( 'all', $fields['download'] ) ) {
 
 					// Make Array of Download ID => Price ID for each Selection in the Notification
 					$downloads_array = array();

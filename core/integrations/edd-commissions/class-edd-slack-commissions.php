@@ -126,16 +126,47 @@ class EDD_Slack_Commissions {
 				'bail' => false,
 			) );
 			
-			$download = EDDSLACK()->notification_integration->check_for_price_id( $fields['download'] );
-
-			$download_id = $download['download_id'];
-			
 			if ( $trigger == 'eddc_insert_commission' ) {
+				
+				// Support for EDD Slack v1.0.X
+				if ( ! is_array( $fields['download'] ) ) $fields['download'] = array( $fields['download'] );
 
-				// Download doesn't match our Notification, bail
-				if ( $download_id !== 'all' && (int) $download_id !== $args['download_id'] ) {
-					$args['bail'] = true;
-					return false;
+				if ( ! in_array( 'all', $fields['download'] ) ) {
+					
+					foreach ( $fields['download'] as $download ) {
+
+						$download = EDDSLACK()->notification_integration->check_for_price_id( $download );
+						$download_id = $download['download_id'];
+
+						// Download doesn't match our Notification, bail
+						if ( (int) $download_id !== $args['download_id'] ) {
+							$args['bail'] = true;
+							break;
+							return false;
+						}
+
+					}
+
+				}
+				else {
+
+					// Support for EDD Slack v1.0.X
+					if ( ! isset( $fields['exclude_download'] ) ) $fields['exclude_download'] = array();
+
+					foreach ( $field['exclude_download'] as $exclusion ) {
+
+						$exclusion = EDDSLACK()->notification_integration->check_for_price_id( $exclusion );
+						$download_id = $excusion['download_id'];
+
+						// Download matches an Exclusion, bail
+						if ( (int) $download_id == $args['download_id'] ) {
+							$args['bail'] = true;
+							break;
+							return false;
+						}
+
+					}
+
 				}
 
 			}

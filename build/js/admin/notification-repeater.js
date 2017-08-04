@@ -1,3 +1,11 @@
+/**
+ * Global, overwritten on Modal open. This allows us to reliably determine the most recently selected <option>
+ * Oddly there's no good way to do this
+ *									 
+ * @since	  1.1.0
+ */
+var eddSlackSelectedDownloads = [];
+
 ( function( $ ) {
 	'use strict';
 	
@@ -40,7 +48,8 @@
 		}
 		else {
 			
-			var $download = $( row ).find( '.edd-slack-download' );
+			var $download = $( row ).find( 'select.edd-slack-download' ),
+				$downloadExclusions = $( row ).find( 'select.edd-slack-exclude-download' );
 			
 			if ( eddSlack.variantExclusion !== undefined && 
 				eddSlack.variantExclusion.indexOf( option_class ) > -1 ) {
@@ -49,17 +58,26 @@
 				if ( $download.val() !== null &&
 					$download.val().indexOf( '-' ) > -1 ) $download.val( 0 );
 				
+				if ( $downloadExclusions.val() !== null &&
+					$downloadExclusions.val().indexOf( '-' ) > -1 ) $downloadExclusions.val( 0 );
+				
 				$download.find( 'option[value*="-"]' ).hide();
+				$downloadExclusions.find( 'option[value*="-"]' ).hide();
 				
 			}
 			else {
 				
 				$download.find( 'option[value*="-"]' ).show();
+				$downloadExclusions.find( 'option[value*="-"]' ).show();
 				
 			}
-				
+
 			if ( $download.hasClass( 'edd-slack-chosen' ) ) {
 				$download.trigger( 'chosen:updated' );
+			}
+			
+			if ( $downloadExclusions.hasClass( 'edd-slack-chosen' ) ) {
+				$downloadExclusions.trigger( 'chosen:updated' );
 			}
 
 			$( row ).find( '.edd-slack-conditional.' + option_class ).closest( 'td.hidden' ).removeClass( 'hidden' );
@@ -123,7 +141,53 @@
 			} );
 			
 		} );
+		
+		$( document ).trigger( 'edd-slack-conditional-fields-set', row );
 
+	}
+	
+	/**
+	 * Conditionally Hide/Show the Download Exclusion Field based on the selected Download(s)
+	 * 
+	 * @param	  {Event|String}  row		Either the Event from creating a new Row or the Download Exclusions Field
+	 * @param	  {Object|string} value		The new Row (unused) or the Value of the Download(s)
+	 *									 
+	 * @since	  1.1.0
+	 * @return	  void
+	 */
+	var edd_slack_exclusion_toggle = function( row, value = false ) {
+		
+		// Handle newly created Rows
+		if ( row.type == 'edd-rbm-repeater-add' || 
+		   row.type == 'edd-slack-conditional-fields-set' ) {
+			row = value;
+			value = false;
+		}
+		else {
+			
+			row = $( row ).closest( '.edd-rbm-repeater-content' );
+			
+		}
+		
+		var $download = $( row ).find( '.edd-slack-download' );
+			
+		if ( value === false ) {
+			value = $download.val();
+		}
+		
+		if ( ! $( $download.closest( 'td' )[0] ).hasClass( 'hidden' ) &&
+			value !== null &&
+			value.indexOf( 'all' ) > -1 ) {
+			
+			$( row ).find( '.edd-slack-exclude-download' ).closest( 'td' ).removeClass( 'hidden' );
+			
+		}
+		else {
+			
+			$( row ).find( '.edd-slack-exclude-download' ).closest( 'td' ).addClass( 'hidden' );
+			
+		}
+		
 	}
 	
 	/**
@@ -197,6 +261,9 @@
 			$repeaters.on( 'edd-rbm-repeater-add', edd_slack_conditional_fields );
 			$repeaters.on( 'repeater-show', edd_slack_conditional_fields );
 			
+			$repeaters.on( 'edd-rbm-repeater-add', edd_slack_exclusion_toggle );
+			$repeaters.on( 'repeater-show', edd_slack_exclusion_toggle );
+			
 			$( document ).on( 'closed.zf.reveal', '.edd-rbm-repeater-content.reveal', function() {
 				eddSlackNotificationIndicators();
 			} );
@@ -230,7 +297,66 @@
 		
 		// And toggle them on Change
 		$( document ).on( 'change', '.edd-slack-trigger', function() {
+			
 			edd_slack_conditional_fields( $( this ), $( this ).val() );
+			
+		} );
+		
+		// Conditionally hide/show the Downloads Exclusion Field.
+		// This also ensures if All Downloads is chosen, that ONLY All Downloads can be chosen
+		$( document ).on( 'change', '.edd-slack-download', function() {
+			
+			var value = $( this ).val(),
+				justAdded = '';
+			
+			if ( value !== null ) {
+				
+				// Array Diff
+				justAdded = value.filter( function( index ) {
+					return eddSlackSelectedDownloads.indexOf( index ) < 0;
+				} );
+				
+				// Update Selected Downloads
+				eddSlackSelectedDownloads = value;
+				
+			}
+			
+			if ( justAdded == 'all' ) {
+				
+				$( this ).val( 'all' );
+				
+				if ( $( this ).hasClass( 'edd-slack-chosen' ) ) {
+					$( this ).trigger( 'chosen:updated' );
+				}
+				
+			}
+			else if ( value !== null &&
+					 value.length > 1 &&
+					value.indexOf( 'all' ) > -1 ) {
+				
+				// Unset "All" from the Value
+				for ( var key in value ) {
+					if ( value[ key ] == 'all' ) {
+						value.splice( key, 1 );
+					}
+				}
+				
+				$( this ).val( value );
+				
+				if ( $( this ).hasClass( 'edd-slack-chosen' ) ) {
+					$( this ).trigger( 'chosen:updated' );
+				}
+				
+			}
+			
+			edd_slack_exclusion_toggle( $( this ), $( this ).val() );
+			
+		} );
+		
+		$( document ).on( 'edd-slack-conditional-fields-set', function( event, row ) {
+			
+			edd_slack_exclusion_toggle( event, row );
+			
 		} );
 		
 	} );

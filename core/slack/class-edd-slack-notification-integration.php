@@ -153,23 +153,113 @@ class EDD_Slack_Notification_Integration {
 				$trigger == 'edd_failed_purchase' ||
 			  $trigger == 'edd_discount_code_applied' ) {
 				
-				$download = $this->check_for_price_id( $fields['download'] );
-				
-				$download_id = $download['download_id'];
-				$price_id = $download['price_id'];
-				
-				// Cart doesn't match have our Download ID, bail
-				if ( $download_id !== 'all' && ! array_key_exists( $download_id, $args['cart'] ) ) {
-					$args['bail'] = true;
-					return false;
+				// We don't care about the number of each item in the cart, we only care about the Download and Price IDs
+				$cart_contents = array();
+				foreach ( $args['cart'] as $item ) {
+
+					if ( ! isset( $cart_contents[ $item['id'] ] ) ) $cart_contents[ $item['id'] ] = array();
+
+					$cart_contents[ $item['id'] ][] = (int) $item['item_number']['options']['price_id'];
+
 				}
 				
-				// Cart doesn't have our Price ID, bail
-				if ( $price_id !== null ) {
+				// Support for EDD Slack v1.0.X
+				if ( ! is_array( $fields['download'] ) ) $fields['download'] = array( $fields['download'] );
+
+				// If all are allowed, it doesn't matter what the other settings are
+				if ( ! in_array( 'all', $fields['download'] ) ) {
+
+					// Make Array of Download ID => Price ID for each Selection in the Notification
+					$downloads_array = array();
+					foreach ( $fields['download'] as $item ) {
+
+						$item = $this->check_for_price_id( $item );
+
+						if ( ! isset( $downloads_array[ $item['download_id'] ] ) ) $downloads_array[ $item['download_id'] ] = array();
+
+						if ( $item['price_id'] === null ) {
+							$item['price_id'] = 0; // Match output from the Cart
+						}
+
+						$downloads_array[ $item['download_id'] ][] = $item['price_id'];
+
+					}
 					
-					if ( $price_id !== $args['cart'][ $download_id ]['options']['price_id'] ) {
+					// Cart doesn't have our Download ID, bail
+					if ( empty( array_intersect_key( $downloads_array, $cart_contents ) ) ) {
 						$args['bail'] = true;
 						return false;
+					}
+					
+					// While it is discouraged through how the Checkout Process works, it IS POSSIBLE to have two Variants of the same Download in your Cart at once
+					// I have had a hard time reproducing it, but I did manage it once. This code takes into account the possiblity of that happening
+
+					// Cart doesn't have our Price ID, bail
+					// This can't be done as fancily as the Download ID
+					$price_id_bail = true;
+					foreach ( $downloads_array as $download_id => $price_ids ) {
+						
+						if ( isset( $cart_contents[ $download_id ] ) ) {
+							
+							// If there's a difference between the two arrays of Price IDs, then we know it exists in the Cart
+							if ( $price_ids !== array_diff( $price_ids, $cart_contents[ $download_id ] ) ) {
+								$price_id_bail = false;
+								break;
+							}
+							
+						}
+
+					}
+					
+					if ( $price_id_bail ) {
+						
+						$args['bail'] = true;
+						return false;
+						
+					}
+					
+				}
+				else {
+					
+					// Support for EDD Slack v1.0.X
+					if ( ! isset( $fields['exclude_download'] ) ) $fields['exclude_download'] = array();
+					
+					// Make Array of Download ID => Price ID for each Exclusion for the Notification
+					$exclude_downloads_array = array();
+					foreach ( $fields['exclude_download'] as $item ) {
+
+						$item = $this->check_for_price_id( $item );
+
+						if ( ! isset( $exclude_downloads_array[ $item['download_id'] ] ) ) $exclude_downloads_array[ $item['download_id'] ] = array();
+
+						if ( $item['price_id'] === null ) {
+							$item['price_id'] = 0; // Match output from the Cart
+						}
+
+						$exclude_downloads_array[ $item['download_id'] ][] = $item['price_id'];
+
+					}
+					
+					$exclusion_bail = false;
+					foreach( $exclude_downloads_array as $download_id => $price_ids ) {
+						
+						if ( isset( $cart_contents[ $download_id ] ) ) {
+							
+							// If there's a difference between the two arrays of Price IDs, then we have hit an exclusion
+							if ( $cart_contents[ $download_id ] !== array_diff( $price_ids, $cart_contents[ $download_id ] ) ) {
+								$exclusion_bail = true;
+								break;
+							}
+							
+						}
+						
+					}
+					
+					if ( $exclusion_bail ) {
+						
+						$args['bail'] = true;
+						return false;
+						
 					}
 					
 				}
@@ -235,19 +325,22 @@ class EDD_Slack_Notification_Integration {
 					$replacements['%payment_link%'] = '<' . $payment_link . '|' . _x( 'View Payment Details', 'View Payment Details Link', 'edd-slack' ) . '>'; // No function to get this?
 					
 					$replacements['%cart%'] = '';
-					foreach ( $args['cart'] as $post_id => $item_number ) {
+					foreach ( $args['cart'] as $item ) {
+						
+						$download_id = $item['item_number']['id'];
+						$price_id = $item['item_number']['options']['price_id'];
 						
 						// If it is not a variable download
-						if ( ! edd_has_variable_prices( $post_id ) ) {
+						if ( ! edd_has_variable_prices( $download_id ) ) {
 							
-							$replacements['%cart%'] .= "&bull; " . get_the_title( $post_id ) . "\n";
-							$replacements['%cart%'] .= "\t&bull; " . edd_currency_filter( edd_get_download_price( $post_id ) ) . "\n";
+							$replacements['%cart%'] .= "&bull; " . get_the_title( $download_id ) . "\n";
+							$replacements['%cart%'] .= "\t&bull; " . edd_currency_filter( edd_get_download_price( $download_id ) ) . "\n";
 							
 						}
 						else {
 							
-							$replacements['%cart%'] .= "&bull; " . get_the_title( $post_id ) . "\n";
-							$replacements['%cart%'] .= "\t&bull; " . edd_get_price_option_name( $post_id, $item_number['options']['price_id'] ) . " - " . edd_currency_filter( edd_get_price_option_amount( $post_id, $item_number['options']['price_id'] ) ) . "\n";
+							$replacements['%cart%'] .= "&bull; " . get_the_title( $download_id ) . "\n";
+							$replacements['%cart%'] .= "\t&bull; " . edd_get_price_option_name( $download_id, $price_id ) . " - " . edd_currency_filter( edd_get_price_option_amount( $download_id, $price_id ) ) . "\n";
 							
 						}
 						

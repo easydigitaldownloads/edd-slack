@@ -97,9 +97,17 @@ class EDD_Slack_Admin {
 					
 					$value[ $field_id ] = get_post_meta( $feed->ID, "edd_slack_rbm_feed_$field_id", true );
 					
-					if ( $field_id = 'replacement_hints' ) {
+					if ( $field_id == 'replacement_hints' ) {
 						
 						$value[ $field_id ] = $trigger;
+						
+					}
+					
+					if ( $field['type'] == 'select' &&
+					   $field['multiple'] === true ) {
+						
+						// Support for EDD Slack v1.0.X
+						$value[ $field_id ] = ( ! is_array( $value[ $field_id ] ) ) ? array( $value[ $field_id ] ) : $value[ $field_id ];
 						
 					}
 					

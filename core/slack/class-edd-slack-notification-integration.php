@@ -325,19 +325,22 @@ class EDD_Slack_Notification_Integration {
 					$replacements['%payment_link%'] = '<' . $payment_link . '|' . _x( 'View Payment Details', 'View Payment Details Link', 'edd-slack' ) . '>'; // No function to get this?
 					
 					$replacements['%cart%'] = '';
-					foreach ( $args['cart'] as $post_id => $item_number ) {
+					foreach ( $args['cart'] as $item ) {
+						
+						$download_id = $item['item_number']['id'];
+						$price_id = $item['item_number']['options']['price_id'];
 						
 						// If it is not a variable download
-						if ( ! edd_has_variable_prices( $post_id ) ) {
+						if ( ! edd_has_variable_prices( $download_id ) ) {
 							
-							$replacements['%cart%'] .= "&bull; " . get_the_title( $post_id ) . "\n";
-							$replacements['%cart%'] .= "\t&bull; " . edd_currency_filter( edd_get_download_price( $post_id ) ) . "\n";
+							$replacements['%cart%'] .= "&bull; " . get_the_title( $download_id ) . "\n";
+							$replacements['%cart%'] .= "\t&bull; " . edd_currency_filter( edd_get_download_price( $download_id ) ) . "\n";
 							
 						}
 						else {
 							
-							$replacements['%cart%'] .= "&bull; " . get_the_title( $post_id ) . "\n";
-							$replacements['%cart%'] .= "\t&bull; " . edd_get_price_option_name( $post_id, $item_number['options']['price_id'] ) . " - " . edd_currency_filter( edd_get_price_option_amount( $post_id, $item_number['options']['price_id'] ) ) . "\n";
+							$replacements['%cart%'] .= "&bull; " . get_the_title( $download_id ) . "\n";
+							$replacements['%cart%'] .= "\t&bull; " . edd_get_price_option_name( $download_id, $price_id ) . " - " . edd_currency_filter( edd_get_price_option_amount( $download_id, $price_id ) ) . "\n";
 							
 						}
 						

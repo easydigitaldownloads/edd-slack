@@ -4,7 +4,7 @@
  *									 
  * @since	  1.1.0
  */
-var selectedDownloads = [];
+var eddSlackSelectedDownloads = [];
 
 ( function( $ ) {
 	'use strict';
@@ -313,11 +313,11 @@ var selectedDownloads = [];
 				
 				// Array Diff
 				justAdded = value.filter( function( index ) {
-					return selectedDownloads.indexOf( index ) < 0;
+					return eddSlackSelectedDownloads.indexOf( index ) < 0;
 				} );
 				
 				// Update Selected Downloads
-				selectedDownloads = value;
+				eddSlackSelectedDownloads = value;
 				
 			}
 			

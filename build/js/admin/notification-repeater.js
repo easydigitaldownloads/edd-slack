@@ -56,10 +56,10 @@ var eddSlackSelectedDownloads = [];
 				
 				// Reset value if it is set to a variant
 				if ( $download.val() !== null &&
-					$download.val().indexOf( '-' ) > -1 ) $download.val( 0 );
+					$download.val().every( function( value ) { return ( value.indexOf( '-' ) > -1 ) ? true : false; } ) ) $download.val( 0 );
 				
 				if ( $downloadExclusions.val() !== null &&
-					$downloadExclusions.val().indexOf( '-' ) > -1 ) $downloadExclusions.val( 0 );
+					$downloadExclusions.val().every( function( value ) { return ( value.indexOf( '-' ) > -1 ) ? true : false; } ) ) $downloadExclusions.val( 0 );
 				
 				$download.find( 'option[value*="-"]' ).hide();
 				$downloadExclusions.find( 'option[value*="-"]' ).hide();

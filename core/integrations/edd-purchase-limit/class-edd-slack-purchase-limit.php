@@ -95,8 +95,6 @@ class EDD_Slack_Purchase_Limit {
 		// Cart details
 		$cart_items = edd_get_payment_meta_cart_details( $payment_id );
 		
-		// FIX CART
-		
 		foreach ( $cart_items as $item ) {
 			
 			if ( ! isset( $item['item_number']['options']['price_id'] ) ) $item['item_number']['options']['price_id'] = null;

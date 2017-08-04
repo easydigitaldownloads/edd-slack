@@ -95,8 +95,6 @@ class EDD_Slack_Recurring {
 		// Cart details
 		$cart_items = edd_get_payment_meta_cart_details( $args['parent_payment_id'] );
 		
-		// FIX CART
-		
 		$price_id = null;
 		foreach ( $cart_items as $item ) {
 			
@@ -149,8 +147,6 @@ class EDD_Slack_Recurring {
 		
 		// Cart details
 		$cart_items = edd_get_payment_meta_cart_details( $subscription->parent_payment_id );
-		
-		// FIX CART
 		
 		$price_id = null;
 		foreach ( $cart_items as $item ) {

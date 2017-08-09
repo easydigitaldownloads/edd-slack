@@ -111,7 +111,6 @@ if ( ! class_exists( 'EDD_Slack' ) ) {
 			
 			$this->setup_constants();
 			$this->load_textdomain();
-			$this->require_necessities();
 			
 			// Register our CSS/JS for the whole plugin
 			add_action( 'init', array( $this, 'register_scripts' ) );
@@ -141,6 +140,12 @@ if ( ! class_exists( 'EDD_Slack' ) ) {
 				}
 				
 			}
+			
+			if ( has_action( 'admin_notices', array( $this, 'admin_errors' ) ) ) {
+				return false;
+			}
+			
+			$this->require_necessities();
 			
 		}
 

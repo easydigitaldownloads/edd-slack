@@ -420,9 +420,9 @@ class EDD_Slack_Reviews {
 		
 		$vendor_feedback_hints = array(
 			'%review_item_as_described%' => sprintf( 'Was the Item as Described?', '%review_item_as_described% Hint Text', 'edd-slack' ),
-			'%vendor_username%' => _x( 'Display the Vendor\'s username', '%vendor_username% Hint Text', 'edd-slack' ),
-			'%vendor_email%' => _x( 'Display the Vendor\'s email', '%vendor_email% Hint Text', 'edd-slack' ),
-			'%vendor_name%' => _x( 'Display the Vendor\'s display name', '%vendor_name% Hint Text', 'edd-slack' ),
+			'%vendor_username%' => sprintf( _x( 'Display the %s\'s username', '%vendor_username% Hint Text', 'edd-slack' ), EDD_FES()->helper->get_vendor_constant_name( false, true ) ),
+			'%vendor_email%' => sprintf( _x( 'Display the %s\'s email', '%vendor_email% Hint Text', 'edd-slack' ), EDD_FES()->helper->get_vendor_constant_name( false, true ) ),
+			'%vendor_name%' => sprintf( _x( 'Display the %s\'s display name', '%vendor_name% Hint Text', 'edd-slack' ), EDD_FES()->helper->get_vendor_constant_name( false, true ) ),
 		);
 		
 		$hints['edd_insert_review'] = array_merge( $user_hints, $reviews_hints );

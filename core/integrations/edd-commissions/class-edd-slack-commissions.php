@@ -238,6 +238,9 @@ class EDD_Slack_Commissions {
 			'%download%' => sprintf( _x( 'The %s that the Commission is for', '%download% Hint Text', 'edd-slack' ), edd_get_label_singular() ),
 			'%commission_amount%' => _x( 'The amount of Commission awarded for the sale', '%commission_amount% Hint Text', 'edd-slack' ),
 			'%commission_rate%' => _x( 'Either the Flat Rate or Percentage that the Commission is calculated based on', '%commission_rate% Hint Text', 'edd-slack' ),
+			'%username%' => _x( 'Display the User\'s username', '%username% Hint Text', 'edd-slack' ),
+			'%email%' => _x( 'Display the User\'s email', '%email% Hint Text', 'edd-slack' ),
+			'%name%' => _x( 'Display the User\'s display name', '%name% Hint Text', 'edd-slack' ),
 		);
 		
 		$hints['eddc_insert_commission'] = array_merge( $user_hints, $commission_hints );

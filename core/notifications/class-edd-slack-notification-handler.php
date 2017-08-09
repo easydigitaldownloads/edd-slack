@@ -213,13 +213,21 @@ class EDD_Slack_Notification_Handler {
 			'%email%' => '',
 		) );
 		
-		if ( isset( $args['user_id'] ) ) {
+		if ( isset( $args['user_id'] ) &&
+		   $args['user_id'] !== 0 ) {
 		
 			$userdata = get_userdata( $args['user_id'] );
-
-			$replacements['%name%'] = $userdata->display_name;
 			$replacements['%username%'] = $userdata->user_login;
-			$replacements['%email%'] = $userdata->user_email;
+			
+			if ( ! isset( $args['name'] ) || 
+			   empty( $args['name'] ) ) {
+				$args['name'] = $userdata->display_name;
+			}
+			
+			if ( ! isset( $args['email'] ) || 
+			   empty( $args['email'] ) ) {
+				$args['email'] = $userdata->user_email;
+			}
 			
 		}
 		

@@ -413,9 +413,9 @@ class EDD_Slack_Admin {
 		 * @since 1.0.0
 		 */
 		$user_hints = apply_filters( 'edd_slack_user_replacement_hints', array(
-			'%username%' => _x( 'Display the user\'s username', '%username% Hint Text', 'edd-slack' ),
-			'%email%' => _x( 'Display the user\'s email', '%email% Hint Text', 'edd-slack' ),
-			'%name%' => _x( 'Display the user\'s display name', '%name% Hint Text', 'edd-slack' ),
+			'%username%' => _x( 'Display the Customer\'s username', '%username% Hint Text', 'edd-slack' ),
+			'%email%' => _x( 'Display the Customer\'s email', '%email% Hint Text', 'edd-slack' ),
+			'%name%' => _x( 'Display the Customer\'s display name', '%name% Hint Text', 'edd-slack' ),
 		) );
 		
 		/**

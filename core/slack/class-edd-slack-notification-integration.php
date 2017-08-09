@@ -295,10 +295,13 @@ class EDD_Slack_Notification_Integration {
 	 */
 	public function custom_replacement_strings( $replacements, $fields, $trigger, $notification_id, $args ) {
 		
+		// Always use Customer (or otherwise passed) data regardless of an existing User Account
+		$replacements['%email%'] = ( isset( $args['email'] ) ) ? $args['email'] : '';
+		$replacements['%name%'] = ( isset( $args['name'] ) ) ? $args['name'] : '';
+		
 		// If this customer did not create an Account
-		if ( $args['user_id'] == 0 ) {
-			$replacements['%email%'] = $args['email'];
-			$replacements['%name%'] = $args['name'];
+		if ( ! isset( $args['user_id'] ) || 
+			$args['user_id'] == 0 ) {
 			$replacements['%username%'] = _x( 'This Customer does not have an account', 'No Username Replacement Text', 'edd-slack' );
 		}
 

@@ -404,6 +404,12 @@ class EDD_Slack_Reviews {
 	 */
 	public function custom_replacement_hints( $hints, $user_hints, $payment_hints ) {
 		
+		$user_hints = array_merge( $user_hints, array(
+			'%username%' => _x( 'Display the Reviewer\'s username', '%username% Hint Text', 'edd-slack' ),
+			'%email%' => _x( 'Display the Reviewer\'s email', '%email% Hint Text', 'edd-slack' ),
+			'%name%' => _x( 'Display the Reviewer\'s display name', '%name% Hint Text', 'edd-slack' ),
+		) );
+		
 		$reviews_hints = array(
 			'%download%' => sprintf( _x( 'The %s the Review was made on', '%download% Hint Text', 'edd-slack' ), edd_get_label_singular() ),
 			'%review_title%' => _x( 'The Review title', '%review_title% Hint Text', 'edd-slack' ),

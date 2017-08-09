@@ -286,6 +286,9 @@ class EDD_Slack_Comments {
 			'%download%' => sprintf( _x( 'The %s the Comment was made on', '%download% Hint Text', 'edd-slack' ), edd_get_label_singular() ),
 			'%comment_content%' => _x( 'The Comment itself', '%comment_content% Hint Text', 'edd-slack' ),
 			'%comment_link%' => _x( 'A link to the Comment', '%comment_link% Hint Text', 'edd-slack' ),
+			'%username%' => _x( 'Display the Commenter\'s username', '%username% Hint Text', 'edd-slack' ),
+			'%email%' => _x( 'Display the Commenter\'s email', '%email% Hint Text', 'edd-slack' ),
+			'%name%' => _x( 'Display the Commenter\'s display name', '%name% Hint Text', 'edd-slack' ),
 		);
 		
 		$hints['comment_post'] = array_merge( $user_hints, $comment_hints );

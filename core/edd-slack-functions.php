@@ -29,9 +29,11 @@ function EDDSLACK() {
  * @return		array Slack Users
  */
 function edd_slack_get_users() {
+	
+	$oauth_token = edd_get_option( 'slack_app_oauth_token', false );
 
 	// Don't bother if we don't have an OAUTH Token
-	if ( ! edd_get_option( 'slack_app_oauth_token', false ) ) return array();
+	if ( ! $oauth_token || $oauth_token == '-1' ) return array();
 
 	if ( ! $users_array = maybe_unserialize( get_transient( 'edd_slack_users' ) ) ) {
 
@@ -74,7 +76,9 @@ function edd_slack_get_users() {
  */
 function edd_slack_is_slack_admin( $slack_user_id = '0' ) {
 	
-	if ( ! edd_get_option( 'slack_app_oauth_token', false ) ) return array();
+	$oauth_token = edd_get_option( 'slack_app_oauth_token', false );
+	
+	if ( ! $oauth_token || $oauth_token == '-1' ) return array();
 	
 	$users_info_url = add_query_arg(
 		array(

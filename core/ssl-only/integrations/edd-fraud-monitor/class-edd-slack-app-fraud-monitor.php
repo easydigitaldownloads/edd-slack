@@ -19,8 +19,10 @@ class EDD_Slack_App_Fraud_Monitor {
 	 */
 	function __construct() {
 		
+		$oauth_token = edd_get_option( 'slack_app_oauth_token', false );
+		
 		// If we've got a linked Slack App
-		if ( edd_get_option( 'slack_app_oauth_token' ) ) {
+		if ( $oauth_token && $oauth_token !== '-1' ) {
 		
 			// Set the new Notification API Endpoint
 			add_filter( 'edd_slack_notification_webhook', array( $this, 'override_webhook' ), 10, 4 );

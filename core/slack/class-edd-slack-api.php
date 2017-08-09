@@ -31,8 +31,10 @@ class EDD_Slack_API {
 	 */
 	function __construct() {
 		
+		$oauth_token = edd_get_option( 'slack_app_oauth_token', false );
+		
 		// Default to an empty string
-		$this->oauth_token = ( edd_get_option( 'slack_app_oauth_token' ) ) ? edd_get_option( 'slack_app_oauth_token' ) : '';
+		$this->oauth_token = ( $oauth_token && $oauth_token !== '-1' ) ? $oauth_token : '';
 		
 	}
 	

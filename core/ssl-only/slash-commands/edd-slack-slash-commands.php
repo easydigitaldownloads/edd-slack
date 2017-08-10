@@ -338,6 +338,7 @@ if ( ! function_exists( 'edd_slack_slash_command_discount' ) ) {
 			$response_text .= "\n" . _x( 'Start Date: ', 'Discount Start Date', 'edd-slack' ) . $discount_start;
 			$response_text .= "\n" . _x( 'Expiration: ', 'Discount Expiration', 'edd-slack' ) . $discount_expiration;
 			$response_text .= "\n" . _x( 'Status: ', 'Discount Status', 'edd-slack' ) . $discount_status;
+			$response_text .= "\n\n" . '<' . $discount->edit_url() . '|' . _x( 'Edit this Discount Code', 'Edit Discount Code Link Text', 'edd-slack' ) . '>';
 			
 		}
 		else {

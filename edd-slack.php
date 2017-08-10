@@ -145,6 +145,10 @@ if ( ! class_exists( 'EDD_Slack' ) ) {
 				return false;
 			}
 			
+			// Load this first so that we have the ability to use it during Upgrade Routines
+			require_once EDD_Slack_DIR . '/core/slack/class-edd-slack-api.php';
+			$this->slack_api = new EDD_Slack_API();
+			
 			// Don't try to run upgrade routines unless we're on the Backend
 			// Less hitting the DB for a version number as well as if there are noticies to show, it will be more apparent as to what needs done by the User
 			// If they have hit the Backend via updating within WP this will check right away
@@ -265,6 +269,7 @@ if ( ! class_exists( 'EDD_Slack' ) ) {
 				   $oauth_token !== '-1' ) {
 					
 					// Clear out values so Slack doesn't try to send Interactive Notifications (Or other related things) and fail
+					$this->slack_api->revoke_oauth_token();
 					edd_update_option( 'slack_app_oauth_token', '-1' );
 					edd_delete_option( 'slack_app_has_client_scope' );
 					
@@ -280,6 +285,7 @@ if ( ! class_exists( 'EDD_Slack' ) ) {
 				
 			}
 			
+			// Run any Pending routines
 			if ( strpos( $last_upgrade, 'pending' ) !== false ) {
 				
 				$pending_version = str_replace( 'pending-', '', $last_upgrade );
@@ -311,9 +317,9 @@ if ( ! class_exists( 'EDD_Slack' ) ) {
 				$oauth_token = edd_get_option( 'slack_app_oauth_token', false );
 				
 				if ( ( $oauth_token && $oauth_token !== '-1' ) ||
-			   ( ! isset( $_GET['error'] ) && isset( $_GET['token_type'] ) ) ) {
+			   ( ! isset( $_GET['error'] ) && isset( $_GET['token_type'] ) && isset( $_GET['section'] ) && $_GET['section'] == 'edd-slack-settings' ) ) {
 				
-					edd_update_option( 'edd_slack_last_upgrade', $pending_version );
+					edd_update_option( 'slack_last_upgrade', $pending_version );
 					
 					return true;
 					
@@ -359,9 +365,6 @@ if ( ! class_exists( 'EDD_Slack' ) ) {
 				}
 				
 			}
-			
-			require_once EDD_Slack_DIR . '/core/slack/class-edd-slack-api.php';
-			$this->slack_api = new EDD_Slack_API();
 			
 			require_once EDD_Slack_DIR . '/core/notifications/class-edd-slack-notification-handler.php';
 			$this->notification_handler = new EDD_Slack_Notification_Handler();

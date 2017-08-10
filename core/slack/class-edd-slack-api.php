@@ -226,16 +226,25 @@ class EDD_Slack_API {
 	 * 
 	 * @access		public
 	 * @since		1.0.0
-	 * @return		void
+	 * @return		boolean Success/Failure
 	 */
 	public function revoke_oauth_token() {
 		
-		$oauth_revoke = EDDSLACK()->slack_api->post(
+		$oauth_revoke = $this->post(
 			'auth.revoke'
 		);
 		
-		edd_delete_option( 'slack_app_oauth_token' );
-		$this->oauth_token = '';
+		if ( $oauth_revoke->ok ) {
+		
+			edd_delete_option( 'slack_app_oauth_token' );
+			$this->oauth_token = '';
+			
+			return $oauth_revoke->revoked;
+			
+		}
+		else {
+			return false;
+		}
 		
 	}
 

@@ -50,10 +50,7 @@ if ( ! function_exists( 'edd_slack_slash_command_help' ) ) {
 				'default' => 'this_month',
 			),
 			'version' => array(
-				'description' => _x( 'Outputs the current version of Easy Digital Downloads. Alternatively, allows you to change the version of Easy Digital Downloads', '/edd version Description', 'edd-slack' ),
-				'options' => array(
-					'change'
-				),
+				'description' => _x( 'Outputs the current version of Easy Digital Downloads.', '/edd version Description', 'edd-slack' ),
 			),
 		) );
 		
@@ -208,9 +205,8 @@ if ( ! function_exists( 'edd_slack_slash_command_version' ) ) {
 
 	/**
 	 * Return the version of EDD via /edd version
-	 * Alternatively, provide "change" as a parameter to allow changing the version of EDD
 	 * 
-	 * @param	  string $change	   If this String is non-empty, we're changing the Version
+	 * @param	  string $change	   If this String is non-empty, we're changing the Version (Unused)
 	 * @param	  string $response_url Webhook to send the Response Message to
 	 * @param	  array  $request_body POST'd data from the Slack Client
 	 *															  
@@ -225,32 +221,6 @@ if ( ! function_exists( 'edd_slack_slash_command_version' ) ) {
 				'text' => _x( 'EDD is currently at v', '"v" prefix for /edd version', 'edd-slack' ) . EDD_VERSION,
 			),
 		);
-		
-		if ( ! empty( $change ) ) { // "Change" is just passed as a string. Since there is only one parameter for this Slash Command, we can just assume any extra parameter means we're changing the Version
-		
-			$edd_versions = EDDSLACK()->slack_rest_api->get_edd_versions();
-			$edd_versions_array = array();
-
-			foreach ( $edd_versions as $version => $download_url ) {
-				$edd_versions_array[] = array(
-					'text' => 'v' . $version,
-					'value' => $version,
-				);
-			}
-			
-			$attachments[0]['callback_id'] = 'edd_version';
-			$attachments[0]['fallback'] = $attachments[0]['title'];
-			
-			$attachments[0]['actions'] = array(
-				array(
-					'name' => 'versions_list',
-					'text' => _x( 'Pick a version...', 'Pick a EDD Version Text', 'edd-slack' ),
-					'type' => 'select',
-					'options' => $edd_versions_array
-				),
-			);
-			
-		}
 		
 		// Response URLs are Incoming Webhooks
 		$response_message = EDDSLACK()->slack_api->push_incoming_webhook(

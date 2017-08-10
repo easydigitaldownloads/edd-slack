@@ -192,11 +192,12 @@ class EDD_Slack_OAUTH_Settings {
 		
 		$redirect_uri = urlencode_deep( admin_url( 'edit.php?post_type=download&page=edd-settings&tab=extensions&section=edd-slack-settings' ) );
 		
-		$oauth_token = edd_get_option( 'slack_app_oauth_token' );
-		
 		if ( $client_id && $client_secret ) : 
+		
+			$oauth_token = edd_get_option( 'slack_app_oauth_token', false );
 
-			if ( ! $oauth_token ) : ?>
+			if ( ! $oauth_token || 
+			   $oauth_token == '-1' ) : ?>
 			
 				<a href="//slack.com/oauth/authorize?client_id=<?php echo $client_id; ?>&scope=<?php echo $scope; ?>&redirect_uri=<?php echo $redirect_uri; ?>" target="_self" class="edd-slack-app-auth button button-primary" data-token_type="main">
 					<?php echo _x( 'Link Slack App', 'OAUTH Register Buton Label', 'edd-slack' ); ?>
@@ -245,12 +246,13 @@ class EDD_Slack_OAUTH_Settings {
 		
 		$redirect_uri = urlencode_deep( admin_url( 'edit.php?post_type=download&page=edd-settings&tab=extensions&section=edd-slack-settings' ) );
 		
-		$oauth_token = edd_get_option( 'slack_app_oauth_token' );
+		$oauth_token = edd_get_option( 'slack_app_oauth_token', false );
 		$granted_client_scope = edd_get_option( 'slack_app_has_client_scope' );
 		
 		if ( $client_id && $client_secret ) : 
 
-			if ( ! $oauth_token ) : ?>
+			if ( ! $oauth_token || 
+			   $oauth_token == '-1' ) : ?>
 
 				<p class="description">
 					<?php echo _x( 'You need to link your Slack App above to enable this feature.', 'Slack App not linked Error.', 'edd-slack' ); ?>
@@ -289,6 +291,8 @@ class EDD_Slack_OAUTH_Settings {
 		
 		if ( ! is_admin() ) return false;
 		
+		$oauth_token = edd_get_option( 'slack_app_oauth_token', false );
+		
 		// If we need to get an OAUTH Token
 		// $_GET['state'] is set by the JavaScript for the OAUTH2 Popup
 		// $_GET['section'] is set properly by our redirect_uri
@@ -298,7 +302,7 @@ class EDD_Slack_OAUTH_Settings {
 			isset( $_GET['token_type'] ) &&
 			isset( $_GET['section'] ) && 
 			$_GET['section'] == 'edd-slack-settings' && 
-			( ! edd_get_option( 'slack_app_oauth_token' ) && $_GET['token_type'] == 'main' || 
+			( ( ! $oauth_token || $oauth_token == '-1' ) && $_GET['token_type'] == 'main' || 
 			 ! edd_get_option( 'slack_app_has_client_scope' ) && $_GET['token_type'] == 'team_invites' ) ) {
 			
 			$client_id = edd_get_option( 'slack_app_client_id' );

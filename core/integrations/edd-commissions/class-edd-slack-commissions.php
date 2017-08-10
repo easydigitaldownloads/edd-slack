@@ -126,16 +126,47 @@ class EDD_Slack_Commissions {
 				'bail' => false,
 			) );
 			
-			$download = EDDSLACK()->notification_integration->check_for_price_id( $fields['download'] );
-
-			$download_id = $download['download_id'];
-			
 			if ( $trigger == 'eddc_insert_commission' ) {
+				
+				// Support for EDD Slack v1.0.X
+				if ( ! is_array( $fields['download'] ) ) $fields['download'] = array( $fields['download'] );
 
-				// Download doesn't match our Notification, bail
-				if ( $download_id !== 'all' && (int) $download_id !== $args['download_id'] ) {
-					$args['bail'] = true;
-					return false;
+				if ( ! in_array( 'all', $fields['download'] ) ) {
+					
+					foreach ( $fields['download'] as $download ) {
+
+						$download = EDDSLACK()->notification_integration->check_for_price_id( $download );
+						$download_id = $download['download_id'];
+
+						// Download doesn't match our Notification, bail
+						if ( (int) $download_id !== $args['download_id'] ) {
+							$args['bail'] = true;
+							break;
+							return false;
+						}
+
+					}
+
+				}
+				else {
+
+					// Support for EDD Slack v1.0.X
+					if ( ! isset( $fields['exclude_download'] ) ) $fields['exclude_download'] = array();
+
+					foreach ( $field['exclude_download'] as $exclusion ) {
+
+						$exclusion = EDDSLACK()->notification_integration->check_for_price_id( $exclusion );
+						$download_id = $excusion['download_id'];
+
+						// Download matches an Exclusion, bail
+						if ( (int) $download_id == $args['download_id'] ) {
+							$args['bail'] = true;
+							break;
+							return false;
+						}
+
+					}
+
 				}
 
 			}
@@ -207,6 +238,9 @@ class EDD_Slack_Commissions {
 			'%download%' => sprintf( _x( 'The %s that the Commission is for', '%download% Hint Text', 'edd-slack' ), edd_get_label_singular() ),
 			'%commission_amount%' => _x( 'The amount of Commission awarded for the sale', '%commission_amount% Hint Text', 'edd-slack' ),
 			'%commission_rate%' => _x( 'Either the Flat Rate or Percentage that the Commission is calculated based on', '%commission_rate% Hint Text', 'edd-slack' ),
+			'%username%' => _x( 'Display the User\'s username', '%username% Hint Text', 'edd-slack' ),
+			'%email%' => _x( 'Display the User\'s email', '%email% Hint Text', 'edd-slack' ),
+			'%name%' => _x( 'Display the User\'s display name', '%name% Hint Text', 'edd-slack' ),
 		);
 		
 		$hints['eddc_insert_commission'] = array_merge( $user_hints, $commission_hints );

@@ -267,6 +267,13 @@ class EDD_Slack_Frontend_Submissions {
 	 */
 	public function custom_replacement_hints( $hints, $user_hints, $payment_hints ) {
 		
+		// Overwrite User Hints to show "Vendor" instead
+		$user_hints = array_merge( $user_hints, array(
+			'%username%' => sprintf( _x( 'Display the %s\'s username', '%username% Hint Text', 'edd-slack' ), EDD_FES()->helper->get_vendor_constant_name( false, true ) ),
+			'%email%' => sprintf( _x( 'Display the %s\'s email', '%email% Hint Text', 'edd-slack' ), EDD_FES()->helper->get_vendor_constant_name( false, true ) ),
+			'%name%' => sprintf( _x( 'Display the %s\'s display name', '%name% Hint Text', 'edd-slack' ), EDD_FES()->helper->get_vendor_constant_name( false, true ) ),
+		) );
+		
 		$hints['edd_fes_vendor_registered'] = $user_hints;
 		
 		$vendor_product_hints = array(

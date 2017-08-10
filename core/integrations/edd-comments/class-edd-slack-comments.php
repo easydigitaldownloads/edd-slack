@@ -77,8 +77,8 @@ class EDD_Slack_Comments {
 		$index = 0;
 		foreach ( $repeater_fields as $key => $value ) {
 			
-			// Find the Numeric Index of the Download Select Field
-			if ( $key == 'download' ) {
+			// Find the Numeric Index of the Exclude Download Select Field
+			if ( $key == 'exclude_download' ) {
 				break;
 			}
 			
@@ -98,6 +98,7 @@ class EDD_Slack_Comments {
 					'comment_post',
 				),
 				'std' => 1,
+				'label' => '',
 			),
 		);
 		
@@ -174,14 +175,45 @@ class EDD_Slack_Comments {
 			
 			if ( $trigger == 'comment_post' ) {
 				
-				$download = EDDSLACK()->notification_integration->check_for_price_id( $fields['download'] );
+				// Support for EDD Slack v1.0.X
+				if ( ! is_array( $fields['download'] ) ) $fields['download'] = array( $fields['download'] );
 				
-				$download_id = $download['download_id'];
-				
-				// Download commented on doesn't match our Notification, bail
-				if ( $download_id !== 'all' && (int) $download_id !== $args['comment_post_id'] ) {
-					$args['bail'] = true;
-					return false;
+				if ( ! in_array( 'all', $fields['download'] ) ) {
+					
+					foreach ( $fields['download'] as $download ) {
+						
+						$download = EDDSLACK()->notification_integration->check_for_price_id( $download );
+						$download_id = $download['download_id'];
+
+						// Download commented on doesn't match our Notification, bail
+						if ( (int) $download_id !== $args['comment_post_id'] ) {
+							$args['bail'] = true;
+							break;
+							return false;
+						}
+						
+					}
+					
+				}
+				else {
+					
+					// Support for EDD Slack v1.0.X
+					if ( ! isset( $fields['exclude_download'] ) ) $fields['exclude_download'] = array();
+					
+					foreach ( $field['exclude_download'] as $exclusion ) {
+						
+						$exclusion = EDDSLACK()->notification_integration->check_for_price_id( $exclusion );
+						$download_id = $excusion['download_id'];
+						
+						// Download commented on matches an Exclusion, bail
+						if ( (int) $download_id == $args['comment_post_id'] ) {
+							$args['bail'] = true;
+							break;
+							return false;
+						}
+						
+					}
+					
 				}
 				
 				// If we're only going to check for Top Level Comments, bail on Replies
@@ -254,6 +286,9 @@ class EDD_Slack_Comments {
 			'%download%' => sprintf( _x( 'The %s the Comment was made on', '%download% Hint Text', 'edd-slack' ), edd_get_label_singular() ),
 			'%comment_content%' => _x( 'The Comment itself', '%comment_content% Hint Text', 'edd-slack' ),
 			'%comment_link%' => _x( 'A link to the Comment', '%comment_link% Hint Text', 'edd-slack' ),
+			'%username%' => _x( 'Display the Commenter\'s username', '%username% Hint Text', 'edd-slack' ),
+			'%email%' => _x( 'Display the Commenter\'s email', '%email% Hint Text', 'edd-slack' ),
+			'%name%' => _x( 'Display the Commenter\'s display name', '%name% Hint Text', 'edd-slack' ),
 		);
 		
 		$hints['comment_post'] = array_merge( $user_hints, $comment_hints );

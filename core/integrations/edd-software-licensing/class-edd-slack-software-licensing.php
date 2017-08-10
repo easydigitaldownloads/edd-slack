@@ -131,27 +131,37 @@ class EDD_Slack_Software_Licensing {
 	 * @return	  void
 	 */
 	public function edd_sl_activate_license( $license_id, $download_id ) {
+			
+		global $edd_options;
 		
-		// We need the Payment ID to get accurate Customer Data
-		$payment_id = get_post_meta( $license_id, '_edd_sl_payment_id', true );
+		// If Local URLs aren't set to be ignored, they will still trigger the notification
+		$bypass_local = isset( $edd_options['edd_sl_bypass_local_hosts'] );
+		$is_local_url = empty( $bypass_local ) ? false : edd_software_licensing()->is_local_url( $_GET['url'] );
 		
-		// This is the EDD Customer ID. This is not necessarily the same as the WP User ID
-		$customer_id = get_post_meta( $payment_id, '_edd_payment_customer_id', true );
-		$customer = new EDD_Customer( $customer_id );
+		if ( ! $is_local_url ) {
+			
+			// We need the Payment ID to get accurate Customer Data
+			$payment_id = get_post_meta( $license_id, '_edd_sl_payment_id', true );
+
+			// This is the EDD Customer ID. This is not necessarily the same as the WP User ID
+			$customer_id = get_post_meta( $payment_id, '_edd_payment_customer_id', true );
+			$customer = new EDD_Customer( $customer_id );
 		
-		do_action( 'edd_slack_notify', 'edd_sl_activate_license', array(
-			'user_id' => $customer->user_id, // If the User isn't a proper WP User, this will be 0
-			'name' => $customer->name,
-			'email' => $customer->email,
-			'license_id' => $license_id,
-			'license_key' => edd_software_licensing()->get_license_key( $license_id ),
-			'download_id' => $download_id,
-			'price_id' => edd_software_licensing()->get_price_id( $license_id ),
-			'expiration' => get_post_meta( $license_id, '_edd_sl_expiration', true ),
-			'active_site' => $_GET['url'], // EDD_SL_License has some methods to get this, but they are private and have the potential of giving us invalid data if URLs get filtered out. This ensures the shown URL is the one being activated, not just the last one in the stack
-			'site_count' => edd_software_licensing()->get_site_count( $license_id ),
-			'license_limit' => edd_software_licensing()->license_limit( $license_id ),
-		) );
+			do_action( 'edd_slack_notify', 'edd_sl_activate_license', array(
+				'user_id' => $customer->user_id, // If the User isn't a proper WP User, this will be 0
+				'name' => $customer->name,
+				'email' => $customer->email,
+				'license_id' => $license_id,
+				'license_key' => edd_software_licensing()->get_license_key( $license_id ),
+				'download_id' => $download_id,
+				'price_id' => edd_software_licensing()->get_price_id( $license_id ),
+				'expiration' => get_post_meta( $license_id, '_edd_sl_expiration', true ),
+				'active_site' => $_GET['url'], // EDD_SL_License has some methods to get this, but they are private and have the potential of giving us invalid data if URLs get filtered out. This ensures the shown URL is the one being activated, not just the last one in the stack
+				'site_count' => edd_software_licensing()->get_site_count( $license_id ),
+				'license_limit' => edd_software_licensing()->license_limit( $license_id ),
+			) );
+			
+		}
 		
 	}
 	
@@ -167,26 +177,36 @@ class EDD_Slack_Software_Licensing {
 	 */
 	public function edd_sl_deactivate_license( $license_id, $download_id ) {
 		
-		// We need the Payment ID to get accurate Customer Data
-		$payment_id = get_post_meta( $license_id, '_edd_sl_payment_id', true );
+		global $edd_options;
 		
-		// This is the EDD Customer ID. This is not necessarily the same as the WP User ID
-		$customer_id = get_post_meta( $payment_id, '_edd_payment_customer_id', true );
-		$customer = new EDD_Customer( $customer_id );
+		// If Local URLs aren't set to be ignored, they will still trigger the notification
+		$bypass_local = isset( $edd_options['edd_sl_bypass_local_hosts'] );
+		$is_local_url = empty( $bypass_local ) ? false : edd_software_licensing()->is_local_url( $_GET['url'] );
 		
-		do_action( 'edd_slack_notify', 'edd_sl_deactivate_license', array(
-			'user_id' => $customer->user_id, // If the User isn't a proper WP User, this will be 0
-			'name' => $customer->name,
-			'email' => $customer->email,
-			'license_id' => $license_id,
-			'license_key' => edd_software_licensing()->get_license_key( $license_id ),
-			'download_id' => $download_id,
-			'price_id' => edd_software_licensing()->get_price_id( $license_id ),
-			'expiration' => get_post_meta( $license_id, '_edd_sl_expiration', true ),
-			'active_site' => $_GET['url'], // EDD_SL_License has some methods to get this, but they are private and have the potential of giving us invalid data if URLs get filtered out. This ensures the shown URL is the one being deactivated, not just the last one in the stack
-			'site_count' => edd_software_licensing()->get_site_count( $license_id ),
-			'license_limit' => edd_software_licensing()->license_limit( $license_id ),
-		) );
+		if ( ! $is_local_url ) {
+			
+			// We need the Payment ID to get accurate Customer Data
+			$payment_id = get_post_meta( $license_id, '_edd_sl_payment_id', true );
+
+			// This is the EDD Customer ID. This is not necessarily the same as the WP User ID
+			$customer_id = get_post_meta( $payment_id, '_edd_payment_customer_id', true );
+			$customer = new EDD_Customer( $customer_id );
+		
+			do_action( 'edd_slack_notify', 'edd_sl_deactivate_license', array(
+				'user_id' => $customer->user_id, // If the User isn't a proper WP User, this will be 0
+				'name' => $customer->name,
+				'email' => $customer->email,
+				'license_id' => $license_id,
+				'license_key' => edd_software_licensing()->get_license_key( $license_id ),
+				'download_id' => $download_id,
+				'price_id' => edd_software_licensing()->get_price_id( $license_id ),
+				'expiration' => get_post_meta( $license_id, '_edd_sl_expiration', true ),
+				'active_site' => $_GET['url'], // EDD_SL_License has some methods to get this, but they are private and have the potential of giving us invalid data if URLs get filtered out. This ensures the shown URL is the one being deactivated, not just the last one in the stack
+				'site_count' => edd_software_licensing()->get_site_count( $license_id ),
+				'license_limit' => edd_software_licensing()->license_limit( $license_id ),
+			) );
+			
+		}
 		
 	}
 	
@@ -250,21 +270,61 @@ class EDD_Slack_Software_Licensing {
 				$trigger == 'edd_sl_activate_license' ||
 				$trigger == 'edd_sl_deactivate_license' ) {
 				
-				$download = EDDSLACK()->notification_integration->check_for_price_id( $fields['download'] );
-				
-				$download_id = $download['download_id'];
-				$price_id = $download['price_id'];
-				
-				// Download commented on doesn't match our Notification, bail
-				if ( $download_id !== 'all' && $download_id !== $args['download_id'] ) {
-					$args['bail'] = true;
-					return false;
+				// Support for EDD Slack v1.0.X
+				if ( ! is_array( $fields['download'] ) ) $fields['download'] = array( $fields['download'] );
+
+				if ( ! in_array( 'all', $fields['download'] ) ) {
+					
+					foreach ( $fields['download'] as $download ) {
+
+						$download = EDDSLACK()->notification_integration->check_for_price_id( $download );
+						$download_id = $download['download_id'];
+						$price_id = $download['price_id'];
+
+						// Download doesn't match our Notification, bail
+						if ( (int) $download_id !== $args['download_id'] ) {
+							$args['bail'] = true;
+							break;
+							return false;
+						}
+						
+						// Price ID doesn't match our Notification, bail
+						if ( $price_id !== null && $price_id !== $args['price_id'] ) {
+							$args['bail'] = true;
+							break;
+							return false;
+						}
+
+					}
+
 				}
-				
-				// Price ID doesn't match our Notification, bail
-				if ( $price_id !== null && $price_id !== $args['price_id'] ) {
-					$args['bail'] = true;
-					return false;
+				else {
+
+					// Support for EDD Slack v1.0.X
+					if ( ! isset( $fields['exclude_download'] ) ) $fields['exclude_download'] = array();
+
+					foreach ( $field['exclude_download'] as $exclusion ) {
+
+						$exclusion = EDDSLACK()->notification_integration->check_for_price_id( $exclusion );
+						$download_id = $excusion['download_id'];
+						$price_id = $exclusion['price_id'];
+
+						// Download matches an Exclusion, bail
+						if ( (int) $download_id == $args['download_id'] ) {
+							$args['bail'] = true;
+							break;
+							return false;
+						}
+						
+						// Price ID matches an Exclusion, bail
+						if ( $price_id !== null && $price_id == $args['price_id'] ) {
+							$args['bail'] = true;
+							break;
+							return false;
+						}
+
+					}
+
 				}
 				
 			}
@@ -371,6 +431,7 @@ class EDD_Slack_Software_Licensing {
 			'%license_key%' => _x( 'The License Key', '%license_key% Hint Text', 'edd-slack' ),
 			'%download%' => sprintf( _x( 'The %s the License Key is for', '%download% Hint Text', 'edd-slack' ), edd_get_label_singular() ),
 			'%expiration%' => _x( 'The date when the License expires', '%expiration% Hint Text', 'edd-slack' ),
+			'%site_count%' => _x( 'The number of sites this License is active on', '%site_count% Hint Text', 'edd-slack' ),
 			'%license_limit%' => _x( 'The number of sites the License can be active on', '%license_limit% Hint Text', 'edd-slack' ),
 			'%license_link%' => _x( 'A link to the License', '%license_link% Hint Text', 'edd-slack' ),
 		);

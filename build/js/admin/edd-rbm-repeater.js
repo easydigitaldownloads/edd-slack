@@ -133,7 +133,7 @@ function init_edd_repeater_chosen( modal ) {
 		
 		$( document ).on( 'closed.zf.reveal', '.edd-rbm-repeater-content.reveal', function() {
 			
-			var title = $( this ).find( 'td:first-of-type *[type!="hidden"]' ),
+			var title = $( this ).find( 'td:first-of-type input[type!="hidden"]' ),
 				uuid = $( this ).closest( '.edd-rbm-repeater-content.reveal' ).data( 'reveal' ),
 				$row = $( '[data-open="' + uuid + '"]' );
 			

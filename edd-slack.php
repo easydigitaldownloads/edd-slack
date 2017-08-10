@@ -111,7 +111,6 @@ if ( ! class_exists( 'EDD_Slack' ) ) {
 			
 			$this->setup_constants();
 			$this->load_textdomain();
-			$this->require_necessities();
 			
 			// Register our CSS/JS for the whole plugin
 			add_action( 'init', array( $this, 'register_scripts' ) );
@@ -141,6 +140,27 @@ if ( ! class_exists( 'EDD_Slack' ) ) {
 				}
 				
 			}
+			
+			if ( has_action( 'admin_notices', array( $this, 'admin_errors' ) ) ) {
+				return false;
+			}
+			
+			// Load this first so that we have the ability to use it during Upgrade Routines
+			require_once EDD_Slack_DIR . '/core/slack/class-edd-slack-api.php';
+			$this->slack_api = new EDD_Slack_API();
+			
+			// Don't try to run upgrade routines unless we're on the Backend
+			// Less hitting the DB for a version number as well as if there are noticies to show, it will be more apparent as to what needs done by the User
+			// If they have hit the Backend via updating within WP this will check right away
+			// If they do it via SFTP, it won't until the next time they load the Dashboard
+			// Since I don't want literally every interaction within WP to check the Database for this, this is how it will be for now
+			if ( is_admin() ) {
+			
+				$this->upgrade_routine();
+				
+			}
+			
+			$this->require_necessities();
 			
 		}
 
@@ -221,6 +241,104 @@ if ( ! class_exists( 'EDD_Slack' ) ) {
 		}
 		
 		/**
+		 * Run any appropriate Upgrade Routines
+		 * If the upgrade requires User Interaction, it forwards the version to the pending_upgrade() method
+		 *                                                          
+		 * @access		private
+		 * @since		1.1.0
+		 * @return		bool|void Normally returns nothing, but will bail if appropriate
+		 */
+		private function upgrade_routine() {
+			
+			$last_upgrade = edd_get_option( 'slack_last_upgrade', false );
+			
+			// If nothing is set, assume they've never done an upgrade
+			if ( ! $last_upgrade ) {
+				$last_upgrade = '1.0.0';
+			}
+			
+			if ( strpos( $last_upgrade, 'pending' !== false ) ) {
+				// Pending routines are handled afterward
+				// This just skips the need to check other Versions 
+			}
+			else if ( version_compare( $last_upgrade, '1.1.0' ) < 0 ) {
+				
+				$oauth_token = edd_get_option( 'slack_app_oauth_token', false );
+				
+				if ( $oauth_token &&
+				   $oauth_token !== '-1' ) {
+					
+					// Clear out values so Slack doesn't try to send Interactive Notifications (Or other related things) and fail
+					$this->slack_api->revoke_oauth_token();
+					edd_update_option( 'slack_app_oauth_token', '-1' );
+					edd_delete_option( 'slack_app_has_client_scope' );
+					
+					// Set to pending since we need the User to re-link the Slack App
+					$last_upgrade = 'pending-1.1.0';
+					
+				}
+				else {
+					$last_upgrade = '1.1.0';
+				}
+				
+				edd_update_option( 'slack_last_upgrade', $last_upgrade );
+				
+			}
+			
+			// Run any Pending routines
+			if ( strpos( $last_upgrade, 'pending' ) !== false ) {
+				
+				$pending_version = str_replace( 'pending-', '', $last_upgrade );
+				
+				$finished_pending = $this->pending_upgrade( $pending_version );
+				
+				// We're pending, this needs user interaction before we can proceed
+				if ( ! $finished_pending ) {
+					return false;
+				}
+				
+			}
+			
+		}
+		
+		/**
+		 * Check to see if Pending Upgrades have been completed by the User
+		 * 
+		 * @param		string  $pending_version Upgrade that is Pending
+		 *                                                  
+		 * @access		private
+		 * @since		1.1.0
+		 * @return		boolean Whether the Pending Upgrade has been completed or not
+		 */
+		private function pending_upgrade( $pending_version ) {
+			
+			if ( $pending_version == '1.1.0' ) {
+				
+				$oauth_token = edd_get_option( 'slack_app_oauth_token', false );
+				
+				if ( ( $oauth_token && $oauth_token !== '-1' ) ||
+			   ( ! isset( $_GET['error'] ) && isset( $_GET['token_type'] ) && isset( $_GET['section'] ) && $_GET['section'] == 'edd-slack-settings' ) ) {
+				
+					edd_update_option( 'slack_last_upgrade', $pending_version );
+					
+					return true;
+					
+				}
+				else {
+					
+					$this->admin_errors[] = sprintf( _x( '%s v%s requires additional permissions for Interactive Notifications and Slash Commands. You will need to re-link your Slack App %s.', 'OAUTH Token Needs Updating v1.1.0', 'edd-slack' ), '<strong>' . $this->plugin_data['Name'] . '</strong>', $pending_version, '<a href="' . admin_url( 'edit.php?post_type=download&page=edd-settings&tab=extensions&section=edd-slack-settings' ) . '">here</a>' );
+				
+					add_action( 'admin_notices', array( $this, 'admin_errors' ) );
+					
+				}
+				
+			}
+			
+			return false;
+			
+		}
+		
+		/**
 		 * Include different aspects of the Plugin
 		 * 
 		 * @access	  private
@@ -247,9 +365,6 @@ if ( ! class_exists( 'EDD_Slack' ) ) {
 				}
 				
 			}
-			
-			require_once EDD_Slack_DIR . '/core/slack/class-edd-slack-api.php';
-			$this->slack_api = new EDD_Slack_API();
 			
 			require_once EDD_Slack_DIR . '/core/notifications/class-edd-slack-notification-handler.php';
 			$this->notification_handler = new EDD_Slack_Notification_Handler();
@@ -393,8 +508,10 @@ if ( ! class_exists( 'EDD_Slack' ) ) {
 			// SSL anywhere, not just Admin
 			if ( is_ssl() ) {
 			
+				$oauth_token = edd_get_option( 'slack_app_oauth_token', false );
+		
 				// If we've got a linked Slack App
-				if ( edd_get_option( 'slack_app_oauth_token' ) ) {
+				if ( $oauth_token && $oauth_token !== '-1' ) {
 					
 					require_once EDD_Slack_DIR . '/core/ssl-only/class-edd-slack-ssl-rest.php';
 					$this->slack_rest_api = new EDD_Slack_SSL_REST();
@@ -403,7 +520,7 @@ if ( ! class_exists( 'EDD_Slack' ) ) {
 				
 				// If we've linked our Slack App previously or just now
 				// This file is loaded at `plugins_loaded` and the data is saved at `init`, so we can't reliably check on that first load
-				if ( edd_get_option( 'slack_app_oauth_token', false ) ||
+				if ( ( $oauth_token && $oauth_token !== '-1' ) ||
 			   ( ! isset( $_GET['error'] ) && isset( $_GET['token_type'] ) ) ) {
 
 					require_once EDD_Slack_DIR . '/core/ssl-only/interactive-notifications/class-edd-slack-app-interactive-notification-settings.php';
@@ -558,9 +675,9 @@ if ( ! class_exists( 'EDD_Slack' ) ) {
 				),
 				'download' => array(
 					'desc' => '',
-					'label' => edd_get_label_singular(),
+					'label' => edd_get_label_plural(),
 					'type' => 'select',
-					'multiple' => false,
+					'multiple' => true,
 					'field_class' => array(
 						'edd-slack-chosen',
 						'edd-slack-field',
@@ -572,10 +689,23 @@ if ( ! class_exists( 'EDD_Slack' ) ) {
 						'required',
 					),
 					'options' => array(
-						'' => sprintf( _x( '-- Select %s --', 'Select Field Default', 'edd-slack' ), edd_get_label_singular() ),
 						'all' => sprintf( _x( 'All %s', 'All items in a Select Field', 'edd-slack' ), edd_get_label_plural() ),
 					) + $downloads_array,
-					'placeholder' => sprintf( _x( '-- Select %s --', 'Select Field Default', 'edd-slack' ), edd_get_label_singular() ),
+					'placeholder' => sprintf( _x( '-- Select %s --', 'Select Field Default', 'edd-slack' ), edd_get_label_plural() ),
+					'std' => '',
+				),
+				'exclude_download' => array(
+					'desc' => '',
+					'label' => sprintf( __( 'Exclude %s (Optional)', 'edd-slack' ), edd_get_label_plural() ),
+					'type' => 'select',
+					'multiple' => true,
+					'field_class' => array(
+						'edd-slack-chosen',
+						'edd-slack-field',
+						'edd-slack-exclude-download', // This is a conditional field, but not in the same way as others. It will be hidden/shown based on the value of .edd-slack-download
+					),
+					'options' => $downloads_array,
+					'placeholder' => sprintf( _x( '-- Select %s --', 'Select Field Default', 'edd-slack' ), edd_get_label_plural() ),
 					'std' => '',
 				),
 				'discount_code' => array(

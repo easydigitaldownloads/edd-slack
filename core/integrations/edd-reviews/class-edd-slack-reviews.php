@@ -267,14 +267,45 @@ class EDD_Slack_Reviews {
 			if ( $trigger == 'edd_insert_review' ||
 			   $trigger == 'edd_vendor_feedback' ) {
 				
-				$download = EDDSLACK()->notification_integration->check_for_price_id( $fields['download'] );
-				
-				$download_id = $download['download_id'];
-				
-				// Download Reviewed to doesn't match our Notification, bail
-				if ( $download_id !== 'all' && $download_id !== $args['comment_post_id'] ) {
-					$args['bail'] = true;
-					return false;
+				// Support for EDD Slack v1.0.X
+				if ( ! is_array( $fields['download'] ) ) $fields['download'] = array( $fields['download'] );
+
+				if ( ! in_array( 'all', $fields['download'] ) ) {
+					
+					foreach ( $fields['download'] as $download ) {
+
+						$download = EDDSLACK()->notification_integration->check_for_price_id( $download );
+						$download_id = $download['download_id'];
+
+						// Download doesn't match our Notification, bail
+						if ( (int) $download_id !== $args['comment_post_id'] ) {
+							$args['bail'] = true;
+							break;
+							return false;
+						}
+
+					}
+
+				}
+				else {
+
+					// Support for EDD Slack v1.0.X
+					if ( ! isset( $fields['exclude_download'] ) ) $fields['exclude_download'] = array();
+
+					foreach ( $field['exclude_download'] as $exclusion ) {
+
+						$exclusion = EDDSLACK()->notification_integration->check_for_price_id( $exclusion );
+						$download_id = $excusion['download_id'];
+
+						// Download matches an Exclusion, bail
+						if ( (int) $download_id == $args['comment_post_id'] ) {
+							$args['bail'] = true;
+							break;
+							return false;
+						}
+
+					}
+
 				}
 				
 			}
@@ -373,6 +404,12 @@ class EDD_Slack_Reviews {
 	 */
 	public function custom_replacement_hints( $hints, $user_hints, $payment_hints ) {
 		
+		$user_hints = array_merge( $user_hints, array(
+			'%username%' => _x( 'Display the Reviewer\'s username', '%username% Hint Text', 'edd-slack' ),
+			'%email%' => _x( 'Display the Reviewer\'s email', '%email% Hint Text', 'edd-slack' ),
+			'%name%' => _x( 'Display the Reviewer\'s display name', '%name% Hint Text', 'edd-slack' ),
+		) );
+		
 		$reviews_hints = array(
 			'%download%' => sprintf( _x( 'The %s the Review was made on', '%download% Hint Text', 'edd-slack' ), edd_get_label_singular() ),
 			'%review_title%' => _x( 'The Review title', '%review_title% Hint Text', 'edd-slack' ),
@@ -383,9 +420,9 @@ class EDD_Slack_Reviews {
 		
 		$vendor_feedback_hints = array(
 			'%review_item_as_described%' => sprintf( 'Was the Item as Described?', '%review_item_as_described% Hint Text', 'edd-slack' ),
-			'%vendor_username%' => _x( 'Display the Vendor\'s username', '%vendor_username% Hint Text', 'edd-slack' ),
-			'%vendor_email%' => _x( 'Display the Vendor\'s email', '%vendor_email% Hint Text', 'edd-slack' ),
-			'%vendor_name%' => _x( 'Display the Vendor\'s display name', '%vendor_name% Hint Text', 'edd-slack' ),
+			'%vendor_username%' => sprintf( _x( 'Display the %s\'s username', '%vendor_username% Hint Text', 'edd-slack' ), EDD_FES()->helper->get_vendor_constant_name( false, true ) ),
+			'%vendor_email%' => sprintf( _x( 'Display the %s\'s email', '%vendor_email% Hint Text', 'edd-slack' ), EDD_FES()->helper->get_vendor_constant_name( false, true ) ),
+			'%vendor_name%' => sprintf( _x( 'Display the %s\'s display name', '%vendor_name% Hint Text', 'edd-slack' ), EDD_FES()->helper->get_vendor_constant_name( false, true ) ),
 		);
 		
 		$hints['edd_insert_review'] = array_merge( $user_hints, $reviews_hints );

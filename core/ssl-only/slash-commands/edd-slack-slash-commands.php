@@ -303,7 +303,8 @@ if ( ! function_exists( 'edd_slack_slash_command_discount' ) ) {
 				$discount->__set( 'type', 'flat' );
 			}
 			
-			$discount->__set( 'amount', $amount );
+			// Send in "pure" numbers
+			$discount->__set( 'amount', preg_replace( '/([^0-9|.])+/', '', $amount ) );
 			
 			$discount->save();
 			

@@ -309,6 +309,26 @@ if ( ! function_exists( 'edd_slack_slash_command_discount' ) ) {
 		$discount_code = trim( $values[0] );
 		$discount_code = preg_replace( '/([^A-Z0-9])+/i', '', $discount_code );
 		
+		if ( empty( $discount_code ) ) {
+			
+			$response_text = '*' . _x( 'You must provide a Discount Code', '/edd discount No Discount Code Provided Title', 'edd-slack' ) . '*';
+			
+			$response_text .= "\n" . sprintf( _x( "Please run %s for examples.", '/edd discount No Discount Code Provided Text', 'edd-slack' ), '`' . $request_body['command'] . ' help discount' . '`' );
+			
+			// Response URLs are Incoming Webhooks
+			$response_message = EDDSLACK()->slack_api->push_incoming_webhook(
+				$response_url,
+				array(
+					'username' => get_bloginfo( 'name' ),
+					'icon' => function_exists( 'has_site_icon' ) && has_site_icon() ? get_site_icon_url( 270 ) : '',
+					'text' => $response_text,
+				)
+			);
+			
+			return false;
+			
+		}
+		
 		// Determine whether we're creating a Discount Code or not
 		$amount = ( isset( $values[1] ) && ! empty ( $values[1] ) ) ? trim( $values[1] ) : false;
 		
@@ -461,6 +481,26 @@ if ( ! function_exists( 'edd_slack_slash_command_customer' ) ) {
 	function edd_slack_slash_command_customer( $email_or_id, $response_url, $request_body ) {
 		
 		$email_or_id = trim( $email_or_id );
+		
+		if ( empty( $email_or_id ) ) {
+			
+			$response_text = '*' . _x( 'You must provide a Customer ID or Customer Email', '/edd customer No Customer ID or Email Provided Title', 'edd-slack' ) . '*';
+			
+			$response_text .= "\n" . sprintf( _x( "Please run %s for examples.", '/edd cusomter No Customer ID or Email Provided Text', 'edd-slack' ), '`' . $request_body['command'] . ' help customer' . '`' );
+			
+			// Response URLs are Incoming Webhooks
+			$response_message = EDDSLACK()->slack_api->push_incoming_webhook(
+				$response_url,
+				array(
+					'username' => get_bloginfo( 'name' ),
+					'icon' => function_exists( 'has_site_icon' ) && has_site_icon() ? get_site_icon_url( 270 ) : '',
+					'text' => $response_text,
+				)
+			);
+			
+			return false;
+			
+		}
 		
 		// Grab by Customer ID or Customer Email automagically
 		$customer = new EDD_Customer( $email_or_id, false );

@@ -290,10 +290,19 @@ if ( ! function_exists( 'edd_slack_slash_command_discount' ) ) {
 		// If amount was passed, then we are creating a Discount
 		if ( $amount ) {
 			
-			$discount = new EDD_Discount( $discount_post_id, false, false );
+			$discount = new EDD_Discount( $discount_code, true );
 			
-			$discount->__set( 'name', $discount_code );
-			$discount->__set( 'code', $discount_code );
+			if ( $discount->get_ID() > 0 ) {
+				$response_title = sprintf( _x( 'Discount Code Updated: %s', 'Title for /edd discount Updated', 'edd-slack' ), $discount_code );
+			}
+			else {
+				$response_title = sprintf( _x( 'Discount Code Created: %s', 'Title for /edd discount Creation', 'edd-slack' ), $discount_code );
+				
+				$discount->__set( 'name', $discount_code );
+				$discount->__set( 'code', $discount_code );
+				
+			}
+			
 			$discount->__set( 'status', 'active' );
 			
 			if ( strpos( $amount, '%' ) !== false ) {
@@ -307,8 +316,6 @@ if ( ! function_exists( 'edd_slack_slash_command_discount' ) ) {
 			$discount->__set( 'amount', preg_replace( '/([^0-9|.])+/', '', $amount ) );
 			
 			$discount->save();
-			
-			$response_title = sprintf( _x( 'Discount Code Created: %s', 'Title for /edd discount Creation', 'edd-slack' ), $discount_code );
 			
 		}
 		else {

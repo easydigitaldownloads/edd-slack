@@ -60,7 +60,14 @@ if ( ! function_exists( 'edd_slack_slash_command_help' ) ) {
 					'`' . $request_body['command'] . ' discount ' . sprintf( _x( 'DISCOUNTCODE 42%%', '/edd discount Percentage Example', 'edd-slack' ) ) . '` - ' . _x( 'Create or Update a Discount Code with a Percentage Discount', '/edd discount Percentage Example Description', 'edd-slack' ),
 				),
 			),
-		) );
+			'customer' => array(
+				'description' => _x( 'Outputs information about a Customer. You can use either their Customer ID or their Primary Email Address for this command.', '/edd customer Description', 'edd-slack' ),
+				'examples' => array(
+					'`' . $request_body['command'] . ' customer ' . '42`',
+					'`' . $request_body['command'] . ' customer ' . sprintf( '%s`', get_option( 'admin_email', _x( 'fakeemail@fake.dev', '/edd customer Email Fallback', 'edd-slack' ) ) ),
+				),
+			),
+		), $request_body );
 		
 		$commands['help'] = array(
 			'description' => _x( 'Shows this Dialog. Optionally can show the Help Dialog for a Single Command.', '/edd help Description', 'edd-slack' ),
@@ -267,7 +274,7 @@ if ( ! function_exists( 'edd_slack_slash_command_discount' ) ) {
 	 * Return information about a discount code
 	 * Alternatively, create one if it does not exist
 	 * 
-	 * @param	  string $values	   If this String is non-empty, we're changing the Version (Unused)
+	 * @param	  string $values	   Holds both the Discount Code and any Amount assigned to it
 	 * @param	  string $response_url Webhook to send the Response Message to
 	 * @param	  array  $request_body POST'd data from the Slack Client
 	 *															  
@@ -378,6 +385,94 @@ if ( ! function_exists( 'edd_slack_slash_command_discount' ) ) {
 		else {
 			$notification_args['text'] = $response_text;
 		}
+		
+		// Response URLs are Incoming Webhooks
+		$response_message = EDDSLACK()->slack_api->push_incoming_webhook(
+			$response_url,
+			$notification_args
+		);
+		
+	}
+	
+}
+
+if ( ! function_exists( 'edd_slack_slash_command_customer' ) ) {
+	
+	/**
+	 * Returns information about a Customer
+	 * 
+	 * @param		string $email_or_id  Either the Customer ID or Customer Email. The EDD_Customer Object doesn't care either way
+	 * @param		string $response_url Webhook to send the Response Message to
+	 * @param		array  $request_body POST'd data from the Slack Client
+	 *                                                         
+	 * @since		1.1.0
+	 * @return		void
+	 */
+	function edd_slack_slash_command_customer( $email_or_id, $response_url, $request_body ) {
+		
+		$email_or_id = trim( $email_or_id );
+		
+		// Grab by Customer ID or Customer Email automagically
+		$customer = new EDD_Customer( $email_or_id, false );
+		
+		$attachments = array();
+		if ( $customer->id > 0 ) {
+			
+			// Why does the Customer Object store everything in reverse? Seriously
+			$payment_ids = array_reverse( $customer->get_payment_ids() );
+			$most_recent_payment_id = $payment_ids[0];
+			
+			$attachments = array(
+				array(
+					'title' => '#' . $customer->id . ' ' . $customer->name . ' - ' . $customer->email,
+					'text' => '',
+					'fields' => array(
+						array(
+							'title' => _x( 'Number of Purchases', 'Customer Number or Purchases Purchases', 'edd-slack' ),
+							'value' => $customer->purchase_count,
+							'short' => true,
+						),
+						array(
+							'title' => _x( 'Total Value', 'Total Customer Value', 'edd-slack' ),
+							'value' => html_entity_decode( edd_currency_filter( number_format( $customer->purchase_value, 2 ) ) ),
+							'short' => true,
+						),
+						array(
+							'title' => _x( 'Most Recent Payment', 'Customer Most Recent Payment', 'edd-slack' ),
+							'value' => '<' . admin_url( 'edit.php?post_type=download&page=edd-payment-history&view=view-order-details&id=' . $most_recent_payment_id ) . '|' . _x( 'Payment', 'Payment ID Prefix', 'edd-slack' ) . ' #' . $most_recent_payment_id . '>',
+							'short' => true,
+						),
+						array(
+							'title' => _x( 'Customer Details', 'Customer Details URL', 'edd-slack' ),
+							'value' => '<' . admin_url( 'edit.php?post_type=download&page=edd-customers&view=overview&id=' . $customer->id ) . '|' . _x( 'Full Customer Details within WordPress', 'Customer Details Link Text', 'edd-slack' ) . '>',
+							'short' => true,
+						),
+						array(
+							'title' => _x( 'All Email Addresses Used', 'Customer Email Addresses Used List', 'edd-slack' ),
+							'value' => html_entity_decode( '&bull; ' . rtrim( implode( "\n&bull; ", array_reverse( $customer->emails ) ), "\n&bull;" ) ),
+							'short' => false,
+						),
+					),
+				),
+			);
+			
+		}
+		else {
+			
+			$attachments = array(
+				array(
+					'title' => _x( 'Customer Not Found', 'Customer Not Found text', 'edd-slack' ),
+					'text' => sprintf( _x( 'Customer with the ID or Email of "%s" was not found', 'Customer Not Found Clarifier', 'edd-slack' ), $email_or_id ),
+				),
+			);
+			
+		}
+		
+		$notification_args = array(
+			'username' => get_bloginfo( 'name' ),
+			'icon' => function_exists( 'has_site_icon' ) && has_site_icon() ? get_site_icon_url( 270 ) : '',
+			'attachments' => $attachments,
+		);
 		
 		// Response URLs are Incoming Webhooks
 		$response_message = EDDSLACK()->slack_api->push_incoming_webhook(

@@ -55,9 +55,9 @@ if ( ! function_exists( 'edd_slack_slash_command_help' ) ) {
 			'discount' => array(
 				'description' => _x( 'Outputs information about a Discount Code. This can also be used to create new Discount Codes.', '/edd discount Description', 'edd-slack' ),
 				'examples' => array(
-					_x( 'DISCOUNTCODE', '/edd discount Default Example', 'edd-slack' ),
-					sprintf( _x( 'DISCOUNTCODE %s', '/edd discount Dollar Amount Example', 'edd-slack' ), html_entity_decode( edd_currency_filter( '3.50' ) ) ),
-					sprintf( _x( 'DISCOUNTCODE 42%%', '/edd discount Percentage Example', 'edd-slack' ) ),
+					'`' . $request_body['command'] . ' discount ' . _x( 'DISCOUNTCODE', '/edd discount Default Example', 'edd-slack' ) . '` - ' . _x( 'Retrieve information about a Discount Code', '/edd discount Default Example Discription', 'edd-slack' ),
+					'`' . $request_body['command'] . ' discount ' . sprintf( _x( 'DISCOUNTCODE %s', '/edd discount Dollar Amount Example', 'edd-slack' ), html_entity_decode( edd_currency_filter( '3.50' ) ) ) . '` - ' . _x( 'Create or Update a Discount Code with a Flat Rate Discount', '/edd discount Dollar Amount Example Description', 'edd-slack' ),
+					'`' . $request_body['command'] . ' discount ' . sprintf( _x( 'DISCOUNTCODE 42%%', '/edd discount Percentage Example', 'edd-slack' ) ) . '` - ' . _x( 'Create or Update a Discount Code with a Percentage Discount', '/edd discount Percentage Example Description', 'edd-slack' ),
 				),
 			),
 		) );
@@ -100,7 +100,7 @@ if ( ! function_exists( 'edd_slack_slash_command_help' ) ) {
 				
 				foreach ( $args['examples'] as $example_text ) {
 					
-					$example .= "\n\t`" . $request_body['command'] . ' ' . $command . ' ' . $example_text . '`';
+					$example .= "\n\t" . $example_text;
 					
 				}
 				

@@ -353,6 +353,7 @@ if ( ! function_exists( 'edd_slack_slash_command_discount' ) ) {
 		}
 		
 		$success = false;
+		$attachments = array();
 		
 		// Discount exists, either previously or was just created
 		if ( $discount->get_ID() !== 0 ) {
@@ -366,14 +367,50 @@ if ( ! function_exists( 'edd_slack_slash_command_discount' ) ) {
 			$discount_start = ( $discount->get_start() ) ? date_i18n( $date_format . ' ' . $time_format, strtotime( $discount->get_start() ) ) : _x( 'No Start Date', 'Discount No Start Date', 'edd-slack' );
 			$discount_expiration = ( $discount->get_expiration() ) ? date_i18n( $date_format . ' ' . $time_format, strtotime( $discount->get_expiration() ) ) : _x( 'No Expiration Date', 'Discount No Expiration Date', 'edd-slack' );
 			$discount_status = ( $discount->get_status() == 'active' ) ? __( 'Active', 'edd-slack' ) : __( 'Inactive', 'edd-slack' );
-
-			$response_text .= _x( 'Name: ', 'Discount Name', 'edd-slack' ) . $discount->get_name();
-			$response_text .= "\n" . _x( 'Amount: ', 'Discount Amount', 'edd-slack' ) . $discount_amount;
-			$response_text .= "\n" . _x( 'Uses: ', 'Discount Uses', 'edd-slack' ) . $discount->get_uses();
-			$response_text .= "\n" . _x( 'Start Date: ', 'Discount Start Date', 'edd-slack' ) . $discount_start;
-			$response_text .= "\n" . _x( 'Expiration: ', 'Discount Expiration', 'edd-slack' ) . $discount_expiration;
-			$response_text .= "\n" . _x( 'Status: ', 'Discount Status', 'edd-slack' ) . $discount_status;
-			$response_text .= "\n\n" . '<' . $discount->edit_url() . '|' . _x( 'Edit this Discount Code', 'Edit Discount Code Link Text', 'edd-slack' ) . '>';
+			
+			$attachments = array(
+				array(
+					'title' => $response_title,
+					'text' => '',
+					'fields' => array(
+						array(
+							'title' => _x( 'Name', 'Discount Name', 'edd-slack' ),
+							'value' => $discount->get_name(),
+							'short' => true,
+						),
+						array(
+							'title' => _x( 'Amount', 'Discount Amount', 'edd-slack' ),
+							'value' => $discount_amount,
+							'short' => true,
+						),
+						array(
+							'title' => _x( 'Uses', 'Discount Uses', 'edd-slack' ),
+							'value' => $discount->get_uses(),
+							'short' => true,
+						),
+						array(
+							'title' => _x( 'Status', 'Discount Status', 'edd-slack' ),
+							'value' => $discount_status,
+							'short' => true,
+						),
+						array(
+							'title' => _x( 'Start Date', 'Discount Start Date', 'edd-slack' ),
+							'value' => $discount_start,
+							'short' => true,
+						),
+						array(
+							'title' => _x( 'Expiration', 'Discount Expiration', 'edd-slack' ),
+							'value' => $discount_expiration,
+							'short' => true,
+						),
+						array(
+							'title' => _x( 'Discount Code Details', 'Discount Code Details Title', 'edd-slack' ),
+							'value' => '<' . $discount->edit_url() . '|' . _x( 'Full Discount Code Details with WordPress', 'Edit Discount Code Link Text', 'edd-slack' ) . '>',
+							'short' => false,
+						),
+					),
+				),
+			);
 			
 		}
 		else {
@@ -391,13 +428,6 @@ if ( ! function_exists( 'edd_slack_slash_command_discount' ) ) {
 		
 		// On Failure we want to use `` code designators, but that does not work with Attachments
 		if ( $success ) {
-			
-			$attachments = array(
-				array(
-					'title' => $response_title,
-					'text' => $response_text,
-				),
-			);
 			
 			$notification_args['attachments'] = $attachments;
 			

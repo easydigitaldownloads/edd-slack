@@ -206,16 +206,36 @@ if ( ! function_exists( 'edd_slack_slash_command_sales' ) ) {
 		$attachments = array(
 			array(
 				'title' => sprintf( _x( 'Earnings Report for %s', 'Earnings Report for this Period /edd sales', 'edd-slack' ), $human_date_range ),
-				'text' => html_entity_decode( sprintf( _x( 'Total Earnings for %s: %s', 'Total Earnings for this Period /edd sales', 'edd-slack' ), $human_date_range, edd_currency_filter( edd_format_amount( $values['earnings_totals'] ) ) ) ) . "\n"
-					. html_entity_decode( sprintf( _x( 'Total Sales for %s: %s', 'Total Sales for this Period /edd sales', 'edd-slack' ), $human_date_range, edd_format_amount( $values['sales_totals'], false ) ) ),
+				'text' => '',
+				'fields' => array(
+					array(
+						'title' => sprintf( _x( 'Total Earnings for %s', 'Total Earnings for this Period /edd sales', 'edd-slack' ), $human_date_range ),
+						'value' => html_entity_decode( edd_currency_filter( edd_format_amount( $values['earnings_totals'] ) ) ),
+						'short' => true,
+					),
+					array(
+						'title' => sprintf( _x( 'Total Sales for %s', 'Total Sales for this Period /edd sales', 'edd-slack' ), $human_date_range ),
+						'value' => html_entity_decode( edd_format_amount( $values['sales_totals'], false ) ),
+						'short' => true,
+					),
+				),
 			),
 		);
 
 		// If we're checking for the Month, also show Estimations
 		if ( $dates['range'] == 'this_month' ) {
-
-			$attachments[0]['text'] .= "\n" . html_entity_decode( sprintf( _x( 'Estimated Monthly Earnings: %s', 'Estimated Montly Earnings /eddsales', 'edd-slack' ), edd_currency_filter( edd_format_amount( $values['estimated']['earnings'] ) ) ) ) . "\n"
-				. html_entity_decode( sprintf( _x( 'Estimated Monthly Sales: %s', 'Estimated Montly Sales /edd sales', 'edd-slack' ), edd_format_amount( $values['estimated']['sales'], false ) ) );
+			
+			$attachments[0]['fields'][] = array(
+				'title' => _x( 'Estimated Monthly Earnings', 'Estimated Montly Earnings /eddsales', 'edd-slack' ),
+				'value' => html_entity_decode( edd_currency_filter( edd_format_amount( $values['estimated']['earnings'] ) ) ),
+				'short' => true,
+			);
+			
+			$attachments[0]['fields'][] = array(
+				'title' => _x( 'Estimated Monthly Sales', 'Estimated Montly Sales /edd sales', 'edd-slack' ),
+				'value' => html_entity_decode( edd_format_amount( $values['estimated']['sales'], false ) ),
+				'short' => true,
+			);
 
 		}
 

@@ -159,7 +159,7 @@ class EDD_Slack_Admin {
 			$edd_slack_settings[] = array(
 				'type' => 'descriptive_text',
 				'id' => 'edd-slack-no-ssl-text',
-				'desc' => _x( 'Some extra functionality is available only for SSL-enabled sites. Please see the <a href="//docs.easydigitaldownloads.com/article/1727-edd-slack-setting-up-a-slack-app" target="_blank">Documentation</a> for more details.', 'No SSL Settings Description', 'edd-slack' ),
+				'desc' => _x( 'Some functionality is available only for SSL-enabled sites. Please see the <a href="//docs.easydigitaldownloads.com/article/1727-edd-slack-setting-up-a-slack-app" target="_blank">documentation</a> for more details.', 'No SSL Settings Description', 'edd-slack' ),
 			);
 			
 		}

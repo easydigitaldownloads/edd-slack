@@ -292,7 +292,7 @@ class EDD_Slack_Reviews {
 					// Support for EDD Slack v1.0.X
 					if ( ! isset( $fields['exclude_download'] ) ) $fields['exclude_download'] = array();
 
-					foreach ( $field['exclude_download'] as $exclusion ) {
+					foreach ( $fields['exclude_download'] as $exclusion ) {
 
 						$exclusion = EDDSLACK()->notification_integration->check_for_price_id( $exclusion );
 						$download_id = $excusion['download_id'];

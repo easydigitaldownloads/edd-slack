@@ -49,6 +49,9 @@ function openModal( uuid, row = undefined ) {
 	
 	// Set the Selected Downloads Array to the value of the Downloads Field within the now open Modal
 	eddSlackSelectedDownloads = $modal.find( '.edd-slack-download' ).val();
+	
+	// If there's no value, set to an empty Array
+	eddSlackSelectedDownloads = ( eddSlackSelectedDownloads === null ) ? [] : eddSlackSelectedDownloads;
 
 	$modal.foundation( 'open' );
 

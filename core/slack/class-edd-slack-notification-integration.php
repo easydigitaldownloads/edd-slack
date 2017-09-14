@@ -84,7 +84,7 @@ class EDD_Slack_Notification_Integration {
 		$fields = wp_parse_args( array_filter( $fields ), array(
 			'webhook_url'	 => ( $webhook = edd_get_option( 'slack_webhook_default') ) ? $webhook : '',
 			'channel'		 => '',
-			'message_text'	=> '',
+			'message_text'	=> ' ',
 			'message_title'   => $post->post_title,
 			'message_pretext' => '',
 			'color'		  => '',

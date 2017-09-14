@@ -201,6 +201,12 @@ class EDD_Slack_Notification_Integration {
 						
 						if ( isset( $cart_contents[ $download_id ] ) ) {
 							
+							// If 0 (None) is the Price ID, then we don't care. This allows "All Variants" to work
+							if ( in_array( 0, $price_ids ) ) {
+								$price_id_bail = false;
+								break;
+							}
+							
 							// If there's a difference between the two arrays of Price IDs, then we know it exists in the Cart
 							if ( $price_ids !== array_diff( $price_ids, $cart_contents[ $download_id ] ) ) {
 								$price_id_bail = false;
@@ -219,7 +225,7 @@ class EDD_Slack_Notification_Integration {
 					}
 					
 				}
-				else {
+				else { // All Downloads, with Exclusions
 					
 					// Support for EDD Slack v1.0.X
 					if ( ! isset( $fields['exclude_download'] ) ) $fields['exclude_download'] = array();
@@ -245,8 +251,14 @@ class EDD_Slack_Notification_Integration {
 						
 						if ( isset( $cart_contents[ $download_id ] ) ) {
 							
-							// If there's a difference between the two arrays of Price IDs, then we have hit an exclusion
-							if ( $cart_contents[ $download_id ] !== array_diff( $price_ids, $cart_contents[ $download_id ] ) ) {
+							// If 0 (None) is the Price ID, then we don't care what is in the cart. It is "All Variants" and we're going to bail.
+							if ( in_array( 0, $price_ids ) ) {
+								$exclusion_bail = true;
+								break;
+							}
+							
+							// If there are similarities between the two arrays of Price IDs, then we have hit an exclusion
+							if ( ! empty( array_intersect( $price_ids, $cart_contents[ $download_id ] ) ) ) {
 								$exclusion_bail = true;
 								break;
 							}

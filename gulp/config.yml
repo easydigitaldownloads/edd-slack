@@ -84,6 +84,7 @@ release:
     - "!./gulp/**/*.*"
     - "!./**/package.json"
     - "!./**/bower.json"
+	- "!./**/composer.json"
     - "!./node_modules/**/*.*"
     - "!./**/bower_components/**/*.*"
     - "!./README.md"

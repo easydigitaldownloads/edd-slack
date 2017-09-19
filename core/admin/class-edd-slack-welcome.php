@@ -10,7 +10,17 @@
 
 defined( 'ABSPATH' ) || die();
 
-class EDD_Slack_Welcome extends EDD_Welcome {
+class EDD_Slack_Welcome {
+	
+	public $minimum_capability = 'manage_options';
+	
+	public function __construct() {
+		
+		add_action( 'admin_menu', array( $this, 'admin_menus' ) );
+		add_action( 'admin_head', array( $this, 'admin_head' ) );
+		add_action( 'admin_init', array( $this, 'welcome'    ), 11 );
+		
+	}
 
 	/**
 	 * Register the Dashboard Pages which are later hidden but these pages are used to render the Welcome and Credits pages.

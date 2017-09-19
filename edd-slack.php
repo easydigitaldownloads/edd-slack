@@ -349,10 +349,8 @@ if ( ! class_exists( 'EDD_Slack' ) ) {
 			
 			if ( is_admin() ) {
 				
-				if ( class_exists( 'EDD_Welcome' ) ) {
-					require_once EDD_Slack_DIR . '/core/admin/class-edd-slack-welcome.php';
-					$this->welcome_page = new EDD_Slack_Welcome();
-				}
+				require_once EDD_Slack_DIR . '/core/admin/class-edd-slack-welcome.php';
+				$this->welcome_page = new EDD_Slack_Welcome();
 				
 				require_once EDD_Slack_DIR . '/core/admin/class-edd-slack-admin.php';
 				$this->admin = new EDD_Slack_Admin();

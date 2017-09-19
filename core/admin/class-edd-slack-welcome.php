@@ -190,7 +190,7 @@ class EDD_Slack_Welcome {
 						
 						<h4><?php _e( 'SSL-enabled Sites Only', 'edd-slack' ); ?></h4>
 						
-						<p><?php _e( 'If your site is SSL-enabled, you can add Slack App integration to enable Interactive Notifications and Slash Commands.', 'edd-slack' ); ?></p>
+						<p><?php _e( 'If your site is SSL-enabled, you can add Slack App integration to enable Interactive Notifications, Slash Commands, and even invite Customers to your Slack Team.', 'edd-slack' ); ?></p>
 						
 						<p><?php _e( 'This will allow you to interact with events happening on your online store immediately and view data from your online store all from within Slack.', 'edd-slack' ); ?></p>
 						

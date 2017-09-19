@@ -39,9 +39,19 @@ class EDD_Slack_Welcome {
 			'edd-slack-getting-started',
 			array( $this, 'getting_started_screen' )
 		);
+		
+		// Changelog Page
+		add_dashboard_page(
+			__( 'EDD Slack Changelog', 'edd-slack' ),
+			__( 'EDD Slack Changelog', 'edd-slack' ),
+			$this->minimum_capability,
+			'edd-slack-changelog',
+			array( $this, 'changelog_screen' )
+		);
 
 		// Now remove them from the menus so plugins that allow customizing the admin menu don't show them
 		remove_submenu_page( 'index.php', 'edd-slack-getting-started' );
+		remove_submenu_page( 'index.php', 'edd-slack-changelog' );
 		
 	}
 	
@@ -68,6 +78,7 @@ class EDD_Slack_Welcome {
 			.edd-slack-about-wrap .feature-section-media { float: right; text-align: right; margin-bottom: 20px; }
 			.edd-slack-about-wrap .feature-section-media img { border: 1px solid #ddd; }
 			.edd-slack-about-wrap .feature-section:not(.under-the-hood) .col { margin-top: 0; }
+			.edd-slack-about-wrap ul { list-style: disc; margin-left: 2em; }
 			}
 			/* responsive */
 			@media all and ( max-width: 782px ) {
@@ -118,6 +129,9 @@ class EDD_Slack_Welcome {
 		<h1 class="nav-tab-wrapper">
 			<a class="nav-tab <?php echo $selected == 'edd-slack-getting-started' ? 'nav-tab-active' : ''; ?>" href="<?php echo esc_url( admin_url( add_query_arg( array( 'page' => 'edd-slack-getting-started' ), 'index.php' ) ) ); ?>">
 				<?php _e( 'Getting Started', 'edd-slack' ); ?>
+			</a>
+			<a class="nav-tab <?php echo $selected == 'edd-slack-changelog' ? 'nav-tab-active' : ''; ?>" href="<?php echo esc_url( admin_url( add_query_arg( array( 'page' => 'edd-slack-changelog' ), 'index.php' ) ) ); ?>">
+				<?php _e( 'Changelog', 'edd-slack' ); ?>
 			</a>
 			<a class="nav-tab" href="//docs.easydigitaldownloads.com/category/1724-slack" target="_blank">
 				<?php _e( 'Complete Documentation', 'edd-slack' ); ?>
@@ -202,6 +216,68 @@ class EDD_Slack_Welcome {
 			
 		</div>
 		<?php
+	}
+	
+	/**
+	 * Render Changelog Screen
+	 *
+	 * @access		public
+	 * @since		1.1.0
+	 * @return		void
+	 */
+	public function changelog_screen() {
+		?>
+		<div class="wrap about-wrap edd-slack-about-wrap">
+			<?php
+				// load welcome message and content tabs
+				$this->welcome_message();
+				$this->tabs();
+			?>
+			<div class="changelog">
+				<h3><?php _e( 'Full Changelog', 'edd-slack' );?></h3>
+
+				<div class="feature-section">
+					<?php echo $this->parse_readme(); ?>
+				</div>
+			</div>
+		</div>
+		<?php
+	}
+	
+	/**
+	 * Parse the WordPress readme.txt to get a Changelog for Output
+	 * 
+	 * @access		public
+	 * @since		1.1.0
+	 * @return		string WordPress readme.txt-style Markdown to HTML
+	 */
+	public function parse_readme() {
+		
+		$file = file_exists( EDD_Slack_DIR . 'readme.txt' ) ? EDD_Slack_DIR . 'readme.txt' : null;
+		
+		if ( ! $file ) {
+			$readme = '<p>' . __( 'No valid changelog was found.', 'edd-slack' ) . '</p>';
+		}
+		else {
+			
+			$readme = file_get_contents( $file );
+			$readme = explode( '== Changelog ==', $readme );
+			$readme = end( $readme );
+			
+			if ( ! class_exists( 'Michelf\Markdown' ) ) {
+				
+				require_once EDD_Slack_DIR . '/includes/php-markdown/Michelf/Markdown.inc.php';
+				
+			}
+			
+			$readme = preg_replace( '/= (.*?) =/', '### \\1', $readme );
+			
+			$readme = Michelf\Markdown::defaultTransform( $readme );
+			
+		}
+		
+		return $readme;
+		
 	}
 
 	/**

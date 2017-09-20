@@ -18,7 +18,8 @@ class EDD_Slack_Welcome {
 		
 		add_action( 'admin_menu', array( $this, 'admin_menus' ) );
 		add_action( 'admin_head', array( $this, 'admin_head' ) );
-		add_action( 'admin_init', array( $this, 'welcome'    ), 11 );
+		add_filter( 'admin_title', array( $this, 'admin_title' ), 10, 2 );
+		add_action( 'admin_init', array( $this, 'welcome' ), 11 );
 		
 	}
 
@@ -89,6 +90,31 @@ class EDD_Slack_Welcome {
 			/*]]>*/
 		</style>
 		<?php
+	}
+	
+	/**
+	 * Fix the Admin Title since our pages "don't exist"
+	 * 
+	 * @param		string $admin_title The page title, with extra context added
+	 * @param		string $title       The original page title
+	 *                                               
+	 * @access		public
+	 * @since		1.1.0
+	 * @return		string Admin Title
+	 */
+	public function admin_title( $admin_title, $title ) {
+		
+		global $current_screen;
+		
+		if ( $current_screen->base == 'dashboard_page_edd-slack-changelog' ) {
+			return __( 'EDD Slack Changelog', 'edd-slack' ) . $admin_title;
+		}
+		else if ( $current_screen->base == 'dashboard_page_edd-slack-getting-started' ) {
+			return __( 'Getting started with EDD Slack', 'edd-slack' ) . $admin_title;
+		}
+		
+		return $admin_title;
+		
 	}
 
 	/**

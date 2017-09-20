@@ -105,9 +105,9 @@ class EDD_Slack_Welcome {
 		?>
 		<div id="edd-slack-header">
 			<img class="edd-slack-badge" src="<?php echo EDD_Slack_URL . 'assets/images/edd-slack-logo.png'; ?>" alt="<?php _e( 'EDD Slack', 'edd-slack' ); ?>" / >
-			<h1><?php printf( __( 'Welcome to EDD Slack %s', 'edd-slack' ), $display_version ); ?></h1>
+			<h1><?php printf( __( 'Welcome to EDD Slack v%s', 'edd-slack' ), $display_version ); ?></h1>
 			<p class="about-text">
-				<?php printf( __( 'Thank you for updating to the latest version! EDD Slack %s is ready to make your online store integrate seamlessly with Slack!', 'edd-slack' ), $display_version ); ?>
+				<?php printf( __( 'Thank you for updating to the latest version! EDD Slack v%s is ready to make your online store integrate seamlessly with Slack!', 'edd-slack' ), $display_version ); ?>
 			</p>
 		</div>
 		<?php

@@ -12,7 +12,7 @@ Slack Integration for Easy Digital Downloads
 
 == Changelog ==
 
-= v1.1.0, September 19, 2017 =
+= v1.1.0, September 22, 2017 =
 
 * **New:** Slack Team Invites are now incorporated into EDD Slack
   * This is activated separately from Interactive Notifications/Slash Commands and must be done by a Slack User with the ability to invite other Users to the Team normally (This is often only Slack Team Admins)

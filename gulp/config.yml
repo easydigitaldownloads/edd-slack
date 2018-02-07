@@ -83,6 +83,7 @@ release:
     - "!./**/gruntfile.js"
     - "!./gulp/**/*.*"
     - "!./**/package.json"
+    - "!./**/package-lock.json"
     - "!./**/bower.json"
     - "!./**/composer.json"
     - "!./node_modules/**/*.*"

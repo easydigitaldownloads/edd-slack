@@ -14,7 +14,7 @@ Slack Integration for Easy Digital Downloads
 
 = v1.1.1, February 7, 2018 =
 
-* Fixed bug causing %active_site% to sometimes fail when using a license activation or deactivation trigger
+* Fixed bug causing `%active_site%` to sometimes fail when using a license activation or deactivation trigger
 
 = v1.1.0, September 22, 2017 =
 

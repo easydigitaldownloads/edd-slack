@@ -156,7 +156,7 @@ class EDD_Slack_Software_Licensing {
 				'download_id' => $download_id,
 				'price_id' => edd_software_licensing()->get_price_id( $license_id ),
 				'expiration' => get_post_meta( $license_id, '_edd_sl_expiration', true ),
-				'active_site' => $_GET['url'], // EDD_SL_License has some methods to get this, but they are private and have the potential of giving us invalid data if URLs get filtered out. This ensures the shown URL is the one being activated, not just the last one in the stack
+				'active_site' => $_REQUEST['url'], // EDD_SL_License has some methods to get this, but they are private and have the potential of giving us invalid data if URLs get filtered out. This ensures the shown URL is the one being activated, not just the last one in the stack
 				'site_count' => edd_software_licensing()->get_site_count( $license_id ),
 				'license_limit' => edd_software_licensing()->license_limit( $license_id ),
 			) );

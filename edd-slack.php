@@ -496,7 +496,7 @@ if ( ! class_exists( 'EDD_Slack' ) ) {
 				
 			}
 			
-			// Output all Integration-related Errors just above the Notificiation Repeater
+			// Output all Integration-related Errors just above the Notification Repeater
 			if ( ! empty( $this->integration_errors ) ) {
 				
 				add_action( 'edd_slack_before_repeater', array( $this, 'integration_errors' ) );

@@ -1,16 +1,20 @@
 === Easy Digital Downloads - Slack ===
-Author URI: https://realbigplugins.com
+Author URI: https://easydigitaldownloads.com
 Plugin URI: https://easydigitaldownloads.com/downloads/slack/
 Contributors: d4mation
 Requires at least: 4.4
 Tested up to: 4.8
-Stable Tag: 1.1.0
+Stable Tag: 1.1.1
 
 == Description ==
 
 Slack Integration for Easy Digital Downloads
 
 == Changelog ==
+
+= v1.1.1, February 7, 2018 =
+
+* Fixed bug causing %active_site% to sometimes fail when using a license activation or deactivation trigger
 
 = v1.1.0, September 22, 2017 =
 

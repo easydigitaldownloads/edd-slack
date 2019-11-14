@@ -114,7 +114,7 @@ class EDD_Slack_Software_Licensing {
 			'license_key' => edd_software_licensing()->get_license_key( $license_id ),
 			'download_id' => $download_id,
 			'price_id' => edd_software_licensing()->get_price_id( $license_id ),
-			'expiration' => get_post_meta( $license_id, '_edd_sl_expiration', true ),
+			'expiration' => edd_software_licensing()->get_license_expiration( $license_id ),
 			'license_limit' => edd_software_licensing()->license_limit( $license_id ),
 		) );
 		
@@ -155,7 +155,7 @@ class EDD_Slack_Software_Licensing {
 				'license_key' => edd_software_licensing()->get_license_key( $license_id ),
 				'download_id' => $download_id,
 				'price_id' => edd_software_licensing()->get_price_id( $license_id ),
-				'expiration' => get_post_meta( $license_id, '_edd_sl_expiration', true ),
+				'expiration' => edd_software_licensing()->get_license_expiration( $license_id ),
 				'active_site' => $_REQUEST['url'], // EDD_SL_License has some methods to get this, but they are private and have the potential of giving us invalid data if URLs get filtered out. This ensures the shown URL is the one being activated, not just the last one in the stack
 				'site_count' => edd_software_licensing()->get_site_count( $license_id ),
 				'license_limit' => edd_software_licensing()->license_limit( $license_id ),
@@ -200,7 +200,7 @@ class EDD_Slack_Software_Licensing {
 				'license_key' => edd_software_licensing()->get_license_key( $license_id ),
 				'download_id' => $download_id,
 				'price_id' => edd_software_licensing()->get_price_id( $license_id ),
-				'expiration' => get_post_meta( $license_id, '_edd_sl_expiration', true ),
+				'expiration' => edd_software_licensing()->get_license_expiration( $license_id ),
 				'active_site' => $_REQUEST['url'], // EDD_SL_License has some methods to get this, but they are private and have the potential of giving us invalid data if URLs get filtered out. This ensures the shown URL is the one being deactivated, not just the last one in the stack
 				'site_count' => edd_software_licensing()->get_site_count( $license_id ),
 				'license_limit' => edd_software_licensing()->license_limit( $license_id ),
@@ -236,7 +236,7 @@ class EDD_Slack_Software_Licensing {
 			'upgrade_price_id' => $args['upgrade_price_id'], // Variable Download ID for the Upgrade
 			'old_download_id' => $args['old_download_id'],
 			'old_price_id' => $args['old_price_id'], // Variable Download ID for the original Download
-			'expiration' => get_post_meta( $license_id, '_edd_sl_expiration', true ),
+			'expiration' => edd_software_licensing()->get_license_expiration( $license_id ),
 			'license_limit' => edd_software_licensing()->license_limit( $license_id ),
 		) );
 		

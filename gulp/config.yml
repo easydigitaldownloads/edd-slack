@@ -3,7 +3,7 @@ javascript:
     root: "./assets/js"
     # filename to output
     filename: "script.js"
-    vendor: 
+    vendor:
       - ""
     notification: "Running JavaScript"
     # Paths to JavaScript libraries, which are combined into one file
@@ -43,7 +43,7 @@ sass:
   front:
     root: "./assets/css"
     filename: "style.css"
-    vendor: 
+    vendor:
       - ""
     notification: "Running Sass"
     src: "build/sass/main.scss"
@@ -63,8 +63,8 @@ watch:
       - "!build/js/tinymce/**/*.js"
     admin: "build/js/admin/**/*.js"
     tinymce: "build/js/tinymce/**/*.js"
-  sass: 
-    front: 
+  sass:
+    front:
       - "build/sass/**/*.scss"
       - "!build/sass/admin/**/*.scss"
     admin: "build/sass/admin/**/*.scss"

@@ -257,37 +257,32 @@ if ( ! class_exists( 'EDD_Slack' ) ) {
 				$last_upgrade = '1.0.0';
 			}
 
-			if ( false !== strpos( $last_upgrade, 'pending' ) ) {
-				// Pending routines are handled afterward
-				// This just skips the need to check other Versions
-			}
-			else if ( version_compare( $last_upgrade, '1.1.0' ) < 0 ) {
-				
-				$oauth_token = edd_get_option( 'slack_app_oauth_token', false );
-				
-				if ( $oauth_token &&
-				   $oauth_token !== '-1' ) {
-					
-					// Clear out values so Slack doesn't try to send Interactive Notifications (Or other related things) and fail
-					$this->slack_api->revoke_oauth_token();
-					edd_update_option( 'slack_app_oauth_token', '-1' );
-					edd_delete_option( 'slack_app_has_client_scope' );
-					
-					// Set to pending since we need the User to re-link the Slack App
-					$last_upgrade = 'pending-1.1.0';
-					
+			if ( false === strpos( $last_upgrade, 'pending' ) ) {
+				if ( version_compare( $last_upgrade, '1.1.0' ) < 0 ) {
+
+					$oauth_token = edd_get_option( 'slack_app_oauth_token', false );
+
+					if ( $oauth_token && '-1' !== $oauth_token ) {
+
+						// Clear out values so Slack doesn't try to send Interactive Notifications (Or other related things) and fail
+						$this->slack_api->revoke_oauth_token();
+						edd_update_option( 'slack_app_oauth_token', '-1' );
+						edd_delete_option( 'slack_app_has_client_scope' );
+
+						// Set to pending since we need the User to re-link the Slack App
+						$last_upgrade = 'pending-1.1.0';
+
+					} else {
+						$last_upgrade = '1.1.0';
+					}
 				}
-				else {
-					$last_upgrade = '1.1.0';
-				}
-				
+
 				edd_update_option( 'slack_last_upgrade', $last_upgrade );
-				
 			}
-			
+
 			// Run any Pending routines
-			if ( strpos( $last_upgrade, 'pending' ) !== false ) {
-				
+			if ( false  !== strpos( $last_upgrade, 'pending' ) ) {
+
 				$pending_version = str_replace( 'pending-', '', $last_upgrade );
 				
 				$finished_pending = $this->pending_upgrade( $pending_version );

@@ -256,10 +256,10 @@ if ( ! class_exists( 'EDD_Slack' ) ) {
 			if ( ! $last_upgrade ) {
 				$last_upgrade = '1.0.0';
 			}
-			
-			if ( strpos( $last_upgrade, 'pending' !== false ) ) {
+
+			if ( false !== strpos( $last_upgrade, 'pending' ) ) {
 				// Pending routines are handled afterward
-				// This just skips the need to check other Versions 
+				// This just skips the need to check other Versions
 			}
 			else if ( version_compare( $last_upgrade, '1.1.0' ) < 0 ) {
 				

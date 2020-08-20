@@ -239,29 +239,29 @@ class EDD_Slack_Software_Licensing {
 	public function edd_sl_license_upgraded( $license_id, $args ) {
 
 		$license = edd_software_licensing()->get_license( $license_id );
-
-		if ( $license ) {
-
-			$customer = new EDD_Customer( $license->customer_id );
-
-			do_action(
-				'edd_slack_notify',
-				'edd_sl_license_upgraded',
-				array(
-					'user_id'          => $customer->user_id,
-					'name'             => $customer->name,
-					'email'            => $customer->email,
-					'license_id'       => $license_id,
-					'license_key'      => $license->license_key,
-					'download_id'      => $args['download_id'],
-					'upgrade_price_id' => $args['upgrade_price_id'],
-					'old_download_id'  => $args['old_download_id'],
-					'old_price_id'     => $args['old_price_id'],
-					'expiration'       => $license->expiration,
-					'license_limit'    => $license->activation_limit,
-				)
-			);
+		if ( false === $license ) {
+			return;
 		}
+
+		$customer = new EDD_Customer( $license->customer_id );
+
+		do_action(
+			'edd_slack_notify',
+			'edd_sl_license_upgraded',
+			array(
+				'user_id'          => $customer->user_id,
+				'name'             => $customer->name,
+				'email'            => $customer->email,
+				'license_id'       => $license_id,
+				'license_key'      => $license->license_key,
+				'download_id'      => $args['download_id'],
+				'upgrade_price_id' => $args['upgrade_price_id'],
+				'old_download_id'  => $args['old_download_id'],
+				'old_price_id'     => $args['old_price_id'],
+				'expiration'       => $license->expiration,
+				'license_limit'    => $license->activation_limit,
+			)
+		);
 	}
 
 	/**

@@ -418,7 +418,7 @@ class EDD_Slack_Reviews {
 			'%review_link%' => _x( 'A link to the Review', '%review_link% Hint Text', 'edd-slack' ),
 		);
 
-		if ( is_callable( 'EDD_FES' ) ) {
+		if ( $this->support_fes ) {
 			$vendor_feedback_hints = array(
 				'%review_item_as_described%' => sprintf( 'Was the Item as Described?', '%review_item_as_described% Hint Text', 'edd-slack' ),
 				'%vendor_username%' => sprintf( _x( 'Display the %s\'s username', '%vendor_username% Hint Text', 'edd-slack' ), EDD_FES()->helper->get_vendor_constant_name( false, true ) ),

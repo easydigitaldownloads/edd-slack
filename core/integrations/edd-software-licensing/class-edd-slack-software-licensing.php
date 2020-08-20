@@ -238,13 +238,12 @@ class EDD_Slack_Software_Licensing {
 	 */
 	public function edd_sl_license_upgraded( $license_id, $args ) {
 
-		// This is the EDD Customer ID. This is not necessarily the same as the WP User ID.
-		$customer_id = get_post_meta( $args['payment_id'], '_edd_payment_customer_id', true );
-		$customer    = new EDD_Customer( $customer_id );
-
 		$license = edd_software_licensing()->get_license( $license_id );
 
 		if ( $license ) {
+
+			$customer = new EDD_Customer( $license->customer_id );
+
 			do_action(
 				'edd_slack_notify',
 				'edd_sl_license_upgraded',

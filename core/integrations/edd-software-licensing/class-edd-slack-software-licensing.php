@@ -147,7 +147,7 @@ class EDD_Slack_Software_Licensing {
 	 */
 	public function edd_sl_activate_deactivate_license( $license_id, $download_id ) {
 
-		$url = isset( $_GET['url'] ) ? esc_url_raw( wp_unslash( $_GET['url'] ) ) : '';
+		$url = isset( $_REQUEST['url'] ) ? esc_url_raw( wp_unslash( $_REQUEST['url'] ) ) : '';
 
 		if ( ! empty( $url ) ) {
 			// If Local URLs aren't set to be ignored, they will still trigger the notification.
@@ -184,7 +184,7 @@ class EDD_Slack_Software_Licensing {
 							'expiration'    => $license->expiration,
 							'active_site'   => $url,
 							'site_count'    => $license->activation_count,
-							'license_limit' => $license->activation_count,
+							'license_limit' => $license->activation_limit,
 						)
 					);
 				}
@@ -389,11 +389,7 @@ class EDD_Slack_Software_Licensing {
 					$replacements['%expiration%']    = date_i18n( get_option( 'date_format', 'F j, Y' ), $args['expiration'] );
 					$replacements['%license_limit%'] = $args['license_limit'];
 
-					if ( 'edd_sl_store_license' === $trigger ) {
-
-						$replacements['%license_link%'] = '<' . admin_url( 'edit.php?post_type=download&page=edd-licenses&view=overview&license=' . $args['license_id'] ) . '|' . _x( 'View this License', 'View this License Link Text', 'edd-slack' ) . '>';
-
-					}
+					$replacements['%license_link%'] = '<' . admin_url( 'edit.php?post_type=download&page=edd-licenses&view=overview&license=' . $args['license_id'] ) . '|' . _x( 'View this License', 'View this License Link Text', 'edd-slack' ) . '>';
 
 					if (
 						'edd_sl_activate_license' === $trigger ||
@@ -411,7 +407,7 @@ class EDD_Slack_Software_Licensing {
 
 					}
 
-					if ( 'edd_sl_license_upgraded' === $trigger ) {
+					if ( 'edd_sl_license_upgraded' !== $trigger ) {
 						$replacements['%download%'] = get_the_title( $args['download_id'] );
 					} else {
 

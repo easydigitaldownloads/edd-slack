@@ -198,9 +198,10 @@ class EDD_Slack_Software_Licensing {
 	 * @param     integer $license_id  License ID.
 	 * @param     string  $download_id Download ID.
 	 *
-	 * @access    public
-	 * @since     1.0.0
-	 * @return    void
+	 * @access     public
+	 * @since      1.0.0
+	 * @deprecated 1.1.2
+	 * @return     void
 	 */
 	public function edd_sl_activate_license( $license_id, $download_id ) {
 		_edd_deprecated_function( 'EDD_Slack_Software_Licensing::edd_sl_activate_license', '1.1.2', 'EDD_Slack_Software_Licensing::edd_sl_activate_deactivate_license', debug_backtrace() );
@@ -213,9 +214,10 @@ class EDD_Slack_Software_Licensing {
 	 * @param     integer $license_id  License ID.
 	 * @param     string  $download_id Download ID.
 	 *
-	 * @access    public
-	 * @since     1.0.0
-	 * @return    void
+	 * @access     public
+	 * @since      1.0.0
+	 * @deprecated 1.1.2
+	 * @return     void
 	 */
 	public function edd_sl_deactivate_license( $license_id, $download_id ) {
 		_edd_deprecated_function( 'EDD_Slack_Software_Licensing::edd_sl_deactivate_license', '1.1.2', 'EDD_Slack_Software_Licensing::edd_sl_activate_deactivate_license', debug_backtrace() );

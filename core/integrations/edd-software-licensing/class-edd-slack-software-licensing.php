@@ -291,11 +291,13 @@ class EDD_Slack_Software_Licensing {
 				)
 			);
 
-			if (
-				'edd_sl_store_license' === $trigger ||
-				'edd_sl_activate_license' === $trigger ||
-				'edd_sl_deactivate_license' === $trigger
-			) {
+			$supported_triggers = array(
+				'edd_sl_store_license',
+				'edd_sl_activate_license',
+				'edd_sl_deactivate_license',
+			);
+
+			if ( in_array( $trigger, $supported_triggers, true ) ) {
 
 				// Support for EDD Slack v1.0.X.
 				if ( ! is_array( $fields['download'] ) ) {

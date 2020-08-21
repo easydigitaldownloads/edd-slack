@@ -348,104 +348,92 @@ msgctxt "Required Field not filled out (Ancient/Bad Browsers Only)"
 msgid "This field is required"
 msgstr ""
 
-#: core/admin/class-edd-slack-welcome.php:37, core/admin/class-edd-slack-welcome.php:38, core/admin/class-edd-slack-welcome.php:113
+#: core/admin/class-edd-slack-welcome.php:37, core/admin/class-edd-slack-welcome.php:38, core/admin/class-edd-slack-welcome.php:99
 msgid "Getting started with EDD Slack"
 msgstr ""
 
-#: core/admin/class-edd-slack-welcome.php:46, core/admin/class-edd-slack-welcome.php:47, core/admin/class-edd-slack-welcome.php:110
-msgid "EDD Slack Changelog"
-msgstr ""
-
-#: core/admin/class-edd-slack-welcome.php:133
+#: core/admin/class-edd-slack-welcome.php:119
 msgid "EDD Slack"
 msgstr ""
 
-#: core/admin/class-edd-slack-welcome.php:134
+#: core/admin/class-edd-slack-welcome.php:120
 msgid "Welcome to EDD Slack v%s"
 msgstr ""
 
-#: core/admin/class-edd-slack-welcome.php:136
+#: core/admin/class-edd-slack-welcome.php:122
 msgid "Thank you for updating to the latest version! EDD Slack v%s is ready to make your online store integrate seamlessly with Slack!"
 msgstr ""
 
-#: core/admin/class-edd-slack-welcome.php:157
+#: core/admin/class-edd-slack-welcome.php:143
 msgid "Getting Started"
 msgstr ""
 
-#: core/admin/class-edd-slack-welcome.php:160
+#: core/admin/class-edd-slack-welcome.php:146
 msgid "Changelog"
 msgstr ""
 
-#: core/admin/class-edd-slack-welcome.php:163
+#: core/admin/class-edd-slack-welcome.php:149
 msgid "Complete Documentation"
 msgstr ""
 
-#: core/admin/class-edd-slack-welcome.php:185
+#: core/admin/class-edd-slack-welcome.php:171
 msgid "Use the tips below to get started using EDD Slack. You will be up and running in no time!"
 msgstr ""
 
-#: core/admin/class-edd-slack-welcome.php:188
+#: core/admin/class-edd-slack-welcome.php:174
 msgid "Configuring your Notifications"
 msgstr ""
 
-#: core/admin/class-edd-slack-welcome.php:195
+#: core/admin/class-edd-slack-welcome.php:181
 msgid "Create an Incoming Webhook URL"
 msgstr ""
 
-#: core/admin/class-edd-slack-welcome.php:196
+#: core/admin/class-edd-slack-welcome.php:182
 msgid "Create an Incoming Webhook URL using the above link, then enter it in the Default Webhook URL Field on the EDD Slack Settings Page."
 msgstr ""
 
-#: core/admin/class-edd-slack-welcome.php:198
+#: core/admin/class-edd-slack-welcome.php:184
 msgid "%s &rarr; Settings &rarr; Extensions &rarr; Slack"
 msgstr ""
 
-#: core/admin/class-edd-slack-welcome.php:199
+#: core/admin/class-edd-slack-welcome.php:185
 msgid "Create Notifications by clicking the \"Add Slack Notification\" Button and filling out the form. Congratulations! You've created a Notification within EDD Slack!"
 msgstr ""
 
-#: core/admin/class-edd-slack-welcome.php:206
+#: core/admin/class-edd-slack-welcome.php:192
 msgid "Customize Unlimited Notifications"
 msgstr ""
 
-#: core/admin/class-edd-slack-welcome.php:213
+#: core/admin/class-edd-slack-welcome.php:199
 msgid "EDD Slack comes bundled with Triggers for standard Easy Digital Downloads events as well as some for other Easy Digital Downloads Extensions so that you can know what is happening on your storefront as soon as it happens."
 msgstr ""
 
-#: core/admin/class-edd-slack-welcome.php:215
+#: core/admin/class-edd-slack-welcome.php:201
 msgid "You can customize the Notification however you like to include all kinds of information about the event, with different Triggers providing you with different Text Replacements to use!"
 msgstr ""
 
-#: core/admin/class-edd-slack-welcome.php:217
+#: core/admin/class-edd-slack-welcome.php:203
 msgid "Different Notifications can even be set to be sent to different Channels or even different Users! Check out our <a href=\"//docs.easydigitaldownloads.com/article/1726-edd-slack-creating-notifications\" target=\"_blank\">Documentation</a> for more details!"
 msgstr ""
 
-#: core/admin/class-edd-slack-welcome.php:224
+#: core/admin/class-edd-slack-welcome.php:210
 msgid "Unlocking Extra Functionality"
 msgstr ""
 
-#: core/admin/class-edd-slack-welcome.php:231
+#: core/admin/class-edd-slack-welcome.php:217
 msgid "SSL-enabled Sites Only"
 msgstr ""
 
-#: core/admin/class-edd-slack-welcome.php:233
+#: core/admin/class-edd-slack-welcome.php:219
 msgid "If your site is SSL-enabled, you can add Slack App integration to enable Interactive Notifications, Slash Commands, and even invite Customers to your Slack Team."
 msgstr ""
 
-#: core/admin/class-edd-slack-welcome.php:235
+#: core/admin/class-edd-slack-welcome.php:221
 msgid "This will allow you to interact with events happening on your online store immediately and view data from your online store all from within Slack."
 msgstr ""
 
-#: core/admin/class-edd-slack-welcome.php:237
+#: core/admin/class-edd-slack-welcome.php:223
 msgid "Check out our <a href=\"//docs.easydigitaldownloads.com/article/1727-edd-slack-setting-up-a-slack-app\" target=\"_blank\">Documentation</a> for more details!"
-msgstr ""
-
-#: core/admin/class-edd-slack-welcome.php:263
-msgid "Full Changelog"
-msgstr ""
-
-#: core/admin/class-edd-slack-welcome.php:285
-msgid "No valid changelog was found."
 msgstr ""
 
 #: core/slack/class-edd-slack-notification-integration.php:48

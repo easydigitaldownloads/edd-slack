@@ -18,10 +18,11 @@ gulp.task( 'uglify:front', function() {
 
 	return gulp.src( config.front.src, { allowEmpty: true } )
 		.pipe( $.plumber( { errorHandler: onError } ) )
-		.pipe( $.sourcemaps.init() )
 		.pipe( $.concat( config.front.filename ) )
+		.pipe( $.babel( {
+			presets: ['@babel/preset-env'] // Gulp-uglify has no official support for ECMAScript 2015 (aka ES6, aka Harmony), so we'll transpile to EcmaScript5
+		} ) )
 		.pipe( $.uglify() )
-		.pipe( gulpif( ! isRelease, $.sourcemaps.write( '.' ) ) )
 		.pipe( gulp.dest( config.front.root ) )
 		.pipe( $.plumber.stop() )
 		.pipe( notify( {
@@ -36,10 +37,11 @@ gulp.task( 'uglify:admin', function() {
 
 	return gulp.src( config.admin.vendor.concat( config.admin.src ), { allowEmpty: true } )
 		.pipe( $.plumber( { errorHandler: onError } ) )
-		.pipe( $.sourcemaps.init() )
 		.pipe( $.concat( config.admin.filename ) )
+		.pipe( $.babel( {
+			presets: ['@babel/preset-env'] // Gulp-uglify has no official support for ECMAScript 2015 (aka ES6, aka Harmony), so we'll transpile to EcmaScript5
+		} ) )
 		.pipe( $.uglify() )
-		.pipe( gulpif( ! isRelease, $.sourcemaps.write( '.' ) ) )
 		.pipe( gulp.dest( config.admin.root ) )
 		.pipe( $.plumber.stop() )
 		.pipe( notify( {

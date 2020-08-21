@@ -117,7 +117,7 @@ if ( ! class_exists( 'EDD_Slack' ) ) {
 
 			// Handle licensing
 			if ( class_exists( 'EDD_License' ) ) {
-				$license = new EDD_License( __FILE__, 'Slack', EDD_Slack_VER, $this->plugin_data['Author'] );
+				$license = new EDD_License( __FILE__, 'Slack', EDD_Slack_VER, $this->plugin_data['Author'], null, null, 980982 );
 			}
 
 			if ( version_compare( get_bloginfo( 'version' ), '4.4' ) < 0 ) {

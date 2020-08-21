@@ -7,7 +7,7 @@
  * Text Domain: edd-slack
  * Author: Sandhills Development, LLC
  * Author URI: https://sandhillsdev.com
- * Contributors: easydigitaldownloads, cklosows, robincornett, d4mation
+ * Contributors: easydigitaldownloads, cklosows, littlerchicken, d4mation
  */
 
 // Exit if accessed directly

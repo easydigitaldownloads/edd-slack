@@ -3,14 +3,21 @@ Author URI: https://easydigitaldownloads.com
 Plugin URI: https://easydigitaldownloads.com/downloads/slack/
 Contributors: d4mation
 Requires at least: 4.4
-Tested up to: 4.8
-Stable Tag: 1.1.1
+Tested up to: 5.5
+Stable Tag: 1.1.2
 
 == Description ==
 
 Slack Integration for Easy Digital Downloads
 
 == Changelog ==
+= v1.1.2, August 21, 2020 =
+* Fix: Improved compatibility with EDD Software Licensing 3.6
+* Fix: Improved PHP 7.3 and 7.4 compatibility.
+* Fix: When reviews was active, but FES was not, a fatal error occured in the settings.
+* Fix: Updated Slack icon on the welcome page.
+* Fix: Removed dependency of markdown parser for changelog by linking directly to the changelog.
+* Dev: Rebuilt the build system for Gulp 4.
 
 = v1.1.1, February 7, 2018 =
 
@@ -41,8 +48,8 @@ Slack Integration for Easy Digital Downloads
 * **New:** Add a Message about additional SSL-only functionality on non-SSL sites
 * **New:** Responsive Settings Screen
 * **New:** Admin Color Scheme taken into account for Notification Delete buttons
-* **Change:** Use Customer Information rather than User Information where applicable. 
-  * In cases where a Notification uses User information instead (New Vendor, etc.), the text replacement description text is changed accordingly 
+* **Change:** Use Customer Information rather than User Information where applicable.
+  * In cases where a Notification uses User information instead (New Vendor, etc.), the text replacement description text is changed accordingly
 * **Change:** The layout of information for the `/edd sales` Slash Command has been updated to match the new Slash Commands in this release.
 * **Change:** EDD Software Licenses Integration Changes
   * License Activation Triggers are now specific to Activation/Deactivation via EDD's web API. Activating/Deactivating manually from the Licenses screen no longer triggers these.

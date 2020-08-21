@@ -14,9 +14,9 @@ isRelease = false;
 
 gulp.task( 'sass:front', function() {
 
-	return gulp.src( config.front.src )
+	return gulp.src( config.front.src, { allowEmpty: true } )
 		.pipe( $.sourcemaps.init() )
-		.pipe( 
+		.pipe(
 			$.sass( {
 				includePaths: config.front.vendor
 			} )
@@ -40,11 +40,11 @@ gulp.task( 'sass:front', function() {
 
 gulp.task( 'sass:admin', function() {
 
-	return gulp.src( config.admin.src )
+	return gulp.src( config.admin.src, { allowEmpty: true } )
 		.pipe( $.sourcemaps.init() )
-		.pipe( 
+		.pipe(
 			$.sass( {
-				includePaths: config.admin.vendor
+				includePaths: config.admin.vendor,
 			} )
 			.on( 'error', notify.onError( {
 				title: pkg.name,
@@ -64,6 +64,6 @@ gulp.task( 'sass:admin', function() {
 
 } );
 
-gulp.task( 'sass', ['sass:front', 'sass:admin'], function( done ) {
+gulp.task( 'sass', gulp.series( 'sass:front', 'sass:admin', function( done ) {
 	done();
-} );
+} ) );

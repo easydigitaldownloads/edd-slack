@@ -56,7 +56,7 @@ class EDD_Slack_Welcome {
 		?>
 		<style type="text/css" media="screen">
 			/*<![CDATA[*/
-			.edd-slack-about-wrap .edd-slack-badge { float: right; border-radius: 4px; margin: 0 0 15px 15px; }
+			.edd-slack-about-wrap .edd-slack-badge { float: right; border-radius: 4px; margin: 0 0 15px 15px; max-width: 300px; }
 			.edd-slack-about-wrap #edd-slack-header { margin-bottom: 15px; }
 			.edd-slack-about-wrap #edd-slack-header h1 { margin: 0; margin-bottom: 15px !important; }
 			.edd-slack-about-wrap .about-text { margin: 0 0 15px; max-width: 670px; }

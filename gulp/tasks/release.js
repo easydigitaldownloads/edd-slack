@@ -11,7 +11,7 @@ require( 'gulp-grunt' )( gulp, {
 } ); // add all the gruntfile tasks to gulp
 
 gulp.task( 'release:localization', function( done ) {
-	
+
 	// Set as a Release build, important for Source Files
 	isRelease = true;
 
@@ -22,19 +22,19 @@ gulp.task( 'release:localization', function( done ) {
 			destFile: packageName + '.pot',
 			package: pkg.name,
 		} ) )
-		.pipe( gulp.dest( config.languagesDir ) );
+		.pipe( gulp.dest( config.languagesDir + packageName + '.pot' ) );
 
 } );
 
 gulp.task( 'release:copy', function( done ) {
-	
+
 	return gulp.src( config.files )
 		.pipe( gulp.dest( './' + packageName ) );
-	
+
 } );
 
 gulp.task( 'release:rename', function( done ) {
-	
+
 	// Grab Version from the appropriate file. This way it doesn't matter if I forget to update package.json
 	var sourceFile = '';
 	if ( config.type == 'plugin' ) {
@@ -43,31 +43,31 @@ gulp.task( 'release:rename', function( done ) {
 	else {
 		sourceFile = './style.css';
 	}
-	
+
 	var mainFile = fs.readFileSync( sourceFile, 'utf8' ),
 		versionLine = mainFile.match( /^\s\*\sversion:(?:\s)+(?:\S)+/im ),
 		version = versionLine[0].replace( /\s\*\sversion:(?:\s)+/i, '' );
-	
+
 	fs.renameSync( './' + packageName + '.zip', './' + packageName + '-' + version + '.zip' );
-	
+
 	// We need to recreate those files with Source Maps now
 	isRelease = false;
-	
+
 	return done();
-	
+
 } );
 
 gulp.task( 'release:cleanup', function( done ) {
-	
+
 	return gulp.src( './' + packageName, { read: false } )
 		.pipe( $.clean() )
 		.pipe( notify( {
 			title: pkg.name,
 			message: 'Release Built'
 		} ) );
-	
+
 } );
 
-gulp.task( 'release', function( done ) {
-	$.sequence( 'release:localization', 'sass', 'uglify', 'release:copy', 'release:grunt-compress', 'release:rename', 'sass', 'uglify', 'release:cleanup', done );
-} );
+gulp.task( 'release', gulp.series( 'release:localization', 'sass', 'uglify', 'release:copy', 'release:grunt-compress', 'release:rename', 'sass', 'uglify', 'release:cleanup', function( done ) {
+	done();
+} ) );

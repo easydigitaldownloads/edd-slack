@@ -1,5 +1,9 @@
-var isRelease = false;
+var isRelease = true;
 var requireDir = require('require-dir');
 
 // Require all tasks in gulp/tasks, including subfolders
-requireDir('./gulp/tasks', { recurse: true });
+require('./gulp/tasks/sass');
+require('./gulp/tasks/uglify');
+require('./gulp/tasks/watch');
+require('./gulp/tasks/release');
+require('./gulp/tasks/default');

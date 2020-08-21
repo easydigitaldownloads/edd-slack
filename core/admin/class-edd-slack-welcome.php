@@ -26,13 +26,13 @@ class EDD_Slack_Welcome {
 	/**
 	 * Register the Dashboard Pages which are later hidden but these pages are used to render the Welcome and Credits pages.
 	 *
-	 * @access		public
-	 * @since		1.0.0
-	 * @return		void
+	 * @access     public
+	 * @since      1.0.0
+	 * @return     void
 	 */
 	public function admin_menus() {
 
-		// Getting Started Page
+		// Getting Started Page.
 		add_dashboard_page(
 			__( 'Getting started with EDD Slack', 'edd-slack' ),
 			__( 'Getting started with EDD Slack', 'edd-slack' ),
@@ -41,27 +41,16 @@ class EDD_Slack_Welcome {
 			array( $this, 'getting_started_screen' )
 		);
 
-		// Changelog Page
-		add_dashboard_page(
-			__( 'EDD Slack Changelog', 'edd-slack' ),
-			__( 'EDD Slack Changelog', 'edd-slack' ),
-			$this->minimum_capability,
-			'edd-slack-changelog',
-			array( $this, 'changelog_screen' )
-		);
-
-		// Now remove them from the menus so plugins that allow customizing the admin menu don't show them
+		// Now remove them from the menus so plugins that allow customizing the admin menu don't show them.
 		remove_submenu_page( 'index.php', 'edd-slack-getting-started' );
-		remove_submenu_page( 'index.php', 'edd-slack-changelog' );
-
 	}
 
 	/**
 	 * Hide Individual Dashboard Pages
 	 *
-	 * @access		public
-	 * @since		1.0.0
-	 * @return		void
+	 * @access     public
+	 * @since      1.0.0
+	 * @return     void
 	 */
 	public function admin_head() {
 		?>
@@ -95,21 +84,18 @@ class EDD_Slack_Welcome {
 	/**
 	 * Fix the Admin Title since our pages "don't exist"
 	 *
-	 * @param		string $admin_title The page title, with extra context added
-	 * @param		string $title       The original page title
+	 * @param     string $admin_title The page title, with extra context added.
+	 * @param     string $title       The original page title.
 	 *
-	 * @access		public
-	 * @since		1.1.0
-	 * @return		string Admin Title
+	 * @access    public
+	 * @since     1.1.0
+	 * @return    string Admin Title
 	 */
 	public function admin_title( $admin_title, $title ) {
 
 		global $current_screen;
 
-		if ( $current_screen->base == 'dashboard_page_edd-slack-changelog' ) {
-			return __( 'EDD Slack Changelog', 'edd-slack' ) . $admin_title;
-		}
-		else if ( $current_screen->base == 'dashboard_page_edd-slack-getting-started' ) {
+		if ( 'dashboard_page_edd-slack-getting-started' === $current_screen->base ) {
 			return __( 'Getting started with EDD Slack', 'edd-slack' ) . $admin_title;
 		}
 
@@ -120,9 +106,9 @@ class EDD_Slack_Welcome {
 	/**
 	 * Welcome message
 	 *
-	 * @access		public
-	 * @since		1.0.0
-	 * @return		void
+	 * @access     public
+	 * @since      1.0.0
+	 * @return     void
 	 */
 	public function welcome_message() {
 
@@ -143,9 +129,9 @@ class EDD_Slack_Welcome {
 	/**
 	 * Navigation tabs
 	 *
-	 * @access		public
-	 * @since		1.0.0
-	 * @return		void
+	 * @access     public
+	 * @since      1.0.0
+	 * @return     void
 	 */
 	public function tabs() {
 
@@ -153,13 +139,13 @@ class EDD_Slack_Welcome {
 
 		?>
 		<h1 class="nav-tab-wrapper">
-			<a class="nav-tab <?php echo $selected == 'edd-slack-getting-started' ? 'nav-tab-active' : ''; ?>" href="<?php echo esc_url( admin_url( add_query_arg( array( 'page' => 'edd-slack-getting-started' ), 'index.php' ) ) ); ?>">
+			<a class="nav-tab <?php echo 'edd-slack-getting-started' === $selected ? 'nav-tab-active' : ''; ?>" href="<?php echo esc_url( admin_url( add_query_arg( array( 'page' => 'edd-slack-getting-started' ), 'index.php' ) ) ); ?>">
 				<?php _e( 'Getting Started', 'edd-slack' ); ?>
 			</a>
-			<a class="nav-tab <?php echo $selected == 'edd-slack-changelog' ? 'nav-tab-active' : ''; ?>" href="<?php echo esc_url( admin_url( add_query_arg( array( 'page' => 'edd-slack-changelog' ), 'index.php' ) ) ); ?>">
+			<a class="nav-tab" href="https://easydigitaldownloads.com/downloads/slack/changelog" target="_blank">
 				<?php _e( 'Changelog', 'edd-slack' ); ?>
 			</a>
-			<a class="nav-tab" href="//docs.easydigitaldownloads.com/category/1724-slack" target="_blank">
+			<a class="nav-tab" href="https://docs.easydigitaldownloads.com/category/1724-slack" target="_blank">
 				<?php _e( 'Complete Documentation', 'edd-slack' ); ?>
 			</a>
 		</h1>
@@ -170,15 +156,15 @@ class EDD_Slack_Welcome {
 	/**
 	 * Render Getting Started Screen
 	 *
-	 * @access		public
-	 * @since		1.0.0
-	 * @return		void
+	 * @access     public
+	 * @since      1.0.0
+	 * @return     void
 	 */
 	public function getting_started_screen() {
 		?>
 		<div class="wrap about-wrap edd-slack-about-wrap">
 			<?php
-				// load welcome message and content tabs
+				// load welcome message and content tabs.
 				$this->welcome_message();
 				$this->tabs();
 			?>
@@ -245,85 +231,26 @@ class EDD_Slack_Welcome {
 	}
 
 	/**
-	 * Render Changelog Screen
-	 *
-	 * @access		public
-	 * @since		1.1.0
-	 * @return		void
-	 */
-	public function changelog_screen() {
-		?>
-		<div class="wrap about-wrap edd-slack-about-wrap">
-			<?php
-				// load welcome message and content tabs
-				$this->welcome_message();
-				$this->tabs();
-			?>
-			<div class="changelog">
-				<h3><?php _e( 'Full Changelog', 'edd-slack' );?></h3>
-
-				<div class="feature-section">
-					<?php echo $this->parse_readme(); ?>
-				</div>
-			</div>
-		</div>
-		<?php
-	}
-
-	/**
-	 * Parse the WordPress readme.txt to get a Changelog for Output
-	 *
-	 * @access		public
-	 * @since		1.1.0
-	 * @return		string WordPress readme.txt-style Markdown to HTML
-	 */
-	public function parse_readme() {
-
-		$file = file_exists( EDD_Slack_DIR . 'readme.txt' ) ? EDD_Slack_DIR . 'readme.txt' : null;
-
-		if ( ! $file ) {
-			$readme = '<p>' . __( 'No valid changelog was found.', 'edd-slack' ) . '</p>';
-		}
-		else {
-
-			$readme = file_get_contents( $file );
-			$readme = explode( '== Changelog ==', $readme );
-			$readme = end( $readme );
-
-			if ( ! class_exists( 'Michelf\Markdown' ) ) {
-
-				require_once EDD_Slack_DIR . '/includes/php-markdown/Michelf/Markdown.inc.php';
-
-			}
-
-			$readme = preg_replace( '/= (.*?) =/', '### \\1', $readme );
-
-			$readme = Michelf\Markdown::defaultTransform( $readme );
-
-		}
-
-		return $readme;
-
-	}
-
-	/**
 	 * Sends user to the Welcome page on first activation of EDD Slack as well as each time EDD Slack is upgraded to a new version
 	 *
-	 * @access		public
-	 * @since		1.0.0
-	 * @return		void
+	 * @access     public
+	 * @since      1.0.0
+	 * @return     void
 	 */
 	public function welcome() {
 
-		// Bail if no activation redirect
-		if ( ! get_transient( '_edd_slack_activation_redirect' ) )
+		// Bail if no activation redirect.
+		if ( ! get_transient( '_edd_slack_activation_redirect' ) ) {
 			return;
+		}
 
-		// Delete the redirect transient
+		// Delete the redirect transient.
 		delete_transient( '_edd_slack_activation_redirect' );
 
-		// Bail if activating from network, or bulk
-		if ( is_network_admin() || isset( $_GET['activate-multi'] ) ) return;
+		// Bail if activating from network, or bulk.
+		if ( is_network_admin() || isset( $_GET['activate-multi'] ) ) {
+			return;
+		}
 
 		wp_safe_redirect( admin_url( 'index.php?page=edd-slack-getting-started' ) );
 

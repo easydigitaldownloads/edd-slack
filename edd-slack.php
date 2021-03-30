@@ -622,9 +622,14 @@ if ( ! class_exists( 'EDD_Slack' ) ) {
 
 				foreach ( $discount_codes as $discount_code ) {
 
-					// Post Meta is the Key, so wp_list_pluck() won't work here
-					$code = $discount_code->code;
-					$discount_codes_array[ $code ] = $discount_code->name . ' - ' . $code;
+					if ( $discount_code instanceof EDD_Discount ) {
+						$name = $discount_code->name;
+						$code = $discount_code->code;
+					} else {
+						$name = $discount_code->post_title;
+						$code = get_post_meta( $discount_code->ID, '_edd_discount_code', true );
+					}
+					$discount_codes_array[ $code ] = $name . ' - ' . $code;
 
 				}
 

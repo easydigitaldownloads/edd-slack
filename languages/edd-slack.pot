@@ -1,8 +1,8 @@
-# Copyright (C) 2020 EDD_Slack
-# This file is distributed under the same license as the EDD_Slack package.
+# Copyright (C) 2021 edd-slack
+# This file is distributed under the same license as the edd-slack package.
 msgid ""
 msgstr ""
-"Project-Id-Version: EDD_Slack\n"
+"Project-Id-Version: edd-slack\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"

@@ -614,16 +614,17 @@ if ( ! class_exists( 'EDD_Slack' ) ) {
 
 				}
 
-				$discount_codes = get_posts( array(
-					'post_type' => 'edd_discount',
-					'post_status'	=> array( 'active', 'inactive', 'expired' ),
-				) + $base_args );
+				$discount_codes = edd_get_discounts( array(
+					'post_status'    => array( 'active', 'inactive', 'expired' ),
+					'orderby'        => 'title',
+					'posts_per_page' => 99999
+				) );
 
 				foreach ( $discount_codes as $discount_code ) {
 
 					// Post Meta is the Key, so wp_list_pluck() won't work here
-					$code = get_post_meta( $discount_code->ID, '_edd_discount_code', true );
-					$discount_codes_array[ $code ] = $discount_code->post_title . ' - ' . $code;
+					$code = $discount_code->code;
+					$discount_codes_array[ $code ] = $discount_code->name . ' - ' . $code;
 
 				}
 

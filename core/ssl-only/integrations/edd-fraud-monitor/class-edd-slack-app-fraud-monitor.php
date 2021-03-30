@@ -160,10 +160,16 @@ if ( ! function_exists( 'edd_slack_interactive_message_edd_fraud_purchase' ) ) {
 			// Copied from EDD_Fraud_Monitor()->remove_fraud_flag()
 			// This is because it attempts to grab a WP User and in this case, it makes more sense to modify that String to show a Slack User
 			// If one day that String can be manipulated, this can be much cleaner
-			
-			delete_post_meta( $value->payment_id, '_edd_maybe_is_fraud' );
-			delete_post_meta( $value->payment_id, '_edd_maybe_is_fraud_reason' );
-			add_post_meta( $value->payment_id, '_edd_not_fraud', '1' );
+
+			if ( function_exists( 'edd_delete_order_meta' ) ) {
+				edd_delete_order_meta( $value->payment_id, '_edd_maybe_is_fraud' );
+				edd_delete_order_meta( $value->payment_id, '_edd_maybe_is_fraud_reason' );
+				edd_add_order_meta( $value->payment_id, '_edd_not_fraud', '1' );
+			} else {
+				delete_post_meta( $value->payment_id, '_edd_maybe_is_fraud' );
+				delete_post_meta( $value->payment_id, '_edd_maybe_is_fraud_reason' );
+				add_post_meta( $value->payment_id, '_edd_not_fraud', '1' );
+			}
 
 			edd_update_payment_status( $value->payment_id );
 
@@ -193,9 +199,14 @@ if ( ! function_exists( 'edd_slack_interactive_message_edd_fraud_purchase' ) ) {
 			
 		}
 		else if ( strtolower( $action ) == 'fraud' ) {
-			
-			delete_post_meta( $value->payment_id, '_edd_maybe_is_fraud' );
-			delete_post_meta( $value->payment_id, '_edd_maybe_is_fraud_reason' );
+
+			if ( function_exists( 'edd_delete_order_meta' ) ) {
+				edd_delete_order_meta( $value->payment_id, '_edd_maybe_is_fraud' );
+				edd_delete_order_meta( $value->payment_id, '_edd_maybe_is_fraud_reason' );
+			} else {
+				delete_post_meta( $value->payment_id, '_edd_maybe_is_fraud' );
+				delete_post_meta( $value->payment_id, '_edd_maybe_is_fraud_reason' );
+			}
 
 			edd_update_payment_status( $value->payment_id, 'revoked' );
 			

@@ -92,7 +92,7 @@ class EDD_Slack_Fraud_Monitor {
 		$fraud_check = new EDD_Fraud_Monitor_Check( $payment_id );
 		if ( true === $fraud_check->is_fraud ) {
 			
-			$customer_id = get_post_meta( $payment_id, '_edd_payment_customer_id', true );
+			$customer_id = edd_get_payment_meta( $payment_id, '_edd_payment_customer_id', true );
 			$customer = new EDD_Customer( $customer_id );
 			
 			// Cart details
@@ -104,7 +104,7 @@ class EDD_Slack_Fraud_Monitor {
 				'name' => $customer->name,
 				'email' => $customer->email,
 				'discount_code' => $payment_data['user_info']['discount'],
-				'ip_address' => get_post_meta( $payment_id, '_edd_payment_user_ip', true ),
+				'ip_address' => edd_get_payment_meta( $payment_id, '_edd_payment_user_ip', true ),
 				'cart' => $cart_items,
 				'subtotal' => edd_get_payment_subtotal( $payment_id ),
 				'total' => edd_get_payment_amount( $payment_id ),
@@ -318,7 +318,7 @@ class EDD_Slack_Fraud_Monitor {
 						$replacements['%cart%'] = _x( 'There was nothing in the Cart', 'Empty Cart Replacement Text', 'edd-slack' );
 					}
 					
-					$replacements['%fraud_reason%'] = get_post_meta( $args['payment_id'], '_edd_maybe_is_fraud_reason', true );
+					$replacements['%fraud_reason%'] = edd_get_payment_meta( $args['payment_id'], '_edd_maybe_is_fraud_reason', true );
 					
 					break;
 					

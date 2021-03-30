@@ -84,7 +84,7 @@ class EDD_Slack_Purchase_Limit {
 	 */
 	public function edd_purchase_limit( $payment_id ) {
 		
-		$customer_id = get_post_meta( $payment_id, '_edd_payment_customer_id', true );
+		$customer_id = edd_get_payment_meta( $payment_id, '_edd_payment_customer_id', true );
 		$customer = new EDD_Customer( $customer_id );
 		
 		$scope = edd_get_option( 'edd_purchase_limit_scope' ) ? edd_get_option( 'edd_purchase_limit_scope' ) : 'site-wide';

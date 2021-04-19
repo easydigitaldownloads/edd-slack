@@ -229,8 +229,8 @@ class EDD_Slack_API {
 	 * @return  boolean Success/Failure
 	 */
 	public function revoke_oauth_token() {
-		
-		$oauth_revoke = $this->post(
+
+		$oauth_revoke = $this->get(
 			'auth.revoke'
 		);
 

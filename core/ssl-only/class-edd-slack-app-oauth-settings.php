@@ -19,6 +19,13 @@ class EDD_Slack_OAUTH_Settings {
 	private $admin_notices = array();
 
 	/**
+	 * Whether the Slack extension is actually authorized.
+	 *
+	 * @var boolean $is_authorized
+	 */
+	private $is_authorized = false;
+
+	/**
 	 * EDD_Slack_OAUTH_Settings constructor.
 	 *
 	 * @since 1.0.0
@@ -194,10 +201,7 @@ class EDD_Slack_OAUTH_Settings {
 
 		if ( $client_id && $client_secret ) :
 
-			$oauth_token = edd_get_option( 'slack_app_oauth_token', false );
-
-			if ( ! $oauth_token ||
-			   $oauth_token == '-1' ) : ?>
+			if ( ! $this->is_authorized() ) : ?>
 
 				<a href="//slack.com/oauth/authorize?client_id=<?php echo $client_id; ?>&scope=<?php echo $scope; ?>&redirect_uri=<?php echo $redirect_uri; ?>" target="_self" class="edd-slack-app-auth button button-primary" data-token_type="main">
 					<?php echo _x( 'Link Slack App', 'OAUTH Register Buton Label', 'edd-slack' ); ?>
@@ -217,6 +221,36 @@ class EDD_Slack_OAUTH_Settings {
 
 		<?php endif;
 
+	}
+
+	/**
+	 * Checks to see if the extension is authorized with Slack.
+	 *
+	 * @return boolean
+	 */
+	private function is_authorized() {
+		if ( $this->is_authorized ) {
+			return $this->is_authorized;
+		}
+		$oauth_token = edd_get_option( 'slack_app_oauth_token', false );
+		if ( ! $oauth_token || '-1' == $oauth_token ) {
+			return $this->is_authorized;
+		}
+		$oauth_request = EDDSLACK()->slack_api->post(
+			'auth.test',
+			array(
+				'headers' => array(
+					'Authorization' => 'Bearer ' . $oauth_token,
+				),
+			)
+		);
+		if ( ! empty( $oauth_request->ok ) ) {
+			$this->is_authorized = true;
+		} else {
+			edd_delete_option( 'slack_app_oauth_token' );
+		}
+
+		return $this->is_authorized;
 	}
 
 	/**
@@ -246,13 +280,11 @@ class EDD_Slack_OAUTH_Settings {
 
 		$redirect_uri = urlencode_deep( admin_url( 'edit.php?post_type=download&page=edd-settings&tab=extensions&section=edd-slack-settings' ) );
 
-		$oauth_token = edd_get_option( 'slack_app_oauth_token', false );
 		$granted_client_scope = edd_get_option( 'slack_app_has_client_scope' );
 
 		if ( $client_id && $client_secret ) :
 
-			if ( ! $oauth_token ||
-			   $oauth_token == '-1' ) : ?>
+			if ( ! $this->is_authorized() ) : ?>
 
 				<p class="description">
 					<?php echo _x( 'You need to link your Slack App above to enable this feature.', 'Slack App not linked Error.', 'edd-slack' ); ?>

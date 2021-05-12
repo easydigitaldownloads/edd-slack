@@ -620,17 +620,18 @@ if ( ! class_exists( 'EDD_Slack' ) ) {
 					'posts_per_page' => 99999
 				) );
 
-				foreach ( $discount_codes as $discount_code ) {
+				if ( $discount_codes ) {
+					foreach ( $discount_codes as $discount_code ) {
 
-					if ( $discount_code instanceof EDD_Discount ) {
-						$name = $discount_code->name;
-						$code = $discount_code->code;
-					} else {
-						$name = $discount_code->post_title;
-						$code = get_post_meta( $discount_code->ID, '_edd_discount_code', true );
+						if ( $discount_code instanceof EDD_Discount ) {
+							$name = $discount_code->name;
+							$code = $discount_code->code;
+						} else {
+							$name = $discount_code->post_title;
+							$code = get_post_meta( $discount_code->ID, '_edd_discount_code', true );
+						}
+						$discount_codes_array[ $code ] = $name . ' - ' . $code;
 					}
-					$discount_codes_array[ $code ] = $name . ' - ' . $code;
-
 				}
 
 			}

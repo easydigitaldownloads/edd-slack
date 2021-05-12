@@ -620,7 +620,7 @@ if ( ! class_exists( 'EDD_Slack' ) ) {
 					'posts_per_page' => 99999
 				) );
 
-				if ( $discount_codes ) {
+				if ( $discount_codes && is_array( $discount_codes ) ) {
 					foreach ( $discount_codes as $discount_code ) {
 
 						if ( $discount_code instanceof EDD_Discount ) {

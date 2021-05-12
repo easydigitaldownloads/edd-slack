@@ -45,7 +45,7 @@ class EDD_Slack_OAUTH_Settings {
 		add_action( 'edd_slack_invites_oauth_register', array( $this, 'add_slack_invites_oauth_register' ) );
 
 		// Grab the OAUTH Key as part of the handshake process
-		add_action( 'init', array( $this, 'store_oauth_token' ) );
+		add_action( 'admin_init', array( $this, 'store_oauth_token' ) );
 
 		// Delete the OAUTH Key
 		add_action( 'init', array( $this, 'delete_oauth_token' ) );
@@ -197,14 +197,32 @@ class EDD_Slack_OAUTH_Settings {
 
 		$scope = implode( ',', $scope );
 
-		$redirect_uri = urlencode_deep( admin_url( 'edit.php?post_type=download&page=edd-settings&tab=extensions&section=edd-slack-settings' ) );
+		$redirect_uri = urlencode_deep(
+			add_query_arg(
+				array(
+					'post_type' => 'download',
+					'page'      => 'edd-settings',
+					'tab'       => 'extensions',
+					'section'   => 'edd-slack-settings',
+				),
+				admin_url( 'edit.php' )
+			)
+		);
 
 		if ( $client_id && $client_secret ) :
 
-			if ( ! $this->is_authorized() ) : ?>
-
-				<a href="//slack.com/oauth/authorize?client_id=<?php echo $client_id; ?>&scope=<?php echo $scope; ?>&redirect_uri=<?php echo $redirect_uri; ?>" target="_self" class="edd-slack-app-auth button button-primary" data-token_type="main">
-					<?php echo _x( 'Link Slack App', 'OAUTH Register Buton Label', 'edd-slack' ); ?>
+			if ( ! $this->is_authorized() ) :
+				$slack_uri = add_query_arg(
+					array(
+						'client_id'    => $client_id,
+						'scope'        => $scope,
+						'redirect_uri' => $redirect_uri,
+					),
+					'https://slack.com/oauth/authorize'
+				);
+				?>
+				<a href="<?php echo $slack_uri; ?>" target="_self" class="edd-slack-app-auth button button-primary" data-token_type="main">
+					<?php esc_html_e( 'Link Slack App', 'edd-slack' ); ?>
 				</a>
 
 			<?php else : ?>
@@ -321,8 +339,8 @@ class EDD_Slack_OAUTH_Settings {
 	 */
 	public function store_oauth_token() {
 
-		if ( ! is_admin() ) {
-			return false;
+		if ( ! is_admin() || ! current_user_can( 'manage_options' ) ) {
+			return;
 		}
 
 		$code       = isset( $_GET['code'] ) ? sanitize_text_field( $_GET['code'] ) : false;
@@ -330,31 +348,29 @@ class EDD_Slack_OAUTH_Settings {
 		$section    = isset( $_GET['section'] ) && 'edd-slack-settings' === $_GET['section'];
 
 		if ( ! $code || ! $section ) {
-			return false;
+			return;
 		}
 		// $_GET['state'] is set by the JavaScript for the OAUTH2 Popup
 		$state      = isset( $_GET['state'] ) ? sanitize_text_field( $_GET['state'] ) : false;
 		$token_type = isset( $_GET['token_type'] ) ? sanitize_text_field( $_GET['token_type'] ) : false;
 		if ( 'saving' !== $state || ! $token_type ) {
-			return false;
+			return;
 		}
 
+		$redirect_uri = add_query_arg(
+			array(
+				'post_type' => 'download',
+				'page'      => 'edd-settings',
+				'tab'       => 'extensions',
+				'section'   => 'edd-slack-settings',
+			),
+			admin_url( 'edit.php' )
+		);
 		// If we need to get an OAUTH Token
 		if ( ( ! $this->is_authorized() && 'main' === $token_type ) || ( ! edd_get_option( 'slack_app_has_client_scope' ) && 'team_invites' === $token_type ) ) {
 
 			$client_id     = edd_get_option( 'slack_app_client_id' );
 			$client_secret = edd_get_option( 'slack_app_client_secret' );
-
-			$redirect_uri = add_query_arg(
-				array(
-					'post_type' => 'download',
-					'page'      => 'edd-settings',
-					'tab'       => 'extensions',
-					'section'   => 'edd-slack-settings',
-				),
-				admin_url( 'edit.php' )
-			);
-
 			$oauth_request = EDDSLACK()->slack_api->post(
 				'oauth.access',
 				array(
@@ -367,32 +383,43 @@ class EDD_Slack_OAUTH_Settings {
 				)
 			);
 
-			if ( ! empty( $oauth_request->ok ) ) {
+			if ( empty( $oauth_request->ok ) ) {
+				$redirect_uri = add_query_arg(
+					array(
+						'edd_slack_oauth' => 'fail',
+						'edd_slack_type' => 'error',
+					),
+					$redirect_uri
+				);
 
-				$oauth_token = $oauth_request->access_token;
-				EDDSLACK()->slack_api->set_oauth_token( $oauth_token );
-
-				if ( 'main' === $token_type ) {
-
-					$this->admin_notices[] = array(
-						'edd-notices',
-						'edd_slack_app_auth',
-						_x( 'Slack App Linked Successfully.', 'EDD Slack App Auth Successful', 'edd-slack' ),
-						'updated',
-					);
-
-				} elseif ( 'team_invites' === $token_type ) {
-
-					$granted_client_scope = edd_update_option( 'slack_app_has_client_scope', true );
-
-					$this->admin_notices[] = array(
-						'edd-notices',
-						'edd_slack_app_team_invites_auth',
-						_x( 'Slack App Team Invites Enabled Successfully.', 'EDD Slack App Team Invites Auth Successful', 'edd-slack' ),
-						'updated',
-					);
-				}
+				wp_safe_redirect( $redirect_uri );
 			}
+
+			$oauth_token = $oauth_request->access_token;
+			EDDSLACK()->slack_api->set_oauth_token( $oauth_token );
+
+			if ( 'main' === $token_type ) {
+
+				$redirect_uri = add_query_arg(
+					array(
+						'edd_slack_oauth' => 'success',
+						'edd_slack_type'  => 'updated',
+					),
+					$redirect_uri
+				);
+
+			} elseif ( 'team_invites' === $token_type ) {
+
+				$granted_client_scope = edd_update_option( 'slack_app_has_client_scope', true );
+				$redirect_uri         = add_query_arg(
+					array(
+						'edd_slack_oauth' => 'teams',
+						'edd_slack_type'  => 'updated',
+					),
+					$redirect_uri
+				);
+			}
+			wp_safe_redirect( $redirect_uri );
 		}
 	}
 
@@ -443,22 +470,58 @@ class EDD_Slack_OAUTH_Settings {
 	/**
 	 * Sometimes we need to add Admin Notices when add_settings_error() isn't accessable yet
 	 *
-	 * @access	  public
-	 * @since	  1.0.0
-	 * @return	  void
+	 * @access  public
+	 * @since   1.0.0
+	 * @return  void
 	 */
 	public function display_admin_notices() {
 
-		foreach( $this->admin_notices as $admin_notice ) {
+		foreach ( $this->admin_notices as $admin_notice ) {
 
 			// Pass array as Function Parameters
 			call_user_func_array( 'add_settings_error', $admin_notice );
 
 		}
 
+		$section = ! empty( $_GET['section'] ) && 'edd-slack-settings' === $_GET['section'];
+		$message = ! empty( $_GET['edd_slack_oauth'] ) ? $this->get_oauth_message( $_GET['edd_slack_oauth'] ) : false;
+		if ( $section && $message ) {
+			?>
+			<div class="<?php echo esc_attr( $_GET['edd_slack_type'] ); ?>">
+			<p><?php echo esc_html( $message ); ?></p>
+			</div>
+			<?php
+		}
+
 		// Clear out Notices
 		$this->admin_notices = array();
 
+	}
+
+	/**
+	 * Gets the Oauth message for the admin notice.
+	 *
+	 * @since 1.1.3
+	 * @param string $type The type of message to retrieve.
+	 * @return string
+	 */
+	private function get_oauth_message( $type ) {
+		$message = '';
+		switch ( $type ) {
+			case 'fail':
+				$message = __( 'The Slack App authorization failed.', 'edd-slack' );
+				break;
+
+			case 'success':
+				$message = __( 'Slack App linked successfully.', 'edd-slack' );
+				break;
+
+			case 'teams':
+				$message = __( 'Slack App Team Invites enabled successfully.', 'edd-slack' );
+				break;
+		}
+
+		return $message;
 	}
 
 }

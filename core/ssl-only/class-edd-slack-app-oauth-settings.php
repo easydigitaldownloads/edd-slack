@@ -471,21 +471,22 @@ class EDD_Slack_OAUTH_Settings {
 	 */
 	public function display_admin_notices() {
 
+		$section = ! empty( $_GET['section'] ) && 'edd-slack-settings' === $_GET['section'];
+		$message = ! empty( $_GET['edd_slack_oauth'] ) ? $this->get_oauth_message( $_GET['edd_slack_oauth'] ) : false;
+		if ( empty( array_filter( $this->admin_notices ) ) && $section && $message ) {
+			$this->admin_notices[] = array(
+				'edd-notices',
+				'edd_slack_app_auth',
+				esc_html( $message ),
+				esc_attr( $_GET['edd_slack_type'] ),
+			);
+		}
+
 		foreach ( $this->admin_notices as $admin_notice ) {
 
 			// Pass array as Function Parameters
 			call_user_func_array( 'add_settings_error', $admin_notice );
 
-		}
-
-		$section = ! empty( $_GET['section'] ) && 'edd-slack-settings' === $_GET['section'];
-		$message = ! empty( $_GET['edd_slack_oauth'] ) ? $this->get_oauth_message( $_GET['edd_slack_oauth'] ) : false;
-		if ( $section && $message ) {
-			?>
-			<div class="<?php echo esc_attr( $_GET['edd_slack_type'] ); ?>">
-			<p><?php echo esc_html( $message ); ?></p>
-			</div>
-			<?php
 		}
 
 		// Clear out Notices

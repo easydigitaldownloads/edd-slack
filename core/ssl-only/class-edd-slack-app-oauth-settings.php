@@ -331,11 +331,11 @@ class EDD_Slack_OAUTH_Settings {
 	}
 
 	/**
-	 * Store the OAUTH Access Token after the Temporary Code is received
+	 * Store the OAUTH Access Token after the Temporary Code is received.
 	 *
-	 * @access		  public
-	 * @since		  1.0.0
-	 * @return		  void
+	 * @access public
+	 * @since  1.0.0
+	 * @return void
 	 */
 	public function store_oauth_token() {
 
@@ -343,11 +343,20 @@ class EDD_Slack_OAUTH_Settings {
 			return;
 		}
 
-		$code       = isset( $_GET['code'] ) ? sanitize_text_field( $_GET['code'] ) : false;
-		$section    = isset( $_GET['section'] ) && 'edd-slack-settings' === $_GET['section'];
+		// Return if this is not the EDD Slack Settings screen.
+		$section = isset( $_GET['section'] ) && 'edd-slack-settings' === $_GET['section'];
+		if ( ! $section ) {
+			return;
+		}
+
+		// The code provided by Slack.
+		$code = isset( $_GET['code'] ) ? sanitize_text_field( $_GET['code'] ) : false;
+
+		// The token type to validate (should be `main` or `team_invites`).
 		$token_type = isset( $_GET['token_type'] ) ? sanitize_text_field( $_GET['token_type'] ) : false;
 
-		if ( ! $code || ! $section || ! $token_type ) {
+		// Return if the code is missing or the token type is missing.
+		if ( ! $code || ! $token_type ) {
 			return;
 		}
 

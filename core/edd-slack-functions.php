@@ -30,55 +30,47 @@ function EDDSLACK() {
  */
 function edd_slack_get_users() {
 
-	if ( wp_doing_ajax() ) {
-		return array();
+	$users_array = array();
+	if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
+		return $users_array;
 	}
-	$transient = get_transient( 'edd_slack_users' );
+	$transient = maybe_unserialize( get_transient( 'edd_slack_users' ) );
 	if ( $transient ) {
 		return $transient;
 	}
 
 	$oauth_token = edd_get_option( 'slack_app_oauth_token', false );
-
 	// Don't bother if we don't have an OAUTH Token
 	if ( ! $oauth_token || '-1' == $oauth_token ) {
-		return array();
+		return $users_array;
 	}
 
-	$users_array = maybe_unserialize( $transient );
-	if ( ! $users_array ) {
+	$result = EDDSLACK()->slack_api->get( 'users.list' );
 
-		$result = EDDSLACK()->slack_api->get( 'users.list' );
-
-		if ( empty( $result->members ) ) {
-			return array();
-		}
-
-		$users = $result->members;
-
-		$users_array = array();
-		foreach ( $users as $user ) {
-
-			// Let's not bother with Deleted Users
-			if ( $user->deleted ) {
-				continue;
-			}
-
-			// No need for Slackbot to be in the list
-			if ( $user->id == 'USLACKBOT' ) {
-				continue;
-			}
-
-			$users_array[ $user->id ] = '@' . $user->name . ' (' . $user->real_name . ')';
-
-			if ( $user->is_admin ) {
-				$users_array[ $user->id ] .= ' - ' . __( 'Admin', 'edd-slack' );
-			}
-		}
-
-		set_transient( 'edd_slack_users', $users_array, DAY_IN_SECONDS );
-
+	if ( empty( $result->members ) ) {
+		return $users_array;
 	}
+
+	foreach ( $result->members as $user ) {
+
+		// Let's not bother with Deleted Users
+		if ( $user->deleted ) {
+			continue;
+		}
+
+		// No need for Slackbot to be in the list
+		if ( $user->id == 'USLACKBOT' ) {
+			continue;
+		}
+
+		$users_array[ $user->id ] = '@' . $user->name . ' (' . $user->real_name . ')';
+
+		if ( $user->is_admin ) {
+			$users_array[ $user->id ] .= ' - ' . __( 'Admin', 'edd-slack' );
+		}
+	}
+
+	set_transient( 'edd_slack_users', $users_array, DAY_IN_SECONDS );
 
 	return $users_array;
 }

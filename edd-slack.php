@@ -396,18 +396,14 @@ if ( ! class_exists( 'EDD_Slack' ) ) {
 			// If EDD FES is Active
 			if ( class_exists( 'EDD_Front_End_Submissions' ) ) {
 
-				if ( defined( 'fes_plugin_version' ) &&
-				  version_compare( fes_plugin_version, '2.4.2' ) >= 0 ) {
+				if ( defined( 'fes_plugin_version' ) && version_compare( fes_plugin_version, '2.4.2', '>=' ) ) {
 
 					require_once EDD_Slack_DIR . '/core/integrations/edd-frontend-submissions/class-edd-slack-frontend-submissions.php';
 
-				}
-				else {
+				} else {
 
 					$this->integration_errors[] = sprintf( _x( '%s includes features which integrate with %s, but v%s or greater of %s is required.', 'Outdated Integration Error', 'edd-slack' ), '<strong>' . $this->plugin_data['Name'] . '</strong>', '<a href="' . admin_url( 'update-core.php' ) . '"><strong>Easy Digital Downloads - Frontend Submissions</strong></a>', '2.4.2', '<a href="' . admin_url( 'update-core.php' ) . '"><strong>Easy Digital Downloads - Frontend Submissions</strong></a>' );
-
 				}
-
 			}
 
 			// If EDD Commissions is Active
@@ -960,10 +956,10 @@ if ( ! class_exists( 'EDD_Slack' ) ) {
  * The main function responsible for returning the one true EDD_Slack
  * instance to functions everywhere
  *
- * @since	  1.0.0
- * @return	  \EDD_Slack The one true EDD_Slack
+ * @since   1.0.0
+ * @return  \EDD_Slack The one true EDD_Slack
  */
-add_action( 'plugins_loaded', 'EDD_Slack_load' );
+add_action( 'plugins_loaded', 'EDD_Slack_load', 100 );
 function EDD_Slack_load() {
 
 	if ( ! class_exists( 'Easy_Digital_Downloads' ) ) {
@@ -975,8 +971,7 @@ function EDD_Slack_load() {
 		$activation = new EDD_Extension_Activation( plugin_dir_path( __FILE__ ), basename( __FILE__ ) );
 		$activation = $activation->run();
 
-	}
-	else {
+	} else {
 
 		require_once __DIR__ . '/core/edd-slack-functions.php';
 		EDDSLACK();

@@ -344,16 +344,10 @@ class EDD_Slack_OAUTH_Settings {
 		}
 
 		$code       = isset( $_GET['code'] ) ? sanitize_text_field( $_GET['code'] ) : false;
-		// $_GET['section'] is set properly by our redirect_uri
 		$section    = isset( $_GET['section'] ) && 'edd-slack-settings' === $_GET['section'];
-
-		if ( ! $code || ! $section ) {
-			return;
-		}
-		// $_GET['state'] is set by the JavaScript for the OAUTH2 Popup
-		$state      = isset( $_GET['state'] ) ? sanitize_text_field( $_GET['state'] ) : false;
 		$token_type = isset( $_GET['token_type'] ) ? sanitize_text_field( $_GET['token_type'] ) : false;
-		if ( 'saving' !== $state || ! $token_type ) {
+
+		if ( ! $code || ! $section || ! $token_type ) {
 			return;
 		}
 
@@ -366,6 +360,7 @@ class EDD_Slack_OAUTH_Settings {
 			),
 			admin_url( 'edit.php' )
 		);
+
 		// If we need to get an OAUTH Token
 		if ( ( ! $this->is_authorized() && 'main' === $token_type ) || ( ! edd_get_option( 'slack_app_has_client_scope' ) && 'team_invites' === $token_type ) ) {
 
@@ -387,7 +382,7 @@ class EDD_Slack_OAUTH_Settings {
 				$redirect_uri = add_query_arg(
 					array(
 						'edd_slack_oauth' => 'fail',
-						'edd_slack_type' => 'error',
+						'edd_slack_type'  => 'error',
 					),
 					$redirect_uri
 				);

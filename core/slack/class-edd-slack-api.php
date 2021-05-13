@@ -143,8 +143,9 @@ class EDD_Slack_API {
 	public function put( $method, $args = array(), $timeout = 10 ) {
 		return $this->make_request( 'PUT', $method, $args, $timeout );
 	}
+
 	/**
-	 * Performs the underlying HTTP request
+	 * Performs the underlying HTTP request.
 	 *
 	 * @param string  $http_verb  The HTTP verb to use: get, post, put, patch, delete
 	 * @param string  $method     The API method to be called
@@ -157,11 +158,14 @@ class EDD_Slack_API {
 	 */
 	private function make_request( $http_verb, $method, $args = array(), $timeout = 10 ) {
 
-		$args = wp_parse_args( $args, array(
-			'method'  => $http_verb,
-			'timeout' => $timeout,
-			'headers' => array(),
-		) );
+		$args = wp_parse_args(
+			$args,
+			array(
+				'method'  => $http_verb,
+				'timeout' => $timeout,
+				'headers' => array(),
+			)
+		);
 
 		$url = $this->api_endpoint . '/' . $method;
 

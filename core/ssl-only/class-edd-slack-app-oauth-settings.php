@@ -188,7 +188,7 @@ class EDD_Slack_OAUTH_Settings {
 		 * @since 1.0.0
 		 */
 		$scope = apply_filters( 'edd_slack_app_scope', array(
-			'chat:write:bot',
+			'chat:write',
 			'users:read',
 			'commands',
 		) );
@@ -202,7 +202,6 @@ class EDD_Slack_OAUTH_Settings {
 					'page'       => 'edd-settings',
 					'tab'        => 'extensions',
 					'section'    => 'edd-slack-settings',
-					'token_type' => 'main'
 				),
 				admin_url( 'edit.php' )
 			)
@@ -357,7 +356,7 @@ class EDD_Slack_OAUTH_Settings {
 		$code = isset( $_GET['code'] ) ? sanitize_text_field( $_GET['code'] ) : false;
 
 		// The token type to validate (should be `main` or `team_invites`).
-		$token_type = isset( $_GET['token_type'] ) ? sanitize_text_field( $_GET['token_type'] ) : false;
+		$token_type = 'main'; // @todo This is hard coded for temporary testing, and hard-coding breaks team connections.
 
 		// Return if the code is missing or the token type is missing.
 		if ( ! $code || ! $token_type ) {

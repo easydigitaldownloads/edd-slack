@@ -221,7 +221,7 @@ class EDD_Slack_OAUTH_Settings {
 					'https://slack.com/oauth/authorize'
 				);
 				?>
-				<a href="<?php echo $slack_uri; ?>" target="_self" class="edd-slack-app-auth button button-primary" data-token_type="main">
+				<a href="<?php echo esc_url( $slack_uri ); ?>" target="_self" class="edd-slack-app-auth button button-primary" data-token_type="main">
 					<?php esc_html_e( 'Link Slack App', 'edd-slack' ); ?>
 				</a>
 
@@ -397,6 +397,7 @@ class EDD_Slack_OAUTH_Settings {
 				);
 
 				wp_safe_redirect( $redirect_uri );
+				exit;
 			}
 
 			$oauth_token = $oauth_request->access_token;
@@ -424,6 +425,7 @@ class EDD_Slack_OAUTH_Settings {
 				);
 			}
 			wp_safe_redirect( $redirect_uri );
+			exit;
 		}
 	}
 

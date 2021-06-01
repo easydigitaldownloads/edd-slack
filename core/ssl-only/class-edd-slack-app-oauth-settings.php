@@ -112,9 +112,7 @@ class EDD_Slack_OAUTH_Settings {
 			),
 		) );
 
-		$settings = array_merge( $settings, $oauth_settings );
-
-		return $settings;
+		return array_merge( $settings, $oauth_settings );
 
 	}
 
@@ -200,10 +198,11 @@ class EDD_Slack_OAUTH_Settings {
 		$redirect_uri = urlencode_deep(
 			add_query_arg(
 				array(
-					'post_type' => 'download',
-					'page'      => 'edd-settings',
-					'tab'       => 'extensions',
-					'section'   => 'edd-slack-settings',
+					'post_type'  => 'download',
+					'page'       => 'edd-settings',
+					'tab'        => 'extensions',
+					'section'    => 'edd-slack-settings',
+					'token_type' => 'main'
 				),
 				admin_url( 'edit.php' )
 			)
@@ -218,7 +217,7 @@ class EDD_Slack_OAUTH_Settings {
 						'scope'        => $scope,
 						'redirect_uri' => $redirect_uri,
 					),
-					'https://slack.com/oauth/authorize'
+					'https://slack.com/oauth/v2/authorize'
 				);
 				?>
 				<a href="<?php echo $slack_uri; ?>" target="_self" class="edd-slack-app-auth button button-primary" data-token_type="main">
@@ -350,6 +349,11 @@ class EDD_Slack_OAUTH_Settings {
 		}
 
 		// The code provided by Slack.
+		if ( empty( $_GET['code'] ) ) {
+			return;
+		}
+
+		// The code provided by Slack.
 		$code = isset( $_GET['code'] ) ? sanitize_text_field( $_GET['code'] ) : false;
 
 		// The token type to validate (should be `main` or `team_invites`).
@@ -376,7 +380,7 @@ class EDD_Slack_OAUTH_Settings {
 			$client_id     = edd_get_option( 'slack_app_client_id' );
 			$client_secret = edd_get_option( 'slack_app_client_secret' );
 			$oauth_request = EDDSLACK()->slack_api->post(
-				'oauth.access',
+				'oauth.v2.access',
 				array(
 					'body' => array(
 						'client_id'     => $client_id,
@@ -414,7 +418,7 @@ class EDD_Slack_OAUTH_Settings {
 
 			} elseif ( 'team_invites' === $token_type ) {
 
-				$granted_client_scope = edd_update_option( 'slack_app_has_client_scope', true );
+				edd_update_option( 'slack_app_has_client_scope', true );
 				$redirect_uri         = add_query_arg(
 					array(
 						'edd_slack_oauth' => 'teams',

@@ -228,13 +228,13 @@ class EDD_Slack_API {
 	/**
 	 * Revoke the OAUTH Token for the Object
 	 *
-	 * @access		public
-	 * @since		1.0.0
-	 * @return		boolean Success/Failure
+	 * @access  public
+	 * @since   1.0.0
+	 * @return  boolean Success/Failure
 	 */
 	public function revoke_oauth_token() {
 
-		$oauth_revoke = $this->post(
+		$oauth_revoke = $this->get(
 			'auth.revoke'
 		);
 
@@ -245,11 +245,8 @@ class EDD_Slack_API {
 
 			return $oauth_revoke->revoked;
 
-		}
-		else {
+		} else {
 			return false;
 		}
-
 	}
-
 }

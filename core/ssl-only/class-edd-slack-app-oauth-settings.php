@@ -153,7 +153,7 @@ class EDD_Slack_OAUTH_Settings {
 			ob_start();
 			?>
 
-			<ul>
+			<ul class="edd-slack-triggers">
 				<?php echo implode( '', $supported ); ?>
 			</ul>
 

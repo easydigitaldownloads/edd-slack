@@ -36,15 +36,15 @@ class EDD_Slack_SSL_REST {
 
 		// REST Route for all Interactive Buttons
 		register_rest_route( 'edd-slack/v1', '/slack-app/interactive-message/submit', array(
-			'methods' => 'POST',
-			'callback' => array( $this, 'route_interactive_message' ),
+			'methods'             => 'POST',
+			'callback'            => array( $this, 'route_interactive_message' ),
 			'permission_callback' => '__return_true'
 		) );
 
 		// REST Route for /edd Slash Command
 		register_rest_route( 'edd-slack/v1', '/slack-app/slash-command/submit', array(
-			'methods' => 'POST',
-			'callback' => array( $this, 'route_slash_command' ),
+			'methods'             => 'POST',
+			'callback'            => array( $this, 'route_slash_command' ),
 			'permission_callback' => '__return_true'
 		) );
 

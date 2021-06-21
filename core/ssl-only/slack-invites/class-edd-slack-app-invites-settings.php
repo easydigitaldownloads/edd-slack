@@ -158,7 +158,7 @@ class EDD_Slack_Invites_Settings {
 
 		$result = EDDSLACK()->slack_api->get( 'conversations.list' );
 
-		if ( empty( $result->channels ) ) {
+		if ( empty( $result->channels ) || ! is_array( $result->channels ) ) {
 			return $channels_array;
 		}
 

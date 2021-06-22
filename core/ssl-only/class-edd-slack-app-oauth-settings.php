@@ -484,7 +484,8 @@ class EDD_Slack_OAUTH_Settings {
 
 		$section = ! empty( $_GET['section'] ) && 'edd-slack-settings' === $_GET['section'];
 		$message = ! empty( $_GET['edd_slack_oauth'] ) ? $this->get_oauth_message( $_GET['edd_slack_oauth'] ) : false;
-		if ( empty( array_filter( $this->admin_notices ) ) && $section && $message ) {
+		$notices = array_filter( $this->admin_notices );
+		if ( empty( $notices ) && $section && $message ) {
 			$this->admin_notices[] = array(
 				'edd-notices',
 				'edd_slack_app_auth',

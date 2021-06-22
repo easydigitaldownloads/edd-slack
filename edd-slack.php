@@ -3,7 +3,7 @@
  * Plugin Name: Easy Digital Downloads - Slack
  * Plugin URL: http://easydigitaldownloads.com/downloads/slack
  * Description: Slack Integration for Easy Digital Downloads
- * Version: 1.1.2
+ * Version: 1.1.3
  * Text Domain: edd-slack
  * Author: Sandhills Development, LLC
  * Author URI: https://sandhillsdev.com
@@ -183,7 +183,7 @@ if ( ! class_exists( 'EDD_Slack' ) ) {
 
 			if ( ! defined( 'EDD_Slack_VER' ) ) {
 				// Plugin version
-				define( 'EDD_Slack_VER', '1.1.2' );
+				define( 'EDD_Slack_VER', '1.1.3' );
 			}
 
 			if ( ! defined( 'EDD_Slack_DIR' ) ) {

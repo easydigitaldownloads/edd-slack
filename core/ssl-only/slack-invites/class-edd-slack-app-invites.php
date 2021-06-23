@@ -122,7 +122,7 @@ class EDD_Slack_Invites {
 	 */
 	public function add_customer_to_slack_team_via_form( $payment_id ) {
 			
-		$customer_id = get_post_meta( $payment_id, '_edd_payment_customer_id', true );
+		$customer_id = edd_get_payment_meta( $payment_id, '_edd_payment_customer_id', true );
 		$customer = new EDD_Customer( $customer_id );
 		
 		// If they've Opted-in to being added to the Slack Team

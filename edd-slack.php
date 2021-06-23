@@ -3,7 +3,7 @@
  * Plugin Name: Easy Digital Downloads - Slack
  * Plugin URL: http://easydigitaldownloads.com/downloads/slack
  * Description: Slack Integration for Easy Digital Downloads
- * Version: 1.1.2
+ * Version: 1.1.3
  * Text Domain: edd-slack
  * Author: Sandhills Development, LLC
  * Author URI: https://sandhillsdev.com
@@ -183,7 +183,7 @@ if ( ! class_exists( 'EDD_Slack' ) ) {
 
 			if ( ! defined( 'EDD_Slack_VER' ) ) {
 				// Plugin version
-				define( 'EDD_Slack_VER', '1.1.2' );
+				define( 'EDD_Slack_VER', '1.1.3' );
 			}
 
 			if ( ! defined( 'EDD_Slack_DIR' ) ) {
@@ -396,18 +396,14 @@ if ( ! class_exists( 'EDD_Slack' ) ) {
 			// If EDD FES is Active
 			if ( class_exists( 'EDD_Front_End_Submissions' ) ) {
 
-				if ( defined( 'fes_plugin_version' ) &&
-				  version_compare( fes_plugin_version, '2.4.2' ) >= 0 ) {
+				if ( defined( 'fes_plugin_version' ) && version_compare( fes_plugin_version, '2.4.2', '>=' ) ) {
 
 					require_once EDD_Slack_DIR . '/core/integrations/edd-frontend-submissions/class-edd-slack-frontend-submissions.php';
 
-				}
-				else {
+				} else {
 
 					$this->integration_errors[] = sprintf( _x( '%s includes features which integrate with %s, but v%s or greater of %s is required.', 'Outdated Integration Error', 'edd-slack' ), '<strong>' . $this->plugin_data['Name'] . '</strong>', '<a href="' . admin_url( 'update-core.php' ) . '"><strong>Easy Digital Downloads - Frontend Submissions</strong></a>', '2.4.2', '<a href="' . admin_url( 'update-core.php' ) . '"><strong>Easy Digital Downloads - Frontend Submissions</strong></a>' );
-
 				}
-
 			}
 
 			// If EDD Commissions is Active
@@ -614,17 +610,24 @@ if ( ! class_exists( 'EDD_Slack' ) ) {
 
 				}
 
-				$discount_codes = get_posts( array(
-					'post_type' => 'edd_discount',
-					'post_status'	=> array( 'active', 'inactive', 'expired' ),
-				) + $base_args );
+				$discount_codes = edd_get_discounts( array(
+					'post_status'    => array( 'active', 'inactive', 'expired' ),
+					'orderby'        => 'title',
+					'posts_per_page' => 99999
+				) );
 
-				foreach ( $discount_codes as $discount_code ) {
+				if ( $discount_codes && is_array( $discount_codes ) ) {
+					foreach ( $discount_codes as $discount_code ) {
 
-					// Post Meta is the Key, so wp_list_pluck() won't work here
-					$code = get_post_meta( $discount_code->ID, '_edd_discount_code', true );
-					$discount_codes_array[ $code ] = $discount_code->post_title . ' - ' . $code;
-
+						if ( $discount_code instanceof EDD_Discount ) {
+							$name = $discount_code->name;
+							$code = $discount_code->code;
+						} else {
+							$name = $discount_code->post_title;
+							$code = get_post_meta( $discount_code->ID, '_edd_discount_code', true );
+						}
+						$discount_codes_array[ $code ] = $name . ' - ' . $code;
+					}
 				}
 
 			}
@@ -953,10 +956,10 @@ if ( ! class_exists( 'EDD_Slack' ) ) {
  * The main function responsible for returning the one true EDD_Slack
  * instance to functions everywhere
  *
- * @since	  1.0.0
- * @return	  \EDD_Slack The one true EDD_Slack
+ * @since   1.0.0
+ * @return  \EDD_Slack The one true EDD_Slack
  */
-add_action( 'plugins_loaded', 'EDD_Slack_load' );
+add_action( 'plugins_loaded', 'EDD_Slack_load', 100 );
 function EDD_Slack_load() {
 
 	if ( ! class_exists( 'Easy_Digital_Downloads' ) ) {
@@ -968,8 +971,7 @@ function EDD_Slack_load() {
 		$activation = new EDD_Extension_Activation( plugin_dir_path( __FILE__ ), basename( __FILE__ ) );
 		$activation = $activation->run();
 
-	}
-	else {
+	} else {
 
 		require_once __DIR__ . '/core/edd-slack-functions.php';
 		EDDSLACK();

@@ -41,7 +41,7 @@ class EDD_Slack_Notification_Triggers {
 	 */
 	public function edd_complete_purchase( $payment_id ) {
 		
-		$customer_id = get_post_meta( $payment_id, '_edd_payment_customer_id', true );
+		$customer_id = edd_get_payment_meta( $payment_id, '_edd_payment_customer_id', true );
 		$customer = new EDD_Customer( $customer_id );
 		
 		// Basic payment meta
@@ -60,7 +60,7 @@ class EDD_Slack_Notification_Triggers {
 			'email' => $customer->email,
 			'payment_id' => $payment_id,
 			'discount_code' => $payment_meta['user_info']['discount'],
-			'ip_address' => get_post_meta( $payment_id, '_edd_payment_user_ip', true ),
+			'ip_address' => edd_get_payment_meta( $payment_id, '_edd_payment_user_ip', true ),
 			'cart' => $cart_items,
 			'subtotal' => edd_get_payment_subtotal( $payment_id ),
 			'total' => edd_get_payment_amount( $payment_id ),
@@ -93,11 +93,11 @@ class EDD_Slack_Notification_Triggers {
 			
 		if ( $status == 'failed' ) {
 
-			$customer_id = get_post_meta( $payment_id, '_edd_payment_customer_id', true );
+			$customer_id = edd_get_payment_meta( $payment_id, '_edd_payment_customer_id', true );
 			$customer = new EDD_Customer( $customer_id );
 
 			// Some stuff is in a big serialized array and some stuff isn't
-			$payment_meta = get_post_meta( $payment_id, '_edd_payment_meta', true );
+			$payment_meta = edd_get_payment_meta( $payment_id, '_edd_payment_meta', true );
 			
 			// Cart details
 			$cart_items = edd_get_payment_meta_cart_details( $payment_id );
@@ -108,7 +108,7 @@ class EDD_Slack_Notification_Triggers {
 				'name' => $customer->name,
 				'email' => $customer->email,
 				'discount_code' => $payment_meta['user_info']['discount'],
-				'ip_address' => get_post_meta( $payment_id, '_edd_payment_user_ip', true ),
+				'ip_address' => edd_get_payment_meta( $payment_id, '_edd_payment_user_ip', true ),
 				'cart' => $cart_items,
 				'subtotal' => edd_get_payment_subtotal( $payment_id ),
 				'total' => edd_get_payment_amount( $payment_id ),
